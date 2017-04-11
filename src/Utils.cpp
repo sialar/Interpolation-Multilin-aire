@@ -1,15 +1,30 @@
 #include "../include/Utils.hpp"
 
-vector<double> Utils::createPointsForSimpleTest(int nbPoints)
+double Utils::computeNewLejaPointFromSequence(vector<double> seq)
+{
+    double mean = 0;
+    for (int i=0; i<int(seq.size()); i++)
+        mean += seq[i];
+    return mean/seq.size();
+}
+
+vector<double> Utils::createLejaSequence(int nbPoints)
 {
     vector<double> points;
-    points.resize(nbPoints);
-    for (int k=0; k<nbPoints; ++k)
-        points[k] = k - nbPoints/2;
+    points.push_back(1);
+    double newPoint;
+    for (int i=1; i<nbPoints; i++)
+    {
+        while (int(points.size()) < nbPoints)
+        {
+            newPoint = computeNewLejaPointFromSequence(points);
+            points.push_back(newPoint);
+        }
+    }
     return points;
 }
 
-vector<double> Utils::createDataPoints(int nbPoints)
+vector<double> Utils::createUniformSequence(int nbPoints)
 {
     float sum = 0;
     vector<double> points;
