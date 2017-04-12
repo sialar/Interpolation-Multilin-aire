@@ -1,32 +1,39 @@
 #include "../include/Utils.hpp"
 
-double Utils::computeNewLejaPointFromSequence(vector<double> seq)
+
+vector<double> Utils::createChebychevSequence(int nbPoints)
 {
-    double mean = 0;
-    for (int i=0; i<int(seq.size()); i++)
-        mean += seq[i];
-    return mean/seq.size();
+    // http://www.uvt.rnu.tn/resources-uvt/cours/analyse_num/chap4/node8.html
+    vector<double> points;
+    points.resize(nbPoints);
+    for (int i=0; i<nbPoints; i++)
+        points[i] = cos((2*i+1)*M_PI/(2*nbPoints));
+    return points;
 }
 
 vector<double> Utils::createLejaSequence(int nbPoints)
 {
+    double sum = 0;
     vector<double> points;
-    points.push_back(1);
-    double newPoint;
-    for (int i=1; i<nbPoints; i++)
+    vector<double> binary_decomp;
+    points.resize(nbPoints);
+
+    points[0] =  1;
+    for (int k=1; k<nbPoints; ++k)
     {
-        while (int(points.size()) < nbPoints)
-        {
-            newPoint = computeNewLejaPointFromSequence(points);
-            points.push_back(newPoint);
-        }
+        sum = 0;
+        binaryDecomposition(k,binary_decomp);
+        for (size_t j=0; j<binary_decomp.size(); ++j)
+            sum += binary_decomp[j] / pow(2,j);
+
+        points[k] = cos(M_PI*sum);
     }
     return points;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)
 {
-    float sum = 0;
+    double sum = 0;
     vector<double> points;
     vector<double> binary_decomp;
     int stop = (nbPoints%2) ? (nbPoints-1)/2 : (nbPoints-1)/2+1;

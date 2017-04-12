@@ -3,18 +3,87 @@
 LagrangeInterpolation2D::~LagrangeInterpolation2D()
 {}
 
-LagrangeInterpolation2D::LagrangeInterpolation2D(int sizeX, int sizeY)
+LagrangeInterpolation2D::LagrangeInterpolation2D(int sizeX, int sizeY, int path)
 {
     m_pointsX.resize(sizeX);
     m_pointsY.resize(sizeY);
-    allLiMoins1Fi.resize(sizeX);
+    initPath(sizeX,sizeY,path);
+    showPath();
+    values.resize(sizeX);
     for (int i=0; i<sizeX; i++)
-        allLiMoins1Fi[i].resize(sizeY);
+        values[i].resize(sizeY);
 }
 
 double LagrangeInterpolation2D::g(double x, double y)
 {
-    return x*x + y*y;
+    return x*x*exp(y) + y*sin(2*x*x);
+}
+
+void LagrangeInterpolation2D::initPath(int n, int m, int v /* 0 ou 1 */)
+{
+
+    // path version 0
+    indice2D index;
+    int epsilon = 0;
+    int i = 0;
+    for (int j=0; j<((v%2)?m:n); j++)
+    {
+        if (epsilon%2==0)
+        {
+            i = 0;
+            while (i<((v%2)?n:m))
+            {
+                index[0] = ((v%2)?i:j);
+                index[1] = ((v%2)?j:i);
+                m_path.push_back(index);
+                i++;
+            }
+            epsilon++;
+        }
+        else
+        {
+            i =  ((v%2)?n:m)-1;
+            while (i>=0)
+            {
+                index[0] = ((v%2)?i:j);
+                index[1] = ((v%2)?j:i);
+                m_path.push_back(index);
+                i--;
+            }
+            epsilon++;
+        }
+    }
+    //m_path.erase(m_path.begin());
+    if (v==0)
+    {
+        // A verifier (il existe des sauts)
+        m_path.clear();
+        indice2D index;
+        for (int i=0; i<n; i++)
+        {
+            for (int j=0; j<m; j++)
+            {
+                index[0]=i; index[1]=j;
+                m_path.push_back(index);
+            }
+        }
+    }
+}
+
+void LagrangeInterpolation2D::showPath()
+{
+    cout << "Path = ";
+    for (indice2D i : m_path)
+        cout << "(" << i[0] << "," << i[1] << ") ";
+    cout << endl << endl;
+}
+
+void LagrangeInterpolation2D::showIndices()
+{
+    cout << "Indices = ";
+    for (indice2D i : m_indices)
+        cout << "(" << i[0] << "," << i[1] << ") ";
+    cout << endl << endl;
 }
 
 double LagrangeInterpolation2D::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
@@ -46,51 +115,57 @@ double LagrangeInterpolation2D::lagrangeInterpolation_2D_simple(double x, double
 double LagrangeInterpolation2D::lagrangeInterpolation_2D_iterative(double x, double y, int k1, int k2)
 {
     double sum = 0, lx = 0, ly = 0;
-    for (int i=0; i<k1; i++)
+    int _i = 0;
+    while (m_path[_i][0]!=k1 || m_path[_i][1]!=k2)
     {
-        for (int j=0; j<k2; j++)
-        {
-            lx = lagrangeBasisFunction_1D(i,i,x,0);
-            ly = lagrangeBasisFunction_1D(j,j,y,1);
-            sum += lx * ly * (g(m_pointsX[i],m_pointsY[j]) - allLiMoins1Fi[i][j]);
-        }
+        lx = lagrangeBasisFunction_1D(m_path[_i][0],m_path[_i][0],x,0);
+        ly = lagrangeBasisFunction_1D(m_path[_i][1],m_path[_i][1],y,1);
+        sum += lx * ly * (g(m_pointsX[m_path[_i][0]],m_pointsY[m_path[_i][1]]) - values[m_path[_i][0]][m_path[_i][1]]);
+        _i++;
     }
     return sum;
 }
 
-void LagrangeInterpolation2D::fillIndicesWithoutMax(int maxI, int maxJ)
+void LagrangeInterpolation2D::updateIndices(int maxI, int maxJ)
 {
+
     m_indices.clear();
-    indice2D index;
-    for (int i=0; i<maxI; i++)
+
+    int _i = 0;
+    indice2D i = m_path[_i];
+    while (i[0]!=maxI || i[1]!=maxJ)
     {
-        for (int j=0; j<=maxJ; j++)
-        {
-            index[0]=i; index[1]=j;
-            m_indices.push_back(index);
-        }
+        m_indices.push_back(i);
+        _i++;
+        i = m_path[_i];
     }
-    for (int j=0; j<maxJ; j++)
-    {
-        index[0]=maxI; index[1]=j;
-        m_indices.push_back(index);
-    }
+    /*
+    cout << "Path = ";
+    for (indice2D i : m_path)
+        cout << "(" << i[0] << "," << i[1] << ") ";
+    cout << endl << endl;
+
+    cout << "Indices = ";
+    for (indice2D i : m_indices)
+        cout << "(" << i[0] << "," << i[1] << ") ";
+    cout << endl << endl;
+    */
 }
 
-void LagrangeInterpolation2D::computeLiMinus1Fi(int k1, int k2)
+void LagrangeInterpolation2D::computeValues(int k1, int k2)
 {
-    allLiMoins1Fi[0][0] = 0;
-    for (int j1=0; j1<k1; ++j1)
+    values[0][0] = 0;
+    int j1=0, j2=0;
+    for (indice2D i : m_path)
     {
-        for (int j2=0; j2<k2; ++j2)
+        // Ce qui suit, s'applique à chaque couple d'indices (l1,l2); l1 < k1, l2 < k2
+        j1 = i[0]; j2 = i[1];
+        updateIndices(j1,j2);
+        //showIndices();
+        for (indice2D l : m_indices)
         {
-            // Ce qui suit, s'applique à chaque couple d'indices (l1,l2); l1 < k1, l2 < k2
-            fillIndicesWithoutMax(j1,j2);
-            for (indice2D l : m_indices)
-            {
-                allLiMoins1Fi[j1][j2] += (g(m_pointsX[l[0]],m_pointsY[l[1]]) - allLiMoins1Fi[l[0]][l[1]]) *
-                    lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) * lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
-            }
+            values[j1][j2] += (g(m_pointsX[l[0]],m_pointsY[l[1]]) - values[l[0]][l[1]]) *
+                lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) * lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
         }
     }
 }

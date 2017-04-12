@@ -37,7 +37,9 @@ class Utils
 
         // For Leja sequence (L)
         static vector<double> createLejaSequence(int nbPoints);
-        static double computeNewLejaPointFromSequence(vector<double> seq);
+
+        // For Tchebychev zeros
+        static vector<double> createChebychevSequence(int nbPoints);
 
 
 

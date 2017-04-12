@@ -12,7 +12,7 @@ class LagrangeInterpolation1D
 {
     private:
         vector<double> m_points;
-        vector<double> allLiMoins1Fi;
+        vector<double> allLiMinus1Fi;
 
     public:
 
