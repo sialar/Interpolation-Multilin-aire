@@ -6,12 +6,13 @@ LagrangeInterpolation1D::~LagrangeInterpolation1D()
 LagrangeInterpolation1D::LagrangeInterpolation1D(int size)
 {
     m_points.resize(size);
-    allLiMinus1Fi.resize(size+1);
+    m_alphaTab.resize(size+1);
 }
 
 double LagrangeInterpolation1D::g(double y)
 {
-    return y*y*y + y*y + y + 1;
+  //return y*y*y + y*y + y + 1;
+  return y*y*y + y*y*sin(y) + y*exp(2*y) + 1;
 }
 
 double LagrangeInterpolation1D::lagrangeBasisFunction_1D(int j, int k, double y)
@@ -24,7 +25,7 @@ double LagrangeInterpolation1D::lagrangeBasisFunction_1D(int j, int k, double y)
     return prod;
 }
 
-// 1 ère methode
+// 1 ère methode : méthode simple
 double LagrangeInterpolation1D::lagrangeInterpolation_1D_simple(double y)
 {
     double sum = 0;
@@ -48,18 +49,18 @@ double LagrangeInterpolation1D::lagrangeInterpolation_1D_iterative(double y,int 
 {
     double sum = 0;
     for (int i=0; i<k; i++)
-        sum += lagrangeBasisFunction_1D(i,i,y) * (g(m_points[i]) - allLiMinus1Fi[i]);
+        sum += lagrangeBasisFunction_1D(i,i,y) * m_alphaTab[i];
     return sum;
 }
 
-void LagrangeInterpolation1D::computeLiMinus1Fi(int k)
+void LagrangeInterpolation1D::computeAllAlphaI(int k)
 {
-    // Calcul de tous les I_{l} f(t_{l+1}) et stockage dans le tableau allLiMinus1Fi
-    allLiMinus1Fi[0] = 0; //I_{-1} f(t_0)
-    for (int l=1; l<=k; ++l)
+    // Calcul de tous les alpha_{j} et stockage dans le tableau m_alphaTab
+    m_alphaTab[0] = g(m_points[0]); //alpha_0
+    for (int j=1; j<=k; ++j)
     {
-        allLiMinus1Fi[l] = 0;
-        for (int i=0; i<l; ++i)   // I_{l-1} f(t_{l}) = sum_{i=0}^{l-1} ( (g(t_i)-I{i-1} f(t_i)) * h_i(t_{l})
-            allLiMinus1Fi[l] += (g(m_points[i]) - allLiMinus1Fi[i]) *  lagrangeBasisFunction_1D(i,i,m_points[l]);
+        m_alphaTab[j] = g(m_points[j]);
+        for (int l=0; l<j; ++l)   // alpha_j = g(t_j) - sum_{l=0}^{j-1} ( alpha_l) * h_l(t_j)
+            m_alphaTab[j] -= m_alphaTab[l] *  lagrangeBasisFunction_1D(l,l,m_points[j]);
     }
 }

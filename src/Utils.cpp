@@ -3,32 +3,37 @@
 
 vector<double> Utils::createChebychevSequence(int nbPoints)
 {
-    // http://www.uvt.rnu.tn/resources-uvt/cours/analyse_num/chap4/node8.html
     vector<double> points;
     points.resize(nbPoints);
     for (int i=0; i<nbPoints; i++)
-        points[i] = cos((2*i+1)*M_PI/(2*nbPoints));
+        points[i] = cos(i*M_PI/nbPoints);
     return points;
 }
 
 vector<double> Utils::createLejaSequence(int nbPoints)
 {
-    double sum = 0;
     vector<double> points;
-    vector<double> binary_decomp;
-    points.resize(nbPoints);
-
-    points[0] =  1;
-    for (int k=1; k<nbPoints; ++k)
+    points.push_back(1);
+    double newPoint;
+    for (int i=1; i<nbPoints; i++)
     {
-        sum = 0;
-        binaryDecomposition(k,binary_decomp);
-        for (size_t j=0; j<binary_decomp.size(); ++j)
-            sum += binary_decomp[j] / pow(2,j);
-
-        points[k] = cos(M_PI*sum);
+        while (int(points.size()) < nbPoints)
+        {
+            newPoint = computeNewLejaPointFromSequence(points);
+            points.push_back(newPoint);
+        }
     }
-    return points;
+   return points;
+}
+
+double Utils::computeNewLejaPointFromSequence(vector<double> seq)
+{
+    double res = 0;
+    for (int i=0; i<int(seq.size()); i++)
+    {
+      //...
+    }
+    return res;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)
@@ -75,9 +80,17 @@ double Utils::squareError(vector<double> realValue, vector<double> estimate)
 {
     double e = 0;
     if (realValue.size()!=estimate.size())
-        cout << "Erreur: les deux tableaux ne sont pas de la même taille!" << endl;
+        cerr << "Erreur: les deux tableaux ne sont pas de la même taille!" << endl;
     int n = min(int(realValue.size()),int(estimate.size()));
     for (int k=0; k<n; k++)
         e += pow(estimate[k] - realValue[k],2);
     return e/n;
+}
+
+void Utils::separateur()
+{
+    cout << endl;
+    for (int i=0; i<100; i++)
+        cout << "*";
+    cout << endl << endl;
 }

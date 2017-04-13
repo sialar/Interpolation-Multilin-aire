@@ -12,7 +12,7 @@ class LagrangeInterpolation1D
 {
     private:
         vector<double> m_points;
-        vector<double> allLiMinus1Fi;
+        vector<double> m_alphaTab;
 
     public:
 
@@ -24,10 +24,10 @@ class LagrangeInterpolation1D
 
         double g(double y);
         double lagrangeBasisFunction_1D(int j, int k, double y);
-        double lagrangeInterpolation_1D_iterative(double y, int k);
-        void computeLiMinus1Fi(int k);
+        void computeAllAlphaI(int k);
 
         double lagrangeInterpolation_1D_simple(double y);
         double lagrangeInterpolation_1D_recursive(double y, int k);
+        double lagrangeInterpolation_1D_iterative(double y, int k);
 };
 #endif
