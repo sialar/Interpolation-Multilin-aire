@@ -72,11 +72,11 @@ int main( int argc, char* argv[] )
     /**************************************************************************/
     /**************** 2eme méthode : sequence de Leja *************************/
     /**************************************************************************/
+
     Utils::separateur();
     cout << "  ---> 2eme methode:" << endl;
     estimate.clear();
-    // Test Leja sequence
-    /*
+    // Creation de la sequence de Leja
     vector<double> lejaSequence = Utils::createLejaSequence(size);
     cout << endl << "Sequence de Leja (" << size << " points) " << endl;
     for (int i=0; i<size; ++i)
@@ -98,6 +98,7 @@ int main( int argc, char* argv[] )
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
     cout << endl << "Temps d'éxecution: " << temps << endl;
     cout << endl << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
-    */
+
+
     return 0;
 }

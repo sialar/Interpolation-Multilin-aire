@@ -15,8 +15,8 @@ LagrangeInterpolation2D::LagrangeInterpolation2D(int sizeX, int sizeY, int path)
 
 double LagrangeInterpolation2D::g(double x, double y)
 {
-    //return x*x*exp(y) + y*sin(2*x*x);
-    return x*x + y*y*x + 2*y + 1;
+    return x*x*exp(y) + y*sin(2*x*x);
+    //return x*x + y*y*x + 2*y + 1;
 }
 
 void LagrangeInterpolation2D::initPath(int n, int m, int v /* 0 ou 1 ou 2*/)

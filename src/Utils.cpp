@@ -1,17 +1,40 @@
 #include "../include/Utils.hpp"
 
+vector<double> Utils::m_1dGrid;
+
+
+void Utils::storeLejaSequenceInFile(vector<double> seq)
+{
+    ofstream file("leja/leja_sequence.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << seq.size() << endl;
+        for (double dx : seq)
+        {
+            for (double dy : seq)
+            {
+                file << dx << " " << dy << endl;
+            }
+        }
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
 
 vector<double> Utils::createChebychevSequence(int nbPoints)
 {
     vector<double> points;
     points.resize(nbPoints);
     for (int i=0; i<nbPoints; i++)
-        points[i] = cos(i*M_PI/nbPoints);
+        points[i] = cos(i*M_PI/(nbPoints-1));
     return points;
 }
 
 vector<double> Utils::createLejaSequence(int nbPoints)
 {
+    m_1dGrid = createChebychevSequence(10000);
     vector<double> points;
     points.push_back(1);
     double newPoint;
@@ -23,17 +46,38 @@ vector<double> Utils::createLejaSequence(int nbPoints)
             points.push_back(newPoint);
         }
     }
-   return points;
+    storeLejaSequenceInFile(points);
+    return points;
+}
+
+bool Utils::isTooCloseToOneLejiPoint(double y, vector<double> seq, double threshold)
+{
+    for (int i=0; i<int(seq.size()); i++)
+        if (abs(y-seq[i]) <= threshold)
+            return true;
+    return false;
 }
 
 double Utils::computeNewLejaPointFromSequence(vector<double> seq)
 {
-    double res = 0;
-    for (int i=0; i<int(seq.size()); i++)
+    int argmax = -1;
+    double prod = 1;
+    double max = numeric_limits<double>::min();
+    for (int k=0; k<int(m_1dGrid.size()); k++)
     {
-      //...
+        prod = 1;
+        if (!isTooCloseToOneLejiPoint(m_1dGrid[k],seq,1e-10))
+        {
+            for (int i=0; i<int(seq.size()); i++)
+                prod *= abs(m_1dGrid[k] - seq[i]);
+            if (prod > max)
+            {
+                max = prod;
+                argmax = k;
+            }
+        }
     }
-    return res;
+    return m_1dGrid[argmax];
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)

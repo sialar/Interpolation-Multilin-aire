@@ -32,7 +32,7 @@ class LagrangeInterpolation2D
 
         void updateIndices(int maxI, int maxJ);
         void showIndices();
-        void initPath(int n, int m, int v /* 0 ou 1 */);
+        void initPath(int n, int m, int v /* 0, 1 ou 2 */);
         void showPath();
 
         double g(double x, double y);
