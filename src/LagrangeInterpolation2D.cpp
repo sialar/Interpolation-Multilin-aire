@@ -124,6 +124,13 @@ void LagrangeInterpolation2D::computeAllAlphaNu(int k1, int k2)
         // Ce qui suit, s'applique à chaque couple d'indices (l1,l2); l1 < k1, l2 < k2
         j1 = i[0]; j2 = i[1];
         updateIndices(j1,j2);
+        /*
+        Ici on met à jour la liste d'indices courante en fonction de ce qu'on a dans le vecteur path.
+        Avec l'algo AI, on veut en meme temps construire le chemin et calculer les Alpha
+        On ne va plus mettre a jour la liste d'indices a partir du chemin puisqu'il n'est pas totalement construit.
+        On va donc recupere l'information sur les indices qui interviennent dans le calcul du alpha courant grace à l'algo AI
+        En effet le nouveau point ajouté ne sera pas le courant dans le chemin comme dans la methode precedante mais il sera le point renvoyé par l'algo AI.
+        */
         m_alphaTab[j1][j2] = g(m_pointsX[j1],m_pointsY[j2]);
         for (indice2D l : m_indices)
         {
