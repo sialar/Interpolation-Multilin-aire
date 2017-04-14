@@ -9,13 +9,8 @@ void Utils::storeLejaSequenceInFile(vector<double> seq)
     if(file)
     {
         file << seq.size() << endl;
-        for (double dx : seq)
-        {
-            for (double dy : seq)
-            {
-                file << dx << " " << dy << endl;
-            }
-        }
+        for (double d : seq)
+            file << d << endl;
         file.close();
     }
     else
@@ -50,7 +45,7 @@ vector<double> Utils::createLejaSequence(int nbPoints)
     return points;
 }
 
-bool Utils::isTooCloseToOneLejiPoint(double y, vector<double> seq, double threshold)
+bool Utils::isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold)
 {
     for (int i=0; i<int(seq.size()); i++)
         if (abs(y-seq[i]) <= threshold)
@@ -66,7 +61,7 @@ double Utils::computeNewLejaPointFromSequence(vector<double> seq)
     for (int k=0; k<int(m_1dGrid.size()); k++)
     {
         prod = 1;
-        if (!isTooCloseToOneLejiPoint(m_1dGrid[k],seq,1e-10))
+        if (!isTooCloseToOneLejaPoint(m_1dGrid[k],seq,1e-10))
         {
             for (int i=0; i<int(seq.size()); i++)
                 prod *= abs(m_1dGrid[k] - seq[i]);

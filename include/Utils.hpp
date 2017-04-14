@@ -23,7 +23,7 @@ class Utils
         static double randomValue(double a, double b);
         static double squareError(vector<double> realValue, vector<double> estimate);
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
-        static bool isTooCloseToOneLejiPoint(double y, vector<double> seq, double threshold);
+        static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
         static double computeNewLejaPointFromSequence(vector<double> seq);
         static void storeLejaSequenceInFile(vector<double> seq);
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <limits>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class LagrangeInterpolation2D
         vector<double> m_pointsX;
         vector<double> m_pointsY;
         vector<indice2D> m_indices;
+        vector<indice2D> m_curSetInAIAlgo;
         vector<indice2D> m_path;
         vector<vector<double>> m_alphaTab;
 
@@ -34,6 +36,10 @@ class LagrangeInterpolation2D
         void showIndices();
         void initPath(int n, int m, int v /* 0, 1 ou 2 */);
         void showPath();
+        void showAlphaTab();
+        void buildPathWithAIAlgo(int n, int m, bool lejaSeq);
+        vector<indice2D> getCurentNeighbours();
+        bool indexInPath(indice2D index);
 
         double g(double x, double y);
         double lagrangeBasisFunction_1D(int j, int k, double y, int axis);

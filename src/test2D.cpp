@@ -95,7 +95,7 @@ int main( int argc, char* argv[] )
 
 
     /**************************************************************************/
-    /**************** 2eme méthode : sequence de Leja ************************/
+    /**************** 2eme méthode : sequence de Leja *************************/
     /**************************************************************************/
 
     Utils::separateur();
@@ -133,6 +133,33 @@ int main( int argc, char* argv[] )
     cout << endl << "Temps d'éxecution: " << temps << endl;
     cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
 
+    /**************************************************************************/
+    /************** 3eme méthode : sequence de Leja et algo AI ****************/
+    /**************************************************************************/
 
+    Utils::separateur();
+    estimate.clear();
+    interp->buildPathWithAIAlgo(sizeX,sizeY,true);
+    cout << "Chemin obtenu avec l'algo AI:" << endl;
+    interp->showPath();
+    cout << endl << "Calcul par interpolation bilinéaire en utilisant l'algorithme AI:" << endl;
+    //interp->computeAllAlphaNu(sizeX,sizeY);
+    lastIndexInPath = interp->path()[interp->path().size()-1];
+    for (int i=0; i<int(testPointsX.size()); i++)
+    {
+        for (int j=0; j<int(testPointsY.size()); j++)
+        {
+            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j],lastIndexInPath[0],lastIndexInPath[1]);
+            estimate.push_back(val);
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+    t1 = clock(); // start counting
+    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1),lastIndexInPath[0],lastIndexInPath[1]);
+    t2 = clock(); // stop the count
+    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+    cout << endl << "Temps d'éxecution: " << temps << endl;
+    cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
     return 0;
 }
