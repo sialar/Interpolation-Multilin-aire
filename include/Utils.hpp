@@ -25,7 +25,8 @@ class Utils
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
         static double computeNewLejaPointFromSequence(vector<double> seq);
-        static void storeLejaSequenceInFile(vector<double> seq);
+        static void storeResult(vector<double> x, vector<double> y, vector<double> z, vector<double> real);
+        static void storeLejaSequenceInFile(vector<double> x, vector<double> y);
 
         // For uniform sequence of data points
         static vector<double> createUniformSequence(int nbPoints);

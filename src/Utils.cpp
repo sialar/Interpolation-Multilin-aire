@@ -3,14 +3,33 @@
 vector<double> Utils::m_1dGrid;
 
 
-void Utils::storeLejaSequenceInFile(vector<double> seq)
+void Utils::storeResult(vector<double> x, vector<double> y, vector<double> z, vector<double> real)
 {
-    ofstream file("leja/leja_sequence.txt", ios::out | ios::trunc);
+    ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
     if(file)
     {
-        file << seq.size() << endl;
-        for (double d : seq)
-            file << d << endl;
+        file << x.size() << " " << y.size() << endl;
+        for (int i=0; i<int(x.size()); i++)
+            for (int j=0; j<int(y.size()); j++)
+                file << x[i] << " " << y[j] << " " << z[int(y.size())*i+j] <<
+                         " " << real[int(y.size())*i+j] << endl;
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+void Utils::storeLejaSequenceInFile(vector<double> x, vector<double> y)
+{
+    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << x.size()<< endl;
+        for (int i=0; i<int(x.size()); i++)
+            file << x[i] << endl;
+        file << y.size()<< endl;
+        for (int i=0; i<int(y.size()); i++)
+            file << y[i] << endl;
         file.close();
     }
     else
@@ -41,7 +60,6 @@ vector<double> Utils::createLejaSequence(int nbPoints)
             points.push_back(newPoint);
         }
     }
-    storeLejaSequenceInFile(points);
     return points;
 }
 
@@ -129,7 +147,7 @@ double Utils::squareError(vector<double> realValue, vector<double> estimate)
 void Utils::separateur()
 {
     cout << endl;
-    for (int i=0; i<100; i++)
+    for (int i=0; i<206; i++)
         cout << "*";
     cout << endl << endl;
 }

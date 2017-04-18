@@ -15,6 +15,7 @@ int main( int argc, char* argv[] )
 
     // Get the size of the data points sequence from argument
     int size = (argc > 1) ? stoi(argv[1]) : Utils::randomValue(10,100);
+    int nbTestPoints = (argc > 2) ? stoi(argv[2]) : Utils::randomValue(10,100);
     LagrangeInterpolation1D* interp = new LagrangeInterpolation1D(size);
 
 
@@ -22,7 +23,7 @@ int main( int argc, char* argv[] )
     vector<double> testPoints;
     vector<double> realValue, estimate;
     double val = 0;
-    testPoints.resize(int(Utils::randomValue(10,25)));
+    testPoints.resize(nbTestPoints);
     cout << endl << "Sequence de " << testPoints.size() << " points de test:" << endl;
     for (int i=0; i<int(testPoints.size()); i++)
     {

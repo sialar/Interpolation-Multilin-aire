@@ -12,20 +12,20 @@ int main( int argc, char* argv[] )
     float temps;
     clock_t t1, t2;
 
-
     // Get the size of the data points sequence from argument
     int sizeX = (argc > 1) ? stoi(argv[1]) : Utils::randomValue(10,100);
     int sizeY = (argc > 2) ? stoi(argv[2]) : Utils::randomValue(10,100);
-    int version = (argc > 3) ? stoi(argv[3]) : 0;
+    int nbTestPointsX = (argc > 3) ? stoi(argv[3]) : Utils::randomValue(2,5);
+    int nbTestPointsY = (argc > 4) ? stoi(argv[4]) : Utils::randomValue(2,5);
+    int version = (argc > 5) ? stoi(argv[5]) : 1;
     LagrangeInterpolation2D* interp = new LagrangeInterpolation2D(sizeX, sizeY, version);
-
 
     // Evaluation de la fonction g (points choisis aléatoirement entre -1 et 1)
     vector<double> testPointsX, testPointsY;
     vector<double> realValue, estimate;
     double val = 0;
-    testPointsX.resize(int(Utils::randomValue(2,5)));
-    testPointsY.resize(int(Utils::randomValue(2,5)));
+    testPointsX.resize(nbTestPointsX);
+    testPointsY.resize(nbTestPointsY);
     cout << "Sequence des points de test: (" << testPointsX.size() <<
             " suivant l'axe des x et " << testPointsY.size() << " suivant l'axe des y)" << endl;
     cout << "-  Suivant l'axe des x: ";
@@ -104,6 +104,8 @@ int main( int argc, char* argv[] )
     // Creation de la sequence de Leja
     interp->setPointsX(Utils::createLejaSequence(sizeX));
     interp->setPointsY(Utils::createLejaSequence(sizeY));
+    Utils::storeLejaSequenceInFile(interp->pointsX(),interp->pointsY());
+
     cout << endl << "Sequence de Leja (" << interp->pointsX().size() <<
             "x" <<  interp->pointsY().size() << " points)" << endl;
     for (int i=0; i<int(interp->pointsX().size()); ++i)
@@ -126,6 +128,7 @@ int main( int argc, char* argv[] )
         }
         cout << endl;
     }
+    Utils::storeResult(testPointsX,testPointsY,estimate,realValue);
     t1 = clock(); // start counting
     val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1),lastIndexInPath[0],lastIndexInPath[1]);
     t2 = clock(); // stop the count
@@ -136,7 +139,7 @@ int main( int argc, char* argv[] )
     /**************************************************************************/
     /************** 3eme méthode : sequence de Leja et algo AI ****************/
     /**************************************************************************/
-
+/*
     Utils::separateur();
     estimate.clear();
     interp->buildPathWithAIAlgo(sizeX,sizeY,true);
@@ -161,5 +164,6 @@ int main( int argc, char* argv[] )
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
     cout << endl << "Temps d'éxecution: " << temps << endl;
     cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    */
     return 0;
 }
