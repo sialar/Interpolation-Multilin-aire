@@ -24,13 +24,15 @@ int main( int argc, char* argv[] )
     vector<double> realValue, estimate;
     double val = 0;
     testPoints.resize(nbTestPoints);
-    cout << endl << "Sequence de " << testPoints.size() << " points de test:" << endl;
+    cout << endl << "   - Sequence de " << testPoints.size() << " points de test:" << endl;
     for (int i=0; i<int(testPoints.size()); i++)
     {
         testPoints[i] = Utils::randomValue(-1,1);
         cout << testPoints[i] << " ";
     }
-    cout << endl << endl << "Calcul direct:" << endl;
+    cout << endl ;
+    Utils::separateur();
+    cout << "   - Calcul direct (evaluation de g en " << nbTestPoints << " points):" << endl;
     for (int i=0; i<int(testPoints.size()); i++)
     {
         val = interp->g(testPoints[i]);
@@ -38,21 +40,20 @@ int main( int argc, char* argv[] )
         cout << val << " ";
     }
     cout << endl;
+    Utils::separateur();
 
 
     /**************************************************************************/
     /**************** 1ere méthode : sequence uniforme ************************/
     /**************************************************************************/
-
-    Utils::separateur();
-    cout << "  ---> 1ere methode:" << endl;
+    cout << "   - Methode d'interpolation utilisant une sequence uniforme de " << size << " points:" << endl;
     // Creation la sequence uniforme
     vector<double> uniformSequence = Utils::createUniformSequence(size);
-    cout << endl << "Sequence uniforme (" << size << " points)" << endl;
     for (int i=0; i<size; ++i)
         cout << uniformSequence[i] << " ";
+    cout << endl;
     // Test de l'interpolation en utilisant la sequence uniforme
-    cout << endl << endl << "Calcul par interpolation:" << endl;
+    cout << endl << "   - Calcul par interpolation (evaluation de ĝ en " << nbTestPoints << " points de test)" << endl;
     interp->setPoints(uniformSequence);
     interp->computeAllAlphaI(size);
     for (int i=0; i<int(testPoints.size()); i++)
@@ -66,24 +67,23 @@ int main( int argc, char* argv[] )
     val = interp->lagrangeInterpolation_1D_iterative(Utils::randomValue(-1,1),size);
     t2 = clock(); // stop the count
     temps = (float)(t2-t1)/CLOCKS_PER_SEC; // compute the execution time
-    cout << endl << "Temps d'éxecution: " << temps << endl;
-    cout << endl << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    cout << endl << "   - Temps d'éxecution: " << temps << endl;
+    cout <<  "   - Erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    Utils::separateur();
 
 
     /**************************************************************************/
     /**************** 2eme méthode : sequence de Leja *************************/
     /**************************************************************************/
-
-    Utils::separateur();
-    cout << "  ---> 2eme methode:" << endl;
     estimate.clear();
+    cout << "   - Methode d'interpolation utilisant une sequence de " << size << " points de Leja:" << endl;
     // Creation de la sequence de Leja
     vector<double> lejaSequence = Utils::createLejaSequence(size);
-    cout << endl << "Sequence de Leja (" << size << " points) " << endl;
     for (int i=0; i<size; ++i)
         cout << lejaSequence[i] << " ";
+    cout << endl;
     // Test de l'interpolation en utilisant la sequence de Leja
-    cout << endl << endl << "Calcul par interpolation:" << endl;
+    cout << endl << "   - Calcul par interpolation (evaluation de ĝ en " << nbTestPoints << " points de test)" << endl;
     interp->setPoints(lejaSequence);
     interp->computeAllAlphaI(size);
     for (int i=0; i<int(testPoints.size()); i++)
@@ -93,13 +93,14 @@ int main( int argc, char* argv[] )
         cout << val << " ";
     }
     cout << endl;
+    Utils::storeResult1D(testPoints,estimate,realValue);
     t1 = clock(); // start counting
     val = interp->lagrangeInterpolation_1D_iterative(Utils::randomValue(-1,1),size);
     t2 = clock(); // stop the count
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << endl << "Temps d'éxecution: " << temps << endl;
-    cout << endl << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
-
+    temps = (float)(t2-t1)/CLOCKS_PER_SEC; // compute the execution time
+    cout << endl << "   - Temps d'éxecution: " << temps << endl;
+    cout <<  "   - Erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    Utils::separateur();
 
     return 0;
 }

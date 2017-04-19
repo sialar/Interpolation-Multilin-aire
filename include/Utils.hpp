@@ -25,14 +25,16 @@ class Utils
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
         static double computeNewLejaPointFromSequence(vector<double> seq);
-        static void storeResult(vector<double> x, vector<double> y, vector<double> z, vector<double> real);
-        static void storeLejaSequenceInFile(vector<double> x, vector<double> y);
+        static void storeResult1D(vector<double> x, vector<double> y, vector<double> real_y);
+        static void storeResult2D(vector<double> x, vector<double> y, vector<double> z, vector<double> real_z);
+        static void store2DLejaSequenceInFile(vector<double> x, vector<double> y);
+        static void store3DLejaSequenceInFile(vector<double> x, vector<double> y, vector<double> z);
 
-        // For uniform sequence of data points
+        // Uniform sequence of data points
         static vector<double> createUniformSequence(int nbPoints);
-        // For Leja sequence (L)
+        // Sequence of Leja points
         static vector<double> createLejaSequence(int nbPoints);
-        // For Tchebychev zeros
+        // Sequence of Tchebychev zeros
         static vector<double> createChebychevSequence(int nbPoints);
 
 };

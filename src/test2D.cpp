@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
@@ -19,151 +20,132 @@ int main( int argc, char* argv[] )
     int nbTestPointsY = (argc > 4) ? stoi(argv[4]) : Utils::randomValue(2,5);
     int version = (argc > 5) ? stoi(argv[5]) : 1;
     LagrangeInterpolation2D* interp = new LagrangeInterpolation2D(sizeX, sizeY, version);
+    bool debug =  (interp->path().size()<101) && (nbTestPointsX*nbTestPointsY<101);
 
     // Evaluation de la fonction g (points choisis aléatoirement entre -1 et 1)
-    vector<double> testPointsX, testPointsY;
-    vector<double> realValue, estimate;
+    vector<double> testPointsX, testPointsY, realValue, estimate;
     double val = 0;
     testPointsX.resize(nbTestPointsX);
     testPointsY.resize(nbTestPointsY);
-    cout << "Sequence des points de test: (" << testPointsX.size() <<
-            " suivant l'axe des x et " << testPointsY.size() << " suivant l'axe des y)" << endl;
-    cout << "-  Suivant l'axe des x: ";
+    Utils::separateur();
+    cout << "   - Sequence des points de test: (" << testPointsX.size() <<
+            " suivant l'axe des x et " << testPointsY.size() << " suivant l'axe des y):" << endl;
+    cout << "         + Suivant la direction x: ";
     for (int i=0; i<int(testPointsX.size()); i++)
     {
         testPointsX[i] = Utils::randomValue(-1,1);
         cout << testPointsX[i] << " ";
     }
-    cout << endl << "-  Suivant l'axe des y: ";
+    cout << endl << "         + Suivant la direction y: ";
     for (int j=0; j<int(testPointsY.size()); j++)
     {
         testPointsY[j] = Utils::randomValue(-1,1);
         cout << testPointsY[j] << " ";
     }
-    cout << endl << endl << "Calcul direct:" << endl;
+    cout << endl ;
+    Utils::separateur();
+    cout << "   - Calcul direct (evaluation de g en " << nbTestPointsX*nbTestPointsY << " points):" << endl;
     for (int i=0; i<int(testPointsX.size()); i++)
     {
         for (int j=0; j<int(testPointsY.size()); j++)
         {
             val = interp->g(testPointsX[i],testPointsY[j]);
             realValue.push_back(val);
-            cout << val << " ";
+            if (debug) cout << val << " ";
         }
-        cout << endl;
+        if (debug) cout << endl;
     }
 
     Utils::separateur();
-    interp->showPath();
+    if (debug)
+    {
+        interp->showPath();
+        Utils::separateur();
+    }
 
     /**************************************************************************/
     /**************** 1ere méthode : sequence uniforme ************************/
     /**************************************************************************/
-    Utils::separateur();
-    cout << "   - 1ere methode:" << endl;
+
+    estimate.clear();
     // Creation de la sequence uniforme
     interp->setPointsX(Utils::createUniformSequence(sizeX));
     interp->setPointsY(Utils::createUniformSequence(sizeY));
-    cout << endl << "Sequence uniforme (" << interp->pointsX().size() <<
-            "x" <<  interp->pointsY().size() << " points)" << endl;
+    cout << "   - Methode d'interpolation utilisant une sequence uniforme (" << interp->pointsX().size() <<
+            " points suivant la direction x et " << interp->pointsY().size() << " points suivant la direction y)" << endl;
+    cout << "         + Suivant la direction x: ";
     for (int i=0; i<int(interp->pointsX().size()); ++i)
         cout << interp->pointsX()[i] << " ";
-    cout << endl;
+    cout << endl << "         + Suivant la direction y: ";
     for (int j=0; j<int(interp->pointsY().size()); ++j)
         cout << interp->pointsY()[j] << " ";
     cout << endl;
+
     // Test de l'interpolation en utilisant la sequence uniforme
-    cout << endl << "Calcul par interpolation bilinéaire:" << endl;
-    interp->computeAllAlphaNu(sizeX,sizeY);
-    indice2D lastIndexInPath = interp->path()[interp->path().size()-1];
-    estimate.clear();
+    cout << endl << "   - Calcul par interpolation bilinéaire: (evaluation de ĝ en " << nbTestPointsX*nbTestPointsY << " points de test)" << endl;
+    interp->computeAllAlphaNu();
     for (int i=0; i<int(testPointsX.size()); i++)
     {
         for (int j=0; j<int(testPointsY.size()); j++)
         {
-            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j],lastIndexInPath[0],lastIndexInPath[1]);
+            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j]);
             estimate.push_back(val);
-            cout << val << " ";
+            if (debug) cout << val << " ";
         }
-        cout << endl;
+        if (debug) cout << endl;
     }
     t1 = clock(); // start counting
-    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1),lastIndexInPath[0],lastIndexInPath[1]);
+    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1));
     t2 = clock(); // stop the count
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << endl << "Temps d'éxecution: " << temps << endl;
-    cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
-
+    cout << endl << "   - Temps d'éxecution: " << temps << endl;
+    cout << "   - Erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    Utils::separateur();
 
     /**************************************************************************/
     /**************** 2eme méthode : sequence de Leja *************************/
     /**************************************************************************/
-
-    Utils::separateur();
     estimate.clear();
-    cout << "   - 2eme methode:" << endl;
     // Creation de la sequence de Leja
     interp->setPointsX(Utils::createLejaSequence(sizeX));
     interp->setPointsY(Utils::createLejaSequence(sizeY));
-    Utils::storeLejaSequenceInFile(interp->pointsX(),interp->pointsY());
+    Utils::store2DLejaSequenceInFile(interp->pointsX(),interp->pointsY());
 
-    cout << endl << "Sequence de Leja (" << interp->pointsX().size() <<
-            "x" <<  interp->pointsY().size() << " points)" << endl;
+    cout << "   - Methode d'interpolation utilisant la sequence de Leja (" << interp->pointsX().size() <<
+            " points suivant la direction x et " << interp->pointsY().size() << " points suivant la direction y)" << endl;
+    cout << "         + Suivant la direction x: ";
     for (int i=0; i<int(interp->pointsX().size()); ++i)
         cout << interp->pointsX()[i] << " ";
-    cout << endl;
+    cout << endl << "         + Suivant la direction y: ";
     for (int j=0; j<int(interp->pointsY().size()); ++j)
         cout << interp->pointsY()[j] << " ";
     cout << endl;
+
     // Test de l'interpolation en utilisant la sequence de Leja
-    cout << endl << "Calcul par interpolation bilinéaire:" << endl;
-    interp->computeAllAlphaNu(sizeX,sizeY);
-    lastIndexInPath = interp->path()[interp->path().size()-1];
+    cout << endl << "   - Calcul par interpolation bilinéaire: (evaluation de ĝ en " << nbTestPointsX*nbTestPointsY << " points de test)" << endl;
+    interp->computeAllAlphaNu();
     for (int i=0; i<int(testPointsX.size()); i++)
     {
         for (int j=0; j<int(testPointsY.size()); j++)
         {
-            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j],lastIndexInPath[0],lastIndexInPath[1]);
+            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j]);
             estimate.push_back(val);
-            cout << val << " ";
+            if (debug) cout << val << " ";
         }
-        cout << endl;
+        if (debug) cout << endl;
     }
-    Utils::storeResult(testPointsX,testPointsY,estimate,realValue);
-    t1 = clock(); // start counting
-    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1),lastIndexInPath[0],lastIndexInPath[1]);
-    t2 = clock(); // stop the count
+    Utils::storeResult2D(testPointsX,testPointsY,estimate,realValue);
+    t1 = clock();
+    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1));
+    t2 = clock();
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << endl << "Temps d'éxecution: " << temps << endl;
-    cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    cout << endl << "   - Temps d'éxecution: " << temps << endl;
+    cout << "   - Erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
+    Utils::separateur();
 
     /**************************************************************************/
     /************** 3eme méthode : sequence de Leja et algo AI ****************/
     /**************************************************************************/
-/*
-    Utils::separateur();
-    estimate.clear();
-    interp->buildPathWithAIAlgo(sizeX,sizeY,true);
-    cout << "Chemin obtenu avec l'algo AI:" << endl;
-    interp->showPath();
-    cout << endl << "Calcul par interpolation bilinéaire en utilisant l'algorithme AI:" << endl;
-    //interp->computeAllAlphaNu(sizeX,sizeY);
-    lastIndexInPath = interp->path()[interp->path().size()-1];
-    for (int i=0; i<int(testPointsX.size()); i++)
-    {
-        for (int j=0; j<int(testPointsY.size()); j++)
-        {
-            val = interp->lagrangeInterpolation_2D_iterative(testPointsX[i],testPointsY[j],lastIndexInPath[0],lastIndexInPath[1]);
-            estimate.push_back(val);
-            cout << val << " ";
-        }
-        cout << endl;
-    }
-    t1 = clock(); // start counting
-    val = interp->lagrangeInterpolation_2D_iterative(Utils::randomValue(-1,1),Utils::randomValue(-1,1),lastIndexInPath[0],lastIndexInPath[1]);
-    t2 = clock(); // stop the count
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << endl << "Temps d'éxecution: " << temps << endl;
-    cout << "L'erreur quadratique moyenne: " << Utils::squareError(realValue,estimate) << endl;
-    */
+
     return 0;
 }

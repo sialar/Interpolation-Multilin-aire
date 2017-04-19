@@ -13,6 +13,17 @@ LagrangeInterpolation2D::LagrangeInterpolation2D(int sizeX, int sizeY, int path)
         m_alphaTab[i].resize(sizeY);
 }
 
+void LagrangeInterpolation2D::clear()
+{
+    m_pointsX.clear();
+    m_pointsY.clear();
+    m_path.clear();
+    for (int i=0; i<int(m_pointsX.size()); i++)
+        m_alphaTab[i].clear();
+    m_alphaTab.clear();
+    m_curSetInAIAlgo.clear();
+}
+
 void LagrangeInterpolation2D::showPath()
 {
     cout << "Chemin = ";
@@ -46,23 +57,16 @@ double LagrangeInterpolation2D::g(double x, double y)
 void LagrangeInterpolation2D::choosePath(int n, int m, int v /* 0 ou 1 ou 2*/)
 {
     m_path.clear();
-    indice2D index;
-    for (int i=0; i<n; i++)
+    if (v >= 0)
     {
-        for (int j=0; j<((v%3)?m:i+1); j++)
-        {
-            index =  { (v%3==1) ? i : j , (v%3==0) ? i-j : ((v%3==1) ? j : i)};
-            m_path.push_back(index);
-        }
+        indice2D index;
+        for (int i=0; i<n; i++)
+            for (int j=0; j<((v%3)?m:i+1); j++)
+            {
+                index =  { (v%3==1) ? i : j , (v%3==0) ? i-j : ((v%3==1) ? j : i)};
+                m_path.push_back(index);
+            }
     }
-}
-
-int LagrangeInterpolation2D::getCurentIndice(int maxI, int maxJ)
-{
-    int i = 0;
-    while (m_path[i][0]!=maxI || m_path[i][1]!=maxJ)
-        i++;
-    return i;
 }
 
 double LagrangeInterpolation2D::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
@@ -89,44 +93,57 @@ double LagrangeInterpolation2D::lagrangeInterpolation_2D_simple(double x, double
     return z;
 }
 
-double LagrangeInterpolation2D::lagrangeInterpolation_2D_iterative(double x, double y, int k1, int k2)
+double LagrangeInterpolation2D::lagrangeInterpolation_2D_iterative(double x, double y)
 {
     double sum = 0, lx = 0, ly = 0;
-    int _i = 0;
-    while (m_path[_i][0]!=k1 || m_path[_i][1]!=k2)
+    for (int i=0; i<int(m_path.size()); i++)
     {
-        lx = lagrangeBasisFunction_1D(m_path[_i][0],m_path[_i][0],x,0);
-        ly = lagrangeBasisFunction_1D(m_path[_i][1],m_path[_i][1],y,1);
-        sum += lx * ly * m_alphaTab[m_path[_i][0]][m_path[_i][1]];
-        _i++;
+        lx = lagrangeBasisFunction_1D(m_path[i][0],m_path[i][0],x,0);
+        ly = lagrangeBasisFunction_1D(m_path[i][1],m_path[i][1],y,1);
+        sum += lx * ly * m_alphaTab[m_path[i][0]][m_path[i][1]];
     }
     return sum;
 }
 
-void LagrangeInterpolation2D::computeAllAlphaNu(int k1, int k2)
+int LagrangeInterpolation2D::getIndiceInPath(int maxI, int maxJ)
 {
-    m_alphaTab[0][0] = g(m_pointsX[0],m_pointsY[0]);
-    int j1=0, j2=0;
+    int i = 0;
+    while (m_path[i][0]!=maxI || m_path[i][1]!=maxJ)
+        i++;
+    return i;
+}
+
+void LagrangeInterpolation2D::computeAllAlphaNu()
+{
     for (indice2D i : m_path)
+        computeOneAlphaNu(i);
+}
+
+double LagrangeInterpolation2D::computeOneAlphaNu(indice2D nu)
+{
+    int j1 = nu[0], j2 = nu[1];
+    int i = getIndiceInPath(j1,j2);
+    m_alphaTab[j1][j2] = g(m_pointsX[j1],m_pointsY[j2]);
+    for (int k=0; k<i; k++)
     {
-        // Ce qui suit, s'applique à chaque couple d'indices (l1,l2); l1 < k1, l2 < k2
-        j1 = i[0]; j2 = i[1];
-        int curentMaxIndex = getCurentIndice(j1,j2);
-        /*
-        Ici on met à jour la liste d'indices courante en fonction de ce qu'on a dans le vecteur path.
-        Avec l'algo AI, on veut en meme temps construire le chemin et calculer les Alpha
-        On ne va plus mettre a jour la liste d'indices a partir du chemin puisqu'il n'est pas totalement construit.
-        On va donc recupere l'information sur les indices qui interviennent dans le calcul du alpha courant grace à l'algo AI
-        En effet le nouveau point ajouté ne sera pas le courant dans le chemin comme dans la methode precedante mais il sera le point renvoyé par l'algo AI.
-        */
-        m_alphaTab[j1][j2] = g(m_pointsX[j1],m_pointsY[j2]);
-        for (int k=0; k<curentMaxIndex; k++)
-        {
-            indice2D l = m_path[k];
-            m_alphaTab[j1][j2] -= m_alphaTab[l[0]][l[1]] * lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) *
-                          lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
-        }
+        indice2D l = m_path[k];
+        m_alphaTab[j1][j2] -= m_alphaTab[l[0]][l[1]] * lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) *
+                      lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
     }
+    return m_alphaTab[j1][j2];
+}
+
+double LagrangeInterpolation2D::computeLastAlphaNu(indice2D nu)
+{
+    int j1 = nu[0], j2 = nu[1];
+    m_alphaTab[j1][j2] = g(m_pointsX[j1],m_pointsY[j2]);
+    for (int k=0; k<int(m_path.size()); k++)
+    {
+        indice2D l = m_path[k];
+        m_alphaTab[j1][j2] -= m_alphaTab[l[0]][l[1]] * lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) *
+                      lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
+    }
+    return m_alphaTab[j1][j2];
 }
 
 vector<indice2D> LagrangeInterpolation2D::getCurentNeighbours()
@@ -146,6 +163,13 @@ vector<indice2D> LagrangeInterpolation2D::getCurentNeighbours()
     return neighbours;
 }
 
+/*
+Ici on met à jour la liste d'indices courante en fonction de ce qu'on a dans le vecteur path.
+Avec l'algo AI, on veut en meme temps construire le chemin et calculer les Alpha
+On ne va plus mettre a jour la liste d'indices a partir du chemin puisqu'il n'est pas totalement construit.
+On va donc recupere l'information sur les indices qui interviennent dans le calcul du alpha courant grace à l'algo AI
+En effet le nouveau point ajouté ne sera pas le courant dans le chemin comme dans la methode precedante mais il sera le point renvoyé par l'algo AI.
+*/
 void LagrangeInterpolation2D::buildPathWithAIAlgo(int n, int m, bool isLejaSeq)
 {
     m_curSetInAIAlgo.clear();
@@ -159,17 +183,31 @@ void LagrangeInterpolation2D::buildPathWithAIAlgo(int n, int m, bool isLejaSeq)
     m_path.push_back(index);
     vector<indice2D> neighbours;
 
-    double val, max = numeric_limits<double>::min();
+    double val, max;
     indice2D argmax;
 
     while (int(m_path.size()) < n*m)
     {
+        //cout << "size of path = " << m_path.size() << "\n";
         max = -numeric_limits<double>::max();
         neighbours = getCurentNeighbours();
+
+        // Test the funcion getCurentNeighbours() --> OK !!
+        //cout << "Neighbours of {";
+        //displayVector(m_path);
+        //cout << "} are {";
+        //displayVector(neighbours);
+        //cout << "}" << endl;
+        //////////////////////////////////////////////////
+
         for (indice2D nu : neighbours)
         {
             if (isLejaSeq)
-                val = abs(m_alphaTab[nu[0]][nu[1]]);
+            {
+                // Note cette fonction permet de calculer alphaI sans utiliser le path
+                val = computeLastAlphaNu(nu);
+                //cout << val << endl;
+            }
             else
             {
                 //val = ..
@@ -180,7 +218,9 @@ void LagrangeInterpolation2D::buildPathWithAIAlgo(int n, int m, bool isLejaSeq)
                 argmax = nu;
             }
         }
+        //cout << "new indice chosen = (" << argmax[0] << "," << argmax[1] << ")" << m_path.size() << "\n";
         m_path.push_back(argmax);
+
     }
 }
 

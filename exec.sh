@@ -2,24 +2,38 @@
 
 make clean
 make
-if [ $1 = "1d" ]
+
+if [ "$1" == "1d" ]
 then
     echo ""
-    echo "Interpolation 1d:"
-    echo ""
+    echo "  ---> INTERPOLATION 1D:"
     ./bin/test1D $2 $3
-elif [ $1 = "2d" ]
+    if [ "$4" == "-p" ]
+    then
+        cd python
+        python3.5 show_result_1D.py
+    fi
+elif [ "$1" == "2d" ]
 then
     echo ""
-    echo "Interpolation 2d:"
-    echo ""
+    echo "  ---> INTERPOLATION 2D:"
     ./bin/test2D $2 $3 $4 $5 $6
-    cd python
-    python3.5 show_result.py
-elif [ $1 = "leja" ]
+    if [ "$7" == "-p" ]
+    then
+        cd python
+        python3.5 show_result_2D.py
+    fi
+elif [ "$1" == "leja" ]
 then
-    ./bin/testLejaSequence $2 $3
-    echo "Affichage de $2 x $3 points de Leja"
+    if [ $# == 3 ]
+    then
+        echo "   - Sequence de Leja 2D"
+        ./bin/testLejaSequence $2 $3
+    elif [ $# == 4 ]
+    then
+        echo "   - Sequence de Leja 3D"
+        ./bin/testLejaSequence $2 $3 $4
+    fi
     cd python
     python3.5 leja_sequence.py
 fi

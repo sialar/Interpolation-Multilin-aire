@@ -11,8 +11,8 @@ LagrangeInterpolation1D::LagrangeInterpolation1D(int size)
 
 double LagrangeInterpolation1D::g(double y)
 {
-  //return y*y*y + y*y + y + 1;
-  return y*y*y + y*y*sin(y) + y*exp(2*y) + 1;
+    return y*y;
+    //return y*y*y + pow((y+1)*sin(y),3) + y*exp(2*y) + 1;
 }
 
 double LagrangeInterpolation1D::lagrangeBasisFunction_1D(int j, int k, double y)

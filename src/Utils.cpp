@@ -2,10 +2,24 @@
 
 vector<double> Utils::m_1dGrid;
 
-
-void Utils::storeResult(vector<double> x, vector<double> y, vector<double> z, vector<double> real)
+void Utils::storeResult1D(vector<double> x, vector<double> y, vector<double> real_y)
 {
-    ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
+    ofstream file("python/interpolation_result_1D.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << x.size() << endl;
+        for (int i=0; i<int(x.size()); i++)
+            file << x[i] << " " << y[i] << " " << real_y[i] << endl;
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+
+void Utils::storeResult2D(vector<double> x, vector<double> y, vector<double> z, vector<double> real)
+{
+    ofstream file("python/interpolation_result_2D.txt", ios::out | ios::trunc);
     if(file)
     {
         file << x.size() << " " << y.size() << endl;
@@ -19,7 +33,7 @@ void Utils::storeResult(vector<double> x, vector<double> y, vector<double> z, ve
         cerr << "Erreur à l'ouverture du fichier!" << endl;
 }
 
-void Utils::storeLejaSequenceInFile(vector<double> x, vector<double> y)
+void Utils::store2DLejaSequenceInFile(vector<double> x, vector<double> y)
 {
     ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
     if(file)
@@ -30,6 +44,26 @@ void Utils::storeLejaSequenceInFile(vector<double> x, vector<double> y)
         file << y.size()<< endl;
         for (int i=0; i<int(y.size()); i++)
             file << y[i] << endl;
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+void Utils::store3DLejaSequenceInFile(vector<double> x, vector<double> y, vector<double> z)
+{
+    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << x.size()<< endl;
+        for (int i=0; i<int(x.size()); i++)
+            file << x[i] << endl;
+        file << y.size()<< endl;
+        for (int i=0; i<int(y.size()); i++)
+            file << y[i] << endl;
+        file << z.size()<< endl;
+        for (int i=0; i<int(z.size()); i++)
+            file << z[i] << endl;
         file.close();
     }
     else
