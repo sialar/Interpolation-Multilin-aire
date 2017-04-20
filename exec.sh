@@ -36,4 +36,16 @@ then
     fi
     cd python
     python3.5 leja_sequence.py
+elif [ "$1" == "AI" ]
+then
+    echo ""
+    echo "  ---> INTERPOLATION 2D + ALGO AI:"
+    ./bin/testAI $2 $3 $4 $5 $6
+    if [ "$7" == "-p" ]
+    then
+      echo ""
+      echo "  ---> AFFICHAGE DE LA PROGRESSION DU CHEMIN D'INDICES:"
+      cd python
+      python3.5 progressive_plot.py
+    fi
 fi

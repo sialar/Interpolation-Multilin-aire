@@ -185,3 +185,115 @@ void Utils::separateur()
         cout << "*";
     cout << endl << endl;
 }
+
+double Utils::g1d(double y)
+{
+    return y*y*y + pow((y+1)*sin(y),3) + y*exp(2*y) + 1;
+}
+
+double Utils::g2d(double x, double y)
+{
+    //return sin(sqrt(x*x + y*y));
+    return x*x*exp(y) + pow(y*sin(2*x*x),3);
+    //return x*x + y*y*x + 2*y + 1;
+}
+
+void Utils::displayTestPoints(vector<double> vx, vector<double> vy, int d)
+{
+    if (d==1)
+    {
+        cout << endl << "   - Sequence de " << vx.size() << " points de test:" << endl;
+        for (int i=0; i<int(vx.size()); i++)
+            cout << vx[i] << " ";
+        cout << endl ;
+    }
+    else if (d==2)
+    {
+        cout << "   - Sequence des points de test: (" << vx.size() << " suivant l'axe des x et " <<
+        vy.size() << " suivant l'axe des y):" << endl;
+        cout << "         + Suivant la direction x: ";
+        for (int i=0; i<int(vx.size()); i++)
+        {
+            vx[i] = Utils::randomValue(-1,1);
+            cout << vx[i] << " ";
+        }
+        cout << endl << "         + Suivant la direction y: ";
+        for (int j=0; j<int(vy.size()); j++)
+        {
+            vy[j] = Utils::randomValue(-1,1);
+            cout << vy[j] << " ";
+        }
+        cout << endl ;
+    }
+}
+
+void Utils::displayInterpolationPoints(vector<double> vx, vector<double> vy, int d)
+{
+    if (d==1)
+    {
+        for (int i=0; i<int(vx.size()); i++)
+            cout << vx[i] << " ";
+        cout << endl ;
+    }
+    else if (d==2)
+    {
+        cout << "         + Suivant la direction x: ";
+        for (int i=0; i<int(vx.size()); ++i)
+            cout << vx[i] << " ";
+        cout << endl << "         + Suivant la direction y: ";
+        for (int j=0; j<int(vy.size()); ++j)
+            cout << vy[j] << " ";
+        cout << endl;
+    }
+}
+
+vector<double> Utils::displayGRealValues(vector<double> vx, vector<double> vy, int d, bool debug)
+{
+    vector<double> realValues;
+    double val = 0;
+    if (d==1)
+    {
+        cout << "   - Calcul direct (evaluation de g en " << vx.size() << " points):" << endl;
+        for (int i=0; i<int(vx.size()); i++)
+        {
+            val = Utils::g1d(vx[i]);
+            realValues.push_back(val);
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+    else if (d==2)
+    {
+        cout << "   - Calcul direct (evaluation de g en " << vx.size()*vy.size() << " points):" << endl;
+        for (int i=0; i<int(vx.size()); i++)
+        {
+            for (int j=0; j<int(vy.size()); j++)
+            {
+                val = Utils::g2d(vx[i],vy[j]);
+                realValues.push_back(val);
+                if (debug) cout << val << " ";
+            }
+            if (debug) cout << endl;
+        }
+    }
+    return realValues;
+}
+
+void Utils::displayApproximation(vector<double> approx, int nx, int ny, int d, bool debug)
+{
+    if (debug)
+    {
+        for (int i=0; i<nx; i++)
+        {
+            if (d==1)
+                cout << approx[i] << " ";
+            else if (d==2)
+            {
+                for (int j=0; j<ny; j++)
+                    cout << approx[i*nx+j] << " ";
+                cout << endl;
+            }
+        }
+        cout << endl;
+    }
+}
