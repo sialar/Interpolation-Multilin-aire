@@ -3,6 +3,7 @@
 #include <time.h>
 #include "../include/LagrangeInterpolation2D.hpp"
 #include "../include/Utils.hpp"
+#include "../include/IndiceND.hpp"
 
 using namespace std;
 

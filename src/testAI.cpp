@@ -41,10 +41,13 @@ int main( int argc, char* argv[] )
     //interp->buildPathWithAIAlgo(nbIteration);
     interp->testPathBuilt(nbIteration);
 
-    cout << "   - Chemin obtenu avec l'algo AI:" << endl;
-    interp->showPath();
+    if (n * m <= 100)
+    {
+        cout << "   - Chemin obtenu avec l'algo AI:" << endl;
+        interp->showPath();
+        Utils::separateur();
+    }
     interp->savePathInFile();
-    Utils::separateur();
 
     // Approximer g
     for (int i=0; i<int(testPointsX.size()); i++)

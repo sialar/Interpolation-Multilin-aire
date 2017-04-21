@@ -48,7 +48,7 @@ void LagrangeInterpolation2D::showPath()
     cout << "Chemin = ";
     for (int i=0; i<int(m_path.size()); i++)
     {
-        cout << "(" << m_path[i][0] << "," << m_path[i][1] << ")";
+        cout << "(" << m_path[i](0) << "," << m_path[i](1) << ")";
         if (i<int(m_path.size())-1)
             cout << " --> ";
     }
@@ -60,11 +60,12 @@ void LagrangeInterpolation2D::choosePath(int n, int m, int v /* 0 ou 1 ou 2*/)
     m_path.clear();
     if (v >= 0)
     {
-        indice2D index;
+        IndiceND index(2);
         for (int i=0; i<n; i++)
             for (int j=0; j<((v%3)?m:i+1); j++)
             {
-                index =  { (v%3==1) ? i : j , (v%3==0) ? i-j : ((v%3==1) ? j : i)};
+                index.setValue(0, (v%3==1) ? i : j);
+                index.setValue(1, (v%3==0) ? i-j : ((v%3==1) ? j : i));
                 m_path.push_back(index);
             }
     }
@@ -77,8 +78,8 @@ void LagrangeInterpolation2D::savePathInFile()
     {
         file << m_pointsX.size() << " " <<  m_pointsY.size() << endl;
         file << m_path.size() << endl;
-        for (indice2D nu : m_path)
-            file << nu[0] << " " << nu[1] << endl;
+        for (IndiceND nu : m_path)
+            file << nu(0) << " " << nu(1) << endl;
         file.close();
     }
     else
@@ -116,9 +117,9 @@ double LagrangeInterpolation2D::lagrangeInterpolation_2D_iterative(double x, dou
     double sum = 0, lx = 0, ly = 0;
     for (int i=0; i<int(m_path.size()); i++)
     {
-        lx = lagrangeBasisFunction_1D(m_path[i][0],m_path[i][0],x,0);
-        ly = lagrangeBasisFunction_1D(m_path[i][1],m_path[i][1],y,1);
-        sum += lx * ly * m_alphaTab[m_path[i][0]][m_path[i][1]];
+        lx = lagrangeBasisFunction_1D(m_path[i](0),m_path[i](0),x,0);
+        ly = lagrangeBasisFunction_1D(m_path[i](1),m_path[i](1),y,1);
+        sum += lx * ly * m_alphaTab[m_path[i](0)][m_path[i](1)];
     }
     return sum;
 }
@@ -138,62 +139,63 @@ double LagrangeInterpolation2D::computeExecTimeOfOneApprox()
 int LagrangeInterpolation2D::getIndiceInPath(int maxI, int maxJ)
 {
     int i = 0;
-    while (m_path[i][0]!=maxI || m_path[i][1]!=maxJ)
+    while (m_path[i](0)!=maxI || m_path[i](1)!=maxJ)
         i++;
     return i;
 }
 
 void LagrangeInterpolation2D::computeAllAlphaNu()
 {
-    for (indice2D i : m_path)
+    for (IndiceND i : m_path)
         computeOneAlphaNu(i);
 }
 
-double LagrangeInterpolation2D::computeOneAlphaNu(indice2D nu)
+double LagrangeInterpolation2D::computeOneAlphaNu(IndiceND& nu)
 {
-    int j1 = nu[0], j2 = nu[1];
+    int j1 = nu(0), j2 = nu(1);
     int i = getIndiceInPath(j1,j2);
     m_alphaTab[j1][j2] = Utils::g2d(m_pointsX[j1],m_pointsY[j2]);
     for (int k=0; k<i; k++)
     {
-        indice2D l = m_path[k];
-        m_alphaTab[j1][j2] -= m_alphaTab[l[0]][l[1]] * lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) *
-                      lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
+        IndiceND l = m_path[k];
+        m_alphaTab[j1][j2] -= m_alphaTab[l(0)][l(1)] * lagrangeBasisFunction_1D(l(0),l(0),m_pointsX[j1],0) *
+                      lagrangeBasisFunction_1D(l(1),l(1),m_pointsY[j2],1);
     }
     return m_alphaTab[j1][j2];
 }
 
-double LagrangeInterpolation2D::computeLastAlphaNu(indice2D nu)
+double LagrangeInterpolation2D::computeLastAlphaNu(IndiceND& nu)
 {
-    int j1 = nu[0], j2 = nu[1];
-    //if (m_alphaTab[j1][j2]==m_alphaInitVal)
-    //{
+    int j1 = nu(0), j2 = nu(1);
+    // §§§§§!!!!!!
+    if (m_alphaTab[j1][j2]==m_alphaInitVal)
+    {
         m_alphaTab[j1][j2] = Utils::g2d(m_pointsX[j1],m_pointsY[j2]);
         for (int k=0; k<int(m_path.size()); k++)
         {
-            indice2D l = m_path[k];
-            m_alphaTab[j1][j2] -= m_alphaTab[l[0]][l[1]] * lagrangeBasisFunction_1D(l[0],l[0],m_pointsX[j1],0) *
-                          lagrangeBasisFunction_1D(l[1],l[1],m_pointsY[j2],1);
+          IndiceND l = m_path[k];
+          m_alphaTab[j1][j2] -= m_alphaTab[l(0)][l(1)] * lagrangeBasisFunction_1D(l(0),l(0),m_pointsX[j1],0) *
+                        lagrangeBasisFunction_1D(l(1),l(1),m_pointsY[j2],1);
         }
-    //}
+    }
     return m_alphaTab[j1][j2];
 }
 
-vector<indice2D> LagrangeInterpolation2D::getCurentNeighbours()
+vector<IndiceND> LagrangeInterpolation2D::getCurentNeighbours()
 {
-    vector<indice2D> neighbours;
+    vector<IndiceND> neighbours;
     bool isNeighbour[2];
-    indice2D index;
-    for (indice2D nu : m_curSetInAIAlgo)
+    IndiceND index(2);
+    for (IndiceND nu : m_curSetInAIAlgo)
     {
         isNeighbour[0] = true; isNeighbour[1] = true;
         if (!indexInPath(nu))
         {
             for (int i=0; i<2; i++)
-                if (nu[i])
+                if (nu(i))
                 {
-                    index[i] = nu[i]-1;
-                    index[(i+1)%2] = nu[(i+1)%2];
+                    index.setValue(i, nu(i)-1);
+                    index.setValue((i+1)%2, nu((i+1)%2));
                     isNeighbour[i] = indexInPath(index);
                 }
             if (isNeighbour[0] && isNeighbour[1])
@@ -203,35 +205,34 @@ vector<indice2D> LagrangeInterpolation2D::getCurentNeighbours()
     return neighbours;
 }
 
-
-void LagrangeInterpolation2D::displayVector(vector<indice2D> vect)
-{
-    for (indice2D nu : vect)
-        cout << "(" << nu[0] << "," << nu[1] << ") ";
-}
-
 void LagrangeInterpolation2D::buildPathWithAIAlgo(int k)
 {
     m_curSetInAIAlgo.clear();
+    IndiceND nu(2);
     for (int i=0; i<int(m_pointsX.size()); i++)
         for (int j=0; j<int(m_pointsY.size()); j++)
-            m_curSetInAIAlgo.push_back({i,j});
+        {
+            nu.setValue(0,i);
+            nu.setValue(1,j);
+            m_curSetInAIAlgo.push_back(nu);
+        }
 
     m_path.clear();
-    indice2D index = {0,0};
+    IndiceND index(2);
     m_path.push_back(index);
     m_alphaTab[0][0] = Utils::g2d(m_pointsX[0],m_pointsY[0]);
 
-    vector<indice2D> neighbours;
+    vector<IndiceND> neighbours;
     double val, max;
-    indice2D argmax;
+    IndiceND argmax(2);
 
     while (int(m_path.size()) < k)
     {
+      //  cout << m_path.size() << endl;
         max = -numeric_limits<double>::max();
         neighbours = getCurentNeighbours();
 
-        for (indice2D nu : neighbours)
+        for (IndiceND nu : neighbours)
         {
             val = computeLastAlphaNu(nu);
             if (val >= max)
@@ -258,10 +259,10 @@ double LagrangeInterpolation2D::testPathBuilt(int nbIteration)
     return temps;
 }
 
-bool LagrangeInterpolation2D::indexInPath(indice2D index)
+bool LagrangeInterpolation2D::indexInPath(IndiceND& index)
 {
-    for (indice2D _i : m_path)
-        if (_i[0]==index[0] && _i[1]==index[1])
+    for (IndiceND _i : m_path)
+        if (_i(0)==index(0) && _i(1)==index(1))
             return true;
     return false;
 }
