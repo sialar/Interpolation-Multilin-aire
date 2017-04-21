@@ -254,7 +254,7 @@ double LagrangeInterpolation2D::testPathBuilt(int nbIteration)
     buildPathWithAIAlgo(nbIteration);
     t2 = clock();
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "   - Temps necessaire pour le calcul du chemin avec " << n*m <<
+    cout << "   - Temps necessaire pour le calcul du chemin avec " << nbIteration <<
             " iterations: " << temps << " s" << endl << endl;
     return temps;
 }
