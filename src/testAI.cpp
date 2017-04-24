@@ -29,8 +29,13 @@ int main( int argc, char* argv[] )
     for (int i=0; i<nbTestPointsY; i++)
         testPointsY[i] = Utils::randomValue(-1,1);
 
-    Utils::displayTestPoints(testPointsX,testPointsY,2);
+    vector<vector<double>> testPointsSeq;
+    testPointsSeq.push_back(testPointsX);
+    testPointsSeq.push_back(testPointsY);
+    cout << "   - Sequence de points de test:" << endl;
+    Utils::displayPoints(testPointsSeq,2);
     Utils::separateur();
+
     realValues = Utils::displayGRealValues(testPointsX,testPointsY,2,true);
     Utils::separateur();
 

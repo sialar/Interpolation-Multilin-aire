@@ -82,7 +82,7 @@ vector<double> Utils::createChebychevSequence(int nbPoints)
 
 vector<double> Utils::createLejaSequence(int nbPoints)
 {
-    m_1dGrid = createChebychevSequence(10000);
+    m_1dGrid = createChebychevSequence(10001);
     vector<double> points;
     points.push_back(1);
     double newPoint;
@@ -198,51 +198,21 @@ double Utils::g2d(double x, double y)
     //return x*x + y*y*x + 2*y + 1;
 }
 
-void Utils::displayTestPoints(vector<double> vx, vector<double> vy, int d)
+double Utils::gNd(vector<double> x)
 {
-    if (d==1)
-    {
-        cout << endl << "   - Sequence de " << vx.size() << " points de test:" << endl;
-        for (int i=0; i<int(vx.size()); i++)
-            cout << vx[i] << " ";
-        cout << endl ;
-    }
-    else if (d==2)
-    {
-        cout << "   - Sequence des points de test: (" << vx.size() << " suivant l'axe des x et " <<
-        vy.size() << " suivant l'axe des y):" << endl;
-        cout << "         + Suivant la direction x: ";
-        for (int i=0; i<int(vx.size()); i++)
-        {
-            vx[i] = Utils::randomValue(-1,1);
-            cout << vx[i] << " ";
-        }
-        cout << endl << "         + Suivant la direction y: ";
-        for (int j=0; j<int(vy.size()); j++)
-        {
-            vy[j] = Utils::randomValue(-1,1);
-            cout << vy[j] << " ";
-        }
-        cout << endl ;
-    }
+    double temp = 0;
+    for (int i=0; i<int(x.size()); i++)
+        temp += pow(x[i],2);
+    return sin(sqrt(temp));
 }
 
-void Utils::displayInterpolationPoints(vector<double> vx, vector<double> vy, int d)
+void Utils::displayPoints(vector<vector<double>> v, int d)
 {
-    if (d==1)
+    for (int k=0; k<d; k++)
     {
-        for (int i=0; i<int(vx.size()); i++)
-            cout << vx[i] << " ";
-        cout << endl ;
-    }
-    else if (d==2)
-    {
-        cout << "         + Suivant la direction x: ";
-        for (int i=0; i<int(vx.size()); ++i)
-            cout << vx[i] << " ";
-        cout << endl << "         + Suivant la direction y: ";
-        for (int j=0; j<int(vy.size()); ++j)
-            cout << vy[j] << " ";
+        cout << "         + Suivant la direction " << k << ": ";
+        for (int i=0; i<int(v[k].size()); ++i)
+            cout << v[k][i] << " ";
         cout << endl;
     }
 }

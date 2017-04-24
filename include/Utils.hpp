@@ -20,14 +20,15 @@ class Utils
         ~Utils() {};
 
         static void separateur();
-        static double g1d(double x);
-        static double g2d(double x, double y);
-        static double randomValue(double a, double b);
-        static double squareError(vector<double> realValue, vector<double> estimate);
-        static void displayTestPoints(vector<double> vx, vector<double> vy, int d);
-        static void displayInterpolationPoints(vector<double> vx, vector<double> vy, int d);
+        static void displayPoints(vector<vector<double>> v, int d);
         static vector<double> displayGRealValues(vector<double> vx, vector<double> vy, int d, bool debug);
         static void displayApproximation(vector<double> approx, int nx, int ny, int d, bool debug);
+
+        static double g1d(double x);
+        static double g2d(double x, double y);
+        static double gNd(vector<double> x);
+        static double randomValue(double a, double b);
+        static double squareError(vector<double> realValue, vector<double> estimate);
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
         static double computeNewLejaPointFromSequence(vector<double> seq);

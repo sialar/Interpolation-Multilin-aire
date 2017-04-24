@@ -16,15 +16,18 @@ int main( int argc, char* argv[] )
     LagrangeInterpolation1D* interp = new LagrangeInterpolation1D(size);
 
     // Evaluation de la fonction g (points choisis aléatoirement entre -1 et 1)
-      vector<double> testPoints, realValues, estimate;
-      testPoints.resize(nbTestPoints);
-      for (int i=0; i<nbTestPoints; i++)
-          testPoints[i] = Utils::randomValue(-1,1);
-
-      Utils::displayTestPoints(testPoints,testPoints,1);
-      Utils::separateur();
-      realValues = Utils::displayGRealValues(testPoints,testPoints,1,true);
-      Utils::separateur();
+    vector<double> testPoints, realValues, estimate;
+    Utils::separateur();
+    testPoints.resize(nbTestPoints);
+    for (int i=0; i<nbTestPoints; i++)
+        testPoints[i] = Utils::randomValue(-1,1);
+    vector<vector<double>> testPointsSeq;
+    testPointsSeq.push_back(testPoints);
+    cout << "   - Sequence de points de test:" << endl;
+    Utils::displayPoints(testPointsSeq,1);
+    Utils::separateur();
+    realValues = Utils::displayGRealValues(testPoints,testPoints,1,true);
+    Utils::separateur();
 
 
     /**************************************************************************/
@@ -34,7 +37,9 @@ int main( int argc, char* argv[] )
 
     // Creation la sequence uniforme
     vector<double> uniformSequence = Utils::createUniformSequence(size);
-    Utils::displayInterpolationPoints(uniformSequence,uniformSequence,1);
+    vector<vector<double>> uniformSequences;
+    uniformSequences.push_back(uniformSequence);
+    Utils::displayPoints(uniformSequences,1);
 
 
     // Test de l'interpolation en utilisant la sequence uniforme
@@ -59,7 +64,9 @@ int main( int argc, char* argv[] )
 
     // Creation de la sequence de Leja
     vector<double> lejaSequence = Utils::createLejaSequence(size);
-    Utils::displayInterpolationPoints(lejaSequence,lejaSequence,1);
+    vector<vector<double>> lejaSequences;
+    lejaSequences.push_back(lejaSequence);
+    Utils::displayPoints(lejaSequences,1);
 
 
     // Test de l'interpolation en utilisant la sequence de Leja

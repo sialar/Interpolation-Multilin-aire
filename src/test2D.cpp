@@ -31,8 +31,14 @@ int main( int argc, char* argv[] )
     for (int i=0; i<nbTestPointsY; i++)
         testPointsY[i] = Utils::randomValue(-1,1);
 
-    Utils::displayTestPoints(testPointsX,testPointsY,2);
+
+    vector<vector<double>> testPointsSeq;
+    testPointsSeq.push_back(testPointsX);
+    testPointsSeq.push_back(testPointsY);
+    cout << "   - Sequence de points de test:" << endl;
+    Utils::displayPoints(testPointsSeq,2);
     Utils::separateur();
+
     realValues = Utils::displayGRealValues(testPointsX,testPointsY,2,debug1);
     Utils::separateur();
     if (debug2)
@@ -50,7 +56,10 @@ int main( int argc, char* argv[] )
     interp->setPointsY(Utils::createUniformSequence(m));
     cout << "   - Methode d'interpolation utilisant une sequence uniforme (" << n <<
             " points suivant la direction x et " << m << " points suivant la direction y)" << endl;
-    Utils::displayInterpolationPoints(interp->pointsX(),interp->pointsY(),2);
+    vector<vector<double>> uniformSequences;
+    uniformSequences.push_back(interp->pointsX());
+    uniformSequences.push_back(interp->pointsY());
+    Utils::displayPoints(uniformSequences,2);
 
 
     // Test de l'interpolation en utilisant la sequence uniforme
@@ -76,8 +85,10 @@ int main( int argc, char* argv[] )
     Utils::store2DLejaSequenceInFile(interp->pointsX(),interp->pointsY());
     cout << "   - Methode d'interpolation utilisant la sequence de Leja (" << interp->pointsX().size() <<
             " points suivant la direction x et " << interp->pointsY().size() << " points suivant la direction y)" << endl;
-    Utils::displayInterpolationPoints(interp->pointsX(),interp->pointsY(),2);
-
+    vector<vector<double>> lejaSequences;
+    lejaSequences.push_back(interp->pointsX());
+    lejaSequences.push_back(interp->pointsY());
+    Utils::displayPoints(lejaSequences,2);
 
     // Test de l'interpolation en utilisant la sequence de Leja
     cout << endl << "   - Calcul par interpolation bilinéaire: (evaluation de ĝ en " << nbTestPointsX*nbTestPointsY << " points de test)" << endl;

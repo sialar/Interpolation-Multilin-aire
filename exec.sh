@@ -1,7 +1,7 @@
 #!/bin/bash
 
 make clean
-make
+make -j8
 
 if [ "$1" == "1d" ]
 then
@@ -48,4 +48,9 @@ then
       cd python
       python3.5 progressive_plot.py
     fi
+elif [ "$1" == "ND_AI" ]
+then
+    echo ""
+    echo "  ---> INTERPOLATION ND + ALGO AI:"
+    ./bin/testND_AI $2 $3 $4 $5 $6 $7 $8 $9
 fi
