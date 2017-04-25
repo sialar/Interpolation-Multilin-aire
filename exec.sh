@@ -1,6 +1,5 @@
 #!/bin/bash
 
-make clean
 make -j8
 
 if [ $# == 0 ]
@@ -16,7 +15,7 @@ fi
 
 if [ "$1" == "LEJA" ]
 then
-    echo "   - Sequence de Leja"
+    echo " - Sequence de Leja"
     ./bin/TestLejaSequence $2 $3
     cd python
     python3.5 leja_sequence.py
@@ -24,12 +23,10 @@ then
 elif [ "$1" == "AI" ]
 then
     echo ""
-    echo "  ---> Interpolation in dimension (d>0) + AI algorithm:"
+    echo " - Interpolation in dimension (d>0) + AI algorithm:"
     ./bin/TestAlgoAI
     if [ "$2" == "-p" ]
     then
-      echo ""
-      echo "  ---> Affichage de la progression du chemin d'indices dans l'algo AI:"
       cd python
       python3.5 progressive_plot.py
     fi

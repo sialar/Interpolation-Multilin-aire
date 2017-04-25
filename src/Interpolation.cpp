@@ -47,10 +47,13 @@ void Interpolation::savePathInFile()
     ofstream file("python/output_algo_AI.txt", ios::out | ios::trunc);
     if(file)
     {
-        file << m_points[0].size() << " " <<  m_points[1].size() << endl;
-        file << m_path.size() << endl;
-        for (MultiVariatePoint<int> nu : m_path)
-            file << nu(0) << " " << nu(1) << endl;
+        if (m_d==2)
+        {
+            file << m_points[0].size() << " " <<  m_points[1].size() << endl;
+            file << m_path.size() << endl;
+            for (MultiVariatePoint<int> nu : m_path)
+                file << nu(0) << " " << nu(1) << endl;
+        }
         file.close();
     }
     else
