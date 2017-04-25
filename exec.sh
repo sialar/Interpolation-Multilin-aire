@@ -3,54 +3,34 @@
 make clean
 make -j8
 
-if [ "$1" == "1d" ]
+if [ $# == 0 ]
 then
     echo ""
-    echo "  ---> INTERPOLATION 1D:"
-    ./bin/test1D $2 $3
-    if [ "$4" == "-p" ]
-    then
-        cd python
-        python3.5 show_result_1D.py
-    fi
-elif [ "$1" == "2d" ]
-then
+    echo " To execute the script, you need to pass one argument:"
+    echo "   - LEJA : for leja sequence computation."
+    echo "     Specify the dimension (2 or 3) and the number of points in one direction."
+    echo "   - AI   : for AI algorithm."
+    echo "     Interactive execution."
     echo ""
-    echo "  ---> INTERPOLATION 2D:"
-    ./bin/test2D $2 $3 $4 $5 $6
-    if [ "$7" == "-p" ]
-    then
-        cd python
-        python3.5 show_result_2D.py
-    fi
-elif [ "$1" == "leja" ]
+fi
+
+if [ "$1" == "LEJA" ]
 then
-    if [ $# == 3 ]
-    then
-        echo "   - Sequence de Leja 2D"
-        ./bin/testLejaSequence $2 $3
-    elif [ $# == 4 ]
-    then
-        echo "   - Sequence de Leja 3D"
-        ./bin/testLejaSequence $2 $3 $4
-    fi
+    echo "   - Sequence de Leja"
+    ./bin/TestLejaSequence $2 $3
     cd python
     python3.5 leja_sequence.py
+
 elif [ "$1" == "AI" ]
 then
     echo ""
-    echo "  ---> INTERPOLATION 2D + ALGO AI:"
-    ./bin/testAI $2 $3 $4 $5 $6
-    if [ "$7" == "-p" ]
+    echo "  ---> Interpolation in dimension (d>0) + AI algorithm:"
+    ./bin/TestAlgoAI
+    if [ "$2" == "-p" ]
     then
       echo ""
-      echo "  ---> AFFICHAGE DE LA PROGRESSION DU CHEMIN D'INDICES:"
+      echo "  ---> Affichage de la progression du chemin d'indices dans l'algo AI:"
       cd python
       python3.5 progressive_plot.py
     fi
-elif [ "$1" == "ND_AI" ]
-then
-    echo ""
-    echo "  ---> INTERPOLATION ND + ALGO AI:"
-    ./bin/testND_AI $2 $3 $4 $5 $6 $7 $8 $9
 fi

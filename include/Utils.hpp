@@ -4,10 +4,12 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <array>
 #include <string>
 #include <cmath>
 #include <limits>
+
+#include "MultiVariatePoint.hpp"
+
 using namespace std;
 
 class Utils
@@ -19,31 +21,36 @@ class Utils
         Utils()  {};
         ~Utils() {};
 
+        // Display data and results
         static void separateur();
-        static void displayPoints(vector<vector<double>> v, int d);
-        static vector<double> displayGRealValues(vector<double> vx, vector<double> vy, int d, bool debug);
-        static void displayApproximation(vector<double> approx, int nx, int ny, int d, bool debug);
+        static void displayPoints(vector<double> points);
+        static void displayPoints(vector<MultiVariatePoint<double>> v);
 
-        static double g1d(double x);
-        static double g2d(double x, double y);
-        static double gNd(vector<double> x);
+        // Useful functions
         static double randomValue(double a, double b);
+        static MultiVariatePoint<double> createRandomMultiVariatePoint(int d);
         static double squareError(vector<double> realValue, vector<double> estimate);
-        static void binaryDecomposition(int number, vector<double>& binary_decomp);
+
+        // Intermediate function for Leja points computation
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
         static double computeNewLejaPointFromSequence(vector<double> seq);
-        static void storeResult1D(vector<double> x, vector<double> y, vector<double> real_y);
-        static void storeResult2D(vector<double> x, vector<double> y, vector<double> z, vector<double> real_z);
-        static void store2DLejaSequenceInFile(vector<double> x, vector<double> y);
-        static void store3DLejaSequenceInFile(vector<double> x, vector<double> y, vector<double> z);
 
-        // Uniform sequence of data points
+        // Write data in external file
+        static void storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue);
+        static void storeLejaSequenceInFile(vector<vector<double>> x);
+
+        // Function to approximate
+        static double gNd(MultiVariatePoint<double> x);
+
+        // Useful for uniform points and Leja sequence creation
+        static void binaryDecomposition(int number, vector<double>& binary_decomp);
+
+        // Create uniform sequence of data points
         static vector<double> createUniformSequence(int nbPoints);
-        // Sequence of Leja points
-        static vector<double> createLejaSequence(int nbPoints);
-        // Sequence of Tchebychev zeros
+        // Create sequence of Tchebychev zeros to construct Leja sequence
         static vector<double> createChebychevSequence(int nbPoints);
-
+        // Create sequence of Leja points
+        static vector<double> createLejaSequence(int nbPoints);
 };
 
 #endif

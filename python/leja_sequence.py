@@ -41,5 +41,5 @@ else:
     plt.scatter(leja_sequence_x, leja_sequence_y, c='r')
     plt.title('Nuage de points de Leja en 2D')
 
-plt.savefig('leja_sequence.png')
+#plt.savefig('leja_sequence.png')
 plt.show()

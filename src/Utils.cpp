@@ -2,99 +2,50 @@
 
 vector<double> Utils::m_1dGrid;
 
-void Utils::storeResult1D(vector<double> x, vector<double> y, vector<double> real_y)
+void Utils::separateur()
 {
-    ofstream file("python/interpolation_result_1D.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        file << x.size() << endl;
-        for (int i=0; i<int(x.size()); i++)
-            file << x[i] << " " << y[i] << " " << real_y[i] << endl;
-        file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
+    cout << endl;
+    for (int i=0; i<206; i++)
+        cout << "*";
+    cout << endl << endl;
 }
 
-
-void Utils::storeResult2D(vector<double> x, vector<double> y, vector<double> z, vector<double> real)
+void Utils::displayPoints(vector<double> points)
 {
-    ofstream file("python/interpolation_result_2D.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        file << x.size() << " " << y.size() << endl;
-        for (int i=0; i<int(x.size()); i++)
-            for (int j=0; j<int(y.size()); j++)
-                file << x[i] << " " << y[j] << " " << z[int(y.size())*i+j] <<
-                         " " << real[int(y.size())*i+j] << endl;
-        file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
+    cout << "{ ";
+    for (size_t i=0; i<points.size()-1; ++i)
+        cout << points[i] << " ; ";
+    cout << points[points.size()-1] << " }" << endl;
 }
 
-void Utils::store2DLejaSequenceInFile(vector<double> x, vector<double> y)
+void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
 {
-    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        file << x.size()<< endl;
-        for (int i=0; i<int(x.size()); i++)
-            file << x[i] << endl;
-        file << y.size()<< endl;
-        for (int i=0; i<int(y.size()); i++)
-            file << y[i] << endl;
-        file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
+    cout << "{ ";
+    for (size_t i=0; i<points.size()-1; ++i)
+        cout << points[i] << " ; ";
+    cout << points[points.size()-1] << " }" << endl;
 }
 
-void Utils::store3DLejaSequenceInFile(vector<double> x, vector<double> y, vector<double> z)
+double Utils::randomValue(double a, double b)
 {
-    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        file << x.size()<< endl;
-        for (int i=0; i<int(x.size()); i++)
-            file << x[i] << endl;
-        file << y.size()<< endl;
-        for (int i=0; i<int(y.size()); i++)
-            file << y[i] << endl;
-        file << z.size()<< endl;
-        for (int i=0; i<int(z.size()); i++)
-            file << z[i] << endl;
-        file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
+  return ( rand()/(double)RAND_MAX ) * (b-a) + a;
 }
 
-
-vector<double> Utils::createChebychevSequence(int nbPoints)
+MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
 {
-    vector<double> points;
-    points.resize(nbPoints);
-    for (int i=0; i<nbPoints; i++)
-        points[i] = cos(i*M_PI/(nbPoints-1));
-    return points;
+    MultiVariatePoint<double> point(d,0);
+    for (int i=0; i<d; i++)
+        point(i) = Utils::randomValue(-1,1);
+    return point;
 }
 
-vector<double> Utils::createLejaSequence(int nbPoints)
+double Utils::squareError(vector<double> realValue, vector<double> estimate)
 {
-    m_1dGrid = createChebychevSequence(10001);
-    vector<double> points;
-    points.push_back(1);
-    double newPoint;
-    for (int i=1; i<nbPoints; i++)
-    {
-        while (int(points.size()) < nbPoints)
-        {
-            newPoint = computeNewLejaPointFromSequence(points);
-            points.push_back(newPoint);
-        }
-    }
-    return points;
+    double e = 0;
+    int n = min(int(realValue.size()),int(estimate.size()));
+    for (int k=0; k<n; k++)
+        e += pow(estimate[k] - realValue[k],2);
+    return e/n;
 }
 
 bool Utils::isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold)
@@ -127,6 +78,60 @@ double Utils::computeNewLejaPointFromSequence(vector<double> seq)
     return m_1dGrid[argmax];
 }
 
+void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
+{
+  binary_decomp.clear();
+  int temp = number;
+  while (temp > 0)
+  {
+    binary_decomp.push_back(temp % 2);
+    temp = temp / 2;
+  }
+}
+
+void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue)
+{
+    ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        //TODO
+        for (int i=0; i<int(x.size()); i++)
+        {
+            for (int d=0; d<x[i].getD(); d++)
+                file << x[i](d) << " ";
+            cout << approx[i] << " " << realValue[i] << endl;
+        }
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+void Utils::storeLejaSequenceInFile(vector<vector<double>> x)
+{
+    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
+    if(file)
+    {
+      for (size_t i=0; i<x.size(); ++i)
+      {
+          file << x[i].size() << endl;
+          for (size_t j=0; j<x[i].size(); ++j)
+              file << x[i][j] << endl;
+      }
+      file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+double Utils::gNd(MultiVariatePoint<double> x)
+{
+    double temp = 0;
+    for (int i=0; i<x.getD(); i++)
+    temp += pow(x(i),2);
+    return sin(sqrt(temp));
+}
+
 vector<double> Utils::createUniformSequence(int nbPoints)
 {
     double sum = 0;
@@ -151,119 +156,28 @@ vector<double> Utils::createUniformSequence(int nbPoints)
     return points;
 }
 
-void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
+vector<double> Utils::createChebychevSequence(int nbPoints)
 {
-    binary_decomp.clear();
-    int temp = number;
-    while (temp > 0)
+    vector<double> points;
+    points.resize(nbPoints);
+    for (int i=0; i<nbPoints; i++)
+        points[i] = cos(i*M_PI/(nbPoints-1));
+    return points;
+}
+
+vector<double> Utils::createLejaSequence(int nbPoints)
+{
+    m_1dGrid = createChebychevSequence(10001);
+    vector<double> points;
+    points.push_back(1);
+    double newPoint;
+    for (int i=1; i<nbPoints; i++)
     {
-        binary_decomp.push_back(temp % 2);
-        temp = temp / 2;
-    }
-}
-
-double Utils::randomValue(double a, double b)
-{
-    return ( rand()/(double)RAND_MAX ) * (b-a) + a;
-}
-
-double Utils::squareError(vector<double> realValue, vector<double> estimate)
-{
-    double e = 0;
-    if (realValue.size()!=estimate.size())
-        cerr << "Erreur: les deux tableaux ne sont pas de la même taille!" << endl;
-    int n = min(int(realValue.size()),int(estimate.size()));
-    for (int k=0; k<n; k++)
-        e += pow(estimate[k] - realValue[k],2);
-    return e/n;
-}
-
-void Utils::separateur()
-{
-    cout << endl;
-    for (int i=0; i<206; i++)
-        cout << "*";
-    cout << endl << endl;
-}
-
-double Utils::g1d(double y)
-{
-    return y*y*y + pow((y+1)*sin(y),3) + y*exp(2*y) + 1;
-}
-
-double Utils::g2d(double x, double y)
-{
-    //return sin(sqrt(x*x + y*y));
-    return x*x*exp(y) + pow(y*sin(2*x*x),3);
-    //return x*x + y*y*x + 2*y + 1;
-}
-
-double Utils::gNd(vector<double> x)
-{
-    double temp = 0;
-    for (int i=0; i<int(x.size()); i++)
-        temp += pow(x[i],2);
-    return sin(sqrt(temp));
-}
-
-void Utils::displayPoints(vector<vector<double>> v, int d)
-{
-    for (int k=0; k<d; k++)
-    {
-        cout << "         + Suivant la direction " << k << ": ";
-        for (int i=0; i<int(v[k].size()); ++i)
-            cout << v[k][i] << " ";
-        cout << endl;
-    }
-}
-
-vector<double> Utils::displayGRealValues(vector<double> vx, vector<double> vy, int d, bool debug)
-{
-    vector<double> realValues;
-    double val = 0;
-    if (d==1)
-    {
-        cout << "   - Calcul direct (evaluation de g en " << vx.size() << " points):" << endl;
-        for (int i=0; i<int(vx.size()); i++)
+        while (int(points.size()) < nbPoints)
         {
-            val = Utils::g1d(vx[i]);
-            realValues.push_back(val);
-            cout << val << " ";
-        }
-        cout << endl;
-    }
-    else if (d==2)
-    {
-        cout << "   - Calcul direct (evaluation de g en " << vx.size()*vy.size() << " points):" << endl;
-        for (int i=0; i<int(vx.size()); i++)
-        {
-            for (int j=0; j<int(vy.size()); j++)
-            {
-                val = Utils::g2d(vx[i],vy[j]);
-                realValues.push_back(val);
-                if (debug) cout << val << " ";
-            }
-            if (debug) cout << endl;
+            newPoint = computeNewLejaPointFromSequence(points);
+            points.push_back(newPoint);
         }
     }
-    return realValues;
-}
-
-void Utils::displayApproximation(vector<double> approx, int nx, int ny, int d, bool debug)
-{
-    if (debug)
-    {
-        for (int i=0; i<nx; i++)
-        {
-            if (d==1)
-                cout << approx[i] << " ";
-            else if (d==2)
-            {
-                for (int j=0; j<ny; j++)
-                    cout << approx[i*nx+j] << " ";
-                cout << endl;
-            }
-        }
-        cout << endl;
-    }
+    return points;
 }
