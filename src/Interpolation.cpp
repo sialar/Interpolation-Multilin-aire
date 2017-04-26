@@ -49,6 +49,7 @@ void Interpolation::savePathInFile()
     {
         if (m_d==2)
         {
+            cout << " - The path is saved in python/output_algo_AI.txt" << endl;
             file << m_points[0].size() << " " <<  m_points[1].size() << endl;
             file << m_path.size() << endl;
             for (MultiVariatePoint<int> nu : m_path)
@@ -58,7 +59,6 @@ void Interpolation::savePathInFile()
     }
     else
         cerr << "Error while opening the file!" << endl;
-    cout << " - The path is saved in python/output_algo_AI.txt" << endl;
 }
 void Interpolation::displayPath()
 {
@@ -208,9 +208,9 @@ void Interpolation::displayInterpolationPoints()
     for (int i=0; i<m_d; ++i)
     {
         cout << " - " << m_points[i].size() << " points in direction " << i << " : { ";
-        for (size_t j=0; j<m_points[i].size(); ++j)
+        for (size_t j=0; j<m_points[i].size()-1; ++j)
             cout << m_points[i][j] << " ; ";
-        cout << " }" << endl;
+        cout << m_points[i][m_points[i].size()-1] << " }" << endl;
     }
 }
 

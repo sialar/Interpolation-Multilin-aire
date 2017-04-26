@@ -5,24 +5,23 @@ BIN = bin
 CXX = g++
 CXXFLAGS = -g -lm -std=c++11 -Wall
 
-all: $(BIN)/TestLejaSequence $(BIN)/TestAlgoAI
+OBJ_FILES = $(BIN)/Interpolation.o $(BIN)/Utils.o
+INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
+TEST_FILES = $(BIN)/TestLejaSequence $(BIN)/TestAlgoAI
+
+all: $(TEST_FILES)
 
 # Edition des liens et génération de l'exécutable:
-$(BIN)/TestAlgoAI : $(BIN)/TestAlgoAI.o $(BIN)/Interpolation.o $(BIN)/Utils.o $(BIN)/MultiVariatePoint.o
-		$(CXX) $(CXXFLAGS) -o $@ $^
-$(BIN)/TestLejaSequence : $(BIN)/TestLejaSequence.o $(BIN)/Utils.o $(BIN)/MultiVariatePoint.o
+$(BIN)/Test% : $(BIN)/Test%.o $(OBJ_FILES)
 		$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Construction des objets (file.o)
-$(BIN)/TestLejaSequence.o : $(SRC)/TestLejaSequence.cpp $(INCLUDE)/Utils.hpp
+$(BIN)/Test%.o : $(SRC)/Test%.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<
-$(BIN)/TestAlgoAI.o : $(SRC)/TestAlgoAI.cpp $(INCLUDE)/Interpolation.hpp
+
+$(BIN)/Interpolation.o : $(SRC)/Interpolation.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<
-$(BIN)/Interpolation.o : $(SRC)/Interpolation.cpp $(INCLUDE)/Interpolation.hpp
-		$(CXX) $(CXXFLAGS) -c -o $@ $<
-$(BIN)/MultiVariatePoint.o : $(SRC)/MultiVariatePoint.cpp $(INCLUDE)/MultiVariatePoint.hpp
-		$(CXX) $(CXXFLAGS) -c -o $@ $<
-$(BIN)/Utils.o : $(SRC)/Utils.cpp $(INCLUDE)/Utils.hpp
+$(BIN)/Utils.o : $(SRC)/Utils.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Nettoyage du projet

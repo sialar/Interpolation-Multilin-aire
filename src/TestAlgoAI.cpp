@@ -57,9 +57,16 @@ int main( int argc, char* argv[] )
     Utils::separateur();
 
     // Path creation
-    int nbIteration = 1;
+    int nbIteration = 0;
+    int maxIteration = 1;
     for (size_t i=0; i<nbPoints.size(); i++)
-        nbIteration *= interp->points()[i].size();
+        maxIteration *= interp->points()[i].size();
+    while (nbIteration<1)
+    {
+        cout << " - Choose the number of iteration ( < " << maxIteration << " ) in AI algo : " ;
+        cin >> nbIteration;
+    }
+
     interp->testPathBuilt(nbIteration);
     interp->savePathInFile();
 
