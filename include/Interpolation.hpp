@@ -6,9 +6,19 @@
 #include <list>
 #include <map>
 #include <cmath>
+#include <sys/time.h> // pour gettimeofday
+#include <ctime> // Pour clock
 
 #include "MultiVariatePoint.hpp"
 #include "Utils.hpp"
+
+#ifdef _OPENMP
+   #include <pthread.h>
+   #include <omp.h>
+#else
+   #define omp_get_thread_num() 0
+   #define omp_get_num_threads() 0
+#endif
 
 using namespace std;
 
@@ -33,19 +43,22 @@ class Interpolation
         const vector<vector<double>>& points() { return m_points; };
         MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
         void setDirPoints(int i, vector<double> pointsI) { m_points[i] = pointsI; };
+        void smartDiscretization();
         void displayPoints();
 
         /************************* Path ***************************************/
         const vector<MultiVariatePoint<int>>& path() { return m_path; };
         int getLastIndiceInPath(MultiVariatePoint<int> max);
-        void buildPathWithAIAlgo(int k);
-        double testPathBuilt(int nbIteration);
+        void buildPathWithAIAlgo(int k, bool parallel);
+        double testPathBuilt(int nbIteration, bool parallel);
         bool indiceInPath(MultiVariatePoint<int>& index);
         void savePathInFile();
         void displayPath();
 
         /************************* Alpha **************************************/
         double computeLastAlphaNu(MultiVariatePoint<int>& nu);
+        double computeLastAlphaNuPar(MultiVariatePoint<int>& nu);
+        double testAlphaNuComputation(MultiVariatePoint<int>& nu);
         void displayAlphaTab();
 
         /************************ Neighbours **********************************/

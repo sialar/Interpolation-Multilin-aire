@@ -24,10 +24,15 @@ elif [ "$1" == "AI" ]
 then
     echo ""
     echo " - Interpolation in dimension (d>0) + AI algorithm:"
-    ./bin/TestAlgoAI
+    if [ "$2" == "-par" ]
+    then
+        echo " - Version paralelle ||"
+        export OMP_NUM_THREADS=8
+    fi
+    ./bin/TestAlgoAI $2
     if [ "$2" == "-p" ]
     then
-      cd python
-      python3.5 progressive_plot.py
+        cd python
+        python3.5 progressive_plot.py
     fi
 fi

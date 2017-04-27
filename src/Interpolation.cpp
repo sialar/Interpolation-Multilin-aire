@@ -81,7 +81,7 @@ bool Interpolation::indiceInPath(MultiVariatePoint<int>& index)
             return true;
     return false;
 }
-void Interpolation::buildPathWithAIAlgo(int k)
+void Interpolation::buildPathWithAIAlgo(int k, bool parallel)
 {
     m_curentNeighbours.clear();
     m_path.clear();
@@ -92,19 +92,22 @@ void Interpolation::buildPathWithAIAlgo(int k)
 
     double val, max;
     MultiVariatePoint<int> argmax(m_d,0);
+    int iteration = 1;
 
-    while (int(m_path.size()) < k)
+    while (iteration < k)
     {
         max = -numeric_limits<double>::max();
         updateCurentNeighbours(argmax);
-
         for (MultiVariatePoint<int> nu : m_curentNeighbours)
         {
             map<MultiVariatePoint<int>,double>::iterator it = m_alphaMap.find(nu);
             if (it != m_alphaMap.end())
                 val = m_alphaMap[nu];
+            else if (parallel)
+                val =  computeLastAlphaNuPar(nu);
             else
-                val = computeLastAlphaNu(nu);
+                val =  computeLastAlphaNu(nu);
+            
 
             if (val >= max)
             {
@@ -113,19 +116,25 @@ void Interpolation::buildPathWithAIAlgo(int k)
             }
         }
         m_path.push_back(argmax);
+        iteration++;
     }
 }
-double Interpolation::testPathBuilt(int nbIteration)
+double Interpolation::testPathBuilt(int nbIteration, bool parallel)
 {
-    float temps;
-    clock_t t1, t2;
-    t1 = clock();
-    buildPathWithAIAlgo(nbIteration);
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+    std::clock_t chrono_work_start = std::clock();
+    timeval chrono_elpased_start; gettimeofday(&chrono_elpased_start, NULL);
+
+    buildPathWithAIAlgo(nbIteration, parallel);
+
+    timeval chrono_elpased_stop; gettimeofday(&chrono_elpased_stop, NULL);
+    std::clock_t chrono_work_stop  = std::clock();
+    double elapsedTimeSeconds = double(chrono_elpased_stop.tv_sec - chrono_elpased_start.tv_sec)
+                            + double(chrono_elpased_stop.tv_usec - chrono_elpased_start.tv_usec)*1e-6  ;
+    double totalWorkSeconds = double(chrono_work_stop - chrono_work_start) / CLOCKS_PER_SEC;
     cout << " - Time required to compute the path with " << nbIteration <<
-            " iterations: " << temps << " s" << endl;
-    return temps;
+            " iterations: " << elapsedTimeSeconds << " s";
+    cout << " (total work = " << totalWorkSeconds << " s)" << endl;
+    return elapsedTimeSeconds;
 }
 /******************************************************************************/
 
@@ -136,6 +145,22 @@ void Interpolation::displayAlphaTab()
     cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
     for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
         cout << get<0>(*it) << ": " << get<1>(*it) << endl;
+}
+double Interpolation::computeLastAlphaNuPar(MultiVariatePoint<int>& nu)
+{
+    double res = Utils::gNd(getPoint(nu));
+    #pragma omp parallel for reduction(+:res) schedule(guided)
+    for (int i=0; i<int(m_path.size()); i++)
+    {
+        double lagrangeBasisFuncProd = 1;
+        MultiVariatePoint<int> l = m_path[i];
+        for (int p=0; p<m_d; p++)
+            lagrangeBasisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
+
+        res -= m_alphaMap[l] * lagrangeBasisFuncProd;
+    }
+    m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
+    return res;
 }
 double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
 {
@@ -150,6 +175,23 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
     }
     m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
     return res;
+}
+double Interpolation::testAlphaNuComputation(MultiVariatePoint<int>& nu)
+{
+    std::clock_t chrono_work_start = std::clock();
+    timeval chrono_elpased_start; gettimeofday(&chrono_elpased_start, NULL);
+
+    double val = computeLastAlphaNu(nu);
+
+    timeval chrono_elpased_stop; gettimeofday(&chrono_elpased_stop, NULL);
+    std::clock_t chrono_work_stop  = std::clock();
+    double elapsedTimeSeconds = double(chrono_elpased_stop.tv_sec - chrono_elpased_start.tv_sec)
+                            + double(chrono_elpased_stop.tv_usec - chrono_elpased_start.tv_usec)*1e-6  ;
+    double totalWorkSeconds = double(chrono_work_stop - chrono_work_start) / CLOCKS_PER_SEC;
+    cout << " - Time required to compute alpha(" << nu << "): " << elapsedTimeSeconds << " s";
+    cout << " (total work = " << totalWorkSeconds << "s)";
+    cout << " Correct Value = " << val << endl;
+    return val;
 }
 /******************************************************************************/
 

@@ -12,9 +12,9 @@ vector<int> initData(int argc, char* argv[])
     int d = 0;
     vector<int> nbPoints;
     Utils::separateur();
-    while (d<2 || d>10)
+    while (d<1 || d>20)
     {
-        cout << " - Choose the space dimension (between 2 and 10) : ";
+        cout << " - Choose the space dimension (between 1 and 20) : ";
         cin >> d;
     }
     nbPoints.resize(d);
@@ -29,6 +29,8 @@ vector<int> initData(int argc, char* argv[])
 
 int main( int argc, char* argv[] )
 {
+    bool parallel = (argc==2 && (strcmp(argv[1],"-par")==0));
+
     srand (time(NULL));
     int nbTestPoints = 0;
     vector<MultiVariatePoint<double>> testPoints;
@@ -57,19 +59,14 @@ int main( int argc, char* argv[] )
     Utils::separateur();
 
     // Path creation
-    int nbIteration = 0;
-    int maxIteration = 1;
+    long int nbIteration = 0, maxIteration = 1;
     for (size_t i=0; i<nbPoints.size(); i++)
         maxIteration *= interp->points()[i].size();
-    while (nbIteration<1)
-    {
-        cout << " - Choose the number of iteration ( < " << maxIteration << " ) in AI algo : " ;
-        cin >> nbIteration;
-    }
+    cout << " - Choose the number of iterations ( < " << maxIteration << " ) in AI algo : " ;
+    cin >> nbIteration;
 
-    interp->testPathBuilt(nbIteration);
+    interp->testPathBuilt(nbIteration, parallel);
     interp->savePathInFile();
-
     Utils::separateur();
 
     // Computing real values at test points
