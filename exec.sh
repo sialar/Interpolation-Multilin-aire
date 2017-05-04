@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#make -j8
+make -j8
 
 if [ $# == 0 ]
 then

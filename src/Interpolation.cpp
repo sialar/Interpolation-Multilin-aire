@@ -128,7 +128,7 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, double start_time, doub
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        /*if (iteration%(maxIteration/10)==0)
+        if (iteration%(maxIteration/10)==0)
         {
             double run_time = omp_get_wtime() - start_time;
             double error = tryWithCurentPath();
@@ -140,7 +140,7 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, double start_time, doub
                 cout << " | Elapsed time : "  << run_time << endl;
                 return iteration;
             }
-        }*/
+        }
     }
     return iteration;
 }
