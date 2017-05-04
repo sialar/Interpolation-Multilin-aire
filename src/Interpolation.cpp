@@ -81,7 +81,17 @@ bool Interpolation::indiceInPath(MultiVariatePoint<int>& index)
             return true;
     return false;
 }
-void Interpolation::buildPathWithAIAlgo(int k, bool parallel)
+double Interpolation::tryWithCurentPath()
+{
+    vector<double> realValues, estimate;
+    for (MultiVariatePoint<double> p : m_testPoints)
+    {
+        realValues.push_back(Utils::gNd(p));
+        estimate.push_back(lagrangeInterpolation_ND_iterative(p));
+    }
+    return Utils::interpolationError(realValues,estimate);
+}
+int Interpolation::buildPathWithAIAlgo(int maxIteration, double start_time, double threshold)
 {
     m_curentNeighbours.clear();
     m_path.clear();
@@ -94,7 +104,7 @@ void Interpolation::buildPathWithAIAlgo(int k, bool parallel)
     MultiVariatePoint<int> argmax(m_d,0);
     int iteration = 1;
 
-    while (iteration < k)
+    while (iteration < maxIteration)
     {
         max = -numeric_limits<double>::max();
         updateCurentNeighbours(argmax);
@@ -103,11 +113,9 @@ void Interpolation::buildPathWithAIAlgo(int k, bool parallel)
             map<MultiVariatePoint<int>,double>::iterator it = m_alphaMap.find(nu);
             if (it != m_alphaMap.end())
                 val = m_alphaMap[nu];
-            else if (parallel)
-                val =  computeLastAlphaNuPar(nu);
             else
                 val =  computeLastAlphaNu(nu);
-            
+
 
             if (val >= max)
             {
@@ -117,24 +125,34 @@ void Interpolation::buildPathWithAIAlgo(int k, bool parallel)
         }
         m_path.push_back(argmax);
         iteration++;
+
+        // Test with curent path and evaluate the interpolation error on test points
+        // If the error is lower than a threshold : stop AI
+        /*if (iteration%(maxIteration/10)==0)
+        {
+            double run_time = omp_get_wtime() - start_time;
+            double error = tryWithCurentPath();
+            cout << "   - Interpolation error after " << iteration << " iterations: " << error;
+            cout << " | Elapsed time : "  << run_time << endl;
+            if (error < threshold)
+            {
+                cout << endl << "   - AI Algo stop after " << iteration << " iterations";
+                cout << " | Elapsed time : "  << run_time << endl;
+                return iteration;
+            }
+        }*/
     }
+    return iteration;
 }
-double Interpolation::testPathBuilt(int nbIteration, bool parallel)
+double Interpolation::testPathBuilt(int maxIteration, double threshold)
+// return the number of iteration
 {
-    std::clock_t chrono_work_start = std::clock();
-    timeval chrono_elpased_start; gettimeofday(&chrono_elpased_start, NULL);
-
-    buildPathWithAIAlgo(nbIteration, parallel);
-
-    timeval chrono_elpased_stop; gettimeofday(&chrono_elpased_stop, NULL);
-    std::clock_t chrono_work_stop  = std::clock();
-    double elapsedTimeSeconds = double(chrono_elpased_stop.tv_sec - chrono_elpased_start.tv_sec)
-                            + double(chrono_elpased_stop.tv_usec - chrono_elpased_start.tv_usec)*1e-6  ;
-    double totalWorkSeconds = double(chrono_work_stop - chrono_work_start) / CLOCKS_PER_SEC;
-    cout << " - Time required to compute the path with " << nbIteration <<
-            " iterations: " << elapsedTimeSeconds << " s";
-    cout << " (total work = " << totalWorkSeconds << " s)" << endl;
-    return elapsedTimeSeconds;
+    double start_time = omp_get_wtime();
+    int nbIterations = buildPathWithAIAlgo(maxIteration, start_time, threshold);
+    double run_time = omp_get_wtime() - start_time;
+    cout << endl << " - Time required to compute the path with " << nbIterations <<
+            " iterations: " << run_time << "s" << endl;
+    return run_time;
 }
 /******************************************************************************/
 
@@ -145,22 +163,6 @@ void Interpolation::displayAlphaTab()
     cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
     for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
         cout << get<0>(*it) << ": " << get<1>(*it) << endl;
-}
-double Interpolation::computeLastAlphaNuPar(MultiVariatePoint<int>& nu)
-{
-    double res = Utils::gNd(getPoint(nu));
-    #pragma omp parallel for reduction(+:res) schedule(guided)
-    for (int i=0; i<int(m_path.size()); i++)
-    {
-        double lagrangeBasisFuncProd = 1;
-        MultiVariatePoint<int> l = m_path[i];
-        for (int p=0; p<m_d; p++)
-            lagrangeBasisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
-
-        res -= m_alphaMap[l] * lagrangeBasisFuncProd;
-    }
-    m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
-    return res;
 }
 double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
 {
@@ -178,18 +180,10 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
 }
 double Interpolation::testAlphaNuComputation(MultiVariatePoint<int>& nu)
 {
-    std::clock_t chrono_work_start = std::clock();
-    timeval chrono_elpased_start; gettimeofday(&chrono_elpased_start, NULL);
-
+    double start_time = omp_get_wtime();
     double val = computeLastAlphaNu(nu);
-
-    timeval chrono_elpased_stop; gettimeofday(&chrono_elpased_stop, NULL);
-    std::clock_t chrono_work_stop  = std::clock();
-    double elapsedTimeSeconds = double(chrono_elpased_stop.tv_sec - chrono_elpased_start.tv_sec)
-                            + double(chrono_elpased_stop.tv_usec - chrono_elpased_start.tv_usec)*1e-6  ;
-    double totalWorkSeconds = double(chrono_work_stop - chrono_work_start) / CLOCKS_PER_SEC;
-    cout << " - Time required to compute alpha(" << nu << "): " << elapsedTimeSeconds << " s";
-    cout << " (total work = " << totalWorkSeconds << "s)";
+    double run_time = omp_get_wtime() - start_time;
+    cout << " - Time required to compute alpha(" << nu << "): " << run_time << " s";
     cout << " Correct Value = " << val << endl;
     return val;
 }
@@ -283,12 +277,9 @@ double Interpolation::computeExecTimeOfOneApprox()
     for (int i=0; i<m_d; i++)
         x(i) = Utils::randomValue(-1,1);
 
-    float temps;
-    clock_t t1, t2;
-    t1 = clock();
+    double start_time = omp_get_wtime();
     lagrangeInterpolation_ND_iterative(x);
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    return temps;
+    double run_time = omp_get_wtime() - start_time;
+    return run_time;
 }
 /******************************************************************************/

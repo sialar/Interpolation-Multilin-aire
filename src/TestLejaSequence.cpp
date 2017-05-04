@@ -28,6 +28,6 @@ int main( int argc, char* argv[] )
     for (int i=0; i<dim; i++)
         points.push_back(Utils::createLejaSequence(size));
     Utils::storeLejaSequenceInFile(points);
-    
+
     return 0;
 }

@@ -39,7 +39,7 @@ MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
     return point;
 }
 
-double Utils::squareError(vector<double> realValue, vector<double> estimate)
+double Utils::interpolationError(vector<double> realValue, vector<double> estimate)
 {
     double e = 0;
     int n = min(int(realValue.size()),int(estimate.size()));
@@ -126,15 +126,15 @@ void Utils::storeLejaSequenceInFile(vector<vector<double>> x)
 
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    double sum = 0;
-    int d = x.getD();
-    for (int j=0; j<d; j++)
-        sum += ((x(j) * 0.6) / pow(j+1,3));
-    return 1 / (sum + 1);
-    //double temp = 0;
-    //for (int i=0; i<x.getD(); i++)
-    //temp += pow(x(i),2);
-    //return sin(sqrt(temp));
+    //double sum = 0;
+    //int d = x.getD();
+    //for (int j=0; j<d; j++)
+    //    sum += ((x(j) * 0.6) / pow(j+1,3));
+    //return 1 / (sum + 1);
+    double temp = 0;
+    for (int i=0; i<x.getD(); i++)
+    temp += pow(x(i),2);
+    return sin(sqrt(temp));
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)

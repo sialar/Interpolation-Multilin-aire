@@ -18,7 +18,7 @@ $(BIN)/Test% : $(BIN)/Test%.o $(OBJ_FILES)
 
 # Construction des objets (file.o)
 $(BIN)/Test%.o : $(SRC)/Test%.cpp $(INCLUDE_FILES)
-		$(CXX) $(OPENMP_FLAGS) $(CXXFLAGS) -c -o $@ $<
+		$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BIN)/Interpolation.o : $(SRC)/Interpolation.cpp $(INCLUDE_FILES)
 		$(CXX) $(OPENMP_FLAGS) $(CXXFLAGS) -c -o $@ $<

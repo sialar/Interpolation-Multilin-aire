@@ -29,7 +29,6 @@ vector<int> initData(int argc, char* argv[])
 
 int main( int argc, char* argv[] )
 {
-    bool parallel = (argc==2 && (strcmp(argv[1],"-par")==0));
 
     srand (time(NULL));
     int nbTestPoints = 0;
@@ -54,18 +53,21 @@ int main( int argc, char* argv[] )
     testPoints.resize(nbTestPoints);
     for (int j=0; j<nbTestPoints; j++)
         testPoints[j] = Utils::createRandomMultiVariatePoint(nbPoints.size());
+    interp->setTestPoints(testPoints);
     cout << " - Sequence of " << nbTestPoints << " random test point : " ;
     Utils::displayPoints(testPoints);
     Utils::separateur();
 
     // Path creation
-    long int nbIteration = 0, maxIteration = 1;
+    long int maxIteration = 1;
+    double threshold = 1e-4;
     for (size_t i=0; i<nbPoints.size(); i++)
         maxIteration *= interp->points()[i].size();
-    cout << " - Choose the number of iterations ( < " << maxIteration << " ) in AI algo : " ;
-    cin >> nbIteration;
 
-    interp->testPathBuilt(nbIteration, parallel);
+    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
+    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
+         << threshold << endl << endl;
+    interp->testPathBuilt(maxIteration, threshold);
     interp->savePathInFile();
     Utils::separateur();
 
@@ -82,7 +84,7 @@ int main( int argc, char* argv[] )
     Utils::displayPoints(estimate);
 
     // Evaluation
-    cout << endl << " - Mean squared error = " << Utils::squareError(realValues,estimate) << endl;
+    cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
     return 0;

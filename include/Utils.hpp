@@ -29,7 +29,7 @@ class Utils
         // Useful functions
         static double randomValue(double a, double b);
         static MultiVariatePoint<double> createRandomMultiVariatePoint(int d);
-        static double squareError(vector<double> realValue, vector<double> estimate);
+        static double interpolationError(vector<double> realValue, vector<double> estimate);
 
         // Intermediate function for Leja points computation
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);
