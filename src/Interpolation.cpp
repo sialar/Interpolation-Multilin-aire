@@ -2,7 +2,6 @@
 
 Interpolation::~Interpolation()
 {}
-
 Interpolation::Interpolation(vector<int> sizes)
 {
     m_d = sizes.size();
@@ -11,17 +10,7 @@ Interpolation::Interpolation(vector<int> sizes)
         m_points[i].resize(sizes[i]);
 }
 
-void Interpolation::clear()
-{
-    m_path.clear();
-    for (int i=0; i<m_d; i++)
-        m_points[i].clear();
-    m_points.clear();
-    m_alphaMap.clear();
-    m_curentNeighbours.clear();
-}
-
-/************************* Points *********************************************/
+/************************* Data Points ****************************************/
 MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
 {
     MultiVariatePoint<double> point(m_d,0.0);
@@ -29,69 +18,11 @@ MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
         point(i) = m_points[i][nu(i)];
     return point;
 }
-void Interpolation::displayPoints()
-{
-    for (int i=0; i<m_d; i++)
-    {
-        cout << "Interpolation points in direction " << i << ": { ";;
-        for (int j=0; j<int(m_points[i].size()); j++)
-            cout << m_points[i][j] << " ";
-        cout << "}" << endl;
-    }
-}
 /******************************************************************************/
 
-/************************* Path ***********************************************/
-void Interpolation::savePathInFile()
-{
-    ofstream file("python/output_algo_AI.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        if (m_d==2)
-        {
-            cout << " - The path is saved in python/output_algo_AI.txt" << endl;
-            file << m_points[0].size() << " " <<  m_points[1].size() << endl;
-            file << m_path.size() << endl;
-            for (MultiVariatePoint<int> nu : m_path)
-                file << nu(0) << " " << nu(1) << endl;
-        }
-        file.close();
-    }
-    else
-        cerr << "Error while opening the file!" << endl;
-}
-void Interpolation::displayPath()
-{
-    cout << "Chemin = ";
-    for (int i=0; i<int(m_path.size()); i++)
-    {
-        cout << "(";
-        for (int k=0; k<m_d-1; k++)
-            cout << m_path[i](k) << ",";
-        cout << m_path[i](m_d-1) << ")";
-        if (i != int(m_path.size()-1))
-            cout << " --> ";
-    }
-    cout << endl;
-}
-bool Interpolation::indiceInPath(MultiVariatePoint<int>& index)
-{
-    for (MultiVariatePoint<int> nu : m_path)
-        if (index==nu)
-            return true;
-    return false;
-}
-double Interpolation::tryWithCurentPath()
-{
-    vector<double> realValues, estimate;
-    for (MultiVariatePoint<double> p : m_testPoints)
-    {
-        realValues.push_back(Utils::gNd(p));
-        estimate.push_back(lagrangeInterpolation_ND_iterative(p));
-    }
-    return Utils::interpolationError(realValues,estimate);
-}
-int Interpolation::buildPathWithAIAlgo(int maxIteration, double start_time, double threshold)
+
+/************************* AI algo ********************************************/
+int Interpolation::buildPathWithAIAlgo(int maxIteration, auto start_time, double threshold)
 {
     m_curentNeighbours.clear();
     m_path.clear();
@@ -130,72 +61,39 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, double start_time, doub
         // If the error is lower than a threshold : stop AI
         if (iteration%(maxIteration/10)==0)
         {
-            double run_time = omp_get_wtime() - start_time;
+            auto end_time = chrono::steady_clock::now();
+            std::chrono::duration<double> run_time = end_time - start_time;
+
             double error = tryWithCurentPath();
             cout << "   - Interpolation error after " << iteration << " iterations: " << error;
-            cout << " | Elapsed time : "  << run_time << endl;
+            cout << " | Elapsed time : "  << run_time.count() << endl;
             if (error < threshold)
             {
                 cout << endl << "   - AI Algo stop after " << iteration << " iterations";
-                cout << " | Elapsed time : "  << run_time << endl;
+                cout << " | Elapsed time : "  << run_time.count() << endl;
                 return iteration;
             }
         }
     }
     return iteration;
 }
-double Interpolation::testPathBuilt(int maxIteration, double threshold)
-// return the number of iteration
+void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>& nu)
 {
-    double start_time = omp_get_wtime();
-    int nbIterations = buildPathWithAIAlgo(maxIteration, start_time, threshold);
-    double run_time = omp_get_wtime() - start_time;
-    cout << endl << " - Time required to compute the path with " << nbIterations <<
-            " iterations: " << run_time << "s" << endl;
-    return run_time;
-}
-/******************************************************************************/
-
-/************************* Alpha **********************************************/
-void Interpolation::displayAlphaTab()
-{
-    map<MultiVariatePoint<int>,double>::iterator it;
-    cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
-    for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
-        cout << get<0>(*it) << ": " << get<1>(*it) << endl;
-}
-double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
-{
-    double lagrangeBasisFuncProd;
-    double res = Utils::gNd(getPoint(nu));
-    for (MultiVariatePoint<int> l : m_path)
+  m_curentNeighbours.remove(nu);
+  MultiVariatePoint<int> nu1(nu);
+  int max_indice[m_d];
+  for (int i=0; i<m_d; i++)
+  max_indice[i] = m_points[i].size()-1;
+  for (int k=0; k<nu.getD(); k++)
+  {
+    if (nu1(k)<max_indice[k])
     {
-        lagrangeBasisFuncProd = 1;
-        for (int p=0; p<m_d; p++)
-            lagrangeBasisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
-        res -= m_alphaMap[l] * lagrangeBasisFuncProd;
+      nu1(k)++;
+      if (isCorrectNeighbourToCurentPath(nu1))
+      m_curentNeighbours.push_back(nu1);
+      nu1(k)--;
     }
-    m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
-    return res;
-}
-double Interpolation::testAlphaNuComputation(MultiVariatePoint<int>& nu)
-{
-    double start_time = omp_get_wtime();
-    double val = computeLastAlphaNu(nu);
-    double run_time = omp_get_wtime() - start_time;
-    cout << " - Time required to compute alpha(" << nu << "): " << run_time << " s";
-    cout << " Correct Value = " << val << endl;
-    return val;
-}
-/******************************************************************************/
-
-/************************* Neighbours *****************************************/
-void Interpolation::displayCurentNeighbours()
-{
-    cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
-    for (MultiVariatePoint<int> nu : m_curentNeighbours)
-        cout << nu << " ";
-    cout << endl;
+  }
 }
 bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePoint<int>& nu)
 {
@@ -216,28 +114,91 @@ bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePoint<int>& nu)
         res = res && isNeighbour[i];
     return res;
 }
-void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>& nu)
+bool Interpolation::indiceInPath(MultiVariatePoint<int>& index)
 {
-    m_curentNeighbours.remove(nu);
-    MultiVariatePoint<int> nu1(nu);
-    int max_indice[m_d];
-    for (int i=0; i<m_d; i++)
-        max_indice[i] = m_points[i].size()-1;
-    for (int k=0; k<nu.getD(); k++)
+    for (MultiVariatePoint<int> nu : m_path)
+        if (index==nu)
+            return true;
+    return false;
+}
+double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
+{
+    double lagrangeBasisFuncProd;
+    double res = Utils::gNd(getPoint(nu));
+    for (MultiVariatePoint<int> l : m_path)
     {
-        if (nu1(k)<max_indice[k])
-        {
-            nu1(k)++;
-            if (isCorrectNeighbourToCurentPath(nu1))
-                m_curentNeighbours.push_back(nu1);
-            nu1(k)--;
-        }
+        lagrangeBasisFuncProd = 1;
+        for (int p=0; p<m_d; p++)
+            lagrangeBasisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
+        res -= m_alphaMap[l] * lagrangeBasisFuncProd;
     }
+    m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
+    return res;
 }
 /******************************************************************************/
 
 
-/*********************** Interpolation ****************************************/
+/*********************** Test functions ***************************************/
+void Interpolation::testPathBuilt(int maxIteration, double threshold)
+{
+  auto start_time = chrono::steady_clock::now();
+  int nbIterations = buildPathWithAIAlgo(maxIteration, start_time, threshold);
+  auto end_time = chrono::steady_clock::now();
+  std::chrono::duration<double> run_time = end_time - start_time;
+  cout << endl << " - Time required to compute the path with " << nbIterations <<
+  " iterations: " << run_time.count() << "s" << endl;
+}
+double Interpolation::testAlphaNuComputation(MultiVariatePoint<int>& nu)
+{
+    auto start_time = chrono::steady_clock::now();
+    double val = computeLastAlphaNu(nu);
+    chrono::duration<double> run_time = chrono::steady_clock::now() - start_time;
+    cout << " - Time required to compute alpha(" << nu << "): " << run_time.count() << " s";
+    cout << " Correct Value = " << val << endl;
+    return val;
+}
+double Interpolation::tryWithCurentPath()
+{
+  vector<double> realValues, estimate;
+  for (MultiVariatePoint<double> p : m_testPoints)
+  {
+    realValues.push_back(Utils::gNd(p));
+    estimate.push_back(lagrangeInterpolation_ND(p));
+  }
+  return Utils::interpolationError(realValues,estimate);
+}
+/******************************************************************************/
+
+
+/************************* Display functions **********************************/
+void Interpolation::displayPath()
+{
+  cout << "Chemin = ";
+  for (int i=0; i<int(m_path.size()); i++)
+  {
+    cout << "(";
+    for (int k=0; k<m_d-1; k++)
+    cout << m_path[i](k) << ",";
+    cout << m_path[i](m_d-1) << ")";
+    if (i != int(m_path.size()-1))
+    cout << " --> ";
+  }
+  cout << endl;
+}
+void Interpolation::displayAlphaTab()
+{
+    map<MultiVariatePoint<int>,double>::iterator it;
+    cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
+    for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
+        cout << get<0>(*it) << ": " << get<1>(*it) << endl;
+}
+void Interpolation::displayCurentNeighbours()
+{
+    cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
+    for (MultiVariatePoint<int> nu : m_curentNeighbours)
+        cout << nu << " ";
+    cout << endl;
+}
 void Interpolation::displayInterpolationPoints()
 {
     cout << " - Dimension d = " << m_d << endl;
@@ -249,6 +210,28 @@ void Interpolation::displayInterpolationPoints()
         cout << m_points[i][m_points[i].size()-1] << " }" << endl;
     }
 }
+void Interpolation::savePathInFile()
+{
+  ofstream file("python/output_algo_AI.txt", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==2)
+    {
+      cout << " - The path is saved in python/output_algo_AI.txt" << endl;
+      file << m_points[0].size() << " " <<  m_points[1].size() << endl;
+      file << m_path.size() << endl;
+      for (MultiVariatePoint<int> nu : m_path)
+      file << nu(0) << " " << nu(1) << endl;
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
+/******************************************************************************/
+
+
+/*********************** Interpolation ****************************************/
 
 double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
 {
@@ -259,7 +242,7 @@ double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
             prod *= (t-m_points[axis][i]) / (m_points[axis][j]-m_points[axis][i]) ;
     return prod;
 }
-double Interpolation::lagrangeInterpolation_ND_iterative(MultiVariatePoint<double> x)
+double Interpolation::lagrangeInterpolation_ND(MultiVariatePoint<double> x)
 {
     double l_prod, sum = 0;
     for (MultiVariatePoint<int> nu : m_path)
@@ -270,16 +253,5 @@ double Interpolation::lagrangeInterpolation_ND_iterative(MultiVariatePoint<doubl
         sum += l_prod * m_alphaMap[nu];
     }
     return sum;
-}
-double Interpolation::computeExecTimeOfOneApprox()
-{
-    MultiVariatePoint<double> x(m_d,0);
-    for (int i=0; i<m_d; i++)
-        x(i) = Utils::randomValue(-1,1);
-
-    double start_time = omp_get_wtime();
-    lagrangeInterpolation_ND_iterative(x);
-    double run_time = omp_get_wtime() - start_time;
-    return run_time;
 }
 /******************************************************************************/

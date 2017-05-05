@@ -80,7 +80,7 @@ int main( int argc, char* argv[] )
     // Approximating g at test points
     cout << endl << " - Approximation of function g at test points : " << endl;
     for (MultiVariatePoint<double> p : testPoints)
-        estimate.push_back(interp->lagrangeInterpolation_ND_iterative(p));
+        estimate.push_back(interp->lagrangeInterpolation_ND(p));
     Utils::displayPoints(estimate);
 
     // Evaluation

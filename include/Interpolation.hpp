@@ -8,7 +8,7 @@
 #include <cmath>
 #include <sys/time.h>
 #include <ctime>
-#include <omp.h>
+#include <chrono>
 
 #include "MultiVariatePoint.hpp"
 #include "Utils.hpp"
@@ -31,42 +31,35 @@ class Interpolation
         Interpolation(vector<int> sizes);
         ~Interpolation();
 
-        void clear();
-
         /************************* Data points ********************************/
         const vector<vector<double>>& points() { return m_points; };
         MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
         void setDirPoints(int i, vector<double> pointsI) { m_points[i] = pointsI; };
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
-        void smartDiscretization();
-        void displayPoints();
 
-        /************************* Path ***************************************/
+        /************************* AI algo ************************************/
         const vector<MultiVariatePoint<int>>& path() { return m_path; };
-        int getLastIndiceInPath(MultiVariatePoint<int> max);
-        int buildPathWithAIAlgo(int maxIteration, double start_time, double threshold);
-        double testPathBuilt(int maxIteration, double threshold);
+        int buildPathWithAIAlgo(int maxIteration, auto start_time, double threshold);
         bool indiceInPath(MultiVariatePoint<int>& index);
-        double tryWithCurentPath();
-        void savePathInFile();
-        void displayPath();
-
-        /************************* Alpha **************************************/
         double computeLastAlphaNu(MultiVariatePoint<int>& nu);
-        double testAlphaNuComputation(MultiVariatePoint<int>& nu);
-        void displayAlphaTab();
-
-        /************************ Neighbours **********************************/
         void updateCurentNeighbours(MultiVariatePoint<int>& nu);
         bool isCorrectNeighbourToCurentPath(MultiVariatePoint<int>& nu);
-        void displayCurentNeighbours();
 
         /*********************** Interpolation ********************************/
         double lagrangeBasisFunction_1D(int j, int k, double t, int axis);
-        double lagrangeInterpolation_ND_iterative(MultiVariatePoint<double> x);
-        double computeExecTimeOfOneApprox();
-        void displayInterpolationPoints();
+        double lagrangeInterpolation_ND(MultiVariatePoint<double> x);
 
+        /********************** Test functions ********************************/
+        void testPathBuilt(int maxIteration, double threshold);
+        double testAlphaNuComputation(MultiVariatePoint<int>& nu);
+        double tryWithCurentPath();
+
+        /********************** Display functions *****************************/
+        void displayPath();
+        void displayAlphaTab();
+        void displayCurentNeighbours();
+        void displayInterpolationPoints();
+        void savePathInFile();
 };
 
 #endif
