@@ -232,7 +232,10 @@ void Interpolation::savePathInFile()
 
 
 /*********************** Interpolation ****************************************/
-
+double Interpolation::piecewiseFunction(int k, double t, int axis)
+{
+    return 0;
+}
 double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
 {
     if (!k) return 1;

@@ -46,6 +46,7 @@ class Interpolation
         bool isCorrectNeighbourToCurentPath(MultiVariatePoint<int>& nu);
 
         /*********************** Interpolation ********************************/
+        double piecewiseFunction(int k, double t, int axis);
         double lagrangeBasisFunction_1D(int j, int k, double t, int axis);
         double lagrangeInterpolation_ND(MultiVariatePoint<double> x);
 
