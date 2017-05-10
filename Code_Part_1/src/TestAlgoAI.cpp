@@ -52,7 +52,7 @@ int main( int argc, char* argv[] )
     // Initialisation of interpolation points
     vector<int> nbPoints = initData(argc,argv);
     Interpolation* interp = new Interpolation(nbPoints);
-    interp->setMethod(chooseMethod());
+    //interp->setMethod(chooseMethod());
     Utils::separateur();
     for (size_t i=0; i<nbPoints.size(); i++)
         interp->setDirPoints(i,nbPoints[i]);
@@ -69,7 +69,7 @@ int main( int argc, char* argv[] )
     for (int j=0; j<nbTestPoints; j++)
         testPoints[j] = Utils::createRandomMultiVariatePoint(nbPoints.size());
     interp->setTestPoints(testPoints);
-    cout << " - Sequence of " << nbTestPoints << " random test point : " ;
+    cout << " - Sequence of " << nbTestPoints << " random test points : " ;
     Utils::displayPoints(testPoints);
     Utils::separateur();
 

@@ -19,13 +19,15 @@ class Interpolation
 {
     private:
 
-        int m_d;
         int m_method;
+
+        int m_d;
         map<MultiVariatePoint<int>, double> m_alphaMap;
         vector<vector<double>> m_points;
         vector<MultiVariatePoint<double>> m_testPoints;
         vector<MultiVariatePoint<int>> m_path;
         list<MultiVariatePoint<int>> m_curentNeighbours;
+
         vector<BinaryTree*> m_middles;
 
     public:

@@ -24,12 +24,6 @@ MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
 }
 void Interpolation::setDirPoints(int i, int nbPoints)
 {
-    if (m_method)
-    {
-        m_middles[i]->initTree(log(nbPoints) / log(2) - 1);
-        m_points[i] = Utils::createSequenceOfMiddles(nbPoints);
-    }
-    else
     m_points[i] = Utils::createLejaSequence(nbPoints);
 }
 
@@ -144,12 +138,7 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
     {
         basisFuncProd = 1;
         for (int p=0; p<m_d; p++)
-        {
-            if (m_method)
-                basisFuncProd *= piecewiseFunction_1D(l(p), m_points[p][nu(p)],p);
-            else
-                basisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
-        }
+            basisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
         res -= m_alphaMap[l] * basisFuncProd;
     }
     m_alphaMap.insert(pair<MultiVariatePoint<int>,double>(nu,res));
@@ -276,12 +265,7 @@ double Interpolation::interpolation_ND(MultiVariatePoint<double> x)
     {
         l_prod = 1;
         for (int i=0; i<m_d; i++)
-        {
-            if (m_method)
-                l_prod *= piecewiseFunction_1D(nu(i),x(i),i);
-            else
-                l_prod *= lagrangeBasisFunction_1D(nu(i),nu(i),x(i),i);
-        }
+            l_prod *= lagrangeBasisFunction_1D(nu(i),nu(i),x(i),i);
         sum += l_prod * m_alphaMap[nu];
     }
     return sum;
