@@ -346,11 +346,12 @@ double Interpolation::piecewiseLagrangeBasisFunction_1D(int j, int k, double t, 
     m_middles[axis]->searchNode(tj,&sup,&inf);
     if (t <= sup && t >= inf)
     {
-        double prod = 1;
-        for (int i=0; i<k; ++i)
-            if (i!=j)
-                prod *= (t-m_points[axis][i]) / (m_points[axis][j]-m_points[axis][i]) ;
-        return prod;
+        //double prod = 1;
+        //for (int i=0; i<k; ++i)
+        //    if (i!=j)
+        //        prod *= (t-m_points[axis][i]) / (m_points[axis][j]-m_points[axis][i]) ;
+        //return prod;
+        return (inf-t)*(t-sup)*pow(2/(sup-inf),2);
     }
     else
         return 0;
