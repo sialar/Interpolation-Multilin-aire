@@ -118,8 +118,20 @@ void BinaryTree::addNode(double key)
 
 }
 
-void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
+Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
 {
+    if (key == -1)
+    {
+        *key_inf = 1;
+        *key_sup = 1;
+        return NULL;
+    }
+    if (key == 1)
+    {
+        *key_inf = 0;
+        *key_sup = 0;
+        return NULL;
+    }
     Node *last_node = m_root, *temp = m_root;
     bool found = false;
     while(temp)
@@ -130,6 +142,7 @@ void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
             *key_sup = findKeySup(temp);
             *key_inf = findKeyInf(temp);
             found = true;
+            return temp;
         }
         if (key > temp->key())
             temp = temp->right();
@@ -149,6 +162,7 @@ void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
             *key_sup = findKeySup(last_node);
         }
     }
+    return NULL;
 }
 
 double BinaryTree::findKeySup(Node* node)

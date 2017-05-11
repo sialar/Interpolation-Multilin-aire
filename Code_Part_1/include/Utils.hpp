@@ -38,6 +38,7 @@ class Utils
 
         // Write data in external file
         static void storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue);
+        static void storeFunction(vector<double> x, vector<double> y, vector<double> z);
         static void storeLejaSequenceInFile(vector<vector<double>> x);
 
         // Function to approximate

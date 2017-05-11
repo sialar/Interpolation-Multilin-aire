@@ -94,7 +94,6 @@ void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> appr
     ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
     if(file)
     {
-        //TODO
         for (int i=0; i<int(x.size()); i++)
         {
             for (int d=0; d<x[i].getD(); d++)
@@ -105,6 +104,22 @@ void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> appr
     }
     else
         cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+void Utils::storeFunction(vector<double> x, vector<double> y, vector<double> z)
+{
+  ofstream file("python/plot_function.txt", ios::out | ios::trunc);
+  if(file)
+  {
+      file << x.size() << endl;
+      for (int i=0; i<int(x.size()); i++)
+      {
+          file << x[i] << " " << y[i] << " " << z[i] << endl;
+      }
+      file.close();
+  }
+  else
+      cerr << "Erreur à l'ouverture du fichier!" << endl;
 }
 
 void Utils::storeLejaSequenceInFile(vector<vector<double>> x)

@@ -58,13 +58,15 @@ class BinaryTree
         void initTree(int depth);
         void addNode(double key);
 
-        void searchNode(double key, double* key_sup, double* key_inf);
+        Node* searchNode(double key, double* key_sup, double* key_inf);
         double findKeySup(Node*);
         double findKeyInf(Node*);
 
         void displayBinaryTree();
 
         void tree2Vector(Node* node);
+
+        static int getIndice(double l);
 };
 
 #endif

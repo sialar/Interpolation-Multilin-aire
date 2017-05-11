@@ -32,7 +32,7 @@ class Interpolation
         int getIndice(double l);
 
         double interpolation_iterative(double y, int k, bool debug);
-        static double g(double y) { return y*y; };
+        static double g(double y) { return sin(abs(y)); };
 
         void displayPath();
         void displayAlphaTab();

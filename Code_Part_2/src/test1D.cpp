@@ -17,9 +17,9 @@ int main( int argc, char* argv[] )
 
     double testPoint = rand()/(double)RAND_MAX;
     double real = Interpolation::g(testPoint);
-    double approx = interp->interpolation_iterative(testPoint,size,false);
+    double approx = interp->interpolation_iterative(testPoint,size,true);
     interp->displayPath();
-    
+
     cout << endl << "Test point:" << testPoint << endl;
     cout << "Real value: g(" << testPoint << ") = " << real << endl;
     cout << "Aproximation value: ĝ(" << testPoint << ") = " << approx << endl;

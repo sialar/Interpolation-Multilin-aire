@@ -30,9 +30,10 @@ class Interpolation
 
         vector<BinaryTree*> m_middles;
 
+
     public:
 
-        Interpolation(vector<int> sizes);
+        Interpolation(vector<int> sizes, int method);
         ~Interpolation();
 
         /************************* Data points ********************************/
@@ -43,20 +44,22 @@ class Interpolation
 
         /************************* AI algo ************************************/
         const vector<MultiVariatePoint<int>>& path() { return m_path; };
-        int buildPathWithAIAlgo(int maxIteration, auto start_time, double threshold);
+        int buildPathWithAIAlgo(int maxIteration, auto start_time, double threshold, bool debug);
         bool indiceInPath(MultiVariatePoint<int>& index);
         double computeLastAlphaNu(MultiVariatePoint<int>& nu);
         void updateCurentNeighbours(MultiVariatePoint<int>& nu);
+        void updateNextPoints(MultiVariatePoint<int>& nu);
         bool isCorrectNeighbourToCurentPath(MultiVariatePoint<int>& nu);
 
         /*********************** Interpolation ********************************/
         double piecewiseFunction_1D(int k, double t, int axis);
+        double piecewiseLagrangeBasisFunction_1D(int j, int k, double t, int axis);
         double lagrangeBasisFunction_1D(int j, int k, double t, int axis);
         double interpolation_ND(MultiVariatePoint<double> x);
         void setMethod(int method) { m_method = method;};
 
         /********************** Test functions ********************************/
-        void testPathBuilt(int maxIteration, double threshold);
+        void testPathBuilt(int maxIteration, double threshold, bool debug);
         double testAlphaNuComputation(MultiVariatePoint<int>& nu);
         double tryWithCurentPath();
 

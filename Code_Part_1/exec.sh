@@ -30,4 +30,10 @@ then
         cd python
         python3.5 progressive_plot.py
     fi
+elif [ "$1" == "plot" ]
+then
+    echo ""
+    ./bin/TestPlotFunctions
+    cd python
+    python3.5 plot_function.py
 fi

@@ -31,11 +31,12 @@ int chooseMethod()
 {
     Utils::separateur();
     int method = -1;
-    while (method!=1 && method!=0)
+    while (method!=1 && method!=0 && method!=2)
     {
         cout << " - Choose the method of interpolation: " << endl;
         cout << "\t - 0: Using lagrange polynomial functions and Leja points " << endl;
-        cout << "\t - 1: Using piecewise polynomial functions and middle points: " << endl;
+        cout << "\t - 1: Using fine-tune function functions and middle points: " << endl;
+        cout << "\t - 2: Using piecewise lagrange polynomial functions and middle points: " << endl;
         cin >> method;
     }
     return method;
@@ -51,8 +52,7 @@ int main( int argc, char* argv[] )
 
     // Initialisation of interpolation points
     vector<int> nbPoints = initData(argc,argv);
-    Interpolation* interp = new Interpolation(nbPoints);
-    //interp->setMethod(chooseMethod());
+    Interpolation* interp = new Interpolation(nbPoints,chooseMethod());
     Utils::separateur();
     for (size_t i=0; i<nbPoints.size(); i++)
         interp->setDirPoints(i,nbPoints[i]);
@@ -82,7 +82,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl << endl;
-    interp->testPathBuilt(maxIteration, threshold);
+    interp->testPathBuilt(maxIteration, threshold, true);
     interp->savePathInFile();
     Utils::separateur();
 

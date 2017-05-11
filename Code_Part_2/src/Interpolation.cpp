@@ -28,6 +28,9 @@ Interpolation::Interpolation(int size)
                 m_points.push_back(j/denom);
         i += denom;
     }
+    for (double d : m_points)
+        cout << d << " ";
+    cout << endl;
     /*
     // Test creation des points
     separateur();
@@ -63,38 +66,46 @@ bool Interpolation::indiceInPath(int index)
 void Interpolation::updateNextPoints(int i)
 {
     m_nextPoints.remove(i);
-    double sup, inf;
-    m_tree->searchNode(m_points[i],&sup,&inf);
-    int sup_index = getIndice(sup);
-    int inf_index = getIndice(inf);
-    if (!indiceInPath(sup_index))
-        m_nextPoints.push_back(getIndice(sup));
-    if (!indiceInPath(inf_index))
-        m_nextPoints.push_back(getIndice(inf));
+    if (i == 0 && !indiceInPath(1)) m_nextPoints.push_back(1);
+    else if (i == 1 && !indiceInPath(2)) m_nextPoints.push_back(2);
+    else
+    {
+        double inf, sup;
+        Node* node = m_tree->searchNode(m_points[i],&inf,&sup);
+        int inf_index, sup_index;
+        if (node->left())
+        {
+            inf = node->left()->key();
+            inf_index = getIndice(inf);
+            if (!indiceInPath(inf_index))
+                m_nextPoints.push_back(getIndice(inf));
+        }
+        if (node->right())
+        {
+            sup = node->right()->key();
+            sup_index = getIndice(sup);
+            if (!indiceInPath(sup_index))
+                m_nextPoints.push_back(getIndice(sup));
+        }
+    }
 }
 
 double Interpolation::interpolation_iterative(double y, int k, bool debug)
 {
     double sum = 0;
     m_path.push_back(0);
-    m_path.push_back(1);
-    m_path.push_back(2);
     m_alphaTab[0] = g(m_path[0]);
-    m_alphaTab[1] = g(m_path[1]) - g(m_path[0]);
-    m_alphaTab[2] = g(m_path[2]) - ( m_alphaTab[0] * piecewiseFunction_1D(0,g(m_path[2])) +
-                                            m_alphaTab[1] * piecewiseFunction_1D(1,g(m_path[2])) );
-    m_nextPoints.push_back(3);
-    m_nextPoints.push_back(4);
     double val, max;
     int argmax = 0, iteration = 0;
     while (iteration < k)
     {
+        max = -numeric_limits<double>::max();
+        updateNextPoints(argmax);
         if (debug)
         {
-            displayPath();
-            displayNextPoints();
+          displayPath();
+          displayNextPoints();
         }
-        max = -numeric_limits<double>::max();
         for (int p : m_nextPoints)
         {
             val =  computeLastAlphaI(p);
@@ -107,7 +118,6 @@ double Interpolation::interpolation_iterative(double y, int k, bool debug)
         }
         if (debug) cout << endl << "(" << argmax << "," << m_points[argmax] << ")" << endl << endl;
         m_path.push_back(argmax);
-        updateNextPoints(argmax);
         iteration++;
     }
     for (int i : m_path)

@@ -7,7 +7,7 @@ CXXFLAGS = -O3 -g -lm -std=c++14 -Wall
 
 OBJ_FILES = $(BIN)/Interpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/BinaryTree.hpp
-TEST_FILES = $(BIN)/TestLejaSequence $(BIN)/TestAlgoAI $(BIN)/TestBinaryTree
+TEST_FILES = $(BIN)/TestLejaSequence $(BIN)/TestAlgoAI $(BIN)/TestBinaryTree $(BIN)/TestPlotFunctions
 
 all: $(TEST_FILES)
 

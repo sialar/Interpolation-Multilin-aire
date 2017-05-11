@@ -118,8 +118,20 @@ void BinaryTree::addNode(double key)
 
 }
 
-void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
+Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
 {
+    if (key == -1)
+    {
+        *key_inf = 1;
+        *key_sup = 1;
+        return NULL;
+    }
+    if (key == 1)
+    {
+        *key_inf = 0;
+        *key_sup = 0;
+        return NULL;
+    }
     Node *last_node = m_root, *temp = m_root;
     bool found = false;
     while(temp)
@@ -130,6 +142,7 @@ void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
             *key_sup = findKeySup(temp);
             *key_inf = findKeyInf(temp);
             found = true;
+            return temp;
         }
         if (key > temp->key())
             temp = temp->right();
@@ -149,6 +162,7 @@ void BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
             *key_sup = findKeySup(last_node);
         }
     }
+    return NULL;
 }
 
 double BinaryTree::findKeySup(Node* node)
@@ -224,4 +238,23 @@ void BinaryTree::tree2Vector(Node* node)
 void BinaryTree::displayBinaryTree()
 {
     Node::displayNodesRecursively(m_root);
+}
+
+int BinaryTree::getIndice(double l)
+{
+    if (l == -1) return 0;
+    if (l == 1)  return 1;
+    if (l == 0)  return 2;
+    double temp = l;
+    int n = 0;
+    while (floor(temp) != temp)
+    {
+        temp *= 2;
+        n++;
+    }
+    int start = 2;
+    for (int k=1; k<n; k++)
+        start += pow(2,n-k);
+    double a = 0.5 * (temp + pow(2,n)) + 1;
+    return start + int(a);
 }
