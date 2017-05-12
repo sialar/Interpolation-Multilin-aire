@@ -26,6 +26,7 @@ class Interpolation
         ~Interpolation();
 
         double piecewiseFunction_1D(int k, double y);
+        double piecewiseLagrangeBasisFunction_1D(int k, double y);
         double computeLastAlphaI(int i);
         void updateNextPoints(int i);
         bool indiceInPath(int index);

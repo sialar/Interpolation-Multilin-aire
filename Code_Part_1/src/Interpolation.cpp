@@ -333,6 +333,8 @@ void Interpolation::savePathInFile()
 /*********************** Interpolation ****************************************/
 double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 {
+    if (k==0) return 1;
+    if (k==1) return -0.5*(t+1);
     double sup, inf, tk = m_points[axis][k];
     m_middles[axis]->searchNode(tk,&sup,&inf);
     if (t <= tk && t >= inf) return ((t-inf)/(tk-inf));
@@ -341,20 +343,13 @@ double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 }
 double Interpolation::piecewiseLagrangeBasisFunction_1D(int j, int k, double t, int axis)
 {
-    if (!k) return 1;
+    if (k==0) return 1;
+    if (k==1) return -0.25*(t+1)*(t-3);
     double sup, inf, tj = m_points[axis][j];
     m_middles[axis]->searchNode(tj,&sup,&inf);
     if (t <= sup && t >= inf)
-    {
-        //double prod = 1;
-        //for (int i=0; i<k; ++i)
-        //    if (i!=j)
-        //        prod *= (t-m_points[axis][i]) / (m_points[axis][j]-m_points[axis][i]) ;
-        //return prod;
-        return (inf-t)*(t-sup)*pow(2/(sup-inf),2);
-    }
-    else
-        return 0;
+        return -4 * (t-inf) * (t-sup) / pow(sup-inf,2);
+    else return 0;
 }
 double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
 {

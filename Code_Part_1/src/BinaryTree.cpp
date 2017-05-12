@@ -120,6 +120,7 @@ void BinaryTree::addNode(double key)
 
 Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
 {
+    /*
     if (key == -1)
     {
         *key_inf = 1;
@@ -132,6 +133,7 @@ Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
         *key_sup = 0;
         return NULL;
     }
+    */
     Node *last_node = m_root, *temp = m_root;
     bool found = false;
     while(temp)

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+
+// voir l'evolution de alpha dans path
 vector<int> initData(int argc, char* argv[])
 {
     int d = 0;
@@ -82,7 +84,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl << endl;
-    interp->testPathBuilt(maxIteration, threshold, false);
+    interp->testPathBuilt(maxIteration, threshold, true);
     interp->savePathInFile();
     Utils::separateur();
 

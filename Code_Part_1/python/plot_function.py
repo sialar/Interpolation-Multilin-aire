@@ -19,5 +19,7 @@ for i in range(1,n):
 plt.plot(x, y, 'k', c='r')
 plt.plot(x, z, 'k', c='b')
 plt.plot(x, t, 'k', c='g')
+
+plt.savefig('lagrange_polynomials.png')
 plt.axis([-1, 1, -2, 2])
 plt.show()
