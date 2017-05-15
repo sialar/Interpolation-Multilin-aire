@@ -53,7 +53,6 @@ class Interpolation
 
         /*********************** Interpolation ********************************/
         double piecewiseFunction_1D(int k, double t, int axis);
-        double piecewiseLagrangeBasisFunction_1D(int j, int k, double t, int axis);
         double lagrangeBasisFunction_1D(int j, int k, double t, int axis);
         double interpolation_ND(MultiVariatePoint<double> x);
         void setMethod(int method) { m_method = method;};
@@ -69,6 +68,7 @@ class Interpolation
         void displayCurentNeighbours();
         void displayInterpolationPoints();
         void savePathInFile();
+        void storeInterpolationFunctions();
 };
 
 #endif

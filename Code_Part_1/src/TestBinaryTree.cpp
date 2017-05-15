@@ -8,13 +8,12 @@ using namespace std;
 int main( int argc, char* argv[] )
 {
     int depth = (argc>1) ? stoi(argv[1]) : Utils::randomValue(0,5);
-    double target = (argc>2) ? stof(argv[2]) : Utils::randomValue(0,1);
-    BinaryTree* tree = new BinaryTree();
-    tree->initTree(depth);
+    BinaryTree* tree = new BinaryTree(depth);
     tree->displayBinaryTree();
 
+    double target = (argc>2) ? stof(argv[2]) : Utils::randomValue(0,1);
     double res_sup, res_inf;
-    tree->searchNode(target,&res_sup,&res_inf);
+    tree->searchNode(target,&res_sup,&res_inf, true);
     cout << target << " found: (" << res_inf << "," << res_sup << ")" << endl << endl;
 
     tree->tree2Vector(tree->root());

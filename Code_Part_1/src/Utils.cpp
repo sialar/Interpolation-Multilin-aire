@@ -108,7 +108,7 @@ void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> appr
 
 void Utils::storeFunction(vector<double> x, vector<double> y, vector<double> z)
 {
-  ofstream file("python/plot_function.txt", ios::out | ios::trunc);
+  ofstream file("python/test.txt", ios::out | ios::trunc);
   if(file)
   {
       file << x.size() << endl;
@@ -147,9 +147,13 @@ double Utils::gNd(MultiVariatePoint<double> x)
     //    sum += ((x(j) * 0.6) / pow(j+1,3));
     //return 1 / (sum + 1);
     double temp = 0;
+    double f = 10;
     for (int i=0; i<x.getD(); i++)
-    temp += pow(x(i),2);
-    return sin(sqrt(temp));
+    if (x(i)<0)
+        temp += cos(2*M_PI*f*x(i));
+    else
+        temp += exp(pow(x(i),2));
+    return temp;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)
@@ -204,8 +208,7 @@ vector<double> Utils::createLejaSequence(int nbPoints)
 
 vector<double> Utils::createSequenceOfMiddles(int nbPoints)
 {
-    BinaryTree* tree = new BinaryTree();
-    tree->initTree(log(nbPoints) / log(2) - 1);
+    BinaryTree* tree = new BinaryTree(log(nbPoints) / log(2) - 1);
     tree->tree2Vector(tree->root());
     tree->getElems().push_back(-1);
     tree->getElems().push_back(1);

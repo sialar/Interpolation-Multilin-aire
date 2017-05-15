@@ -24,6 +24,8 @@ class MultiVariatePoint
         MultiVariatePoint(const MultiVariatePoint<T>& nu);
 
         int getD() const { return m_d; };
+        static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
+        static MultiVariatePoint<T> toMonoVariatePoint(T vec);
 
         T &operator()(int d) const { return m_nu[d]; };
         MultiVariatePoint& operator+=(const MultiVariatePoint & v);
@@ -53,6 +55,22 @@ MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
 {
     *this = nu;
 };
+
+template <typename T>
+MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
+{
+    MultiVariatePoint<T> x(vec.size(),0);
+    for (int i=0; i<x.getD(); i++)
+        x(i) = vec[i];
+    return x;
+}
+
+template <typename T>
+MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
+{
+    MultiVariatePoint<T> x(1,t);
+    return x;
+}
 
 template <typename T>
 MultiVariatePoint<T>& MultiVariatePoint<T>::operator=(const MultiVariatePoint<T> & nu)

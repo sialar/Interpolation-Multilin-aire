@@ -33,7 +33,7 @@ then
 elif [ "$1" == "plot" ]
 then
     echo ""
-    ./bin/TestPlotFunctions
+    ./bin/TestAlgoAI $2
     cd python
     python3.5 plot_function.py
 fi

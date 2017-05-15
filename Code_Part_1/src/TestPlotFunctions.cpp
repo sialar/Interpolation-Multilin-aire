@@ -50,8 +50,8 @@ int main( int argc, char* argv[] )
                 z.push_back(interp->piecewiseFunction_1D(point[1],t,0));
                 break;
             case 2:
-                y.push_back(interp->piecewiseLagrangeBasisFunction_1D(point[0],n,t,0));
-                z.push_back(interp->piecewiseLagrangeBasisFunction_1D(point[1],n,t,0));
+                y.push_back(interp->piecewiseFunction_1D(point[0],t,0));
+                z.push_back(interp->piecewiseFunction_1D(point[1],t,0));
                 break;
             default:
                 break;

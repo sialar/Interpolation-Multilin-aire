@@ -11,10 +11,7 @@ Interpolation::Interpolation(vector<int> sizes, int method)
     for (int i=0; i<m_d; i++)
     {
         if (m_method)
-        {
-            m_middles[i] = new BinaryTree();
-            m_middles[i]->initTree(int(log(sizes[i])/log(2))-1);
-        }
+            m_middles[i] = new BinaryTree(int(log(sizes[i])/log(2)));
         else
             m_points[i].resize(sizes[i]);
     }
@@ -32,9 +29,9 @@ void Interpolation::setDirPoints(int i, int nbPoints)
 {
     if (m_method)
     {
-      m_points[i].push_back(-1);
-      m_points[i].push_back(1);
-      m_points[i].push_back(0);
+      if (nbPoints > 0) m_points[i].push_back(0);
+      if (nbPoints > 1) m_points[i].push_back(-1);
+      if (nbPoints > 2) m_points[i].push_back(1);
       int e = 0, k = 3;
       double denom;
       while (k<nbPoints)
@@ -67,9 +64,10 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, auto start_time, double
 
     double val, max;
     MultiVariatePoint<int> argmax(m_d,0);
+    m_curentNeighbours.push_back(argmax);
     int iteration = 1;
 
-    while (iteration < maxIteration)
+    while (!m_curentNeighbours.empty() && iteration < maxIteration)
     {
         max = -numeric_limits<double>::max();
         if (m_method)
@@ -91,19 +89,22 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, auto start_time, double
             else
                 val =  computeLastAlphaNu(nu);
 
-
+            if (debug) cout << nu << " " << val << " | ";
+            cout << val << " ";
             if (val >= max)
             {
                 max = val;
                 argmax = nu;
             }
         }
+        if (debug) cout << endl;
+
         m_path.push_back(argmax);
         iteration++;
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        if (iteration%(maxIteration/10)==0)
+        if ((maxIteration>10) && iteration%(maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
@@ -118,6 +119,7 @@ int Interpolation::buildPathWithAIAlgo(int maxIteration, auto start_time, double
                 return iteration;
             }
         }
+
     }
     return iteration;
 }
@@ -146,40 +148,24 @@ void Interpolation::updateNextPoints(MultiVariatePoint<int>& nu)
     for (int i=0; i<m_d; i++)
     {
         MultiVariatePoint<int> mu(nu);
-        if (nu(i) == 0)
+        double inf, sup;
+        Node* node = m_middles[i]->searchNode(getPoint(nu)(i),&inf,&sup,true);
+        int inf_index, sup_index;
+        if (node->left())
         {
-            mu(i) = 1;
+            inf = node->left()->key();
+            inf_index = BinaryTree::getIndice(inf);
+            mu(i) = inf_index;
             if (!indiceInPath(mu))
                 m_curentNeighbours.push_back(mu);
         }
-        else if (nu(i) == 1)
+        if (node->right())
         {
-            MultiVariatePoint<int> mu(nu);
-            mu(i) = 2;
+            sup = node->right()->key();
+            sup_index = BinaryTree::getIndice(sup);
+            mu(i) = sup_index;
             if (!indiceInPath(mu))
                 m_curentNeighbours.push_back(mu);
-        }
-        else
-        {
-            double inf, sup;
-            Node* node = m_middles[i]->searchNode(getPoint(nu)(i),&inf,&sup);
-            int inf_index, sup_index;
-            if (node->left())
-            {
-              inf = node->left()->key();
-              inf_index = BinaryTree::getIndice(inf);
-              mu(i) = inf_index;
-              if (!indiceInPath(mu))
-                  m_curentNeighbours.push_back(mu);
-            }
-            if (node->right())
-            {
-              sup = node->right()->key();
-              sup_index = BinaryTree::getIndice(sup);
-              mu(i) = sup_index;
-              if (!indiceInPath(mu))
-                  m_curentNeighbours.push_back(mu);
-            }
         }
     }
 }
@@ -222,8 +208,6 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>& nu)
                 basisFuncProd *= lagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
             else if (m_method == 1)
                 basisFuncProd *= piecewiseFunction_1D(l(p),m_points[p][nu(p)],p);
-            else
-                basisFuncProd *= piecewiseLagrangeBasisFunction_1D(l(p),l(p),m_points[p][nu(p)],p);
         }
         res -= m_alphaMap[l] * basisFuncProd;
     }
@@ -268,21 +252,12 @@ double Interpolation::tryWithCurentPath()
 /************************* Display functions **********************************/
 void Interpolation::displayPath()
 {
+  // Format: (nu:points[nu]) --> () ...
   cout << "Chemin = ";
-  int n = min(10,int(m_path.size()));
-  for (int i=0; i<n; i++)
-  {
-    cout << "(";
-    for (int k=0; k<m_d-1; k++)
-        cout << " [" << m_path[i](k) << ",";
-    cout << m_path[i](m_d-1) << "] = ";
-    for (int k=0; k<m_d-1; k++)
-        cout << "(" << getPoint(m_path[i])(k) << ",";
-    cout << getPoint(m_path[i])(m_d-1) << ") )";
-    if (i != n-1)
-    cout << " --> ";
-  }
-  cout << endl;
+  int n = m_path.size();
+  for (int i=0; i<n-1; i++)
+      cout << "(" << m_path[i] << ":" << getPoint(m_path[i]) << ") --> ";
+  cout << "(" << m_path[n-1] << ":" << getPoint(m_path[n-1]) << ")" << endl;
 }
 void Interpolation::displayAlphaTab()
 {
@@ -295,7 +270,7 @@ void Interpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePoint<int> nu : m_curentNeighbours)
-        cout << getPoint(nu) << " ";
+        cout << "(" << nu << ":" << getPoint(nu) << ") | ";
     cout << endl;
 }
 void Interpolation::displayInterpolationPoints()
@@ -331,25 +306,53 @@ void Interpolation::savePathInFile()
 
 
 /*********************** Interpolation ****************************************/
+void Interpolation::storeInterpolationFunctions()
+{
+    ofstream file("python/plot_function.txt", ios::out | ios::trunc);
+    if(file)
+    {
+      if (m_d==1)
+      {
+          vector<double> x;
+          int nbPoints = int(m_testPoints.size());
+          for (int i=0; i<nbPoints; i++)
+              x.push_back(m_testPoints[i](0));
+          sort(x.begin(), x.end());
+          file << m_path.size() << " " << nbPoints << endl;
+          for (int j=0; j<nbPoints; j++)
+          {
+              file << x[j];
+              for (MultiVariatePoint<int> nu : m_path)
+              {
+                  if (m_method == 0)
+                      file << " " << lagrangeBasisFunction_1D(nu(0),m_path.size(),x[j],0);
+                  else if (m_method == 1)
+                      file << " " << piecewiseFunction_1D(nu(0),x[j],0);
+              }
+              file << " " << interpolation_ND(MultiVariatePoint<double>::toMonoVariatePoint(x[j]));
+              file << " " <<  Utils::gNd(MultiVariatePoint<double>::toMonoVariatePoint(x[j]));
+              file << endl;
+          }
+      }
+      file.close();
+    }
+    else
+    cerr << "Error while opening the file!" << endl;
+}
+
 double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 {
     if (k==0) return 1;
-    if (k==1) return -0.5*(t+1);
-    double sup, inf, tk = m_points[axis][k];
-    m_middles[axis]->searchNode(tk,&sup,&inf);
-    if (t <= tk && t >= inf) return ((t-inf)/(tk-inf));
-    else if (t >= tk && t <= sup) return ((t-sup)/(tk-sup));
-    else return 0;
-}
-double Interpolation::piecewiseLagrangeBasisFunction_1D(int j, int k, double t, int axis)
-{
-    if (k==0) return 1;
-    if (k==1) return -0.25*(t+1)*(t-3);
-    double sup, inf, tj = m_points[axis][j];
-    m_middles[axis]->searchNode(tj,&sup,&inf);
-    if (t <= sup && t >= inf)
-        return -4 * (t-inf) * (t-sup) / pow(sup-inf,2);
-    else return 0;
+    else if (k==1) return (t>0) ? 0 : -t;
+    else if (k==2) return (t<0) ? 0 : t;
+    else
+    {
+        double sup, inf, tk = m_points[axis][k];
+        m_middles[axis]->searchNode(tk,&sup,&inf, false);
+        if (t <= tk && t >= inf) return ((t-inf)/(tk-inf));
+        else if (t >= tk && t <= sup) return ((t-sup)/(tk-sup));
+        else return 0;
+    }
 }
 double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
 {
@@ -372,8 +375,6 @@ double Interpolation::interpolation_ND(MultiVariatePoint<double> x)
                 l_prod *= lagrangeBasisFunction_1D(nu(i),nu(i),x(i),i);
             else if (m_method == 1)
                 l_prod *= piecewiseFunction_1D(nu(i),x(i),i);
-            else
-                l_prod *= piecewiseLagrangeBasisFunction_1D(nu(i),nu(i),x(i),i);
         }
         sum += l_prod * m_alphaMap[nu];
     }
