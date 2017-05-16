@@ -206,14 +206,3 @@ vector<double> Utils::createLejaSequence(int nbPoints)
     }
     return points;
 }
-
-vector<double> Utils::createSequenceOfMiddles(int nbPoints)
-{
-    BinaryTree* tree = new BinaryTree(log(nbPoints) / log(2) - 1);
-    tree->tree2Vector(tree->root());
-    tree->getElems().push_back(-1);
-    tree->getElems().push_back(1);
-    sort(tree->getElems().begin(), tree->getElems().end());
-    cout << nbPoints << " " << tree->getElems().size() <<  " " << log(nbPoints)/log(2) << endl;
-    return tree->getElems();
-}

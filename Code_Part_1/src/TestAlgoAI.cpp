@@ -72,33 +72,33 @@ int main( int argc, char* argv[] )
         testPoints[j] = Utils::createRandomMultiVariatePoint(nbPoints.size());
     interp->setTestPoints(testPoints);
     cout << " - Sequence of " << nbTestPoints << " random test points : " ;
-    //Utils::displayPoints(testPoints);
+    Utils::displayPoints(testPoints);
     Utils::separateur();
 
     // Path creation
     long int maxIteration = 1;
     double threshold = 1e-4;
     for (size_t i=0; i<nbPoints.size(); i++)
-        maxIteration *= interp->points()[i].size();
+        maxIteration *= nbPoints[i];
 
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl << endl;
-    interp->testPathBuilt(maxIteration, threshold, false);
+    interp->testPathBuilt(maxIteration, threshold, true);
     interp->savePathInFile();
     Utils::separateur();
 
     // Computing real values at test points
-    //cout << " - Real values of function g evaluated at test points :" << endl;
+    cout << " - Real values of function g evaluated at test points :" << endl;
     for (MultiVariatePoint<double> p : testPoints)
         realValues.push_back(Utils::gNd(p));
-    //Utils::displayPoints(realValues);
+    Utils::displayPoints(realValues);
 
     // Approximating g at test points
-    //cout << endl << " - Approximation of function g at test points : " << endl;
+    cout << endl << " - Approximation of function g at test points : " << endl;
     for (MultiVariatePoint<double> p : testPoints)
         estimate.push_back(interp->interpolation_ND(p));
-    //tils::displayPoints(estimate);
+    Utils::displayPoints(estimate);
 
     // Evaluation
     cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
@@ -106,7 +106,6 @@ int main( int argc, char* argv[] )
 
     interp->storeInterpolationFunctions();
     interp->displayPath();
-
 
     return 0;
 }

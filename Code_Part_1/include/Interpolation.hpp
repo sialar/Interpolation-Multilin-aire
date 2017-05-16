@@ -41,6 +41,8 @@ class Interpolation
         MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
         void setDirPoints(int i, int nbPoints);
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
+        MultiVariatePoint<double> getMultiPoint(MultiVariatePoint<int> nu);
+        MultiVariatePoint<int> getMultiIndice(MultiVariatePoint<double> x);
 
         /************************* AI algo ************************************/
         const vector<MultiVariatePoint<int>>& path() { return m_path; };

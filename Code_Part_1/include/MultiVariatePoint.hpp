@@ -15,7 +15,7 @@ class MultiVariatePoint
     private:
         int m_d;
         T* m_nu = NULL;
-
+        int m_lastModified = -1;
    public:
 
         ~MultiVariatePoint();
@@ -24,6 +24,8 @@ class MultiVariatePoint
         MultiVariatePoint(const MultiVariatePoint<T>& nu);
 
         int getD() const { return m_d; };
+        int getLastModified() { return m_lastModified; };
+        void updateLastModified(int last) { m_lastModified = last; };
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);
 

@@ -252,3 +252,19 @@ int BinaryTree::getIndice(double l)
     double a = 0.5 * (temp + pow(2,n)) + 1;
     return start + int(a);
 }
+
+double BinaryTree::getValue(int i)
+{
+    if (i == 0) return 0;
+    if (i == 1)  return -1;
+    if (i == 2)  return 1;
+
+    int temp = i - 2; // nb points a partir de 0.5
+    int e = 1;
+    while (temp > pow(2,e))
+    {
+        temp -= pow(2,e);
+        e++;
+    }
+    return (2*temp - 1 - pow(2,e)) / pow(2,e);
+}

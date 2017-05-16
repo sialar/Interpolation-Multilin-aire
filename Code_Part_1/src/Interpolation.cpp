@@ -11,7 +11,7 @@ Interpolation::Interpolation(vector<int> sizes, int method)
     for (int i=0; i<m_d; i++)
     {
         if (m_method)
-            m_middles[i] = new BinaryTree(int(log(sizes[i]*sizes[i])/log(2)));
+            m_middles[i] = new BinaryTree(int(log(sizes[i])/log(2)));
         else
             m_points[i].resize(sizes[i]);
     }
@@ -48,7 +48,20 @@ void Interpolation::setDirPoints(int i, int nbPoints)
     else
         m_points[i] = Utils::createLejaSequence(nbPoints);
 }
-
+MultiVariatePoint<double> Interpolation::getMultiPoint(MultiVariatePoint<int> nu)
+{
+    MultiVariatePoint<double> x(nu.getD(),0.0);
+    for (int i=0; i<nu.getD(); i++)
+        x(i) = BinaryTree::getValue(nu(i));
+    return x;
+}
+MultiVariatePoint<int> Interpolation::getMultiIndice(MultiVariatePoint<double> x)
+{
+    MultiVariatePoint<int> nu(x.getD(),0);
+    for (int i=0; i<x.getD(); i++)
+        nu(i) = BinaryTree::getIndice(x(i));
+    return nu;
+}
 /******************************************************************************/
 
 

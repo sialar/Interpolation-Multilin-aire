@@ -67,6 +67,8 @@ class BinaryTree
         void tree2Vector(Node* node);
 
         static int getIndice(double l);
+        static double getValue(int i);
+
 };
 
 #endif
