@@ -49,7 +49,7 @@ class BinaryTree
         vector<double> m_elems;
 
     public:
-        BinaryTree();
+        BinaryTree(int depth);
         ~BinaryTree();
 
         Node* root() { return m_root; };
@@ -58,9 +58,9 @@ class BinaryTree
         void initTree(int depth);
         void addNode(double key);
 
-        Node* searchNode(double key, double* key_sup, double* key_inf);
-        double findKeySup(Node*);
-        double findKeyInf(Node*);
+        Node* searchNode(double key, double* key_sup, double* key_inf, bool lookAtChildren);
+        double findKeySup(Node*, bool lookAtChildren);
+        double findKeyInf(Node*, bool lookAtChildren);
 
         void displayBinaryTree();
 

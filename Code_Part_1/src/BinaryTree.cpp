@@ -53,9 +53,15 @@ void Node::displayNodesRecursively(Node* node)
 
 
 /******************************** BinaryTree **********************************/
-BinaryTree::BinaryTree()
+BinaryTree::BinaryTree(int depth)
 {
-    addNode(0);
+    addNode(0.0);
+    if (depth>0)
+    {
+        addNode(-1.0);
+        addNode(1.0);
+    }
+    if (depth>1) initTree(depth-1);
 }
 
 void BinaryTree::initTree(int depth)
@@ -118,22 +124,8 @@ void BinaryTree::addNode(double key)
 
 }
 
-Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
+Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf, bool lookAtChildren)
 {
-    /*
-    if (key == -1)
-    {
-        *key_inf = 1;
-        *key_sup = 1;
-        return NULL;
-    }
-    if (key == 1)
-    {
-        *key_inf = 0;
-        *key_sup = 0;
-        return NULL;
-    }
-    */
     Node *last_node = m_root, *temp = m_root;
     bool found = false;
     while(temp)
@@ -141,8 +133,8 @@ Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
         last_node = temp;
         if (key == temp->key())
         {
-            *key_sup = findKeySup(temp);
-            *key_inf = findKeyInf(temp);
+            *key_sup = findKeySup(temp, lookAtChildren);
+            *key_inf = findKeyInf(temp, lookAtChildren);
             found = true;
             return temp;
         }
@@ -156,20 +148,20 @@ Node* BinaryTree::searchNode(double key, double* key_sup, double* key_inf)
         if (key<last_node->key())
         {
             *key_sup = last_node->key();
-            *key_inf = findKeyInf(last_node);
+            *key_inf = findKeyInf(last_node, lookAtChildren);
         }
         else
         {
             *key_inf = last_node->key();
-            *key_sup = findKeySup(last_node);
+            *key_sup = findKeySup(last_node, lookAtChildren);
         }
     }
     return NULL;
 }
 
-double BinaryTree::findKeySup(Node* node)
+double BinaryTree::findKeySup(Node* node, bool lookAtChildren)
 {
-    if (node->right())
+    if (node->right() && lookAtChildren)
     {
         Node* temp = node->right();
         while (temp->left())
@@ -197,9 +189,9 @@ double BinaryTree::findKeySup(Node* node)
     }
 }
 
-double BinaryTree::findKeyInf(Node* node)
+double BinaryTree::findKeyInf(Node* node, bool lookAtChildren)
 {
-    if (node->left())
+    if (node->left() && lookAtChildren)
     {
         Node* temp = node->left();
         while (temp->right())
@@ -244,9 +236,9 @@ void BinaryTree::displayBinaryTree()
 
 int BinaryTree::getIndice(double l)
 {
-    if (l == -1) return 0;
-    if (l == 1)  return 1;
-    if (l == 0)  return 2;
+    if (l == 0) return 0;
+    if (l == -1)  return 1;
+    if (l == 1)  return 2;
     double temp = l;
     int n = 0;
     while (floor(temp) != temp)
