@@ -139,22 +139,45 @@ void Utils::storeLejaSequenceInFile(vector<vector<double>> x)
         cerr << "Erreur à l'ouverture du fichier!" << endl;
 }
 
+void Utils::storeLejaSequenceInFile(int length)
+{
+    ofstream file("lejaSequence", ios::out | ios::trunc);
+    if(file)
+    {
+        vector<double> lejaSeq = createLejaSequence(length);
+        for (int i=0; i<length; ++i)
+              file << lejaSeq[i] << endl;
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+vector<double> Utils::loadLejaSequenceFromFile(int length)
+{
+    ifstream file("lejaSequence", ios::in);
+    vector<double> lejaSeq;
+    string line;
+    int line_index = 0;
+    if(file)
+    {
+        while (getline(file,line) && line_index<length)
+        {
+            lejaSeq.push_back(stof(line));
+            line_index++;
+        }
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+    return lejaSeq;
+}
+
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    //double sum = 0;
-    //int d = x.getD();
-    //for (int j=0; j<d; j++)
-    //    sum += ((x(j) * 0.6) / pow(j+1,3));
-    //return 1 / (sum + 1);
     double temp = 0;
-    //double f = 10;
     for (int i=0; i<x.getD(); i++)
-        temp += sqrt(1-x(i)*x(i));
-    //if (x(i)<=0)
-    //    temp += cos(2*M_PI*f*x(i));
-    //else
-    //    temp += exp(pow(x(i),2));
-    return temp;
+        temp += pow(x(i),2);
+    return sin(sqrt(temp));
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)

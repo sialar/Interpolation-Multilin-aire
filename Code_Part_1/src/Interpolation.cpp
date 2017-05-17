@@ -46,7 +46,7 @@ void Interpolation::setDirPoints(int i, int nbPoints)
       }
     }
     else
-        m_points[i] = Utils::createLejaSequence(nbPoints);
+        m_points[i] = Utils::loadLejaSequenceFromFile(nbPoints);
 }
 MultiVariatePoint<double> Interpolation::getMultiPoint(MultiVariatePoint<int> nu)
 {

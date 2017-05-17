@@ -46,7 +46,6 @@ int chooseMethod()
 
 int main( int argc, char* argv[] )
 {
-
     srand (time(NULL));
     int nbTestPoints = 0;
     vector<MultiVariatePoint<double>> testPoints;
