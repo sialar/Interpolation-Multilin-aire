@@ -15,7 +15,8 @@ class MultiVariatePoint
     private:
         int m_d;
         T* m_nu = NULL;
-        int m_lastModified = -1;
+        int m_waitingTime = 0;
+        double m_alpha;
    public:
 
         ~MultiVariatePoint();
@@ -24,8 +25,13 @@ class MultiVariatePoint
         MultiVariatePoint(const MultiVariatePoint<T>& nu);
 
         int getD() const { return m_d; };
-        int getLastModified() { return m_lastModified; };
-        void updateLastModified(int last) { m_lastModified = last; };
+
+        int getWaitingTime() { return m_waitingTime; };
+        void incrWaitingTime() { m_waitingTime++; };
+
+        double getAlpha() const { return m_alpha; };
+        void setAlpha(double alpha) { m_alpha = alpha; };
+
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);
 
@@ -50,6 +56,8 @@ MultiVariatePoint<T>::MultiVariatePoint(int d, T val) : m_d(d)
         for (int i=0; i<m_d; i++)
             m_nu[i] = val;
     }
+    m_alpha = 0;
+    m_waitingTime = 0;
 }
 
 template <typename T>

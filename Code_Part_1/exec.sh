@@ -23,17 +23,12 @@ then
 elif [ "$1" == "AI" ]
 then
     echo ""
-    echo " - Interpolation in dimension (d>0) + AI algorithm:"
-    ./bin/TestAlgoAI $2
-    if [ "$2" == "-p" ]
-    then
-        cd python
-        python3.5 progressive_plot.py
-    fi
+    echo " - Interpolation in dimension (d="$2") + AI algorithm:"
+    ./bin/TestAlgoAI $2 $3 $4
 elif [ "$1" == "plot" ]
 then
     echo ""
-    ./bin/TestAlgoAI $2
+    ./bin/TestAlgoAI $2 $3 $4
     cd python
     python3.5 plot_function.py
 fi

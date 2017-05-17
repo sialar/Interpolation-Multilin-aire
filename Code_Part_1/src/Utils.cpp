@@ -152,6 +152,7 @@ void Utils::storeLejaSequenceInFile(int length)
     else
         cerr << "Erreur à l'ouverture du fichier!" << endl;
 }
+
 vector<double> Utils::loadLejaSequenceFromFile(int length)
 {
     ifstream file("lejaSequence", ios::in);
@@ -172,12 +173,42 @@ vector<double> Utils::loadLejaSequenceFromFile(int length)
     return lejaSeq;
 }
 
+vector<double> Utils::createSequenceByDichotomy(int length)
+{
+    vector<double> sequence;
+    if (length > 0) sequence.push_back(0);
+    if (length > 1) sequence.push_back(-1);
+    if (length > 2) sequence.push_back(1);
+    int e = 0, k = 3;
+    double denom;
+    while (k<length)
+    {
+        e++;
+        denom = pow(2,e);
+        for (int j=denom-1; j>=0 && int(sequence.size())<length; j--)
+            if (j%2) sequence.push_back(-j/denom);
+        for (int j=0; j<denom && int(sequence.size())<length; j++)
+            if (j%2) sequence.push_back(j/denom);
+        k += denom;
+    }
+    return sequence;
+}
 double Utils::gNd(MultiVariatePoint<double> x)
 {
+    //double temp = 0;
+    //for (int i=0; i<x.getD(); i++)
+    //temp += pow(x(i),2);
+    //return sin(sqrt(temp));
+
     double temp = 0;
     for (int i=0; i<x.getD(); i++)
-        temp += pow(x(i),2);
-    return sin(sqrt(temp));
+    temp += pow(x(i),2);
+    return temp;
+
+    //double temp = 1;
+    //for (int i=0; i<x.getD(); i++)
+    //  temp += sqrt(1 - pow(x(i),2));
+    //return temp;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)
