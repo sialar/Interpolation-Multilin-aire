@@ -19,22 +19,22 @@ int chooseDimension(int argc, char* argv[])
     return dim;
 }
 
-int chooseMaxIteration(int argc, char* argv[])
+int chooseNbTestPoints(int argc, char* argv[])
 {
   if (argc > 2) return stoi(argv[2]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
+  int nbTestPoints = -1;
+  while (nbTestPoints < 0)
   {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
+    cout << " - Choose the number ot test points : ";
+    cin >> nbTestPoints;
   }
-  return maxIteration;
+  Utils::separateur();
+  return nbTestPoints;
 }
 
 int chooseMethod(int argc, char* argv[])
 {
     if (argc > 3) return stoi(argv[3]);
-    Utils::separateur();
     int method = -1;
     while (method!=0 && method!=1)
     {
@@ -46,26 +46,34 @@ int chooseMethod(int argc, char* argv[])
     return method;
 }
 
+int chooseMaxIteration(int argc, char* argv[])
+{
+  if (argc > 4) return stoi(argv[4]);
+  int maxIteration = -1;
+  while (maxIteration < 0)
+  {
+    cout << " - Choose the maximum number of iteration : ";
+    cin >> maxIteration;
+  }
+  return maxIteration;
+}
+
+
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
-    int nbTestPoints = 0;
-    vector<MultiVariatePoint<double>> testPoints;
-    vector<double> realValues, estimate;
 
     Utils::separateur();
     int dim = chooseDimension(argc,argv);
-    int maxIteration = chooseMaxIteration(argc,argv);
+    int nbTestPoints = chooseNbTestPoints(argc,argv);
     int method = chooseMethod(argc,argv);
+    int maxIteration = chooseMaxIteration(argc,argv);
 
     Interpolation* interp = new Interpolation(dim,maxIteration,method);
 
     // Initialisation of test points
-    while (nbTestPoints<1)
-    {
-        cout << " - Choose the number of test points : " ;
-        cin >> nbTestPoints;
-    }
+    vector<MultiVariatePoint<double>> testPoints;
+    vector<double> realValues, estimate;
     testPoints.resize(nbTestPoints);
     for (int j=0; j<nbTestPoints; j++)
         testPoints[j] = Utils::createRandomMultiVariatePoint(dim);
@@ -94,11 +102,6 @@ int main( int argc, char* argv[] )
         estimate.push_back(interp->interpolation_ND(p));
     Utils::displayPoints(estimate);
 
-
-    // Evaluation
-    cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-    Utils::separateur();
-
     interp->storeInterpolationFunctions();
     interp->savePathInFile();
     interp->displayPath();
@@ -107,6 +110,10 @@ int main( int argc, char* argv[] )
     interp->displayInterpolationMultiVariatePoints();
     cout << endl;
     interp->displayInterpolationPointsInEachDirection();
+    Utils::separateur();
+
+    // Evaluation
+    cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
     return 0;

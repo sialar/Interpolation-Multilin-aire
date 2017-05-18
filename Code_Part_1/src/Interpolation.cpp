@@ -24,7 +24,10 @@ MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
 {
     MultiVariatePoint<double> point(m_d,0.0);
     for (int i=0; i<m_d; i++)
-        point(i) = m_lejaSequence[nu(i)];
+        if (m_method == 0)
+            point(i) = m_lejaSequence[nu(i)];
+        else
+            point(i) = m_middlePoints[nu(i)];
     return point;
 }
 void Interpolation::addInterpolationPoint(MultiVariatePoint<double> p)
@@ -116,7 +119,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        /*
+        
         if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
@@ -132,7 +135,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
                 return iteration;
             }
         }
-        */
+        
     }
     return iteration;
 }
@@ -209,7 +212,7 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
         for (int p=0; p<m_d; p++)
         {
             if (m_method == 0)
-                basisFuncProd *= lagrangeBasisFunction_1D((*l)(p),(*l)(p),getPoint(*nu)(p),p);
+                basisFuncProd *= lagrangeBasisFunction_1D((*l)(p),getPoint(*nu)(p),p);
             else if (m_method == 1)
                 basisFuncProd *= piecewiseFunction_1D((*l)(p),getPoint(*nu)(p),p); // TODO: getPoint() for method 1
         }
@@ -295,13 +298,20 @@ void Interpolation::savePathInFile()
   ofstream file("python/path.txt", ios::out | ios::trunc);
   if(file)
   {
-    if (m_d==2)
+    if (m_d==2 || m_d==3)
     {
       cout << " - The path is saved in python/path.txt" << endl;
-      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << endl;
+      file << m_d << endl;
+      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << " ";
+      if (m_d == 2) file << "1" << endl;
+      else file << m_interpolationPoints[2].size() << endl;
       file << m_path.size() << endl;
       for (MultiVariatePoint<int>* nu : m_path)
-      file << (*nu)(0) << " " << (*nu)(1) << endl;
+      {
+        file << (*nu)(0) << " " << (*nu)(1) << " ";
+        if (m_d == 2) file << "0" << endl;
+        else file << (*nu)(2) << endl;
+      }
     }
     file.close();
   }
@@ -331,7 +341,7 @@ void Interpolation::storeInterpolationFunctions()
               for (MultiVariatePoint<int>* nu : m_path)
               {
                   if (m_method == 0)
-                      file << " " << lagrangeBasisFunction_1D((*nu)(0),m_path.size(),x[j],0);
+                      file << " " << lagrangeBasisFunction_1D((*nu)(0),x[j],0);
                   else if (m_method == 1)
                       file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
               }
@@ -360,13 +370,12 @@ double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
         else return 0;
     }
 }
-double Interpolation::lagrangeBasisFunction_1D(int j, int k, double t, int axis)
+double Interpolation::lagrangeBasisFunction_1D(int k, double t, int axis)
 {
     if (!k) return 1;
     double prod = 1;
     for (int i=0; i<k; ++i)
-        if (i!=j)
-            prod *= (t-m_lejaSequence[i]) / (m_lejaSequence[j]-m_lejaSequence[i]) ;
+        prod *= (t-m_lejaSequence[i]) / (m_lejaSequence[k]-m_lejaSequence[i]) ;
     return prod;
 }
 double Interpolation::interpolation_ND(MultiVariatePoint<double> x)
@@ -378,7 +387,7 @@ double Interpolation::interpolation_ND(MultiVariatePoint<double> x)
         for (int i=0; i<m_d; i++)
         {
             if (m_method == 0)
-                l_prod *= lagrangeBasisFunction_1D((*nu)(i),(*nu)(i),x(i),i);
+                l_prod *= lagrangeBasisFunction_1D((*nu)(i),x(i),i);
             else if (m_method == 1)
                 l_prod *= piecewiseFunction_1D((*nu)(i),x(i),i);
         }
