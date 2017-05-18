@@ -53,6 +53,7 @@ class Interpolation
         const vector<MultiVariatePoint<int>*>& path() { return m_path; };
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
         bool indiceInPath(MultiVariatePoint<int> index);
+        bool indiceInNeighborhood(MultiVariatePoint<int> index);
         double computeLastAlphaNu(MultiVariatePoint<int>* nu);
         void updateCurentNeighbours(MultiVariatePoint<int>* nu);
         void updateNextPoints(MultiVariatePoint<int>* nu);

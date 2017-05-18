@@ -73,6 +73,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         if (debug)
         {
+            Utils::separateur();
             displayPath();
             displayCurentNeighbours();
         }
@@ -85,7 +86,9 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
             else
                 val =  computeLastAlphaNu(nu);
 
+            nu->setAlpha(val);
             if (debug) cout << *nu << " " << val << " | ";
+
             if (abs(val) >= abs(max))
             {
                 argmax = nu;
@@ -113,13 +116,16 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
         }
 
         m_path.push_back(argmax);
+        m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(argmax,max));
+
         addInterpolationPoint(getPoint(*argmax));
         iteration++;
+//        cout << iteration << endl;
         if (debug) cout << endl;
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        
+/*
         if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
@@ -135,8 +141,9 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
                 return iteration;
             }
         }
-        
+*/
     }
+    cout << "Number of iterations : " << iteration << endl;
     return iteration;
 }
 void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>* nu)
@@ -156,6 +163,9 @@ void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>* nu)
 void Interpolation::updateNextPoints(MultiVariatePoint<int>* nu)
 {
     m_curentNeighbours.remove(nu);
+    for (MultiVariatePoint<int>* mu : m_curentNeighbours)
+        mu->incrWaitingTime();
+
     for (int i=0; i<m_d; i++)
     {
         double inf, sup;
@@ -165,14 +175,14 @@ void Interpolation::updateNextPoints(MultiVariatePoint<int>* nu)
             MultiVariatePoint<int>* mu1 = new MultiVariatePoint<int>(*nu);
             inf = node->left()->key();
             (*mu1)(i) = BinaryTree::getIndice(inf);
-            if (!indiceInPath(*mu1)) m_curentNeighbours.push_back(mu1);
+            if (!indiceInPath(*mu1) && !indiceInNeighborhood(*mu1)) m_curentNeighbours.push_back(mu1);
         }
         if (node->right())
         {
             MultiVariatePoint<int>* mu2 = new MultiVariatePoint<int>(*nu);
             sup = node->right()->key();
             (*mu2)(i) = BinaryTree::getIndice(sup);
-            if (!indiceInPath(*mu2)) m_curentNeighbours.push_back(mu2);
+            if (!indiceInPath(*mu2) && !indiceInNeighborhood(*mu2) ) m_curentNeighbours.push_back(mu2);
         }
     }
 }
@@ -194,6 +204,13 @@ bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePoint<int>* nu)
     for (int i=0; i<m_d; i++)
         res = res && isNeighbour[i];
     return res;
+}
+bool Interpolation::indiceInNeighborhood(MultiVariatePoint<int> index)
+{
+    for (MultiVariatePoint<int>* nu : m_curentNeighbours)
+        if (index==*nu)
+            return true;
+    return false;
 }
 bool Interpolation::indiceInPath(MultiVariatePoint<int> index)
 {
@@ -218,8 +235,6 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
         }
         res -= m_alphaMap[l] * basisFuncProd;
     }
-    m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(nu,res));
-    nu->setAlpha(res);
     return res;
 }
 /******************************************************************************/
@@ -257,6 +272,7 @@ void Interpolation::displayPath()
     for (int i=0; i<n; i++)
     {
         if (i>0) cout << "\t";
+        cout << " " << i << " :";
         cout << " [" << *m_path[i] << ":" << getPoint(*m_path[i]) << "]";
         cout << " --> alpha(" << *m_path[i] << ") = " << m_alphaMap[m_path[i]] << endl;
     }
@@ -272,7 +288,7 @@ void Interpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePoint<int>* nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(*nu) <<") [" << nu->getWaitingTime() << "] | ";
+        cout << "(" << (*nu) << ":" << getPoint(*nu) <<") [" << nu << " " << nu->getWaitingTime() << "] | ";
     cout << endl;
 }
 void Interpolation::displayInterpolationPointsInEachDirection()
