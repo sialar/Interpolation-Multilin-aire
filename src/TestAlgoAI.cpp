@@ -28,7 +28,6 @@ int chooseNbTestPoints(int argc, char* argv[])
     cout << " - Choose the number ot test points : ";
     cin >> nbTestPoints;
   }
-  Utils::separateur();
   return nbTestPoints;
 }
 
@@ -55,6 +54,7 @@ int chooseMaxIteration(int argc, char* argv[])
     cout << " - Choose the maximum number of iteration : ";
     cin >> maxIteration;
   }
+  Utils::separateur();
   return maxIteration;
 }
 

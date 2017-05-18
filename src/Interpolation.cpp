@@ -122,12 +122,11 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         addInterpolationPoint(getPoint(*argmax));
         iteration++;
-//        cout << iteration << endl;
         if (debug) cout << endl;
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-/*
+
         if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
@@ -143,7 +142,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
                 return iteration;
             }
         }
-*/
+
     }
     cout << "Number of iterations : " << iteration << endl;
     return iteration;

@@ -205,7 +205,7 @@ double Utils::gNd(MultiVariatePoint<double> x)
     //temp += pow(x(i),2);
     //return temp;
 
-    //double temp = 1;
+    //double temp = 0;
     //for (int i=0; i<x.getD(); i++)
     //  temp += sqrt(1 - pow(x(i),2));
     //return temp;
