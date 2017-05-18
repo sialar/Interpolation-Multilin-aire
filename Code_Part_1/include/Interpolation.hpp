@@ -28,7 +28,8 @@ class Interpolation
         vector<double> m_middlePoints;
 
         map<MultiVariatePoint<int>*, double> m_alphaMap;
-        vector<set<double>> m_points;
+        vector<vector<double>> m_interpolationPoints;
+        vector<MultiVariatePoint<double>> m_interpolationNodes;
         vector<MultiVariatePoint<double>> m_testPoints;
         vector<MultiVariatePoint<int>*> m_path;
         list<MultiVariatePoint<int>*> m_curentNeighbours;
@@ -42,10 +43,11 @@ class Interpolation
         ~Interpolation();
 
         /************************* Data points ********************************/
-        const vector<set<double>>& points() { return m_points; };
+        const vector<vector<double>>& points() { return m_interpolationPoints; };
+        const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
         MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
+        void addInterpolationPoint(MultiVariatePoint<double> p);
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
-        void addInterpolationPoint(MultiVariatePoint<int> nu);
 
         /************************* AI algo ************************************/
         const vector<MultiVariatePoint<int>*>& path() { return m_path; };
@@ -70,7 +72,8 @@ class Interpolation
         void displayPath();
         void displayAlphaTab();
         void displayCurentNeighbours();
-        void displayInterpolationPoints();
+        void displayInterpolationPointsInEachDirection();
+        void displayInterpolationMultiVariatePoints();
         void savePathInFile();
         void storeInterpolationFunctions();
 };

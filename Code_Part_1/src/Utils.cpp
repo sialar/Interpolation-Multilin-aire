@@ -44,7 +44,7 @@ double Utils::interpolationError(vector<double> realValue, vector<double> estima
     double e = 0;
     int n = min(int(realValue.size()),int(estimate.size()));
     for (int k=0; k<n; k++)
-        e += pow(estimate[k] - realValue[k],2);
+        e += abs(estimate[k] - realValue[k]);
     return e/n;
 }
 
@@ -195,15 +195,15 @@ vector<double> Utils::createSequenceByDichotomy(int length)
 }
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    //double temp = 0;
-    //for (int i=0; i<x.getD(); i++)
-    //temp += pow(x(i),2);
-    //return sin(sqrt(temp));
-
     double temp = 0;
     for (int i=0; i<x.getD(); i++)
     temp += pow(x(i),2);
-    return temp;
+    return sin(sqrt(temp));
+
+    //double temp = 0;
+    //for (int i=0; i<x.getD(); i++)
+    //temp += pow(x(i),2);
+    //return temp;
 
     //double temp = 1;
     //for (int i=0; i<x.getD(); i++)

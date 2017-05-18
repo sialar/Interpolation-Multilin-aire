@@ -10,7 +10,7 @@ using namespace std;
 int chooseDimension(int argc, char* argv[])
 {
     if (argc > 1) return stoi(argv[1]);
-    int dim = 0;
+    int dim = -1;
     while (dim < 0)
     {
         cout << " - Choose the space dimension : ";
@@ -34,6 +34,7 @@ int chooseMaxIteration(int argc, char* argv[])
 int chooseMethod(int argc, char* argv[])
 {
     if (argc > 3) return stoi(argv[3]);
+    Utils::separateur();
     int method = -1;
     while (method!=0 && method!=1)
     {
@@ -52,12 +53,12 @@ int main( int argc, char* argv[] )
     vector<MultiVariatePoint<double>> testPoints;
     vector<double> realValues, estimate;
 
+    Utils::separateur();
     int dim = chooseDimension(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
     int method = chooseMethod(argc,argv);
 
     Interpolation* interp = new Interpolation(dim,maxIteration,method);
-    Utils::separateur();
 
     // Initialisation of test points
     while (nbTestPoints<1)
@@ -99,8 +100,14 @@ int main( int argc, char* argv[] )
     Utils::separateur();
 
     interp->storeInterpolationFunctions();
+    interp->savePathInFile();
     interp->displayPath();
-    interp->displayInterpolationPoints();
+
+    Utils::separateur();
+    interp->displayInterpolationMultiVariatePoints();
+    cout << endl;
+    interp->displayInterpolationPointsInEachDirection();
+    Utils::separateur();
 
     return 0;
 }

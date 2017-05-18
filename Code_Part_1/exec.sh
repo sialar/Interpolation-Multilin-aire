@@ -23,9 +23,14 @@ then
 elif [ "$1" == "AI" ]
 then
     echo ""
-    echo " - Interpolation in dimension (d="$2") + AI algorithm:"
     ./bin/TestAlgoAI $2 $3 $4
-elif [ "$1" == "plot" ]
+elif [ "$1" == "PATH" ]
+then
+    echo ""
+    ./bin/TestAlgoAI $2 $3 $4
+    cd python
+    python3.5 progressive_plot.py
+elif [ "$1" == "PLOT" ]
 then
     echo ""
     ./bin/TestAlgoAI $2 $3 $4

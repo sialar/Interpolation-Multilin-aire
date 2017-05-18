@@ -8,7 +8,7 @@ Interpolation::Interpolation(int d, int nIter, int method)
     m_d = d;
     m_maxIteration = nIter;
 
-    m_points.resize(m_d);
+    m_interpolationPoints.resize(m_d);
     m_middles.resize(m_d);
 
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
@@ -27,11 +27,20 @@ MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
         point(i) = m_lejaSequence[nu(i)];
     return point;
 }
-void Interpolation::addInterpolationPoint(MultiVariatePoint<int> nu)
+void Interpolation::addInterpolationPoint(MultiVariatePoint<double> p)
 {
-    for (int i=0; i<nu.getD(); i++)
-        m_points[i].insert(m_lejaSequence[nu(i)]);
+    m_interpolationNodes.push_back(p);
+
+    bool found;
+    for (int i=0; i<m_d; i++)
+    {
+        found = false;
+        for (double x : m_interpolationPoints[i])
+            if (x == p(i)) found = true;
+        if (!found) m_interpolationPoints[i].push_back(p(i));
+    }
 }
+
 /******************************************************************************/
 
 
@@ -43,7 +52,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
     MultiVariatePoint<int>* firstPoint = new MultiVariatePoint<int>(m_d,0);
     m_path.push_back(firstPoint);
-    addInterpolationPoint(*firstPoint);
+    addInterpolationPoint(getPoint(*firstPoint));
     m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(firstPoint,Utils::gNd(getPoint(*firstPoint))));
 
     double val, max;
@@ -101,8 +110,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
         }
 
         m_path.push_back(argmax);
-        addInterpolationPoint(*argmax);
-
+        addInterpolationPoint(getPoint(*argmax));
         iteration++;
         if (debug) cout << endl;
 
@@ -264,26 +272,33 @@ void Interpolation::displayCurentNeighbours()
         cout << "(" << (*nu) << ":" << getPoint(*nu) <<") [" << nu->getWaitingTime() << "] | ";
     cout << endl;
 }
-void Interpolation::displayInterpolationPoints()
+void Interpolation::displayInterpolationPointsInEachDirection()
 {
-    set<double>::iterator it;
+    vector<double>::iterator it;
     for (int i=0; i<m_d; ++i)
     {
-        cout << " - " << m_points[i].size() << " points in direction " << i << " : { ";
-        for (it=m_points[i].begin(); it!=m_points[i].end(); it++)
+        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
+        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
             cout << *it << " ";
         cout << "}" << endl;
     }
 }
+void Interpolation::displayInterpolationMultiVariatePoints()
+{
+    cout << " - Interpolation nodes: { ";
+    for (MultiVariatePoint<double> x : m_interpolationNodes)
+        cout << x << " ";
+    cout << "}" << endl;
+}
 void Interpolation::savePathInFile()
 {
-  ofstream file("python/output_algo_AI.txt", ios::out | ios::trunc);
+  ofstream file("python/path.txt", ios::out | ios::trunc);
   if(file)
   {
     if (m_d==2)
     {
-      cout << " - The path is saved in python/output_algo_AI.txt" << endl;
-      file << m_points[0].size() << " " <<  m_points[1].size() << endl;
+      cout << " - The path is saved in python/path.txt" << endl;
+      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << endl;
       file << m_path.size() << endl;
       for (MultiVariatePoint<int>* nu : m_path)
       file << (*nu)(0) << " " << (*nu)(1) << endl;

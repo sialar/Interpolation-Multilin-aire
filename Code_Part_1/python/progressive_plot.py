@@ -20,7 +20,7 @@ def plot_picked_points_progressively(points,s,c,dt):
 
 all_points, picked_points = [], []
 
-ai_output_file = open( "output_algo_AI.txt", "r")
+ai_output_file = open( "path.txt", "r")
 lines = ai_output_file.readlines()
 ai_output_file.close()
 
@@ -40,4 +40,4 @@ for i in range(nb_points):
     picked_points.append((x,y))
 
 prepare_initial_grid(all_points,n,m,s,'g')
-plot_picked_points_progressively(picked_points,s,'r',0.5)
+plot_picked_points_progressively(picked_points,s,'r',0.05)
