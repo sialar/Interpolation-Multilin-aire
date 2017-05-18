@@ -366,6 +366,8 @@ void Interpolation::storeInterpolationFunctions()
               file << " " <<  Utils::gNd(MultiVariatePoint<double>::toMonoVariatePoint(x[j]));
               file << endl;
           }
+          for (MultiVariatePoint<int>* nu : m_path)
+              file << m_alphaMap[nu] << " ";
       }
       file.close();
     }

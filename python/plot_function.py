@@ -14,13 +14,16 @@ def get_cmap(N):
         return scalar_map.to_rgba(index)
     return map_index_to_rgb_color
 
-def plot_basis_function_progressively(x,y,dt):
+def plot_basis_function_progressively(alpha,x,y,dt):
     plt.ion()
     for i in range(int(len(y)/len(x))):
         plt.plot(x, y[i*len(x):(i+1)*len(x)], c=cmap(i))
         plt.pause(dt)
+        print("********************************************************************")
+        print(alpha[i])
     while True:
         plt.pause(dt)
+
 
 input_file = open( "plot_function.txt", "r")
 lines = input_file.readlines()
@@ -29,7 +32,7 @@ input_file.close()
 nb_functions = int(lines[0].split(" ")[0])
 nb_points = int(lines[0].split(" ")[1])
 x, y, res, real_res = [], [], [], []
-zeros = []
+alpha, zeros = [], []
 
 cmap = get_cmap(nb_functions)
 
@@ -51,6 +54,10 @@ plt.plot(x, real_res, 'k', c='r')
 plt.subplot(212)
 plt.axis([-1.1, 1.1, -1.1, 1.1])
 plt.plot(x, zeros, 'k', c='k')
-plot_basis_function_progressively(x,y,1)
 
+for k in range(0,nb_functions):
+    alpha.append(float(lines[nb_points+1].split(" ")[k]))
+
+plot_basis_function_progressively(alpha,x,y,1)
 plt.show()
+print("********************************************************************")
