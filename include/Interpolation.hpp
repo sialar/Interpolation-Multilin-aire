@@ -12,6 +12,7 @@
 #include <chrono>
 
 #include "MultiVariatePoint.hpp"
+#include "Dichotomy.hpp"
 #include "Utils.hpp"
 
 using namespace std;
@@ -19,7 +20,6 @@ using namespace std;
 class Interpolation
 {
     private:
-
         int m_method;
         int m_maxIteration;
         int m_d;
@@ -28,27 +28,24 @@ class Interpolation
         vector<double> m_middlePoints;
 
         vector<vector<double>> m_interpolationPoints;
-        vector<MultiVariatePoint<double>> m_interpolationNodes;
-        vector<MultiVariatePoint<double>> m_testPoints;
+        vector<MultiVariatePoint<double>*> m_interpolationNodes;
+        vector<MultiVariatePoint<double>*> m_testPoints;
 
         vector<MultiVariatePoint<int>*> m_path;
         map<MultiVariatePoint<int>*, double> m_alphaMap;
         list<MultiVariatePoint<int>*> m_curentNeighbours;
 
-        vector<BinaryTree*> m_middles;
-
-
     public:
-
         Interpolation(int d, int nIter, int method);
         ~Interpolation();
 
         /************************* Data points ********************************/
         const vector<vector<double>>& points() { return m_interpolationPoints; };
-        const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
-        MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
-        void addInterpolationPoint(MultiVariatePoint<double> p);
-        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
+        const vector<MultiVariatePoint<double>*>& interpolationPoints() { return m_interpolationNodes; };
+        MultiVariatePoint<double>* getPoint(MultiVariatePoint<int>* nu);
+        void addInterpolationPoint(MultiVariatePoint<double>* p);
+        void setTestPoints(vector<MultiVariatePoint<double>*> points) { m_testPoints = points; };
+        void computeBoundaries(double t, double* inf, double* sup, int axis);
 
         /************************* AI algo ************************************/
         const vector<MultiVariatePoint<int>*>& path() { return m_path; };
@@ -63,7 +60,7 @@ class Interpolation
         /*********************** Interpolation ********************************/
         double piecewiseFunction_1D(int k, double t, int axis);
         double lagrangeBasisFunction_1D(int k, double t, int axis);
-        double interpolation_ND(MultiVariatePoint<double> x);
+        double interpolation_ND(MultiVariatePoint<double>* x);
         void setMethod(int method) { m_method = method;};
 
         /********************** Test functions ********************************/

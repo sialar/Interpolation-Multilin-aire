@@ -8,6 +8,8 @@
 #include <cstring>
 #include <memory>
 
+#include "Dichotomy.hpp"
+
 using namespace std;
 
 template <typename T>
@@ -33,8 +35,9 @@ class MultiVariatePoint
         double getAlpha() const { return m_alpha; };
         void setAlpha(double alpha) { m_alpha = alpha; };
 
-        static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
-        static MultiVariatePoint<T> toMonoVariatePoint(T vec);
+        static MultiVariatePoint<T>* toMultiVariatePoint(vector<T> vec);
+        static MultiVariatePoint<T>* toMonoVariatePoint(T vec);
+        bool lowerThan(MultiVariatePoint<T> nu, int method);
 
         T &operator()(int d) const { return m_nu[d]; };
         MultiVariatePoint& operator+=(const MultiVariatePoint & v);
@@ -71,19 +74,39 @@ MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
 };
 
 template <typename T>
-MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
+MultiVariatePoint<T>* MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
 {
-    MultiVariatePoint<T> x(vec.size(),0);
+    MultiVariatePoint<T>* x = new MultiVariatePoint<T>(vec.size(),0);
     for (int i=0; i<x.getD(); i++)
-        x(i) = vec[i];
+        (*x)(i) = vec[i];
     return x;
 }
 
 template <typename T>
-MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
+MultiVariatePoint<T>* MultiVariatePoint<T>::toMonoVariatePoint(T t)
 {
-    MultiVariatePoint<T> x(1,t);
+    MultiVariatePoint<T>* x = new MultiVariatePoint<T>(1,t);
     return x;
+}
+
+template <typename T>
+bool MultiVariatePoint<T>::lowerThan(MultiVariatePoint<T> nu, int method)
+{
+    if (method == 0)
+    {
+        for (int i=0; i<m_d; i++)
+            if (m_nu[i] > nu.m_nu[i])
+                return false;
+        return true;
+    }
+    else
+    {
+        if (m_d==1) return true;
+        for (int i=0; i<m_d; i++)
+            if (!Dichotomy::isAncestorOf(m_nu[i],nu.m_nu[i]))
+                return false;
+        return true;
+    }
 }
 
 template <typename T>
@@ -96,8 +119,8 @@ MultiVariatePoint<T>& MultiVariatePoint<T>::operator=(const MultiVariatePoint<T>
         {
             delete[] m_nu;
             m_nu = new T[m_d];
-            m_waitingTime = nu.m_waitingTime;
-            m_alpha = nu.m_alpha;
+            m_waitingTime = 0;
+            m_alpha = 0;
             memcpy(m_nu,nu.m_nu,sizeof(T)*nu.getD());
         }
     }

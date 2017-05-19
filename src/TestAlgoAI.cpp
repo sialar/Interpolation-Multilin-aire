@@ -58,7 +58,6 @@ int chooseMaxIteration(int argc, char* argv[])
   return maxIteration;
 }
 
-
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
@@ -72,7 +71,7 @@ int main( int argc, char* argv[] )
     Interpolation* interp = new Interpolation(dim,maxIteration,method);
 
     // Initialisation of test points
-    vector<MultiVariatePoint<double>> testPoints;
+    vector<MultiVariatePoint<double>*> testPoints;
     vector<double> realValues, estimate;
     testPoints.resize(nbTestPoints);
     for (int j=0; j<nbTestPoints; j++)
@@ -102,18 +101,20 @@ int main( int argc, char* argv[] )
 
     // Computing real values at test points
     cout << " - Real values of function g evaluated at test points :" << endl;
-    for (MultiVariatePoint<double> p : testPoints)
+    for (MultiVariatePoint<double>* p : testPoints)
         realValues.push_back(Utils::gNd(p));
     Utils::displayPoints(realValues);
 
     // Approximating g at test points
     cout << endl << " - Approximation of function g at test points : " << endl;
-    for (MultiVariatePoint<double> p : testPoints)
+    for (MultiVariatePoint<double>* p : testPoints)
         estimate.push_back(interp->interpolation_ND(p));
     Utils::displayPoints(estimate);
     // Evaluation
     cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
+
+    //delete interp;
 
     return 0;
 }

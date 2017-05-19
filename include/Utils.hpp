@@ -9,7 +9,6 @@
 #include <limits>
 
 #include "MultiVariatePoint.hpp"
-#include "BinaryTree.hpp"
 
 using namespace std;
 
@@ -25,11 +24,11 @@ class Utils
         // Display data and results
         static void separateur();
         static void displayPoints(vector<double> points);
-        static void displayPoints(vector<MultiVariatePoint<double>> v);
+        static void displayPoints(vector<MultiVariatePoint<double>*> v);
 
         // Useful functions
         static double randomValue(double a, double b);
-        static MultiVariatePoint<double> createRandomMultiVariatePoint(int d);
+        static MultiVariatePoint<double>* createRandomMultiVariatePoint(int d);
         static double interpolationError(vector<double> realValue, vector<double> estimate);
 
         // Intermediate function for Leja points computation
@@ -37,7 +36,7 @@ class Utils
         static double computeNewLejaPointFromSequence(vector<double> seq);
 
         // Write data in external file
-        static void storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue);
+        static void storeResult(vector<MultiVariatePoint<double>*> x, vector<double> approx, vector<double> realValue);
         static void storeFunction(vector<double> x, vector<double> y, vector<double> z);
         static void storeLejaSequenceInFile(vector<vector<double>> x);
         static void storeLejaSequenceInFile(int length);
@@ -45,7 +44,7 @@ class Utils
         static vector<double> createSequenceByDichotomy(int length);
 
         // Function to approximate
-        static double gNd(MultiVariatePoint<double> x);
+        static double gNd(MultiVariatePoint<double>* x);
 
         // Useful for uniform points and Leja sequence creation
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
@@ -58,7 +57,6 @@ class Utils
         static vector<double> createLejaSequence(int nbPoints);
         // Create sequence of middle points
         static vector<double> createSequenceOfMiddles(int nbPoints);
-
 };
 
 #endif
