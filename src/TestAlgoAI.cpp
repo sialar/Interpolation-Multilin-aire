@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
     int method = chooseMethod(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
 
-    Interpolation* interp = new Interpolation(dim,maxIteration,method);
+    InterpolationPtr interp(new Interpolation(dim,maxIteration,method));
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -86,37 +86,36 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl;
-    interp->testPathBuilt(threshold, false);
+    interp->testPathBuilt(threshold, true);
     Utils::separateur();
 
     interp->storeInterpolationFunctions();
     interp->savePathInFile();
-    //interp->displayPath();
-    //interp->displayAlphaTab();
-    Utils::separateur();
+    if (maxIteration<11)
+    {
+        interp->displayPath();
+        Utils::separateur();
+        interp->displayInterpolationMultiVariatePoints();
+        cout << endl;
+        interp->displayInterpolationPointsInEachDirection();
+        Utils::separateur();
+    }
 
-    /*
-    interp->displayInterpolationMultiVariatePoints();
-    cout << endl;
-    interp->displayInterpolationPointsInEachDirection();
-    Utils::separateur();
-    */
     // Computing real values at test points
     cout << " - Real values of function g evaluated at test points :" << endl;
     for (MultiVariatePoint<double> p : testPoints)
         realValues.push_back(Utils::gNd(p));
-    Utils::displayPoints(realValues);
+    if (nbTestPoints < 11)
+        Utils::displayPoints(realValues);
 
     // Approximating g at test points
     cout << endl << " - Approximation of function g at test points : " << endl;
     for (MultiVariatePoint<double> p : testPoints)
         estimate.push_back(interp->interpolation_ND(p));
-    Utils::displayPoints(estimate);
+    if (nbTestPoints < 11) Utils::displayPoints(estimate);
     // Evaluation
     cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
-
-    delete interp;
 
     return 0;
 }

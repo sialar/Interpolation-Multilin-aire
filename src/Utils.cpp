@@ -89,15 +89,15 @@ void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
   }
 }
 
-void Utils::storeResult(vector<MultiVariatePoint<double>*> x, vector<double> approx, vector<double> realValue)
+void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue)
 {
     ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
     if(file)
     {
         for (int i=0; i<int(x.size()); i++)
         {
-            for (int d=0; d<x[i]->getD(); d++)
-                file << (*x[i])(d) << " ";
+            for (int d=0; d<x[i].getD(); d++)
+                file << (x[i])(d) << " ";
             cout << approx[i] << " " << realValue[i] << endl;
         }
         file.close();

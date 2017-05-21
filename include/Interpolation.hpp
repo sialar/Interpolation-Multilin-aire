@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <cmath>
 #include <sys/time.h>
@@ -31,9 +32,9 @@ class Interpolation
         vector<MultiVariatePoint<double>> m_interpolationNodes;
         vector<MultiVariatePoint<double>> m_testPoints;
 
-        vector<MultiVariatePoint<int>*> m_path;
-        map<MultiVariatePoint<int>*, double> m_alphaMap;
-        list<MultiVariatePoint<int>*> m_curentNeighbours;
+        vector<MultiVariatePointPtr<int>> m_path;
+        map<MultiVariatePointPtr<int>, double> m_alphaMap;
+        list<MultiVariatePointPtr<int>> m_curentNeighbours;
 
     public:
         Interpolation(int d, int nIter, int method);
@@ -48,14 +49,14 @@ class Interpolation
         void computeBoundaries(double t, double* inf, double* sup, int axis);
 
         /************************* AI algo ************************************/
-        const vector<MultiVariatePoint<int>*>& path() { return m_path; };
+        const vector<MultiVariatePointPtr<int>>& path() { return m_path; };
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
         bool indiceInPath(MultiVariatePoint<int> index);
         bool indiceInNeighborhood(MultiVariatePoint<int> index);
-        double computeLastAlphaNu(MultiVariatePoint<int>* nu);
-        void updateCurentNeighbours(MultiVariatePoint<int>* nu);
-        void updateNextPoints(MultiVariatePoint<int>* nu);
-        bool isCorrectNeighbourToCurentPath(MultiVariatePoint<int>* nu);
+        double computeLastAlphaNu(MultiVariatePointPtr<int> nu);
+        void updateCurentNeighbours(MultiVariatePointPtr<int> nu);
+        void updateNextPoints(MultiVariatePointPtr<int> nu);
+        bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<int> nu);
 
         /*********************** Interpolation ********************************/
         double piecewiseFunction_1D(int k, double t, int axis);
@@ -76,5 +77,7 @@ class Interpolation
         void savePathInFile();
         void storeInterpolationFunctions();
 };
+
+typedef std::unique_ptr<Interpolation> InterpolationPtr;
 
 #endif

@@ -18,7 +18,7 @@ then
     echo " - Sequence de Leja"
     ./bin/TestLejaSequence $2 $3
     cd python
-    python3.5 leja_sequence.py
+    python3.5 -W ignore leja_sequence.py
 
 elif [ "$1" == "AI" ]
 then
@@ -35,11 +35,11 @@ then
     echo ""
     ./bin/TestAlgoAI 2 1 0
     cd python
-    python3.5 progressive_plot.py
+    python3.5 -W ignore progressive_plot.py
 elif [ "$1" == "PLOT" ]
 then
     echo ""
-    ./bin/TestAlgoAI 1 1000
+    ./bin/TestAlgoAI 1 10000
     cd python
-    python3.5 plot_function.py
+    python3.5 -W ignore plot_function.py
 fi

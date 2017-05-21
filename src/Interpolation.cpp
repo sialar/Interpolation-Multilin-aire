@@ -2,10 +2,10 @@
 
 Interpolation::~Interpolation()
 {
-    for (MultiVariatePoint<int>* p : m_path)
-        delete p;
+    //for (MultiVariatePointPtr<int> p : m_path)
+    //    delete p;
 
-    //map<MultiVariatePoint<int>*,double>::iterator it;
+    //map<MultiVariatePointPtr<int>,double>::iterator it;
     //for (it = m_alphaMap.begin(); it != m_alphaMap.end(); it++)
         //delete get<0>(*it);
 
@@ -69,11 +69,11 @@ void Interpolation::computeBoundaries(double t, double* inf, double* sup, int ax
 
 
 /************************* AI algo ********************************************/
-bool alphaLess(MultiVariatePoint<int>* nu, MultiVariatePoint<int>* mu)
+bool alphaLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
     return abs(nu->getAlpha()) < abs(mu->getAlpha());
 }
-bool ageLess(MultiVariatePoint<int>* nu, MultiVariatePoint<int>* mu)
+bool ageLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
     return abs(nu->getWaitingTime()) < abs(mu->getWaitingTime());
 }
@@ -82,11 +82,12 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
     m_curentNeighbours.clear();
     m_path.clear();
 
-    int iteration = 1;
+    int iteration = 0;
     double val, max, e = 1e-10;
     bool allAlphaLowerThanE = true;
-    MultiVariatePoint<int>* argmax = new MultiVariatePoint<int>(m_d,0);
+    MultiVariatePointPtr<int> argmax = make_shared<MultiVariatePoint<int>>(m_d,0.0);
     m_curentNeighbours.push_back(argmax);
+
 
     while (!m_curentNeighbours.empty() && iteration < m_maxIteration)
     {
@@ -98,9 +99,9 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
             displayPath();
             displayCurentNeighbours();
         }
-        for (MultiVariatePoint<int>* nu : m_curentNeighbours)
+        for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
         {
-            map<MultiVariatePoint<int>*,double>::iterator it = m_alphaMap.find(nu);
+            map<MultiVariatePointPtr<int>,double>::iterator it = m_alphaMap.find(nu);
             if (it != m_alphaMap.end())
                 val = m_alphaMap[nu];
             else
@@ -114,7 +115,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
         max = argmax->getAlpha();
 
         m_path.push_back(argmax);
-        m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(argmax,max));
+        m_alphaMap.insert(pair<MultiVariatePointPtr<int>,double>(argmax,max));
         addInterpolationPoint(getPoint(*argmax));
 
         if (m_method)
@@ -147,24 +148,24 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
     }
     return iteration;
 }
-void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>* nu)
+void Interpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
 {
   m_curentNeighbours.remove(nu);
-  for (MultiVariatePoint<int>* mu : m_curentNeighbours)
+  for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
       mu->incrWaitingTime();
 
   for (int k=0; k<nu->getD(); k++)
   {
-      MultiVariatePoint<int>* nu1 = new MultiVariatePoint<int>(*nu);
+      MultiVariatePointPtr<int> nu1 = make_shared<MultiVariatePoint<int>>(*nu);
       (*nu1)(k)++;
       if (isCorrectNeighbourToCurentPath(nu1))
           m_curentNeighbours.push_back(nu1);
   }
 }
-void Interpolation::updateNextPoints(MultiVariatePoint<int>* nu)
+void Interpolation::updateNextPoints(MultiVariatePointPtr<int> nu)
 {
     m_curentNeighbours.remove(nu);
-    for (MultiVariatePoint<int>* mu : m_curentNeighbours)
+    for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
         mu->incrWaitingTime();
 
     vector<double> childrenVal;
@@ -173,14 +174,14 @@ void Interpolation::updateNextPoints(MultiVariatePoint<int>* nu)
         childrenVal = Dichotomy::computeChildrenValue((*nu)(i));
         for (int k=0; k<int(childrenVal.size()); k++)
         {
-            MultiVariatePoint<int>* mu = new MultiVariatePoint<int>(*nu);
+            MultiVariatePointPtr<int> mu = make_shared<MultiVariatePoint<int>>(*nu);
             (*mu)(i) = Dichotomy::getIndice(childrenVal[k]);
             if (!indiceInPath(*mu) && !indiceInNeighborhood(*mu))
                 m_curentNeighbours.push_back(mu);
         }
     }
 }
-bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePoint<int>* nu)
+bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<int> nu)
 {
     bool isNeighbour[m_d];
     for (int i=0; i<m_d; i++)
@@ -201,23 +202,23 @@ bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePoint<int>* nu)
 }
 bool Interpolation::indiceInNeighborhood(MultiVariatePoint<int> index)
 {
-    for (MultiVariatePoint<int>* nu : m_curentNeighbours)
+    for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
         if (index==*nu)
             return true;
     return false;
 }
 bool Interpolation::indiceInPath(MultiVariatePoint<int> index)
 {
-    for (MultiVariatePoint<int>* nu : m_path)
+    for (MultiVariatePointPtr<int> nu : m_path)
         if (index==*nu)
             return true;
     return false;
 }
-double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
+double Interpolation::computeLastAlphaNu(MultiVariatePointPtr<int> nu)
 {
     double basisFuncProd;
     double res = Utils::gNd(getPoint(*nu));
-    for (MultiVariatePoint<int>* l : m_path)
+    for (MultiVariatePointPtr<int> l : m_path)
     {
         if (l->lowerThan(*nu, m_method))
         {
@@ -232,7 +233,7 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
             res -= m_alphaMap[l] * basisFuncProd;
         }
     }
-    m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(nu,res));
+    m_alphaMap.insert(pair<MultiVariatePointPtr<int>,double>(nu,res));
     return res;
 }
 /******************************************************************************/
@@ -278,7 +279,7 @@ void Interpolation::displayPath()
 }
 void Interpolation::displayAlphaTab()
 {
-    map<MultiVariatePoint<int>*,double>::iterator it;
+    map<MultiVariatePointPtr<int>,double>::iterator it;
     cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
     for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
         cout << "(" << *(get<0>(*it)) << ":" << getPoint(*(get<0>(*it))) << ":" << get<0>(*it) << ") : " << get<1>(*it) <<  endl;
@@ -286,8 +287,8 @@ void Interpolation::displayAlphaTab()
 void Interpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
-    for (MultiVariatePoint<int>* nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(*nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
+    for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
+        cout << "(" << (*nu) << ":" << getPoint(*nu) /*<< ":" << nu*/ << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
 void Interpolation::displayInterpolationPointsInEachDirection()
@@ -321,7 +322,7 @@ void Interpolation::savePathInFile()
       if (m_d == 2) file << "1" << endl;
       else file << m_interpolationPoints[2].size() << endl;
       file << m_path.size() << endl;
-      for (MultiVariatePoint<int>* nu : m_path)
+      for (MultiVariatePointPtr<int> nu : m_path)
       {
         file << (*nu)(0) << " " << (*nu)(1) << " ";
         if (m_d == 2) file << "0" << endl;
@@ -350,11 +351,11 @@ void Interpolation::storeInterpolationFunctions()
               x.push_back(m_testPoints[i](0));
           sort(x.begin(), x.end());
           file << m_path.size() << " " << nbPoints << endl;
-          MultiVariatePoint<double>* p = NULL;
+          MultiVariatePoint<double> p;
           for (int j=0; j<nbPoints; j++)
           {
               file << x[j];
-              for (MultiVariatePoint<int>* nu : m_path)
+              for (MultiVariatePointPtr<int> nu : m_path)
               {
                   if (m_method == 0)
                       file << " " << lagrangeBasisFunction_1D((*nu)(0),x[j],0);
@@ -362,13 +363,15 @@ void Interpolation::storeInterpolationFunctions()
                       file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
               }
               p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-              file << " " << interpolation_ND(*p);
-              file << " " <<  Utils::gNd(*p);
+              file << " " << interpolation_ND(p);
+              file << " " <<  Utils::gNd(p);
               file << endl;
           }
-          for (MultiVariatePoint<int>* nu : m_path)
+          for (MultiVariatePointPtr<int> nu : m_path)
               file << m_alphaMap[nu] << " ";
-          delete p;
+          file << endl;
+          for (MultiVariatePoint<double> nu : m_interpolationNodes)
+              file << nu(0) << " ";
       }
       file.close();
     }
@@ -401,7 +404,7 @@ double Interpolation::lagrangeBasisFunction_1D(int k, double t, int axis)
 double Interpolation::interpolation_ND(MultiVariatePoint<double>& x)
 {
     double l_prod, sum = 0;
-    for (MultiVariatePoint<int>* nu : m_path)
+    for (MultiVariatePointPtr<int> nu : m_path)
     {
         l_prod = 1;
         for (int i=0; i<m_d; i++)

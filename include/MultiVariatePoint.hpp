@@ -35,8 +35,8 @@ class MultiVariatePoint
         double getAlpha() const { return m_alpha; };
         void setAlpha(double alpha) { m_alpha = alpha; };
 
-        static MultiVariatePoint<T>* toMultiVariatePoint(vector<T> vec);
-        static MultiVariatePoint<T>* toMonoVariatePoint(T vec);
+        static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
+        static MultiVariatePoint<T> toMonoVariatePoint(T vec);
         bool lowerThan(MultiVariatePoint<T> nu, int method);
 
         T &operator()(int d) const { return m_nu[d]; };
@@ -45,7 +45,7 @@ class MultiVariatePoint
 };
 
 template <typename T>
-using MultiVariatePointPtr = std::shared_ptr<MultiVariatePoint<T>>;
+using MultiVariatePointPtr = shared_ptr<MultiVariatePoint<T>>;
 
 template <typename T>
 MultiVariatePoint<T>::~MultiVariatePoint()
@@ -73,20 +73,20 @@ MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
     *this = nu;
 };
 
+
 template <typename T>
-MultiVariatePoint<T>* MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
+MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
 {
-    MultiVariatePoint<T>* x = new MultiVariatePoint<T>(vec.size(),0);
+    MultiVariatePoint<T> x(vec.size(),0);
     for (int i=0; i<x.getD(); i++)
-        (*x)(i) = vec[i];
+       x(i) = vec[i];
     return x;
 }
 
 template <typename T>
-MultiVariatePoint<T>* MultiVariatePoint<T>::toMonoVariatePoint(T t)
+MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
 {
-    MultiVariatePoint<T>* x = new MultiVariatePoint<T>(1,t);
-    return x;
+    return MultiVariatePoint<T>(1,t);
 }
 
 template <typename T>

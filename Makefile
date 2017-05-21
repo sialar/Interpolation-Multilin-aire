@@ -3,7 +3,7 @@ INCLUDE = include
 BIN = bin
 
 CXX = g++
-CXXFLAGS = -O3 -g -lm -std=c++14 -Wall
+CXXFLAGS = -O3 -lm -std=c++14 -Wall -g
 
 OBJ_FILES = $(BIN)/Interpolation.o $(BIN)/Utils.o $(BIN)/Dichotomy.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
