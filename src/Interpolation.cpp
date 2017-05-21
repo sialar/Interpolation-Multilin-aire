@@ -2,20 +2,13 @@
 
 Interpolation::~Interpolation()
 {
-    /*
-    for (MultiVariatePoint<double>* p : m_interpolationNodes)
-        delete p;
-    for (MultiVariatePoint<double>* p : m_testPoints)
-        delete p;
     for (MultiVariatePoint<int>* p : m_path)
         delete p;
-    for (MultiVariatePoint<int>* p : m_curentNeighbours)
-        delete p;
 
-    map<MultiVariatePoint<int>*,double>::iterator it;
-    for (it = m_alphaMap.begin(); it != m_alphaMap.end(); it++)
-        delete get<0>(*it);
-    */
+    //map<MultiVariatePoint<int>*,double>::iterator it;
+    //for (it = m_alphaMap.begin(); it != m_alphaMap.end(); it++)
+        //delete get<0>(*it);
+
 }
 
 Interpolation::Interpolation(int d, int nIter, int method)
@@ -31,18 +24,18 @@ Interpolation::Interpolation(int d, int nIter, int method)
 }
 
 /************************* Data Points ****************************************/
-MultiVariatePoint<double>* Interpolation::getPoint(MultiVariatePoint<int>* nu)
+MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
 {
 
-    MultiVariatePoint<double>* point = new MultiVariatePoint<double>(m_d,0.0);
+    MultiVariatePoint<double> point(m_d,0.0);
     for (int i=0; i<m_d; i++)
         if (m_method == 0)
-            (*point)(i) = m_lejaSequence[(*nu)(i)];
+            point(i) = m_lejaSequence[nu(i)];
         else
-            (*point)(i) = m_middlePoints[(*nu)(i)];
+            point(i) = m_middlePoints[nu(i)];
     return point;
 }
-void Interpolation::addInterpolationPoint(MultiVariatePoint<double>* p)
+void Interpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 {
     m_interpolationNodes.push_back(p);
 
@@ -51,8 +44,8 @@ void Interpolation::addInterpolationPoint(MultiVariatePoint<double>* p)
     {
         found = false;
         for (double x : m_interpolationPoints[i])
-            if (x == (*p)(i)) found = true;
-        if (!found) m_interpolationPoints[i].push_back((*p)(i));
+            if (x == p(i)) found = true;
+        if (!found) m_interpolationPoints[i].push_back(p(i));
     }
 }
 void Interpolation::computeBoundaries(double t, double* inf, double* sup, int axis)
@@ -122,7 +115,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         m_path.push_back(argmax);
         m_alphaMap.insert(pair<MultiVariatePoint<int>*,double>(argmax,max));
-        addInterpolationPoint(getPoint(argmax));
+        addInterpolationPoint(getPoint(*argmax));
 
         if (m_method)
             updateNextPoints(argmax);
@@ -152,8 +145,6 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
         }
         */
     }
-    //delete argmax;
-
     return iteration;
 }
 void Interpolation::updateCurentNeighbours(MultiVariatePoint<int>* nu)
@@ -225,7 +216,7 @@ bool Interpolation::indiceInPath(MultiVariatePoint<int> index)
 double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
 {
     double basisFuncProd;
-    double res = Utils::gNd(getPoint(nu));
+    double res = Utils::gNd(getPoint(*nu));
     for (MultiVariatePoint<int>* l : m_path)
     {
         if (l->lowerThan(*nu, m_method))
@@ -234,9 +225,9 @@ double Interpolation::computeLastAlphaNu(MultiVariatePoint<int>* nu)
             for (int p=0; p<m_d; p++)
             {
                 if (m_method == 0)
-                    basisFuncProd *= lagrangeBasisFunction_1D((*l)(p),(*getPoint(nu))(p),p);
+                    basisFuncProd *= lagrangeBasisFunction_1D((*l)(p),getPoint(*nu)(p),p);
                 else if (m_method == 1)
-                    basisFuncProd *= piecewiseFunction_1D((*l)(p),(*getPoint(nu))(p),p); // TODO: getPoint() for method 1
+                    basisFuncProd *= piecewiseFunction_1D((*l)(p),getPoint(*nu)(p),p); // TODO: getPoint(*) for method 1
             }
             res -= m_alphaMap[l] * basisFuncProd;
         }
@@ -260,7 +251,7 @@ void Interpolation::testPathBuilt(double threshold, bool debug)
 double Interpolation::tryWithCurentPath()
 {
   vector<double> realValues, estimate;
-  for (MultiVariatePoint<double>* p : m_testPoints)
+  for (MultiVariatePoint<double> p : m_testPoints)
   {
     realValues.push_back(Utils::gNd(p));
     estimate.push_back(interpolation_ND(p));
@@ -280,7 +271,7 @@ void Interpolation::displayPath()
     {
         if (i>0) cout << "\t";
         cout << " " << i << " :";
-        cout << " [" << *m_path[i] << ":" << getPoint(m_path[i]) << ":" << m_path[i] << "]";
+        cout << " [" << *m_path[i] << ":" << getPoint(*m_path[i]) << ":" << m_path[i] << "]";
         cout << " --> alpha" << *m_path[i] << " = " << m_alphaMap[m_path[i]] << endl;
     }
     cout << endl;
@@ -290,13 +281,13 @@ void Interpolation::displayAlphaTab()
     map<MultiVariatePoint<int>*,double>::iterator it;
     cout << "Values of alpha (" << m_alphaMap.size() << ") :" << endl;
     for (it=m_alphaMap.begin(); it!=m_alphaMap.end(); it++)
-        cout << "(" << *(get<0>(*it)) << ":" << getPoint((get<0>(*it))) << ":" << get<0>(*it) << ") : " << get<1>(*it) <<  endl;
+        cout << "(" << *(get<0>(*it)) << ":" << getPoint(*(get<0>(*it))) << ":" << get<0>(*it) << ") : " << get<1>(*it) <<  endl;
 }
 void Interpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePoint<int>* nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
+        cout << "(" << (*nu) << ":" << getPoint(*nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
 void Interpolation::displayInterpolationPointsInEachDirection()
@@ -313,8 +304,8 @@ void Interpolation::displayInterpolationPointsInEachDirection()
 void Interpolation::displayInterpolationMultiVariatePoints()
 {
     cout << " - Interpolation nodes: { ";
-    for (MultiVariatePoint<double>* x : m_interpolationNodes)
-        cout << (*x) << " ";
+    for (MultiVariatePoint<double> x : m_interpolationNodes)
+        cout << x << " ";
     cout << "}" << endl;
 }
 void Interpolation::savePathInFile()
@@ -354,12 +345,12 @@ void Interpolation::storeInterpolationFunctions()
       if (m_d==1)
       {
           vector<double> x;
-          MultiVariatePoint<double>* p = NULL;
           int nbPoints = int(m_testPoints.size());
           for (int i=0; i<nbPoints; i++)
-              x.push_back((*m_testPoints[i])(0));
+              x.push_back(m_testPoints[i](0));
           sort(x.begin(), x.end());
           file << m_path.size() << " " << nbPoints << endl;
+          MultiVariatePoint<double>* p = NULL;
           for (int j=0; j<nbPoints; j++)
           {
               file << x[j];
@@ -371,13 +362,13 @@ void Interpolation::storeInterpolationFunctions()
                       file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
               }
               p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-              file << " " << interpolation_ND(p);
-              file << " " <<  Utils::gNd(p);
+              file << " " << interpolation_ND(*p);
+              file << " " <<  Utils::gNd(*p);
               file << endl;
           }
           for (MultiVariatePoint<int>* nu : m_path)
               file << m_alphaMap[nu] << " ";
-          //delete p;
+          delete p;
       }
       file.close();
     }
@@ -407,7 +398,7 @@ double Interpolation::lagrangeBasisFunction_1D(int k, double t, int axis)
         prod *= (t-m_lejaSequence[i]) / (m_lejaSequence[k]-m_lejaSequence[i]) ;
     return prod;
 }
-double Interpolation::interpolation_ND(MultiVariatePoint<double>* x)
+double Interpolation::interpolation_ND(MultiVariatePoint<double>& x)
 {
     double l_prod, sum = 0;
     for (MultiVariatePoint<int>* nu : m_path)
@@ -416,9 +407,9 @@ double Interpolation::interpolation_ND(MultiVariatePoint<double>* x)
         for (int i=0; i<m_d; i++)
         {
             if (m_method == 0)
-                l_prod *= lagrangeBasisFunction_1D((*nu)(i),(*x)(i),i);
+                l_prod *= lagrangeBasisFunction_1D((*nu)(i),x(i),i);
             else if (m_method == 1)
-                l_prod *= piecewiseFunction_1D((*nu)(i),(*x)(i),i);
+                l_prod *= piecewiseFunction_1D((*nu)(i),x(i),i);
         }
         sum += l_prod * m_alphaMap[nu];
     }

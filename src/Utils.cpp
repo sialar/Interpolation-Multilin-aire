@@ -18,12 +18,12 @@ void Utils::displayPoints(vector<double> points)
     cout << points[points.size()-1] << " }" << endl;
 }
 
-void Utils::displayPoints(vector<MultiVariatePoint<double>*> points)
+void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
 {
     cout << "{ ";
     for (size_t i=0; i<points.size()-1; ++i)
-        cout << (*points[i]) << " ; ";
-    cout << (*points[points.size()-1]) << " }" << endl;
+        cout << points[i] << " ; ";
+    cout << points[points.size()-1] << " }" << endl;
 }
 
 double Utils::randomValue(double a, double b)
@@ -31,11 +31,11 @@ double Utils::randomValue(double a, double b)
   return ( rand()/(double)RAND_MAX ) * (b-a) + a;
 }
 
-MultiVariatePoint<double>* Utils::createRandomMultiVariatePoint(int d)
+MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
 {
-    MultiVariatePoint<double>* point = new MultiVariatePoint<double>(d,0);
+    MultiVariatePoint<double> point(d,0);
     for (int i=0; i<d; i++)
-        (*point)(i) = Utils::randomValue(-1,1);
+        point(i) = Utils::randomValue(-1,1);
     return point;
 }
 
@@ -193,22 +193,22 @@ vector<double> Utils::createSequenceByDichotomy(int length)
     }
     return sequence;
 }
-double Utils::gNd(MultiVariatePoint<double>* x)
+double Utils::gNd(MultiVariatePoint<double> x)
 {
+    //double temp = 0;
+    //for (int i=0; i<x.getD(); i++)
+    //temp += pow(x(i),2);
+    //return sin(sqrt(temp));
+
+    //double temp = 0;
+    //for (int i=0; i<x.getD(); i++)
+    //temp += pow(x(i),2);
+    //return temp;
+
     double temp = 0;
-    for (int i=0; i<x->getD(); i++)
-    temp += pow((*x)(i),2);
-    return sin(sqrt(temp));
-
-    //double temp = 0;
-    //for (int i=0; i<x->getD(); i++)
-    //temp += pow((*x)(i),2);
-    //return temp;
-
-    //double temp = 0;
-    //for (int i=0; i<x->getD(); i++)
-    //  temp += sqrt(1 - pow((*x)(i),2));
-    //return temp;
+    for (int i=0; i<x.getD(); i++)
+      temp += sqrt(1 - pow(x(i),2));
+    return temp;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)

@@ -24,11 +24,11 @@ class Utils
         // Display data and results
         static void separateur();
         static void displayPoints(vector<double> points);
-        static void displayPoints(vector<MultiVariatePoint<double>*> v);
+        static void displayPoints(vector<MultiVariatePoint<double>> v);
 
         // Useful functions
         static double randomValue(double a, double b);
-        static MultiVariatePoint<double>* createRandomMultiVariatePoint(int d);
+        static MultiVariatePoint<double> createRandomMultiVariatePoint(int d);
         static double interpolationError(vector<double> realValue, vector<double> estimate);
 
         // Intermediate function for Leja points computation
@@ -44,7 +44,7 @@ class Utils
         static vector<double> createSequenceByDichotomy(int length);
 
         // Function to approximate
-        static double gNd(MultiVariatePoint<double>* x);
+        static double gNd(MultiVariatePoint<double> x);
 
         // Useful for uniform points and Leja sequence creation
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
