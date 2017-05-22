@@ -86,12 +86,12 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl;
-    interp->testPathBuilt(threshold, false);
+    interp->testPathBuilt(threshold, maxIteration<11);
     Utils::separateur();
 
     interp->storeInterpolationFunctions();
     interp->savePathInFile();
-    if (maxIteration<11)
+    if (maxIteration<101)
     {
         interp->displayPath();
         Utils::separateur();
@@ -116,6 +116,9 @@ int main( int argc, char* argv[] )
     // Evaluation
     cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
+
+    //cout << Dichotomy::getIndice(1.63042e-322) << endl;
+    //cout << Dichotomy::getValue(135) << endl;
 
     return 0;
 }

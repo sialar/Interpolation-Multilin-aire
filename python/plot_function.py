@@ -1,10 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import sys
-from random import randint
-import matplotlib.cm as cmx
 import matplotlib.colors as colors
+import matplotlib.pyplot as plt
+import matplotlib.cm as cmx
+import numpy as np
 import warnings
+import random
+import sys
 
 def separator(N):
     for i in range(N):
@@ -20,15 +20,17 @@ def get_cmap(N):
         return scalar_map.to_rgba(index)
     return map_index_to_rgb_color
 
-def plot_basis_function_progressively(alpha,interp_points,x,y,dt):
+def plot_basis_function_progressively(alpha,interp_points,x,y,dt,nb_colors):
     for i in range(int(len(y)/len(x))):
         plt.hold(True)
-        plt.plot(x, y[i*len(x):(i+1)*len(x)], c=cmap(i))
+        print("\t\t\t\t\t\t\t\t\t\t\tx(", i, ") = ", interp_points[i])
+        print("\t\t\t\t\t\t\t\t\t\t\talpha(", i,") = ", alpha[i], end="\n\n")
+        for j in range(i):
+            plt.plot(x, y[j*len(x):(j+1)*len(x)], c='g')
+
+        plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
         plt.pause(dt)
         separator(206)
-        print("x(", i, ") = ", interp_points[i])
-        print("alpha(", i,") = ", alpha[i], end="\n\n")
-
 
 input_file = open( "plot_function.txt", "r")
 lines = input_file.readlines()
@@ -39,7 +41,11 @@ nb_points = int(lines[0].split(" ")[1])
 x, y, res, real_res = [], [], [], []
 interp_points, alpha, zeros = [], [], []
 
-cmap = get_cmap(nb_functions)
+taille = (25,10)
+plt.figure(figsize=taille)
+
+nb_colors = 10
+cmap = get_cmap(nb_colors)
 
 for k in range(1,nb_points+1):
     x.append(float(lines[k].split(" ")[0]))
@@ -57,7 +63,8 @@ plt.plot(x, res, 'k', c='g')
 plt.plot(x, real_res, 'k', c='r')
 
 plt.subplot(212)
-plt.axis([-1.1, 1.1, -1.1, 1.1])
+y_min = - (0.1 + (1 - int(sys.argv[1])))
+plt.axis([-1.1, 1.1, y_min, 1.1])
 plt.plot(x, zeros, 'k', c='k')
 
 for k in range(0,nb_functions):
@@ -66,6 +73,6 @@ for k in range(0,nb_functions):
 for k in range(0,nb_functions):
     interp_points.append(float(lines[nb_points+2].split(" ")[k]))
 
-plot_basis_function_progressively(alpha,interp_points,x,y,1)
+plot_basis_function_progressively(alpha,interp_points,x,y,1.5,nb_colors)
 plt.show()
 separator(206)

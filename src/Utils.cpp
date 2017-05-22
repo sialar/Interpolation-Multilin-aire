@@ -195,20 +195,22 @@ vector<double> Utils::createSequenceByDichotomy(int length)
 }
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    //double temp = 0;
-    //for (int i=0; i<x.getD(); i++)
-    //temp += pow(x(i),2);
-    //return sin(sqrt(temp));
-
-    //double temp = 0;
-    //for (int i=0; i<x.getD(); i++)
-    //temp += pow(x(i),2);
-    //return temp;
-
     double temp = 0;
     for (int i=0; i<x.getD(); i++)
-      temp += sqrt(1 - pow(x(i),2));
-    return temp;
+    temp += pow(x(i),2);
+    return sin(sqrt(temp));
+
+    //double temp = 0;
+    //for (int i=0; i<x.getD(); i++)
+    //temp += pow(x(i),2);
+    //return temp +1 ;
+
+    //return exp(x(0))*sin(x(0)*x(1)+2*x(1));
+
+    //double temp = 1;
+    //for (int i=0; i<x.getD(); i++)
+    //  temp *= sqrt(1 - pow(x(i),2));
+    //return temp;
 }
 
 vector<double> Utils::createUniformSequence(int nbPoints)

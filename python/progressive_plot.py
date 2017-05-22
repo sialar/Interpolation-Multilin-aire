@@ -61,5 +61,5 @@ for i in range(nb_points):
     picked_points.append((x,y,z))
 
 dim = prepare_initial_grid(all_points,n,m,l,s,'y')
-plot_picked_points_progressively(dim, picked_points,s,'k',0.05)
+plot_picked_points_progressively(dim, picked_points,s,'k',0.1)
 plt.show()

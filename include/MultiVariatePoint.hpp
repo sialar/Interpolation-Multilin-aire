@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstring>
 #include <memory>
+#include <limits>
 
 #include "Dichotomy.hpp"
 
@@ -18,8 +19,10 @@ class MultiVariatePoint
     private:
         int m_d;
         T* m_nu = NULL;
-        int m_waitingTime = 0;
         double m_alpha;
+        double m_initialAlpha;
+        int m_waitingTime;
+
    public:
 
         ~MultiVariatePoint();
@@ -35,9 +38,10 @@ class MultiVariatePoint
         double getAlpha() const { return m_alpha; };
         void setAlpha(double alpha) { m_alpha = alpha; };
 
+        bool alphaAlreadyComputed() { return (m_alpha != m_initialAlpha); };
+
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);
-        bool lowerThan(MultiVariatePoint<T> nu, int method);
 
         T &operator()(int d) const { return m_nu[d]; };
         MultiVariatePoint& operator+=(const MultiVariatePoint & v);
@@ -63,7 +67,8 @@ MultiVariatePoint<T>::MultiVariatePoint(int d, T val) : m_d(d)
         for (int i=0; i<m_d; i++)
             m_nu[i] = val;
     }
-    m_alpha = 0;
+    m_alpha = numeric_limits<int>::max();
+    m_initialAlpha = numeric_limits<int>::max();
     m_waitingTime = 0;
 }
 
@@ -71,8 +76,10 @@ template <typename T>
 MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
 {
     *this = nu;
+    m_alpha = numeric_limits<int>::max();
+    m_initialAlpha = numeric_limits<int>::max();
+    m_waitingTime = 0;
 };
-
 
 template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
@@ -87,26 +94,6 @@ template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
 {
     return MultiVariatePoint<T>(1,t);
-}
-
-template <typename T>
-bool MultiVariatePoint<T>::lowerThan(MultiVariatePoint<T> nu, int method)
-{
-    if (method == 0)
-    {
-        for (int i=0; i<m_d; i++)
-            if (m_nu[i] > nu.m_nu[i])
-                return false;
-        return true;
-    }
-    else
-    {
-        if (m_d==1) return true;
-        for (int i=0; i<m_d; i++)
-            if (!Dichotomy::isAncestorOf(m_nu[i],nu.m_nu[i]))
-                return false;
-        return true;
-    }
 }
 
 template <typename T>
@@ -158,20 +145,14 @@ bool operator<(MultiVariatePoint<T> const &nu1, MultiVariatePoint<T> const &nu2)
 template <typename T>
 bool operator==(MultiVariatePoint<T> const &nu1 , MultiVariatePoint<T> const &nu2)
 {
-    if (nu1.getD() != nu2.getD())
-        return false ;
-    else
+    if (nu1.getD() != nu2.getD()) return false ;
+    int i = 0;
+    while (i < nu1.getD())
     {
-        bool equals = true ;
-        int i = 0;
-        while (equals && (i < nu1.getD()))
-        {
-            if (nu1(i) != nu2(i))
-                equals = false ;
-            i++ ;
-        }
-        return equals ;
+        if (nu1(i) != nu2(i)) return false ;
+        i++ ;
     }
+    return true ;
 }
 
 #endif

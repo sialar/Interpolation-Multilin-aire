@@ -26,8 +26,6 @@ class Interpolation
         int m_d;
 
         vector<double> m_lejaSequence;
-        vector<double> m_middlePoints;
-
         vector<vector<double>> m_interpolationPoints;
         vector<MultiVariatePoint<double>> m_interpolationNodes;
         vector<MultiVariatePoint<double>> m_testPoints;
@@ -38,7 +36,7 @@ class Interpolation
 
     public:
         Interpolation(int d, int nIter, int method);
-        ~Interpolation();
+        ~Interpolation() {};
 
         /************************* Data points ********************************/
         const vector<vector<double>>& points() { return m_interpolationPoints; };
