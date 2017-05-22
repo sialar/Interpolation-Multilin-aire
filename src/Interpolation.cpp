@@ -288,7 +288,7 @@ void Interpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(*nu) /*<< ":" << nu*/ << ") [" << nu->getWaitingTime() << "] | ";
+        cout << "(" << (*nu) << ":" << getPoint(*nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
 void Interpolation::displayInterpolationPointsInEachDirection()
