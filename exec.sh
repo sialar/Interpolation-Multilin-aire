@@ -42,5 +42,5 @@ then
     echo ""
     ./bin/TestAlgoAI 1 10000 $2
     cd python
-    python3.5 -W ignore plot_function.py $2
+    python3.5 -W ignore plot_function.py
 fi

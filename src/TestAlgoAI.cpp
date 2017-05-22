@@ -35,11 +35,12 @@ int chooseMethod(int argc, char* argv[])
 {
     if (argc > 3) return stoi(argv[3]);
     int method = -1;
-    while (method!=0 && method!=1)
+    while (method!=0 && method!=1 && method!=2)
     {
         cout << " - Choose the method of interpolation: " << endl;
         cout << "\t - 0: Using lagrange polynomial functions and Leja points " << endl;
-        cout << "\t - 1: Using fine-tune functions and middle points: " << endl;
+        cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+        cout << "\t - 2: Using quadratic functions and middle points: " << endl;
         cin >> method;
     }
     return method;
@@ -77,9 +78,6 @@ int main( int argc, char* argv[] )
     for (int j=0; j<nbTestPoints; j++)
         testPoints[j] = Utils::createRandomMultiVariatePoint(dim);
     interp->setTestPoints(testPoints);
-    cout << " - Sequence of " << nbTestPoints << " random test points : " ;
-    Utils::displayPoints(testPoints);
-    Utils::separateur();
 
     // Path creation
     double threshold = 1e-4;
@@ -101,6 +99,10 @@ int main( int argc, char* argv[] )
         Utils::separateur();
     }
 
+    cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
+    if (nbTestPoints < 11)
+        Utils::displayPoints(testPoints);
+
     // Computing real values at test points
     cout << " - Real values of function g evaluated at test points :" << endl;
     for (MultiVariatePoint<double> p : testPoints)
@@ -116,9 +118,6 @@ int main( int argc, char* argv[] )
     // Evaluation
     cout << endl << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
-
-    //cout << Dichotomy::getIndice(1.63042e-322) << endl;
-    //cout << Dichotomy::getValue(135) << endl;
 
     return 0;
 }

@@ -38,6 +38,7 @@ input_file.close()
 
 nb_functions = int(lines[0].split(" ")[0])
 nb_points = int(lines[0].split(" ")[1])
+method = int(lines[0].split(" ")[2])
 x, y, res, real_res = [], [], [], []
 interp_points, alpha, zeros = [], [], []
 
@@ -62,8 +63,14 @@ plt.plot(x, zeros, 'k', c='k')
 plt.plot(x, res, 'k', c='g')
 plt.plot(x, real_res, 'k', c='r')
 
+if method==0:
+    y_min = -1.1
+elif method==1:
+    y_min = -0.1
+else:
+    y_min = -0.3
+
 plt.subplot(212)
-y_min = - (0.1 + (1 - int(sys.argv[1])))
 plt.axis([-1.1, 1.1, y_min, 1.1])
 plt.plot(x, zeros, 'k', c='k')
 
@@ -75,4 +82,3 @@ for k in range(0,nb_functions):
 
 plot_basis_function_progressively(alpha,interp_points,x,y,1.5,nb_colors)
 plt.show()
-separator(206)

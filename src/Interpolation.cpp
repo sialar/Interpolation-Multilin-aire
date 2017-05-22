@@ -108,7 +108,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-
+        /*
         if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
@@ -124,7 +124,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
                 return iteration;
             }
         }
-        
+        */
     }
     return iteration;
 }
@@ -145,11 +145,6 @@ void Interpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
 void Interpolation::updateNextPoints(MultiVariatePointPtr<int> nu)
 {
     m_curentNeighbours.remove(nu);
-    //for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
-    //    for (int i=0; i<mu->getD(); i++)
-    //        if ((*mu)(i) < (*nu)(i))
-    //            m_curentNeighbours.remove(mu);
-
     for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
         mu->incrWaitingTime();
 
@@ -157,21 +152,13 @@ void Interpolation::updateNextPoints(MultiVariatePointPtr<int> nu)
     for (int i=0; i<m_d; i++)
     {
         childrenVal = Dichotomy::computeChildrenValue((*nu)(i));
-
-        //cout << "HERE ";
-        //for (int i=0; i<childrenVal.size(); i++)
-        //  cout << childrenVal[i] << " ";
-        //cout << endl;
         for (int k=0; k<int(childrenVal.size()); k++)
         {
             MultiVariatePointPtr<int> mu = make_shared<MultiVariatePoint<int>>(*nu);
             (*mu)(i) = Dichotomy::getIndice(childrenVal[k]);
-            //cout << (*mu)(i) << " ";
             if (!indiceInPath(*mu) && !indiceInNeighborhood(*mu))
                 m_curentNeighbours.push_back(mu);
         }
-        //cout << endl;
-        //displayCurentNeighbours();
     }
 }
 bool Interpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<int> nu)
@@ -220,6 +207,8 @@ double Interpolation::computeLastAlphaNu(MultiVariatePointPtr<int> nu)
                 basisFuncProd *= lagrangeBasisFunction_1D((*l)(p),getPoint(*nu)(p),p);
             else if (m_method == 1)
                 basisFuncProd *= piecewiseFunction_1D((*l)(p),getPoint(*nu)(p),p);
+            else if (m_method == 2)
+                basisFuncProd *= quadraticFunction_1D((*l)(p),getPoint(*nu)(p),p);
         }
         res -= l->getAlpha() * basisFuncProd;
     }
@@ -341,7 +330,7 @@ void Interpolation::storeInterpolationFunctions()
           for (int i=0; i<nbPoints; i++)
               x.push_back(m_testPoints[i](0));
           sort(x.begin(), x.end());
-          file << m_path.size() << " " << nbPoints << endl;
+          file << m_path.size() << " " << nbPoints << " " << m_method << endl;
           MultiVariatePoint<double> p;
           for (int j=0; j<nbPoints; j++)
           {
@@ -352,6 +341,8 @@ void Interpolation::storeInterpolationFunctions()
                       file << " " << lagrangeBasisFunction_1D((*nu)(0),x[j],0);
                   else if (m_method == 1)
                       file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
+                  else if (m_method == 2)
+                      file << " " << quadraticFunction_1D((*nu)(0),x[j],0);
               }
               p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
               file << " " << interpolation_ND(p);
@@ -384,6 +375,19 @@ double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
         else return 0;
     }
 }
+double Interpolation::quadraticFunction_1D(int k, double t, int axis)
+{
+    if (k==0) return 1;
+    else if (k==1) return 0.5*t*(t - 1);
+    else if (k==2) return 0.5*t*(t + 1);
+    else
+    {
+        double sup, inf, tk = Dichotomy::getValue(k);
+        computeBoundaries(tk,&sup,&inf,axis);
+        if (t <= sup && t >= inf) return (4/pow(sup-inf,2))*(sup-t)*(t-inf);
+        else return 0;
+    }
+}
 double Interpolation::lagrangeBasisFunction_1D(int k, double t, int axis)
 {
     if (!k) return 1;
@@ -404,6 +408,8 @@ double Interpolation::interpolation_ND(MultiVariatePoint<double>& x)
                 l_prod *= lagrangeBasisFunction_1D((*nu)(i),x(i),i);
             else if (m_method == 1)
                 l_prod *= piecewiseFunction_1D((*nu)(i),x(i),i);
+            else if (m_method == 2)
+                l_prod *= quadraticFunction_1D((*nu)(i),x(i),i);
         }
         sum += l_prod * nu->getAlpha();
     }
