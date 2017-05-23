@@ -20,65 +20,78 @@ def get_cmap(N):
         return scalar_map.to_rgba(index)
     return map_index_to_rgb_color
 
-def plot_basis_function_progressively(alpha,interp_points,x,y,dt,nb_colors):
+def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
     for i in range(int(len(y)/len(x))):
         plt.hold(True)
         print("\t\t\t\t\t\t\t\t\t\t\tx(", i, ") = ", interp_points[i])
         print("\t\t\t\t\t\t\t\t\t\t\talpha(", i,") = ", alpha[i], end="\n\n")
-        for j in range(i):
-            plt.plot(x, y[j*len(x):(j+1)*len(x)], c='g')
+        plt.clf()
 
-        plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
+        plt.subplot(212)
+        plt.axis([-1.1, 1.1, y_min, 1.1])
+        for j in range(i):
+            plt.plot(x, y[j*len(x):(j+1)*len(x)], c='y')
+            plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
+
+        plt.subplot(211)
+        plt.axis([-1.1, 1.1, y_min, 1.1])
+        plt.plot(x, zero, 'k', c='k')
+        plt.plot(x, g, 'k', c='g')
+        plt.plot(x, z[i*len(x):(i+1)*len(x)], c='r')
+
         plt.pause(dt)
         separator(206)
 
+def prepare_interpolation_data(lines):
+    x, g, zero, y, alpha, interp_points = [], [], [], [], [], []
+    for k in range(1,nb_points+1):
+        x.append(float(lines[k].split(" ")[0]))
+        g.append(float(lines[k].split(" ")[nb_functions+1]))
+        zero.append(0.0)
+    for i in range(1,nb_functions+1):
+        for j in range(1,nb_points+1):
+            y.append(float(lines[j].split(" ")[i]))
+    for k in range(0,nb_functions):
+        alpha.append(float(lines[nb_points+1].split(" ")[k]))
+    for k in range(0,nb_functions):
+        interp_points.append(float(lines[nb_points+2].split(" ")[k]))
+    return x, g, zero, y, alpha, interp_points
+
+def prepare_interpolation_progression(lines):
+    z = []
+    for i in range(nb_functions):
+        for j in range(nb_points):
+            z.append(float(lines[j].split(" ")[i]))
+    return z
+
+def get_y_min():
+    if method==0:
+        return -1.1
+    elif method==1:
+        return -0.1
+    else:
+        return -0.3
+
 input_file = open( "../data/basis_functions.txt", "r")
-lines = input_file.readlines()
+lines_basis_functions = input_file.readlines()
 input_file.close()
 
-nb_functions = int(lines[0].split(" ")[0])
-nb_points = int(lines[0].split(" ")[1])
-method = int(lines[0].split(" ")[2])
-x, y, res, real_res = [], [], [], []
-interp_points, alpha, zeros = [], [], []
+input_file = open( "../data/interpolation_progression.txt", "r")
+line_interpolation_progression = input_file.readlines()
+input_file.close()
 
+nb_functions = int(lines_basis_functions[0].split(" ")[0])
+nb_points = int(lines_basis_functions[0].split(" ")[1])
+method = int(lines_basis_functions[0].split(" ")[2])
+
+dt = 1
+nb_colors = 10
+cmap = get_cmap(nb_colors)
 taille = (25,10)
 plt.figure(figsize=taille)
 
-nb_colors = 10
-cmap = get_cmap(nb_colors)
-
-for k in range(1,nb_points+1):
-    x.append(float(lines[k].split(" ")[0]))
-    zeros.append(0.0)
-for i in range(1,nb_functions+1):
-    for j in range(1,nb_points+1):
-        y.append(float(lines[j].split(" ")[i]))
-
-plt.subplot(211)
-for j in range(1,nb_points+1):
-    res.append(float(lines[j].split(" ")[nb_functions+1]))
-    real_res.append(float(lines[j].split(" ")[nb_functions+2]))
-plt.plot(x, zeros, 'k', c='k')
-plt.plot(x, res, 'k', c='g')
-plt.plot(x, real_res, 'k', c='r')
-
-if method==0:
-    y_min = -1.1
-elif method==1:
-    y_min = -0.1
-else:
-    y_min = -0.3
-
-plt.subplot(212)
-plt.axis([-1.1, 1.1, y_min, 1.1])
-plt.plot(x, zeros, 'k', c='k')
-
-for k in range(0,nb_functions):
-    alpha.append(float(lines[nb_points+1].split(" ")[k]))
-
-for k in range(0,nb_functions):
-    interp_points.append(float(lines[nb_points+2].split(" ")[k]))
-
-plot_basis_function_progressively(alpha,interp_points,x,y,1.5,nb_colors)
+y_min = get_y_min()
+x, g, zero, y, alpha, interp_points = prepare_interpolation_data(lines_basis_functions)
+z = prepare_interpolation_progression(line_interpolation_progression)
+plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt)
 plt.show()

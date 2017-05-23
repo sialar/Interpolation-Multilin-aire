@@ -39,7 +39,15 @@ then
 elif [ "$1" == "PLOT" ]
 then
     echo ""
-    ./bin/TestAlgoAI 1 10000 $2 $3
+    ./bin/TestAlgoAI 1 1000 $2 $3
     cd python
     python3.5 -W ignore plot_basis_functions.py
-fi
+else
+    echo ""
+    echo " To execute the script, you need to pass one argument:"
+    echo "   - LEJA : for leja sequence computation."
+    echo "     Specify the dimension (2 or 3) and the number of points in one direction."
+    echo "   - AI   : for AI algorithm."
+    echo "     Interactive execution."
+    echo ""
+  fi

@@ -2,64 +2,80 @@ from mpl_toolkits.mplot3d import Axes3D # librairie 3D
 import matplotlib.pyplot as plt
 import numpy as np
 
-def prepare_initial_grid(points,n,m,l,s,c):
-    x, y, z = [], [], []
+def prepare_initial_grid_for_indices(points,n,m):
+    x, y = [], []
     for i in points:
         x.append(i[0])
         y.append(i[1])
-        z.append(i[2])
-    i = 0
-    while (i<len(z) and z[i]==0):
-        i = i+1
-    if i==len(z):
+
+    plt.subplot(121)
+    plt.axis([-1, n, -1, m])
+    plt.scatter(x, y, s=s, c='w')
+
+
+def prepare_initial_grid_for_leja_points(n,m):
+    leja_sequence_file = open( "../data/leja_sequence.txt", "r")
+    line = leja_sequence_file.readlines()
+    leja_sequence_file.close()
+    leja_sequence_x, leja_sequence_y = [], []
+    values = []
+    nb_pts = max(n,m)
+    for i in range(0,nb_pts):
+        values.append(float(line[i]))
+    for v1 in values:
+        for v2 in values:
+            leja_sequence_x.append(v1)
+            leja_sequence_y.append(v2)
+    plt.subplot(122)
+    plt.axis([-1.1, 1.1, -1.1, 1.1])
+    plt.scatter(leja_sequence_x, leja_sequence_y, s=s, c='w')
+
+
+def plot_picked_points_progressively(dim,indices,points,s,dt):
+    plt.hold(True)
+    for i in range(len(indices)):
+        nu = indices[i]
+        p = points[i]
+
+        plt.subplot(121)
         plt.axis([-1, n, -1, m])
-        plt.scatter(x, y, s=s, c=c)
-        return 2
-    else:
-        ax = fig.gca(projection='3d')
-        ax.scatter(x, y, z, s=s, c=c)
-        return 3
+        plt.scatter(nu[0], nu[1], s=s, c='r')
 
+        plt.subplot(122)
+        plt.axis([-1.1, 1.1, -1.1, 1.1])
+        plt.scatter(p[0], p[1], s=s, c='r')
 
-def plot_picked_points_progressively(dim,points,s,c,dt):
-    plt.ion()
-    for p in points:
-        if dim==2:
-            plt.scatter(p[0], p[1], s=s, c=c)
-        else:
-            ax = fig.gca(projection='3d')
-            ax.scatter(p[0], p[1], p[2], s=s, c=c)
-        plt.pause(dt)
-    while True:
         plt.pause(dt)
 
-all_points, picked_points = [], []
 
-fig = plt.figure()
+all_points, picked_points, picked_indices = [], [], []
+
+taille = (16,8)
+fig = plt.figure(figsize=taille)
 
 ai_output_file = open( "../data/path.txt", "r")
 lines = ai_output_file.readlines()
 ai_output_file.close()
 
-dim = int(lines[0])
-n = int(lines[1].split(" ")[0])
-m = int(lines[1].split(" ")[1])
-l = int(lines[1].split(" ")[2])
-nb_points = int(lines[2])
-offset = 3
-s = 100
+n = int(lines[0].split(" ")[0])
+m = int(lines[0].split(" ")[1])
+nb_points = int(lines[1])
+offset = 2
+s = 50
 
 for i in range(n):
     for j in range(m):
-        for k in range(l):
-            all_points.append((i,j,k))
+            all_points.append((i,j))
 
 for i in range(nb_points):
-    x = int(lines[i+offset].split(" ")[0])
-    y = int(lines[i+offset].split(" ")[1])
-    z = int(lines[i+offset].split(" ")[2])
-    picked_points.append((x,y,z))
+    a = int(lines[i+offset].split(" ")[0])
+    b = int(lines[i+offset].split(" ")[1])
+    x = float(lines[i+offset].split(" ")[2])
+    y = float(lines[i+offset].split(" ")[3])
+    picked_indices.append((a,b))
+    picked_points.append((x,y))
 
-dim = prepare_initial_grid(all_points,n,m,l,s,'y')
-plot_picked_points_progressively(dim, picked_points,s,'k',0.1)
+dim = prepare_initial_grid_for_indices(all_points,n,m)
+prepare_initial_grid_for_leja_points(n,m)
+plot_picked_points_progressively(dim, picked_indices, picked_points,s,0.1)
 plt.show()

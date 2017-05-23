@@ -62,7 +62,7 @@ class Interpolation
         double piecewiseFunction_1D(int k, double t, int axis);
         double quadraticFunction_1D(int k, double t, int axis);
         double lagrangeBasisFunction_1D(int k, double t, int axis);
-        double interpolation_ND(MultiVariatePoint<double>& x);
+        double interpolation_ND(MultiVariatePoint<double>& x, int end);
         void setMethod(int method) { m_method = method;};
 
         /********************** Test functions ********************************/
@@ -76,8 +76,8 @@ class Interpolation
         void displayInterpolationPointsInEachDirection();
         void displayInterpolationMultiVariatePoints();
         void displayTrees();
-        void storeInterpolationFunctions();
-        void saveInterpolationPointsInFile();
+        void storeInterpolationBasisFunctions();
+        void storeInterpolationProgression();
         void savePathInFile();
 };
 

@@ -59,6 +59,17 @@ int chooseMaxIteration(int argc, char* argv[])
   return maxIteration;
 }
 
+bool withBackup()
+{
+  char store = 0;
+  while (store!='y' && store!='n')
+  {
+      cout << " - Store path and interpolation progression ? (y/n) ";
+      cin >> store;
+  }
+  return (store=='y');
+}
+
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
@@ -85,8 +96,7 @@ int main( int argc, char* argv[] )
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
     interp->testPathBuilt(threshold, maxIteration<101);
-    interp->storeInterpolationFunctions();
-    interp->savePathInFile();
+
     if (maxIteration<101)
     {
         interp->displayPath();
@@ -97,24 +107,32 @@ int main( int argc, char* argv[] )
     }
 
     Utils::separateur();
-    cout << " - Sequence of " << nbTestPoints << " random test points : ";
+    cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
     if (nbTestPoints < 11)
         Utils::displayPoints(testPoints);
 
     // Computing real values at test points
-    cout << " - Real values of function g evaluated at test points :";
+    cout << " - Real values of function g evaluated at test points :" << endl;
     for (MultiVariatePoint<double> p : testPoints)
         realValues.push_back(Utils::gNd(p));
     if (nbTestPoints < 11)
         Utils::displayPoints(realValues);
 
     // Approximating g at test points
-    cout << " - Approximation of function g at test points : ";
+    cout << " - Approximation of function g at test points : " << endl;
     for (MultiVariatePoint<double> p : testPoints)
-        estimate.push_back(interp->interpolation_ND(p));
+        estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     if (nbTestPoints < 11) Utils::displayPoints(estimate);
     // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    Utils::separateur();
+
+    if (withBackup())
+    {
+        interp->storeInterpolationBasisFunctions();
+        interp->storeInterpolationProgression();
+        interp->savePathInFile();
+    }
     Utils::separateur();
 
     return 0;

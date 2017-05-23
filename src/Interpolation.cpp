@@ -120,13 +120,13 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
+
         /*
         if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
-
-            double error = tryWithCurentPath();
+            error = tryWithCurentPath();
             cout << "   - Interpolation error after " << iteration << " iterations: " << error;
             cout << " | Elapsed time : "  << run_time.count() << endl;
             if (error < threshold)
@@ -137,6 +137,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
             }
         }
         */
+
     }
     return iteration;
 }
@@ -247,7 +248,7 @@ double Interpolation::tryWithCurentPath()
   for (MultiVariatePoint<double> p : m_testPoints)
   {
     realValues.push_back(Utils::gNd(p));
-    estimate.push_back(interpolation_ND(p));
+    estimate.push_back(interpolation_ND(p,m_path.size()));
   }
   return Utils::interpolationError(realValues,estimate);
 }
@@ -316,46 +317,17 @@ void Interpolation::savePathInFile()
   ofstream file("data/path.txt", ios::out | ios::trunc);
   if(file)
   {
-    if (m_d==2 || m_d==3)
+    if (m_d==2)
     {
-      cout << " - The path is saved in data/path.txt" << endl;
-      file << m_d << endl;
-      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << " ";
-      if (m_d == 2) file << "1" << endl;
-      else file << m_interpolationPoints[2].size() << endl;
-      file << m_path.size() << endl;
-      for (MultiVariatePointPtr<int> nu : m_path)
-      {
-        file << (*nu)(0) << " " << (*nu)(1) << " ";
-        if (m_d == 2) file << "0" << endl;
-        else file << (*nu)(2) << endl;
-      }
-    }
-    file.close();
-  }
-  else
-  cerr << "Error while opening the file!" << endl;
-}
-void Interpolation::saveInterpolationPointsInFile()
-{
-  ofstream file("data/interpolation_points.txt", ios::out | ios::trunc);
-  if(file)
-  {
-    if (m_d==2 || m_d==3)
-    {
-      cout << " - The path is saved in data/path.txt" << endl;
-      file << m_d << endl;
-      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << " ";
-      if (m_d == 2) file << "1.0" << endl;
-      else file << m_interpolationPoints[2].size() << endl;
+      //cout << " - The path is saved in data/path.txt" << endl;
+      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << endl;
       file << m_path.size() << endl;
       MultiVariatePoint<double> x(m_d,0.0);
       for (MultiVariatePointPtr<int> nu : m_path)
       {
         x = getPoint(*nu);
-        file << x(0) << " " << x(1) << " ";
-        if (m_d == 2) file << "0.0" << endl;
-        else file << x(2) << endl;
+        file << (*nu)(0) << " " << (*nu)(1) << " ";
+        file << x(0) << " " << x(1) << endl;
       }
     }
     file.close();
@@ -363,7 +335,7 @@ void Interpolation::saveInterpolationPointsInFile()
   else
   cerr << "Error while opening the file!" << endl;
 }
-void Interpolation::storeInterpolationFunctions()
+void Interpolation::storeInterpolationBasisFunctions()
 {
   ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
@@ -373,7 +345,7 @@ void Interpolation::storeInterpolationFunctions()
       vector<double> x;
       int nbPoints = int(m_testPoints.size());
       for (int i=0; i<nbPoints; i++)
-      x.push_back(m_testPoints[i](0));
+          x.push_back(m_testPoints[i](0));
       sort(x.begin(), x.end());
       file << m_path.size() << " " << nbPoints << " " << m_method << endl;
       MultiVariatePoint<double> p;
@@ -390,7 +362,6 @@ void Interpolation::storeInterpolationFunctions()
           file << " " << quadraticFunction_1D((*nu)(0),x[j],0);
         }
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " << interpolation_ND(p);
         file << " " <<  Utils::gNd(p);
         file << endl;
       }
@@ -405,11 +376,41 @@ void Interpolation::storeInterpolationFunctions()
   else
   cerr << "Error while opening the file!" << endl;
 }
+
+void Interpolation::storeInterpolationProgression()
+{
+  ofstream file("data/interpolation_progression.txt", ios::out | ios::trunc);
+  if(file)
+  {
+      if (m_d==1)
+      {
+          vector<double> x;
+          int nbPoints = int(m_testPoints.size());
+          for (int i=0; i<nbPoints; i++)
+              x.push_back(m_testPoints[i](0));
+          sort(x.begin(), x.end());
+          MultiVariatePoint<double> p;
+          vector<double> tempPath;
+          for (double t : x)
+          {
+              for (int i=0; i<int(m_path.size()); i++)
+              {
+                  p = MultiVariatePoint<double>::toMonoVariatePoint(t);
+                  file << interpolation_ND(p, i+1) << " ";
+              }
+              file << endl;
+          }
+      }
+      file.close();
+  }
+  else
+      cerr << "Error while opening the file!" << endl;
+}
+
 /******************************************************************************/
 
 
 /*********************** Interpolation ****************************************/
-
 double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 {
     if (k==0) return 1;
@@ -445,23 +446,23 @@ double Interpolation::lagrangeBasisFunction_1D(int k, double t, int axis)
         prod *= (t-m_lejaSequence[i]) / (m_lejaSequence[k]-m_lejaSequence[i]) ;
     return prod;
 }
-double Interpolation::interpolation_ND(MultiVariatePoint<double>& x)
+double Interpolation::interpolation_ND(MultiVariatePoint<double>& x, int end)
 {
-    double l_prod, sum = 0;
-    for (MultiVariatePointPtr<int> nu : m_path)
-    {
-        l_prod = 1;
-        for (int i=0; i<m_d; i++)
-        {
-            if (m_method == 0)
-                l_prod *= lagrangeBasisFunction_1D((*nu)(i),x(i),i);
-            else if (m_method == 1)
-                l_prod *= piecewiseFunction_1D((*nu)(i),x(i),i);
-            else if (m_method == 2)
-                l_prod *= quadraticFunction_1D((*nu)(i),x(i),i);
-        }
-        sum += l_prod * nu->getAlpha();
-    }
-    return sum;
+  double l_prod, sum = 0;
+  for (int k=0; k<end; k++)
+  {
+      l_prod = 1;
+      for (int i=0; i<m_d; i++)
+      {
+          if (m_method == 0)
+              l_prod *= lagrangeBasisFunction_1D((*m_path[k])(i),x(i),i);
+          else if (m_method == 1)
+              l_prod *= piecewiseFunction_1D((*m_path[k])(i),x(i),i);
+          else if (m_method == 2)
+              l_prod *= quadraticFunction_1D((*m_path[k])(i),x(i),i);
+      }
+      sum += l_prod * m_path[k]->getAlpha();
+  }
+  return sum;
 }
 /******************************************************************************/
