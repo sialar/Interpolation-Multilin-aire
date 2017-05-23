@@ -135,5 +135,8 @@ int main( int argc, char* argv[] )
     }
     Utils::separateur();
 
+    cout << BinaryTree::getIndice(0.499999) << " " << BinaryTree::getValue(1835008) << endl;
+    cout << BinaryTree::getValue(3670016) << endl;
+
     return 0;
 }

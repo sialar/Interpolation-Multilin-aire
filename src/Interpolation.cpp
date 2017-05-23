@@ -59,7 +59,7 @@ void Interpolation::computeBoundariesForHatFunction(double t, double* inf, doubl
     else *inf = t;
 
     // Or using trees
-    //m_trees[axis]->searchNode(t,&x,&y,false);
+    //m_trees[axis]->searchNode(t,inf,sup,false);
 }
 
 /******************************************************************************/
