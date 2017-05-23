@@ -106,7 +106,7 @@ int Interpolation::buildPathWithAIAlgo(auto start_time, double threshold, bool d
         }
         if (debug) cout << endl;
 
-        argmax = *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%4) ? alphaLess : ageLess);
+        argmax = *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%100) ? alphaLess : ageLess);
 
         m_path.push_back(argmax);
         addInterpolationPoint(getPoint(*argmax));
@@ -428,8 +428,10 @@ double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 double Interpolation::quadraticFunction_1D(int k, double t, int axis)
 {
     if (k==0) return 1;
-    else if (k==1) return 0.5*t*(t - 1);
-    else if (k==2) return 0.5*t*(t + 1);
+    //else if (k==1) return (t>0) ? 0 : 0.5*t*(t - 1);
+    //else if (k==2) return (t<0) ? 0 : 0.5*t*(t + 1);
+    else if (k==1) return (t>0) ? 0 : -t*(t + 2);
+    else if (k==2) return (t<0) ? 0 :  t*(2 - t);
     else
     {
         double sup, inf, tk = BinaryTree::getValue(k);
