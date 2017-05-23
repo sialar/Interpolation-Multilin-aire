@@ -9,7 +9,7 @@
 #include <memory>
 #include <limits>
 
-#include "Dichotomy.hpp"
+#include "BinaryTree.hpp"
 
 using namespace std;
 

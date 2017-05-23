@@ -7,6 +7,9 @@ Interpolation::Interpolation(int d, int nIter, int method)
     m_maxIteration = nIter;
     m_interpolationPoints.resize(m_d);
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
+    m_trees.resize(m_d);
+    for (int i=0; i<m_d; i++)
+      m_trees[i] = make_shared<BinaryTree>();
 }
 
 /************************* Data Points ****************************************/
@@ -17,7 +20,7 @@ MultiVariatePoint<double> Interpolation::getPoint(MultiVariatePoint<int> nu)
         if (m_method == 0)
             point(i) = m_lejaSequence[nu(i)];
         else
-            point(i) = Dichotomy::getValue(nu(i));
+            point(i) = BinaryTree::getValue(nu(i));
     return point;
 }
 void Interpolation::addInterpolationPoint(MultiVariatePoint<double>p)
@@ -30,10 +33,14 @@ void Interpolation::addInterpolationPoint(MultiVariatePoint<double>p)
         found = false;
         for (double x : m_interpolationPoints[i])
             if (x == p(i)) found = true;
-        if (!found) m_interpolationPoints[i].push_back(p(i));
+        if (!found)
+        {
+            m_interpolationPoints[i].push_back(p(i));
+            m_trees[i]->addNode(p(i));
+        }
     }
 }
-void Interpolation::computeBoundaries(double t, double* inf, double* sup, int axis)
+void Interpolation::computeBoundariesForHatFunction(double t, double* inf, double* sup, int axis)
 {
     vector<double> higherPoints, lowerPoints;
     for (double x : m_interpolationPoints[axis])
@@ -41,13 +48,18 @@ void Interpolation::computeBoundaries(double t, double* inf, double* sup, int ax
         if (x>t) higherPoints.push_back(x);
         else if (x<t) lowerPoints.push_back(x);
         else break;
+        // break when t is found, do not look at children when looking for boundaries
+        // because children were constructed after t
     }
     if (higherPoints.size())
-        *inf = *min_element(higherPoints.begin(),higherPoints.end());
-    else *inf = t;
-    if (lowerPoints.size())
-        *sup = *max_element(lowerPoints.begin(),lowerPoints.end());
+        *sup = *min_element(higherPoints.begin(),higherPoints.end());
     else *sup = t;
+    if (lowerPoints.size())
+        *inf = *max_element(lowerPoints.begin(),lowerPoints.end());
+    else *inf = t;
+
+    // Or using trees
+    //m_trees[axis]->searchNode(t,&x,&y,false);
 }
 
 /******************************************************************************/
@@ -151,11 +163,11 @@ void Interpolation::updateNextPoints(MultiVariatePointPtr<int> nu)
     vector<double> childrenVal;
     for (int i=0; i<m_d; i++)
     {
-        childrenVal = Dichotomy::computeChildrenValue((*nu)(i));
+        childrenVal = BinaryTree::computeChildrenValue((*nu)(i));
         for (int k=0; k<int(childrenVal.size()); k++)
         {
             MultiVariatePointPtr<int> mu = make_shared<MultiVariatePoint<int>>(*nu);
-            (*mu)(i) = Dichotomy::getIndice(childrenVal[k]);
+            (*mu)(i) = BinaryTree::getIndice(childrenVal[k]);
             if (!indiceInPath(*mu) && !indiceInNeighborhood(*mu))
                 m_curentNeighbours.push_back(mu);
         }
@@ -289,6 +301,16 @@ void Interpolation::displayInterpolationMultiVariatePoints()
         cout << x << " ";
     cout << "}" << endl;
 }
+void Interpolation::displayTrees()
+{
+    for (int i=0; i<m_d; i++)
+    {
+        cout << " - Binary Tree in direction " << i << " :" << endl;
+        m_trees[i]->displayBinaryTree();
+        cout << endl;
+    }
+}
+
 void Interpolation::savePathInFile()
 {
   ofstream file("python/path.txt", ios::out | ios::trunc);
@@ -314,52 +336,52 @@ void Interpolation::savePathInFile()
   else
   cerr << "Error while opening the file!" << endl;
 }
+void Interpolation::storeInterpolationFunctions()
+{
+  ofstream file("python/plot_function.txt", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==1)
+    {
+      vector<double> x;
+      int nbPoints = int(m_testPoints.size());
+      for (int i=0; i<nbPoints; i++)
+      x.push_back(m_testPoints[i](0));
+      sort(x.begin(), x.end());
+      file << m_path.size() << " " << nbPoints << " " << m_method << endl;
+      MultiVariatePoint<double> p;
+      for (int j=0; j<nbPoints; j++)
+      {
+        file << x[j];
+        for (MultiVariatePointPtr<int> nu : m_path)
+        {
+          if (m_method == 0)
+          file << " " << lagrangeBasisFunction_1D((*nu)(0),x[j],0);
+          else if (m_method == 1)
+          file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
+          else if (m_method == 2)
+          file << " " << quadraticFunction_1D((*nu)(0),x[j],0);
+        }
+        p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
+        file << " " << interpolation_ND(p);
+        file << " " <<  Utils::gNd(p);
+        file << endl;
+      }
+      for (MultiVariatePointPtr<int> nu : m_path)
+      file << nu->getAlpha() << " ";
+      file << endl;
+      for (MultiVariatePoint<double> nu : m_interpolationNodes)
+      file << nu(0) << " ";
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 /******************************************************************************/
 
 
 /*********************** Interpolation ****************************************/
-void Interpolation::storeInterpolationFunctions()
-{
-    ofstream file("python/plot_function.txt", ios::out | ios::trunc);
-    if(file)
-    {
-      if (m_d==1)
-      {
-          vector<double> x;
-          int nbPoints = int(m_testPoints.size());
-          for (int i=0; i<nbPoints; i++)
-              x.push_back(m_testPoints[i](0));
-          sort(x.begin(), x.end());
-          file << m_path.size() << " " << nbPoints << " " << m_method << endl;
-          MultiVariatePoint<double> p;
-          for (int j=0; j<nbPoints; j++)
-          {
-              file << x[j];
-              for (MultiVariatePointPtr<int> nu : m_path)
-              {
-                  if (m_method == 0)
-                      file << " " << lagrangeBasisFunction_1D((*nu)(0),x[j],0);
-                  else if (m_method == 1)
-                      file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
-                  else if (m_method == 2)
-                      file << " " << quadraticFunction_1D((*nu)(0),x[j],0);
-              }
-              p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-              file << " " << interpolation_ND(p);
-              file << " " <<  Utils::gNd(p);
-              file << endl;
-          }
-          for (MultiVariatePointPtr<int> nu : m_path)
-              file << nu->getAlpha() << " ";
-          file << endl;
-          for (MultiVariatePoint<double> nu : m_interpolationNodes)
-              file << nu(0) << " ";
-      }
-      file.close();
-    }
-    else
-    cerr << "Error while opening the file!" << endl;
-}
 
 double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
 {
@@ -368,8 +390,8 @@ double Interpolation::piecewiseFunction_1D(int k, double t, int axis)
     else if (k==2) return (t<0) ? 0 : t;
     else
     {
-        double sup, inf, tk = Dichotomy::getValue(k);
-        computeBoundaries(tk,&sup,&inf,axis);
+        double sup, inf, tk = BinaryTree::getValue(k);
+        computeBoundariesForHatFunction(tk,&inf,&sup,axis);
         if (t <= tk && t >= inf) return ((t-inf)/(tk-inf));
         else if (t >= tk && t <= sup) return ((t-sup)/(tk-sup));
         else return 0;
@@ -382,8 +404,8 @@ double Interpolation::quadraticFunction_1D(int k, double t, int axis)
     else if (k==2) return 0.5*t*(t + 1);
     else
     {
-        double sup, inf, tk = Dichotomy::getValue(k);
-        computeBoundaries(tk,&sup,&inf,axis);
+        double sup, inf, tk = BinaryTree::getValue(k);
+        computeBoundariesForHatFunction(tk,&inf,&sup,axis);
         if (t <= sup && t >= inf) return (4/pow(sup-inf,2))*(sup-t)*(t-inf);
         else return 0;
     }

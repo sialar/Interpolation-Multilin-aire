@@ -84,7 +84,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl;
-    interp->testPathBuilt(threshold, maxIteration<11);
+    interp->testPathBuilt(threshold, maxIteration<101);
     Utils::separateur();
 
     interp->storeInterpolationFunctions();
@@ -99,19 +99,19 @@ int main( int argc, char* argv[] )
         Utils::separateur();
     }
 
-    cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
+    cout << " - Sequence of " << nbTestPoints << " random test points : ";
     if (nbTestPoints < 11)
         Utils::displayPoints(testPoints);
 
     // Computing real values at test points
-    cout << " - Real values of function g evaluated at test points :" << endl;
+    cout << endl << " - Real values of function g evaluated at test points :";
     for (MultiVariatePoint<double> p : testPoints)
         realValues.push_back(Utils::gNd(p));
     if (nbTestPoints < 11)
         Utils::displayPoints(realValues);
 
     // Approximating g at test points
-    cout << endl << " - Approximation of function g at test points : " << endl;
+    cout << endl << " - Approximation of function g at test points : ";
     for (MultiVariatePoint<double> p : testPoints)
         estimate.push_back(interp->interpolation_ND(p));
     if (nbTestPoints < 11) Utils::displayPoints(estimate);

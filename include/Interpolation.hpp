@@ -13,7 +13,7 @@
 #include <chrono>
 
 #include "MultiVariatePoint.hpp"
-#include "Dichotomy.hpp"
+#include "BinaryTree.hpp"
 #include "Utils.hpp"
 
 using namespace std;
@@ -34,6 +34,8 @@ class Interpolation
         map<MultiVariatePointPtr<int>, double> m_alphaMap;
         list<MultiVariatePointPtr<int>> m_curentNeighbours;
 
+        vector<BinaryTreePtr> m_trees;
+
     public:
         Interpolation(int d, int nIter, int method);
         ~Interpolation() {};
@@ -44,7 +46,7 @@ class Interpolation
         MultiVariatePoint<double> getPoint(MultiVariatePoint<int> nu);
         void addInterpolationPoint(MultiVariatePoint<double> p);
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
-        void computeBoundaries(double t, double* inf, double* sup, int axis);
+        void computeBoundariesForHatFunction(double t, double* inf, double* sup, int axis);
 
         /************************* AI algo ************************************/
         const vector<MultiVariatePointPtr<int>>& path() { return m_path; };
@@ -73,8 +75,9 @@ class Interpolation
         void displayCurentNeighbours();
         void displayInterpolationPointsInEachDirection();
         void displayInterpolationMultiVariatePoints();
-        void savePathInFile();
+        void displayTrees();
         void storeInterpolationFunctions();
+        void savePathInFile();
 };
 
 typedef std::unique_ptr<Interpolation> InterpolationPtr;
