@@ -23,11 +23,5 @@ int main( int argc, char* argv[] )
         cout << "Invalid argument 2: The Number of points must be greater than 10." << endl;
         exit(1);
     }
-
-    vector<vector<double>> points;
-    for (int i=0; i<dim; i++)
-        points.push_back(Utils::createLejaSequence(size));
-    Utils::storeLejaSequenceInFile(points);
-
     return 0;
 }

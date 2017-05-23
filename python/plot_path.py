@@ -37,7 +37,7 @@ all_points, picked_points = [], []
 
 fig = plt.figure()
 
-ai_output_file = open( "path.txt", "r")
+ai_output_file = open( "../data/path.txt", "r")
 lines = ai_output_file.readlines()
 ai_output_file.close()
 

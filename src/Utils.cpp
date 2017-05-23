@@ -89,59 +89,9 @@ void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
   }
 }
 
-void Utils::storeResult(vector<MultiVariatePoint<double>> x, vector<double> approx, vector<double> realValue)
-{
-    ofstream file("python/interpolation_result.txt", ios::out | ios::trunc);
-    if(file)
-    {
-        for (int i=0; i<int(x.size()); i++)
-        {
-            for (int d=0; d<x[i].getD(); d++)
-                file << (x[i])(d) << " ";
-            cout << approx[i] << " " << realValue[i] << endl;
-        }
-        file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
-}
-
-void Utils::storeFunction(vector<double> x, vector<double> y, vector<double> z)
-{
-  ofstream file("python/test.txt", ios::out | ios::trunc);
-  if(file)
-  {
-      file << x.size() << endl;
-      for (int i=0; i<int(x.size()); i++)
-      {
-          file << x[i] << " " << y[i] << " " << z[i] << endl;
-      }
-      file.close();
-  }
-  else
-      cerr << "Erreur à l'ouverture du fichier!" << endl;
-}
-
-void Utils::storeLejaSequenceInFile(vector<vector<double>> x)
-{
-    ofstream file("python/leja_sequence.txt", ios::out | ios::trunc);
-    if(file)
-    {
-      for (size_t i=0; i<x.size(); ++i)
-      {
-          file << x[i].size() << endl;
-          for (size_t j=0; j<x[i].size(); ++j)
-              file << x[i][j] << endl;
-      }
-      file.close();
-    }
-    else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
-}
-
 void Utils::storeLejaSequenceInFile(int length)
 {
-    ofstream file("lejaSequence", ios::out | ios::trunc);
+    ofstream file("data/leja_equence.txt", ios::out | ios::trunc);
     if(file)
     {
         vector<double> lejaSeq = createLejaSequence(length);
@@ -155,7 +105,7 @@ void Utils::storeLejaSequenceInFile(int length)
 
 vector<double> Utils::loadLejaSequenceFromFile(int length)
 {
-    ifstream file("lejaSequence", ios::in);
+    ifstream file("data/leja_sequence.txt", ios::in);
     vector<double> lejaSeq;
     string line;
     int line_index = 0;

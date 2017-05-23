@@ -17,9 +17,8 @@ fi
 if [ "$1" == "LEJA" ]
 then
     echo " - Sequence de Leja"
-    ./bin/TestLejaSequence $2 $3
     cd python
-    python3.5 -W ignore leja_sequence.py
+    python3.5 -W ignore plot_leja_sequence.py $2 $3
 
 elif [ "$1" == "AI" ]
 then
@@ -36,11 +35,11 @@ then
     echo ""
     ./bin/TestAlgoAI 2 1 0
     cd python
-    python3.5 -W ignore progressive_plot.py
+    python3.5 -W ignore plot_path.py
 elif [ "$1" == "PLOT" ]
 then
     echo ""
-    ./bin/TestAlgoAI 1 10000 $2
+    ./bin/TestAlgoAI 1 10000 $2 $3
     cd python
-    python3.5 -W ignore plot_function.py
+    python3.5 -W ignore plot_basis_functions.py
 fi

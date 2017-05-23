@@ -313,12 +313,12 @@ void Interpolation::displayTrees()
 
 void Interpolation::savePathInFile()
 {
-  ofstream file("python/path.txt", ios::out | ios::trunc);
+  ofstream file("data/path.txt", ios::out | ios::trunc);
   if(file)
   {
     if (m_d==2 || m_d==3)
     {
-      cout << " - The path is saved in python/path.txt" << endl;
+      cout << " - The path is saved in data/path.txt" << endl;
       file << m_d << endl;
       file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << " ";
       if (m_d == 2) file << "1" << endl;
@@ -336,9 +336,36 @@ void Interpolation::savePathInFile()
   else
   cerr << "Error while opening the file!" << endl;
 }
+void Interpolation::saveInterpolationPointsInFile()
+{
+  ofstream file("data/interpolation_points.txt", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==2 || m_d==3)
+    {
+      cout << " - The path is saved in data/path.txt" << endl;
+      file << m_d << endl;
+      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << " ";
+      if (m_d == 2) file << "1.0" << endl;
+      else file << m_interpolationPoints[2].size() << endl;
+      file << m_path.size() << endl;
+      MultiVariatePoint<double> x(m_d,0.0);
+      for (MultiVariatePointPtr<int> nu : m_path)
+      {
+        x = getPoint(*nu);
+        file << x(0) << " " << x(1) << " ";
+        if (m_d == 2) file << "0.0" << endl;
+        else file << x(2) << endl;
+      }
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 void Interpolation::storeInterpolationFunctions()
 {
-  ofstream file("python/plot_function.txt", ios::out | ios::trunc);
+  ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
   {
     if (m_d==1)

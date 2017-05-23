@@ -32,7 +32,7 @@ def plot_basis_function_progressively(alpha,interp_points,x,y,dt,nb_colors):
         plt.pause(dt)
         separator(206)
 
-input_file = open( "plot_function.txt", "r")
+input_file = open( "../data/basis_functions.txt", "r")
 lines = input_file.readlines()
 input_file.close()
 

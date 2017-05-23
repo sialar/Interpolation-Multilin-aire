@@ -77,6 +77,7 @@ class Interpolation
         void displayInterpolationMultiVariatePoints();
         void displayTrees();
         void storeInterpolationFunctions();
+        void saveInterpolationPointsInFile();
         void savePathInFile();
 };
 
