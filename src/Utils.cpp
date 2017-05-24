@@ -145,17 +145,11 @@ vector<double> Utils::createSequenceByDichotomy(int length)
 }
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    double temp;
     if (x.getD()==1)
-    {
-        temp = 1;
-        for (int i=0; i<x.getD(); i++)
-        temp *= sqrt(1 - pow(x(i),2));
-        return temp;
-    }
+        return sqrt(1 - pow(x(0),2));
     else
     {
-        temp = 0;
+        double temp = 0;
         for (int i=0; i<x.getD(); i++)
         temp += pow(x(i),2);
         //return sin(sqrt(temp));
