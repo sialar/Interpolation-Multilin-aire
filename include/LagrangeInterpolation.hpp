@@ -6,14 +6,10 @@
 #include <list>
 #include <map>
 #include <memory>
-#include <set>
 #include <cmath>
-#include <sys/time.h>
-#include <ctime>
 #include <chrono>
 
 #include "MultiVariatePoint.hpp"
-#include "Interpolation.hpp"
 #include "BinaryTree.hpp"
 #include "Utils.hpp"
 

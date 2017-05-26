@@ -89,9 +89,24 @@ void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
   }
 }
 
+void Utils::storeDichotomySequenceInFile(int length)
+{
+    ofstream file("data/dichotomy_sequence.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << length << endl;
+        vector<double> seq = createSequenceByDichotomy(length);
+        for (int i=0; i<length; ++i)
+              file << seq[i] << endl;
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
 void Utils::storeLejaSequenceInFile(int length)
 {
-    ofstream file("data/leja_equence.txt", ios::out | ios::trunc);
+    ofstream file("data/leja_sequence.txt", ios::out | ios::trunc);
     if(file)
     {
         vector<double> lejaSeq = createLejaSequence(length);
@@ -158,8 +173,8 @@ double Utils::gNd(MultiVariatePoint<double> x)
         temp = 0;
         for (int i=0; i<x.getD(); i++)
         temp += pow(x(i),2);
-        //return sin(sqrt(temp));
-        return temp +1 ;
+        return sin(sqrt(temp));
+        //return temp +1 ;
 
         //return exp(x(0))*sin(x(0)*x(1)+2*x(1));
     }

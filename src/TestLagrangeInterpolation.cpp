@@ -44,15 +44,16 @@ int chooseMaxIteration(int argc, char* argv[])
   return maxIteration;
 }
 
-bool withBackup()
+bool withBackup(int argc, char* argv[])
 {
-  char store = 0;
-  while (store!='y' && store!='n')
+  if (argc > 4) return stoi(argv[4]);
+  int store = 2;
+  while (store!=1 && store!=0)
   {
       cout << " - Store path and interpolation progression ? (y/n) ";
       cin >> store;
   }
-  return (store=='y');
+  return (store==1);
 }
 
 int main( int argc, char* argv[] )
@@ -63,6 +64,7 @@ int main( int argc, char* argv[] )
     int dim = chooseDimension(argc,argv);
     int nbTestPoints = chooseNbTestPoints(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
+    bool store = withBackup(argc,argv);
 
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration));
 
@@ -111,16 +113,13 @@ int main( int argc, char* argv[] )
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
-    if (withBackup())
+    if (store)
     {
         interp->storeInterpolationBasisFunctions();
         interp->storeInterpolationProgression();
         interp->savePathInFile();
     }
     Utils::separateur();
-
-    //cout << BinaryTree::getIndice(0.499999) << " " << BinaryTree::getValue(1835008) << endl;
-    //cout << BinaryTree::getValue(3670016) << endl;
 
     return 0;
 }

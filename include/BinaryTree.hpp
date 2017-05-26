@@ -56,7 +56,6 @@ class BinaryTree
     private:
         Node* m_root = NULL;
         vector<double> m_elems;
-        map<string, Node*> m_hashmap;
 
     public:
         BinaryTree();

@@ -99,7 +99,7 @@ void LagrangeInterpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
   for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
       mu->incrWaitingTime();
 
-  for (int k=0; k<nu->getD(); k++)
+  for (int k=0; k<m_d; k++)
   {
       MultiVariatePointPtr<int> nu1 = make_shared<MultiVariatePoint<int>>(*nu);
       (*nu1)(k)++;
@@ -118,7 +118,7 @@ bool LagrangeInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<
         if ((*nu)(i))
         {
             index(i)--;
-            isNeighbour[i] = indiceInPath(index);
+            isNeighbour[i] = indiceInPath(index) && !indiceInNeighborhood(index);
             index(i)++;
         }
     bool res = true;
@@ -242,8 +242,8 @@ void LagrangeInterpolation::savePathInFile()
       for (MultiVariatePointPtr<int> nu : m_path)
       {
         x = getPoint(nu);
-        file << (*nu)(0) << " " << (*nu)(1) << " ";
-        file << x(0) << " " << x(1) << endl;
+        file << x(0) << " " << x(1) << " ";
+        file << (*nu)(0) << " " << (*nu)(1) << endl;
       }
     }
     file.close();

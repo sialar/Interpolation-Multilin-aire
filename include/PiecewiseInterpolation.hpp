@@ -5,15 +5,11 @@
 #include <vector>
 #include <list>
 #include <map>
-#include <set>
 #include <memory>
 #include <cmath>
-#include <sys/time.h>
-#include <ctime>
 #include <chrono>
 
 #include "MultiVariatePoint.hpp"
-#include "Interpolation.hpp"
 #include "BinaryTree.hpp"
 #include "Utils.hpp"
 
@@ -56,6 +52,7 @@ class PiecewiseInterpolation
         bool indiceInNeighborhood(MultiVariatePoint<string> index);
         double computeLastAlphaNu(MultiVariatePointPtr<string> nu);
         void updateCurentNeighbours(MultiVariatePointPtr<string> nu);
+        bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu);
 
         /*********************** Interpolation ********************************/
         double piecewiseFunction_1D(string code, double t, int axis);

@@ -33,8 +33,8 @@ int chooseNbTestPoints(int argc, char* argv[])
 
 int chooseMethod(int argc, char* argv[])
 {
-    if (argc > 3) return stoi(argv[3]);
     int method = -1;
+    if (argc > 3) method = stoi(argv[3]);
     while (method!=1 && method!=2)
     {
         cout << " - Choose the method of interpolation: " << endl;
@@ -58,15 +58,16 @@ int chooseMaxIteration(int argc, char* argv[])
   return maxIteration;
 }
 
-bool withBackup()
+bool withBackup(int argc, char* argv[])
 {
-  char store = 0;
-  while (store!='y' && store!='n')
+  if (argc > 5) return stoi(argv[5]);
+  int store = 2;
+  while (store!=1 && store!=0)
   {
       cout << " - Store path and interpolation progression ? (y/n) ";
       cin >> store;
   }
-  return (store=='y');
+  return (store==1);
 }
 
 int main( int argc, char* argv[] )
@@ -78,6 +79,7 @@ int main( int argc, char* argv[] )
     int nbTestPoints = chooseNbTestPoints(argc,argv);
     int method = chooseMethod(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
+    bool store = withBackup(argc,argv);
 
     PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,maxIteration,method));
 
@@ -90,10 +92,10 @@ int main( int argc, char* argv[] )
     interp->setTestPoints(testPoints);
 
     // Path creation
-    double threshold = 1e-4;
+    double threshold = 1e-16;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
-         << threshold;
+         << threshold << endl;
     interp->testPathBuilt(threshold, maxIteration<101);
 
     if (maxIteration<101)
@@ -126,16 +128,12 @@ int main( int argc, char* argv[] )
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
-    if (withBackup())
+    if (store)
     {
         interp->storeInterpolationBasisFunctions();
         interp->storeInterpolationProgression();
         interp->savePathInFile();
     }
     Utils::separateur();
-
-    //cout << BinaryTree::getIndice(0.499999) << " " << BinaryTree::getValue(1835008) << endl;
-    //cout << BinaryTree::getValue(3670016) << endl;
-
     return 0;
 }

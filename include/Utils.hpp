@@ -39,6 +39,7 @@ class Utils
         static void storeLejaSequenceInFile(int length);
         static vector<double> loadLejaSequenceFromFile(int length);
         static vector<double> createSequenceByDichotomy(int length);
+        static void storeDichotomySequenceInFile(int length);
 
         // Function to approximate
         static double gNd(MultiVariatePoint<double> x);

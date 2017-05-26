@@ -94,7 +94,7 @@ int PiecewiseInterpolation::buildPathWithAIAlgo(auto start_time, double threshol
             if (debug) cout << *nu << " " << val << " | ";
         }
         if (debug) cout << endl;
-        argmax = *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%4) ? alphaLess : ageLess);
+        argmax = *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%100) ? alphaLess : ageLess);
         m_path.push_back(argmax);
         addInterpolationPoint(getPoint(argmax));
         updateCurentNeighbours(argmax);
@@ -107,7 +107,7 @@ int PiecewiseInterpolation::buildPathWithAIAlgo(auto start_time, double threshol
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
-            error = tryWithCurentPath();
+            double error = tryWithCurentPath();
             cout << "   - Interpolation error after " << iteration << " iterations: " << error;
             cout << " | Elapsed time : "  << run_time.count() << endl;
             if (error < threshold)
@@ -136,12 +136,32 @@ void PiecewiseInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string>
       {
           MultiVariatePointPtr<string> mu = make_shared<MultiVariatePoint<string>>(*nu);
           (*mu)(i) = childrenCodes[k];
-          //if (!indiceInPath(*mu) && !indiceInNeighborhood(*mu))
+          if (isCorrectNeighbourToCurentPath(mu))
               m_curentNeighbours.push_back(mu);
       }
   }
 }
+bool PiecewiseInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu)
+{
+    bool isNeighbour[m_d];
+    for (int i=0; i<m_d; i++)
+        isNeighbour[i] = true;
 
+    MultiVariatePoint<string> mu(*nu);
+    string temp;
+    for (int i=0; i<m_d; i++)
+        if ((*nu)(i).compare("")!=0)
+        {
+            temp = mu(i);
+            mu(i) = BinaryTree::getParentCode(temp);
+            isNeighbour[i] = indiceInPath(mu) && !indiceInNeighborhood(mu);
+            mu(i) = temp;
+        }
+    bool res = true;
+    for (int i=0; i<m_d; i++)
+        res = res && isNeighbour[i];
+    return res;
+}
 bool PiecewiseInterpolation::indiceInNeighborhood(MultiVariatePoint<string> index)
 {
     for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
@@ -154,7 +174,7 @@ bool PiecewiseInterpolation::indiceInPath(MultiVariatePoint<string> index)
     for (MultiVariatePointPtr<string> nu : m_path)
     if (Utils::equals(index,*nu))
         return true;
-    return true;
+    return false;
 }
 double PiecewiseInterpolation::computeLastAlphaNu(MultiVariatePointPtr<string> nu)
 {
@@ -228,7 +248,7 @@ void PiecewiseInterpolation::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(nu) /*<< ") [" << nu->getWaitingTime()*/ << "] | ";
+        cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
 void PiecewiseInterpolation::displayInterpolationPointsInEachDirection()
@@ -273,8 +293,8 @@ void PiecewiseInterpolation::savePathInFile()
       for (MultiVariatePointPtr<string> nu : m_path)
       {
         x = getPoint(nu);
-        file << (*nu)(0) << " " << (*nu)(1) << " ";
-        file << x(0) << " " << x(1) << endl;
+        file << x(0) << " " << x(1) << " ";
+        file << (*nu)(0) << " " << (*nu)(1) << endl;
       }
     }
     file.close();

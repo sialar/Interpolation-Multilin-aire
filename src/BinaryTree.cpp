@@ -89,7 +89,6 @@ void BinaryTree::addNode(double key)
             if (!tmpTree)
             {
                 elem->setCode(code);
-                m_hashmap.insert(pair<string,Node*>(code,elem));
                 tmpNode->setRight(elem);
                 tmpNode->setIsLeaf(false);
             }
@@ -101,7 +100,6 @@ void BinaryTree::addNode(double key)
             if (!tmpTree)
             {
                 elem->setCode(code);
-                m_hashmap.insert(pair<string,Node*>(code,elem));
                 tmpNode->setLeft(elem);
                 tmpNode->setIsLeaf(false);
             }
@@ -115,31 +113,25 @@ void BinaryTree::addNode(double key)
         m_root = elem;
         m_root->setChildType(-1);
         m_root->setCode(code);
-        m_hashmap.insert(pair<string,Node*>(code,m_root));
     }
 
 }
 double BinaryTree::getValueFromCode(string code)
 {
-    //map<string,Node*>::iterator it = m_hashmap.find(code);
-    //if (it != m_hashmap.end()) return m_hashmap[code]->key();
-    //else
-    //{
-        if (code.compare("") == 0) return 0;
-        if (code.compare("0") == 0) return -1;
-        if (code.compare("1") == 0) return 1;
-        double prev, cur, tmp;
-        cur = (code[0]=='0') ? -1 : 1;
-        prev = 0;
-        for (int i=1; i<int(code.size()); i++)
-        {
-            tmp = cur;
-            if (code[i]=='0') cur = cur - abs(prev-cur)/2;
-            else cur = cur + abs(prev-cur)/2;
-            prev = tmp;
-        }
-        return cur;
-    //}
+    if (code.compare("") == 0) return 0;
+    if (code.compare("0") == 0) return -1;
+    if (code.compare("1") == 0) return 1;
+    double prev, cur, tmp;
+    cur = (code[0]=='0') ? -1 : 1;
+    prev = 0;
+    for (int i=1; i<int(code.size()); i++)
+    {
+        tmp = cur;
+        if (code[i]=='0') cur = cur - abs(prev-cur)/2;
+        else cur = cur + abs(prev-cur)/2;
+        prev = tmp;
+    }
+    return cur;
 }
 string BinaryTree::getParentCode(string code)
 {
@@ -168,7 +160,6 @@ Node* BinaryTree::searchNode(double key, double* key_inf, double* key_sup, bool 
 {
     Node *last_node = m_root, *temp = m_root;
     bool found = false;
-    string code = "";
     while(temp)
     {
         last_node = temp;
@@ -176,20 +167,13 @@ Node* BinaryTree::searchNode(double key, double* key_inf, double* key_sup, bool 
         {
             *key_sup = findKeySup(temp, lookAtChildren);
             *key_inf = findKeyInf(temp, lookAtChildren);
-            //temp->setCode(code);
             found = true;
             return temp;
         }
         if (key > temp->key())
-        {
-            code = code + "1";
             temp = temp->right();
-        }
         else
-        {
-            code = code + "0";
             temp = temp->left();
-        }
     }
     if (!found)
     {
