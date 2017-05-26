@@ -76,7 +76,7 @@ class BinaryTree
 
         static double getValueFromCode(string code);
         static string getParentCode(string code);
-        static vector<double> computeChildrenValue(string code);
+        static vector<string> computeChildrenCodes(string code);
 
         static int getIndice(double l);
         static double getValue(int i);

@@ -29,19 +29,34 @@ then
     echo "   - arg 3 : Method [$4]"
     echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
     echo ""
-    ./bin/TestAlgoAI $2 $3 $4 $5
+    if [ "$4" == "0" ]
+    then
+        ./bin/TestLagrangeInterpolation $2 $3 $5
+    else
+        ./bin/TestPiecewiseInterpolation $2 $3 $4 $5
+    fi
 elif [ "$1" == "PATH" ]
 then
     echo ""
-    ./bin/TestAlgoAI 2 1 0
+    ./bin/TestLagrangeInterpolation 2 1
     cd python
     python3.5 -W ignore plot_path.py
+
 elif [ "$1" == "PLOT" ]
 then
-    echo ""
-    ./bin/TestAlgoAI 1 1000 $2 $3
+    if [ $# -le 3 ]
+    then
+        echo "Invalid number of arguments. Choose the method and the number of iteration"
+    else
+        if [ "$4" == "0" ]
+        then
+            ./bin/TestLagrangeInterpolation 1 1000 $5
+        else
+            ./bin/TestPiecewiseInterpolation 1 1000 $4 $5
+        fi
     cd python
     python3.5 -W ignore plot_basis_functions.py
+    fi
 else
     echo ""
     echo " To execute the script, you need to pass one argument:"

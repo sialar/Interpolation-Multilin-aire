@@ -75,7 +75,13 @@ MultiVariatePoint<T>::MultiVariatePoint(int d, T val) : m_d(d)
 template <typename T>
 MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
 {
-    *this = nu;
+    m_d = nu.m_d;
+    if (m_d != 0)
+    {
+        m_nu = new T[m_d];
+        for (int i=0; i<m_d; i++)
+            m_nu[i] = nu.m_nu[i];
+    }
     m_alpha = numeric_limits<int>::max();
     m_initialAlpha = numeric_limits<int>::max();
     m_waitingTime = 0;

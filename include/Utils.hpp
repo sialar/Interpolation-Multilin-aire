@@ -54,6 +54,9 @@ class Utils
         static vector<double> createLejaSequence(int nbPoints);
         // Create sequence of middle points
         static vector<double> createSequenceOfMiddles(int nbPoints);
+
+        // comparaison function
+        static bool equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2);
 };
 
 #endif

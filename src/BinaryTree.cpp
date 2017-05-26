@@ -125,14 +125,12 @@ double BinaryTree::getValueFromCode(string code)
     //if (it != m_hashmap.end()) return m_hashmap[code]->key();
     //else
     //{
-        cout << code << " ";
-        if (!code.size()) return 0;
+        if (code.compare("") == 0) return 0;
         if (code.compare("0") == 0) return -1;
         if (code.compare("1") == 0) return 1;
         double prev, cur, tmp;
         cur = (code[0]=='0') ? -1 : 1;
         prev = 0;
-
         for (int i=1; i<int(code.size()); i++)
         {
             tmp = cur;
@@ -140,7 +138,6 @@ double BinaryTree::getValueFromCode(string code)
             else cur = cur + abs(prev-cur)/2;
             prev = tmp;
         }
-
         return cur;
     //}
 }
@@ -150,21 +147,21 @@ string BinaryTree::getParentCode(string code)
     return code;
 }
 
-vector<double> BinaryTree::computeChildrenValue(string code)
+vector<string> BinaryTree::computeChildrenCodes(string code)
 {
-    double parentVal, curentVal, offset;
-    vector<double> childrenVal;
-    parentVal = getValueFromCode(getParentCode(code));
-    curentVal = getValueFromCode(code);
-    offset = abs(parentVal - curentVal) / 2;
-    if (code.compare("0") != 0) childrenVal.push_back(curentVal + offset);
-    else if (code.compare("1") != 0) childrenVal.push_back(curentVal - offset);
+    vector<string> childrenCodes;
+    string codeLeft = code;
+    string codeRight = code;
+    codeLeft.push_back('0');
+    codeRight.push_back('1');
+    if (code.compare("0") == 0) childrenCodes.push_back(codeRight);
+    else if (code.compare("1") == 0) childrenCodes.push_back(codeLeft);
     else
     {
-        childrenVal.push_back(curentVal + offset);
-        childrenVal.push_back(curentVal - offset);
+        childrenCodes.push_back(codeLeft);
+        childrenCodes.push_back(codeRight);
     }
-    return childrenVal;
+    return childrenCodes;
 }
 
 Node* BinaryTree::searchNode(double key, double* key_inf, double* key_sup, bool lookAtChildren)

@@ -145,11 +145,17 @@ vector<double> Utils::createSequenceByDichotomy(int length)
 }
 double Utils::gNd(MultiVariatePoint<double> x)
 {
+    double temp;
     if (x.getD()==1)
-        return sqrt(1 - pow(x(0),2));
+    {
+        temp = 1;
+        for (int i=0; i<x.getD(); i++)
+        temp *= sqrt(1 - pow(x(i),2));
+        return temp;
+    }
     else
     {
-        double temp = 0;
+        temp = 0;
         for (int i=0; i<x.getD(); i++)
         temp += pow(x(i),2);
         //return sin(sqrt(temp));
@@ -207,4 +213,13 @@ vector<double> Utils::createLejaSequence(int nbPoints)
         }
     }
     return points;
+}
+
+bool Utils::equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2)
+{
+    if (nu1.getD() != nu2.getD()) return false;
+    for (int i=0; i<nu1.getD(); i++)
+        if (nu1(i).compare(nu2(i))!=0)
+            return false;
+    return true;
 }

@@ -2,7 +2,7 @@
 #include <string>
 #include <array>
 #include <time.h>
-#include "../include/Interpolation.hpp"
+#include "../include/LagrangeInterpolation.hpp"
 #include "../include/Utils.hpp"
 
 using namespace std;
@@ -31,24 +31,9 @@ int chooseNbTestPoints(int argc, char* argv[])
   return nbTestPoints;
 }
 
-int chooseMethod(int argc, char* argv[])
-{
-    if (argc > 3) return stoi(argv[3]);
-    int method = -1;
-    while (method!=0 && method!=1 && method!=2)
-    {
-        cout << " - Choose the method of interpolation: " << endl;
-        cout << "\t - 0: Using lagrange polynomial functions and Leja points " << endl;
-        cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-        cout << "\t - 2: Using quadratic functions and middle points: " << endl;
-        cin >> method;
-    }
-    return method;
-}
-
 int chooseMaxIteration(int argc, char* argv[])
 {
-  if (argc > 4) return stoi(argv[4]);
+  if (argc > 3) return stoi(argv[3]);
   int maxIteration = -1;
   while (maxIteration < 0)
   {
@@ -77,10 +62,9 @@ int main( int argc, char* argv[] )
     Utils::separateur();
     int dim = chooseDimension(argc,argv);
     int nbTestPoints = chooseNbTestPoints(argc,argv);
-    int method = chooseMethod(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
 
-    InterpolationPtr interp(new Interpolation(dim,maxIteration,method));
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration));
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;

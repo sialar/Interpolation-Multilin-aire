@@ -9,6 +9,9 @@ leja_sequence_file.close()
 leja_sequence_x, leja_sequence_y, leja_sequence_z = [], [], []
 values = []
 
+if len(sys.argv)!=3:
+    print("Invalid number of arguments")
+    sys.exit(0)
 
 nb_pts = int(sys.argv[2])
 dim = int(sys.argv[1])
