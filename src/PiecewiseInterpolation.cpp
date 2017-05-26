@@ -1,11 +1,8 @@
 #include "../include/PiecewiseInterpolation.hpp"
 
-PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method)
+PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method) :
+    Interpolation(d, nIter), m_method(method)
 {
-    m_d = d;
-    m_method = method;
-    m_maxIteration = nIter;
-    m_interpolationPoints.resize(m_d);
     m_trees.resize(m_d);
     for (int i=0; i<m_d; i++)
       m_trees[i] = make_shared<BinaryTree>();
@@ -251,24 +248,7 @@ void PiecewiseInterpolation::displayCurentNeighbours()
         cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
-void PiecewiseInterpolation::displayInterpolationPointsInEachDirection()
-{
-    vector<double>::iterator it;
-    for (int i=0; i<m_d; ++i)
-    {
-        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
-        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << *it << " ";
-        cout << "}" << endl;
-    }
-}
-void PiecewiseInterpolation::displayInterpolationMultiVariatePoints()
-{
-    cout << " - Interpolation nodes: { ";
-    for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << x << " ";
-    cout << "}" << endl;
-}
+
 void PiecewiseInterpolation::displayTrees()
 {
     for (int i=0; i<m_d; i++)
