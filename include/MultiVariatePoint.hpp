@@ -41,6 +41,7 @@ class MultiVariatePoint
         bool alphaAlreadyComputed() { return (m_alpha != m_initialAlpha); };
 
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
+        static MultiVariatePoint<T> toBiVariatePoint(T vec0, T vec1);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);
 
         T &operator()(int d) const { return m_nu[d]; };
@@ -86,13 +87,20 @@ MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
     m_initialAlpha = numeric_limits<int>::max();
     m_waitingTime = 0;
 };
-
 template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
 {
     MultiVariatePoint<T> x(vec.size(),0);
     for (int i=0; i<x.getD(); i++)
        x(i) = vec[i];
+    return x;
+}
+template <typename T>
+MultiVariatePoint<T> MultiVariatePoint<T>::toBiVariatePoint(T t0, T t1)
+{
+    MultiVariatePoint<T> x(2,0);
+    x(0) = t0;
+    x(1) = t1;
     return x;
 }
 

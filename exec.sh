@@ -48,9 +48,9 @@ then
     if [ $# -le 4 ]
     then echo "Invalid number of arguments"
     else
-        if [ "$4" = "0" ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $5 0
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 0
+        if [ $4 = 0 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $5 0 0
+      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 0 0
         fi
     fi
 
@@ -61,9 +61,9 @@ then
     then echo "Invalid number of arguments"
     else
         echo "$2"
-        if [ "$2" = "0" ]
-        then ./bin/TestLagrangeInterpolation 2 1 $3 1
-        else ./bin/TestPiecewiseInterpolation 2 1 $2 $3 1
+        if [ $2 = 0 ]
+        then ./bin/TestLagrangeInterpolation 2 1 $3 1 0
+        else ./bin/TestPiecewiseInterpolation 2 1 $2 $3 1 0
         fi
         cd python
         python3.5 -W ignore plot_path.py $2
@@ -71,16 +71,20 @@ then
 
 elif [ "$1" = "PLOT" ]
 then
-    showArgsDetails
-    if [ $# -le 2 ]
+    showAllArgsDetails
+    if [ $# -le 4 ]
     then echo "Invalid number of arguments"
     else
-        if [ "$2" = "0" ]
-        then ./bin/TestLagrangeInterpolation 1 1000 $3 1
-        else ./bin/TestPiecewiseInterpolation 1 1000 $2 $3 1
-        fi
+        if [ $2 -lt 1 -o $2 -gt 2 ]
+        then echo "Dimension must be 1 or 2"
+        else
+            if [ $4 = 0 ]
+            then ./bin/TestLagrangeInterpolation $2 1000 $5 1 0
+            else ./bin/TestPiecewiseInterpolation $2 1000 $4 $5 1 0
+            fi
         cd python
-        python3.5 -W ignore plot_basis_functions.py
+        python3.5 -W ignore plot_basis_functions_"$2"D.py
+        fi
     fi
 
 elif [ "$1" = "ERROR" ]
@@ -89,9 +93,9 @@ then
     if [ $# -le 4 ]
     then echo "Invalid number of arguments"
     else
-        if [ "$4" = "0" ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $5 1
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 1
+        if [ $4 = 0 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $5 0 1
+        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 0 1
         fi
         cd python
         python3.5 -W ignore plot_error.py

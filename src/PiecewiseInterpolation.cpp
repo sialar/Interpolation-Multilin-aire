@@ -323,7 +323,88 @@ void PiecewiseInterpolation::storeInterpolationBasisFunctions()
   else
   cerr << "Error while opening the file!" << endl;
 }
+void PiecewiseInterpolation::storeInterpolationBasisFunctions2d()
+{
+  ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==2)
+    {
+      vector<double> x, y;
+      int nbPoints = int(m_testPoints.size());
+      for (int i=0; i<nbPoints; i++)
+      {
+        x.push_back(m_testPoints[i](0));
+        y.push_back(m_testPoints[i](1));
+      }
+      file << m_path.size() << " " << nbPoints << " " << m_method << endl;
+      MultiVariatePoint<double> p;
+      for (int j=0; j<nbPoints; j++)
+      {
+        file << x[j] << " " << y[j];
+        for (MultiVariatePointPtr<string> nu : m_path)
+        {
+          if (m_method == 1)
+          {
+              file << " " << piecewiseFunction_1D((*nu)(0),x[j],0);
+              file << " " << piecewiseFunction_1D((*nu)(1),y[j],1);
+          }
+          else if (m_method == 2)
+          {
+              file << " " << quadraticFunction_1D((*nu)(0),x[j],0);
+              file << " " << quadraticFunction_1D((*nu)(1),y[j],1);
+          }
+        }
+        p = MultiVariatePoint<double>::toBiVariatePoint(x[j], y[j]);
+        file << " " <<  Utils::gNd(p);
+        file << endl;
+      }
+      for (MultiVariatePointPtr<string> nu : m_path)
+      file << nu->getAlpha() << " ";
+      file << endl;
+      for (MultiVariatePoint<double> nu : m_interpolationNodes)
+      file << nu(0) << " ";
+      file << endl;
+      for (MultiVariatePoint<double> nu : m_interpolationNodes)
+      file << nu(1) << " ";
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 
+void PiecewiseInterpolation::storeInterpolationProgression2d()
+{
+  ofstream file("data/interpolation_progression.txt", ios::out | ios::trunc);
+  if(file)
+  {
+      if (m_d==2)
+      {
+          vector<double> x, y;
+          int nbPoints = int(m_testPoints.size());
+          for (int i=0; i<nbPoints; i++)
+          {
+            x.push_back(m_testPoints[i](0));
+            y.push_back(m_testPoints[i](1));
+          }
+          MultiVariatePoint<double> p;
+          vector<double> tempPath;
+          for (int j=0; j<nbPoints; j++)
+          {
+              for (int i=0; i<int(m_path.size()); i++)
+              {
+                  p = MultiVariatePoint<double>::toBiVariatePoint(x[j], y[j]);
+                  file << interpolation_ND(p, i+1) << " ";
+              }
+              file << endl;
+          }
+      }
+      file.close();
+  }
+  else
+      cerr << "Error while opening the file!" << endl;
+}
 void PiecewiseInterpolation::storeInterpolationProgression()
 {
   ofstream file("data/interpolation_progression.txt", ios::out | ios::trunc);

@@ -56,6 +56,18 @@ bool withBackup(int argc, char* argv[])
   return (store=='y');
 }
 
+bool saveError(int argc, char* argv[])
+{
+  if (argc > 5) return stoi(argv[5]);
+  char e = 'x';
+  while (e!='y' && e!='n')
+  {
+      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
+      cin >> e;
+  }
+  return (e=='y');
+}
+
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
@@ -65,10 +77,11 @@ int main( int argc, char* argv[] )
     int nbTestPoints = chooseNbTestPoints(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
     bool store = withBackup(argc,argv);
+    bool error = saveError(argc,argv);
 
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration));
-    interp->setSaveError(store);
-    
+    interp->setSaveError(error);
+
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
     vector<double> realValues, estimate;
@@ -82,7 +95,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
-    interp->testPathBuilt(threshold, maxIteration<101);
+    interp->testPathBuilt(threshold, maxIteration<11);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
@@ -120,7 +133,7 @@ int main( int argc, char* argv[] )
     }
     if (display=='y' /*maxIteration<pow(10,dim)+1*/)
     {
-
+      Utils::separateur();
       interp->displayPath();
       Utils::separateur();
       interp->displayInterpolationMultiVariatePoints();

@@ -60,7 +60,7 @@ int chooseMaxIteration(int argc, char* argv[])
 
 bool withBackup(int argc, char* argv[])
 {
-  if (argc > 4) return stoi(argv[4]);
+  if (argc > 5) return stoi(argv[5]);
   char store = 'x';
   while (store!='y' && store!='n')
   {
@@ -68,6 +68,18 @@ bool withBackup(int argc, char* argv[])
       cin >> store;
   }
   return (store=='y');
+}
+
+bool saveError(int argc, char* argv[])
+{
+  if (argc > 6) return stoi(argv[6]);
+  char e = 'x';
+  while (e!='y' && e!='n')
+  {
+      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
+      cin >> e;
+  }
+  return (e=='y');
 }
 
 int main( int argc, char* argv[] )
@@ -80,9 +92,10 @@ int main( int argc, char* argv[] )
     int method = chooseMethod(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
     bool store = withBackup(argc,argv);
+    bool error = saveError(argc,argv);
 
     PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,maxIteration,method));
-    interp->setSaveError(store);
+    interp->setSaveError(error);
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -97,7 +110,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold << endl;
-    interp->testPathBuilt(threshold, maxIteration<101);
+    interp->testPathBuilt(threshold, maxIteration<11);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
@@ -124,6 +137,8 @@ int main( int argc, char* argv[] )
         interp->storeInterpolationBasisFunctions();
         interp->storeInterpolationProgression();
         interp->savePathInFile();
+        interp->storeInterpolationBasisFunctions2d();
+        interp->storeInterpolationProgression2d();
     }
 
     Utils::separateur();
@@ -135,7 +150,7 @@ int main( int argc, char* argv[] )
     }
     if (display=='y' /*maxIteration<pow(10,dim)+1*/)
     {
-
+      Utils::separateur();
       interp->displayPath();
       Utils::separateur();
       interp->displayInterpolationMultiVariatePoints();

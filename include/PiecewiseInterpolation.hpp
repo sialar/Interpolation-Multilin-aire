@@ -60,6 +60,8 @@ class PiecewiseInterpolation : public Interpolation
         void displayCurentNeighbours();
         void displayTrees();
         void storeInterpolationBasisFunctions();
+        void storeInterpolationBasisFunctions2d();
+        void storeInterpolationProgression2d();
         void storeInterpolationProgression();
         void savePathInFile();
 };
