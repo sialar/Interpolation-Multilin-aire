@@ -1,10 +1,8 @@
 #include "../include/LagrangeInterpolation.hpp"
 
-LagrangeInterpolation::LagrangeInterpolation(int d, int nIter)
+LagrangeInterpolation::LagrangeInterpolation(int d, int nIter) :
+    Interpolation(d,nIter)
 {
-    m_d = d;
-    m_maxIteration = nIter;
-    m_interpolationPoints.resize(m_d);
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
 }
 
@@ -210,24 +208,7 @@ void LagrangeInterpolation::displayCurentNeighbours()
         cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
-void LagrangeInterpolation::displayInterpolationPointsInEachDirection()
-{
-    vector<double>::iterator it;
-    for (int i=0; i<m_d; ++i)
-    {
-        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
-        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << *it << " ";
-        cout << "}" << endl;
-    }
-}
-void LagrangeInterpolation::displayInterpolationMultiVariatePoints()
-{
-    cout << " - Interpolation nodes: { ";
-    for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << x << " ";
-    cout << "}" << endl;
-}
+
 void LagrangeInterpolation::savePathInFile()
 {
   ofstream file("data/path.txt", ios::out | ios::trunc);

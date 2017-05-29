@@ -10,22 +10,16 @@
 #include <chrono>
 
 #include "MultiVariatePoint.hpp"
+#include "Interpolation.hpp"
 #include "BinaryTree.hpp"
 #include "Utils.hpp"
 
 using namespace std;
 
-class PiecewiseInterpolation
+class PiecewiseInterpolation : public Interpolation
 {
     private:
         int m_method; // 1 ou 2
-        int m_maxIteration;
-        int m_d;
-
-        vector<double> m_lejaSequence;
-        vector<vector<double>> m_interpolationPoints;
-        vector<MultiVariatePoint<double>> m_interpolationNodes;
-        vector<MultiVariatePoint<double>> m_testPoints;
 
         vector<MultiVariatePointPtr<string>> m_path;
         map<MultiVariatePointPtr<string>, double> m_alphaMap;
@@ -34,15 +28,12 @@ class PiecewiseInterpolation
         vector<BinaryTreePtr> m_trees;
 
     public:
+        /************************* Data points ********************************/
         PiecewiseInterpolation(int d, int nIter, int method);
         ~PiecewiseInterpolation() {};
 
-        /************************* Data points ********************************/
-        const vector<vector<double>>& points() { return m_interpolationPoints; };
-        const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
         MultiVariatePoint<double> getPoint(MultiVariatePointPtr<string> nu);
         void addInterpolationPoint(MultiVariatePoint<double> p);
-        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
         void computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis);
 
         /************************* AI algo ************************************/
@@ -58,7 +49,6 @@ class PiecewiseInterpolation
         double piecewiseFunction_1D(string code, double t, int axis);
         double quadraticFunction_1D(string code, double t, int axis);
         double interpolation_ND(MultiVariatePoint<double>& x, int end);
-        void setMethod(int method) { m_method = method;};
 
         /********************** Test functions ********************************/
         void testPathBuilt(double threshold, bool debug);
@@ -68,8 +58,6 @@ class PiecewiseInterpolation
         void displayPath();
         void displayAlphaTab();
         void displayCurentNeighbours();
-        void displayInterpolationPointsInEachDirection();
-        void displayInterpolationMultiVariatePoints();
         void displayTrees();
         void storeInterpolationBasisFunctions();
         void storeInterpolationProgression();
