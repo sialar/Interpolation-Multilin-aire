@@ -72,22 +72,25 @@ int LagrangeInterpolation::buildPathWithAIAlgo(auto start_time, double threshold
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        /*
-        if ((m_maxIteration>10) && iteration%(m_maxIteration/10)==0)
+        if (m_saveError)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
-            error = tryWithCurentPath();
-            cout << "   - Interpolation error after " << iteration << " iterations: " << error;
-            cout << " | Elapsed time : "  << run_time.count() << endl;
+            double error = tryWithCurentPath();
+            m_errors.insert(pair<int, double>(iteration, tryWithCurentPath()));
+            if (iteration%(m_maxIteration/10)==0)
+            {
+                cout << "   - Interpolation error after " << iteration << " iterations: " << error;
+                cout << " | Elapsed time : "  << run_time.count() << endl;
+            }
             if (error < threshold)
             {
                 cout << endl << "   - AI Algo stop after " << iteration << " iterations";
                 cout << " | Elapsed time : "  << run_time.count() << endl;
                 return iteration;
             }
+            saveErrorsInFile();
         }
-        */
     }
     return iteration;
 }

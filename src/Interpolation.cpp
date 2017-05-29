@@ -24,3 +24,18 @@ void Interpolation::displayInterpolationMultiVariatePoints()
         cout << x << " ";
     cout << "}" << endl;
 }
+
+void Interpolation::saveErrorsInFile()
+{
+  ofstream file("data/interpolation_error.txt", ios::out | ios::trunc);
+  if(file)
+  {
+      file << m_errors.size() << endl;
+      map<int,double>::iterator it;
+      for (it=m_errors.begin(); it!=m_errors.end(); it++)
+          file << get<0>(*it) << " " << get<1>(*it) << endl;
+      file.close();
+  }
+  else
+      cerr << "Error while opening the file!" << endl;
+}

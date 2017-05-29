@@ -47,13 +47,13 @@ int chooseMaxIteration(int argc, char* argv[])
 bool withBackup(int argc, char* argv[])
 {
   if (argc > 4) return stoi(argv[4]);
-  int store = 2;
-  while (store!=1 && store!=0)
+  char store = 'x';
+  while (store!='y' && store!='n')
   {
-      cout << " - Store path and interpolation progression ? (y/n) ";
+      cout << " - Store path and interpolation progression? (y/n) ";
       cin >> store;
   }
-  return (store==1);
+  return (store=='y');
 }
 
 int main( int argc, char* argv[] )
@@ -67,7 +67,8 @@ int main( int argc, char* argv[] )
     bool store = withBackup(argc,argv);
 
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration));
-
+    interp->setSaveError(store);
+    
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
     vector<double> realValues, estimate;
@@ -77,41 +78,31 @@ int main( int argc, char* argv[] )
     interp->setTestPoints(testPoints);
 
     // Path creation
-    double threshold = 1e-4;
+    double threshold = 1e-6;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
     interp->testPathBuilt(threshold, maxIteration<101);
 
-    if (maxIteration<101)
+    // Computing real values, and approximation of function g at test points
+    Utils::separateur();
+    for (MultiVariatePoint<double> p : testPoints)
     {
-        interp->displayPath();
-        Utils::separateur();
-        interp->displayInterpolationMultiVariatePoints();
-        cout << endl;
-        interp->displayInterpolationPointsInEachDirection();
+        realValues.push_back(Utils::gNd(p));
+        estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
+    }
+    if (nbTestPoints < 11)
+    {
+        cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
+        Utils::displayPoints(testPoints);
+        cout << " - Real values of function g evaluated at test points :" << endl;
+        Utils::displayPoints(realValues);
+        cout << " - Approximation of function g at test points : " << endl;
+        Utils::displayPoints(estimate);
     }
 
-    Utils::separateur();
-    cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
-    if (nbTestPoints < 11)
-        Utils::displayPoints(testPoints);
-
-    // Computing real values at test points
-    cout << " - Real values of function g evaluated at test points :" << endl;
-    for (MultiVariatePoint<double> p : testPoints)
-        realValues.push_back(Utils::gNd(p));
-    if (nbTestPoints < 11)
-        Utils::displayPoints(realValues);
-
-    // Approximating g at test points
-    cout << " - Approximation of function g at test points : " << endl;
-    for (MultiVariatePoint<double> p : testPoints)
-        estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
-    if (nbTestPoints < 11) Utils::displayPoints(estimate);
     // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-    Utils::separateur();
 
     if (store)
     {
@@ -119,7 +110,24 @@ int main( int argc, char* argv[] )
         interp->storeInterpolationProgression();
         interp->savePathInFile();
     }
-    Utils::separateur();
 
+    Utils::separateur();
+    char display;
+    while (display!='y' && display!='n')
+    {
+      cout << " - Display path and interpolation points: (y/n) " ;
+      cin >> display;
+    }
+    if (display=='y' /*maxIteration<pow(10,dim)+1*/)
+    {
+
+      interp->displayPath();
+      Utils::separateur();
+      interp->displayInterpolationMultiVariatePoints();
+      cout << endl;
+      interp->displayInterpolationPointsInEachDirection();
+    }
+
+    Utils::separateur();
     return 0;
 }
