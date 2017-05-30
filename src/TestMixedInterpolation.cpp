@@ -41,8 +41,7 @@ vector<int> chooseMethods(int dim)
             cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
             cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
             cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-            cout << "\t - 2: Using quadratic functions and middle points: " << endl;
-            cout << " - " << endl;
+            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
             cin >> methods[i];
         }
     }

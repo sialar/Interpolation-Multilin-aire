@@ -39,8 +39,7 @@ int chooseMethod(int argc, char* argv[])
     {
         cout << " - Choose the method of interpolation: " << endl;
         cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-        cout << "\t - 2: Using quadratic functions and middle points: " << endl;
-        cout << " - " << endl;
+        cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
         cin >> method;
     }
     return method;

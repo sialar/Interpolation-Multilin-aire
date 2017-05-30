@@ -85,6 +85,9 @@ MultiVariatePointPtr<string> MixedInterpolation::maxElement(int iteration, int f
 MultiVariatePointPtr<string> MixedInterpolation::getFirstMultivariatePoint()
 {
     MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,"");
+    for (int i=0; i<m_d; i++)
+        if (!m_methods[i])
+            (*nu)(i) = "0";
     return nu;
 }
 void MixedInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string> nu)
