@@ -11,7 +11,7 @@ def prepare_initial_grid_for_indices(points,n,m):
 
     plt.subplot(121)
     plt.axis([-1, n, -1, m])
-    plt.scatter(x, y, s=s, c='w')
+    plt.scatter(x, y, s=s/2, c='w')
 
 def prepare_initial_grid_for_leja_points(n,m):
     leja_sequence_file = open( "../data/leja_sequence.txt", "r")
@@ -46,14 +46,14 @@ def prepare_initial_grid_for_middle_points():
     plt.axis([-1.1, 1.1, -1.1, 1.1])
     plt.scatter(dichotomy_x, dichotomy_y, s=s, c='w')
 
-def plot_picked_points_progressively(indices,points,s,dt):
+def plot_picked_points_progressively_2d(indices,points,s,dt):
     plt.hold(True)
     for i in range(len(points)):
         if method==0:
             nu = indices[i]
             plt.subplot(121)
             plt.axis([-1, n, -1, m])
-            plt.scatter(nu[0], nu[1], s=s, c='r')
+            plt.scatter(nu[0], nu[1], s=s/2, c='r')
             plt.subplot(122)
 
         p = points[i]
@@ -64,17 +64,45 @@ def plot_picked_points_progressively(indices,points,s,dt):
             plt.scatter(p[0], p[1], s=s, c='r')
         plt.pause(dt)
 
+def plot_picked_points_progressively_3d(indices,points,s,dt):
+    if method!=0:
+        ax = fig.gca(projection='3d')
+        ax.set_xlim(-1.1, 1.1)
+        ax.set_ylim(-1.1, 1.1)
+        ax.set_zlim(-1.1, 1.1)
+    else:
+        ax1 = fig.add_subplot(1, 2, 1, projection='3d')
+        ax1.set_xlim(-1, n)
+        ax1.set_ylim(-1, m)
+        ax1.set_zlim(-1, l)
+        ax2 = fig.add_subplot(1, 2, 2, projection='3d')
+        ax2.set_ylim(-1.1, 1.1)
+        ax2.set_xlim(-1.1, 1.1)
+        ax2.set_zlim(-1.1, 1.1)
+    plt.hold(True)
+    for i in range(len(points)):
+        p = points[i]
+        if method==0:
+            nu = indices[i]
+            ax1.scatter(nu[0], nu[1], nu[2], s=s/2, c='r', marker='o')
+            ax2.scatter(p[0], p[1], p[2], c='r', s=s/2, marker='o')
+        else:
+            p = points[i]
+            ax.scatter(p[0], p[1], p[2], c='r', s=s, marker='o')
+        plt.pause(dt)
+
 
 all_points, picked_points, picked_indices = [], [], []
 
-taille = (16,8)
-fig = plt.figure(figsize=taille)
-
-if len(sys.argv)!=2:
-    print("Invalid number of arguments: choose the interpolation method.")
+if len(sys.argv)!=3:
+    print("Invalid number of arguments: choose the space dimension and the interpolation method.")
     sys.exit(0)
 else:
-    method = int(sys.argv[1])
+    dim = int(sys.argv[1])
+    method = int(sys.argv[2])
+
+taille = (16,8)
+fig = plt.figure(figsize=taille)
 
 ai_output_file = open( "../data/path.txt", "r")
 lines = ai_output_file.readlines()
@@ -82,28 +110,46 @@ ai_output_file.close()
 
 n = int(lines[0].split(" ")[0])
 m = int(lines[0].split(" ")[1])
+
+if dim==3:
+    l = int(lines[0].split(" ")[2])
+else:
+    l = 1
+
 nb_points = int(lines[1])
 offset = 2
 s = 80
+dt = 0.01
 
 for i in range(n):
     for j in range(m):
-            all_points.append((i,j))
+        for k in range(l):
+            all_points.append((i,j,k))
 
 for i in range(nb_points):
     x = float(lines[i+offset].split(" ")[0])
     y = float(lines[i+offset].split(" ")[1])
-    picked_points.append((x,y))
+    z = 0
+    if dim==3:
+        z = float(lines[i+offset].split(" ")[2])
+    picked_points.append((x,y,z))
     if method==0:
-        a = int(lines[i+offset].split(" ")[2])
-        b = int(lines[i+offset].split(" ")[3])
-        picked_indices.append((a,b))
+        a = int(lines[i+offset].split(" ")[dim])
+        b = int(lines[i+offset].split(" ")[dim+1])
+        c = 0
+        if dim==3:
+            c = int(lines[i+offset].split(" ")[dim+2])
+        picked_indices.append((a,b,c))
 
-if method==0:
-    prepare_initial_grid_for_indices(all_points,n,m)
-    prepare_initial_grid_for_leja_points(n,m)
+if dim==2:
+    if method==0:
+        prepare_initial_grid_for_indices(all_points,n,m)
+        prepare_initial_grid_for_leja_points(n,m)
+    else:
+        prepare_initial_grid_for_middle_points()
+
+if dim==2:
+    plot_picked_points_progressively_2d(picked_indices, picked_points,s,dt)
 else:
-    prepare_initial_grid_for_middle_points()
-
-plot_picked_points_progressively(picked_indices, picked_points,s,0.1)
+    plot_picked_points_progressively_3d(picked_indices, picked_points,s,dt)
 plt.show()

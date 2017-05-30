@@ -52,7 +52,7 @@ class Interpolation
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
         double computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
-        virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
+        virtual MultiVariatePointPtr<T> maxElement(int iteration, int frequence) = 0;
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
@@ -107,7 +107,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
         }
         if (debug) cout << endl;
 
-        argmax = maxElement(iteration);
+        argmax = maxElement(iteration, 4);
         m_path.push_back(argmax);
         addInterpolationPoint(getPoint(argmax));
         updateCurentNeighbours(argmax);
@@ -285,18 +285,21 @@ void Interpolation<T>::savePathInFile()
   ofstream file("data/path.txt", ios::out | ios::trunc);
   if(file)
   {
-    if (m_d==2)
+    if (m_d==2 || m_d==3)
     {
-      //cout << " - The path is saved in data/path.txt" << endl;
-      file << m_interpolationPoints[0].size() << " " <<  m_interpolationPoints[1].size() << endl;
-      file << m_path.size() << endl;
-      MultiVariatePoint<double> x(m_d,0.0);
-      for (MultiVariatePointPtr<T> nu : m_path)
-      {
-        x = getPoint(nu);
-        file << x(0) << " " << x(1) << " ";
-        file << (*nu)(0) << " " << (*nu)(1) << endl;
-      }
+        for (int i=0; i<m_d; i++)
+            file << m_interpolationPoints[i].size() << " ";
+        file << endl << m_path.size() << endl;
+        MultiVariatePoint<double> x(m_d,0.0);
+        for (MultiVariatePointPtr<T> nu : m_path)
+        {
+            x = getPoint(nu);
+            for (int i=0; i<m_d; i++)
+                file << x(i) << " ";
+            for (int i=0; i<m_d; i++)
+                file << (*nu)(i) << " " ;
+            file << endl;
+        }
     }
     file.close();
   }

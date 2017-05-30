@@ -56,16 +56,16 @@ then
 
 elif [ "$1" = "PATH" ]
 then
-    showArgsDetails
-    if [ $# != 3 ]
+    showAllArgsDetails
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
     else
-        if [ $2 = 0 ]
-        then ./bin/TestLagrangeInterpolation 2 1 $3 1 0
-        else ./bin/TestPiecewiseInterpolation 2 1 $2 $3 1 0
+        if [ $4 = 0 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $5 1 0
+        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 1 0
         fi
         cd python
-        python3.5 -W ignore plot_path.py $2
+        python3.5 -W ignore plot_path.py $2 $4
     fi
 
 elif [ "$1" = "PLOT" ]

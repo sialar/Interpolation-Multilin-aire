@@ -40,9 +40,9 @@ bool ageLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
     return nu->getWaitingTime() < mu->getWaitingTime();
 }
-MultiVariatePointPtr<int> LagrangeInterpolation::maxElement(int iteration)
+MultiVariatePointPtr<int> LagrangeInterpolation::maxElement(int iteration, int frequence)
 {
-    return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%4) ? alphaLess : ageLess);
+    return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%frequence) ? alphaLess : ageLess);
 }
 MultiVariatePointPtr<int> LagrangeInterpolation::getFirstMultivariatePoint()
 {

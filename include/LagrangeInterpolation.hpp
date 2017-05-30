@@ -32,7 +32,7 @@ class LagrangeInterpolation : public Interpolation<int>
 
       /************************* AI algo ************************************/
       MultiVariatePointPtr<int> getFirstMultivariatePoint();
-      MultiVariatePointPtr<int> maxElement(int iteration);
+      MultiVariatePointPtr<int> maxElement(int iteration, int frequence);
       bool indiceInPath(MultiVariatePoint<int> index);
       bool indiceInNeighborhood(MultiVariatePoint<int> index);
       void updateCurentNeighbours(MultiVariatePointPtr<int> nu);

@@ -168,15 +168,17 @@ double Utils::gNd(MultiVariatePoint<double> x)
         temp *= sqrt(1 - pow(x(i),2));
         return temp;
     }
+    else if (x.getD()==2)
+    {
+        return sqrt(1-x(0)*x(0)) * exp(-(x(0)*x(0) + x(1)*x(1)));
+    }
     else
     {
         temp = 0;
         for (int i=0; i<x.getD(); i++)
         temp += pow(x(i),2);
-        //return sin(sqrt(temp));
-        return temp +1 ;
-
-        //return exp(x(0))*sin(x(0)*x(1)+2*x(1));
+        return sin(sqrt(temp));
+        //return temp + 1;
     }
 }
 
