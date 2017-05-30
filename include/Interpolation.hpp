@@ -74,34 +74,14 @@ class Interpolation
 template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
 
+
 template <typename T>
 Interpolation<T>::Interpolation(int d, int nIter) : m_d(d), m_maxIteration(nIter)
 {
     m_interpolationPoints.resize(m_d);
 }
 
-template <typename T>
-void Interpolation<T>::displayInterpolationPointsInEachDirection()
-{
-    vector<double>::iterator it;
-    for (int i=0; i<m_d; ++i)
-    {
-        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
-        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << *it << " ";
-        cout << "}" << endl;
-    }
-}
-
-template <typename T>
-void Interpolation<T>::displayInterpolationMultiVariatePoints()
-{
-    cout << " - Interpolation nodes: { ";
-    for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << x << " ";
-    cout << "}" << endl;
-}
-
+/***************************** AI algo ****************************************/
 template <typename T>
 int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
 {
@@ -135,17 +115,15 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        if (m_saveError)
+        int fact = (m_saveError) ? m_maxIteration : 10;
+        if (m_maxIteration>=10 && iteration%(m_maxIteration/fact)==0)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
             double error = tryWithCurentPath();
-            m_errors.insert(pair<int, double>(iteration, tryWithCurentPath()));
-            if (iteration%(m_maxIteration/10)==0)
-            {
-                cout << "   - Interpolation error after " << iteration << " iterations: " << error;
-                cout << " | Elapsed time : "  << run_time.count() << endl;
-            }
+            if (m_saveError) m_errors.insert(pair<int, double>(iteration, tryWithCurentPath()));
+            cout << "   - Interpolation error after " << iteration << " iterations: " << error;
+            cout << " | Elapsed time : "  << run_time.count() << endl;
             if (error < threshold)
             {
                 cout << endl << "   - AI Algo stop after " << iteration << " iterations";
@@ -157,7 +135,6 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     }
     return iteration;
 }
-
 template <typename T>
 double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
@@ -174,7 +151,6 @@ double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
     nu->setAlpha(res);
     return res;
 }
-
 template <typename T>
 void Interpolation<T>::testPathBuilt(double threshold, bool debug)
 {
@@ -185,7 +161,6 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug)
   cout << endl << " - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
 }
-
 template <typename T>
 double Interpolation<T>::tryWithCurentPath()
 {
@@ -197,7 +172,9 @@ double Interpolation<T>::tryWithCurentPath()
   }
   return Utils::interpolationError(realValues,estimate);
 }
+/******************************************************************************/
 
+/*************************** Interpolation ************************************/
 template <typename T>
 double Interpolation<T>::interpolation_ND(MultiVariatePoint<double>& x, int end)
 {
@@ -211,7 +188,29 @@ double Interpolation<T>::interpolation_ND(MultiVariatePoint<double>& x, int end)
   }
   return sum;
 }
+/******************************************************************************/
 
+/*************************** Display function *********************************/
+template <typename T>
+void Interpolation<T>::displayInterpolationPointsInEachDirection()
+{
+    vector<double>::iterator it;
+    for (int i=0; i<m_d; ++i)
+    {
+        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
+        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
+            cout << *it << " ";
+        cout << "}" << endl;
+    }
+}
+template <typename T>
+void Interpolation<T>::displayInterpolationMultiVariatePoints()
+{
+    cout << " - Interpolation nodes: { ";
+    for (MultiVariatePoint<double> x : m_interpolationNodes)
+        cout << x << " ";
+    cout << "}" << endl;
+}
 template <typename T>
 void Interpolation<T>::displayPath()
 {
@@ -227,7 +226,6 @@ void Interpolation<T>::displayPath()
     }
     cout << endl;
 }
-
 template <typename T>
 void Interpolation<T>::displayCurentNeighbours()
 {
@@ -236,7 +234,6 @@ void Interpolation<T>::displayCurentNeighbours()
         cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     cout << endl << endl;
 }
-
 template <typename T>
 void Interpolation<T>::storeInterpolationProgression()
 {
@@ -267,7 +264,6 @@ void Interpolation<T>::storeInterpolationProgression()
   else
       cerr << "Error while opening the file!" << endl;
 }
-
 template <typename T>
 void Interpolation<T>::saveErrorsInFile()
 {
@@ -283,7 +279,6 @@ void Interpolation<T>::saveErrorsInFile()
   else
       cerr << "Error while opening the file!" << endl;
 }
-
 template <typename T>
 void Interpolation<T>::savePathInFile()
 {
@@ -308,5 +303,7 @@ void Interpolation<T>::savePathInFile()
   else
   cerr << "Error while opening the file!" << endl;
 }
+/******************************************************************************/
+
 
 #endif
