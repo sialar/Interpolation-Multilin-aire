@@ -2,7 +2,7 @@
 #include <string>
 #include <array>
 #include <time.h>
-#include "../include/PiecewiseInterpolation.hpp"
+#include "../include/MixedInterpolation.hpp"
 #include "../include/Utils.hpp"
 
 using namespace std;
@@ -31,24 +31,27 @@ int chooseNbTestPoints(int argc, char* argv[])
   return nbTestPoints;
 }
 
-int chooseMethod(int argc, char* argv[])
+vector<int> chooseMethods(int dim)
 {
-    int method = -1;
-    if (argc > 3) method = stoi(argv[3]);
-    while (method!=1 && method!=2)
+    vector<int> methods(dim,-1);
+    for (int i=0; i<dim; i++)
     {
-        cout << " - Choose the method of interpolation: " << endl;
-        cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-        cout << "\t - 2: Using quadratic functions and middle points: " << endl;
-        cout << " - " << endl;
-        cin >> method;
+        while (methods[i]!=0 && methods[i]!=1 && methods[i]!=2)
+        {
+            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
+            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
+            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+            cout << "\t - 2: Using quadratic functions and middle points: " << endl;
+            cout << " - " << endl;
+            cin >> methods[i];
+        }
     }
-    return method;
+    return methods;
 }
 
 int chooseMaxIteration(int argc, char* argv[])
 {
-  if (argc > 4) return stoi(argv[4]);
+  if (argc > 3) return stoi(argv[3]);
   int maxIteration = -1;
   while (maxIteration < 0)
   {
@@ -61,7 +64,7 @@ int chooseMaxIteration(int argc, char* argv[])
 
 bool withBackup(int argc, char* argv[])
 {
-  if (argc > 5) return stoi(argv[5]);
+  if (argc > 4) return stoi(argv[4]);
   char store = 'x';
   while (store!='y' && store!='n')
   {
@@ -73,7 +76,7 @@ bool withBackup(int argc, char* argv[])
 
 bool saveError(int argc, char* argv[])
 {
-  if (argc > 6) return stoi(argv[6]);
+  if (argc > 5) return stoi(argv[5]);
   char e = 'x';
   while (e!='y' && e!='n')
   {
@@ -90,12 +93,12 @@ int main( int argc, char* argv[] )
     Utils::separateur();
     int dim = chooseDimension(argc,argv);
     int nbTestPoints = chooseNbTestPoints(argc,argv);
-    int method = chooseMethod(argc,argv);
+    vector<int> methods = chooseMethods(dim);
     int maxIteration = chooseMaxIteration(argc,argv);
     bool store = withBackup(argc,argv);
     bool error = saveError(argc,argv);
 
-    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,maxIteration,method));
+    MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods));
     interp->setSaveError(error);
 
     // Initialisation of test points

@@ -6,10 +6,10 @@ CXX = g++
 CXXFLAGS = -O3 -lm -std=c++14 -Wall -g
 
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o
-OBJ_FILES += $(BIN)/Utils.o $(BIN)/BinaryTree.o
+OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
 TEST_FILES = $(BIN)/TestLagrangeInterpolation $(BIN)/TestPiecewiseInterpolation
-TEST_FILES += $(BIN)/TestX
+TEST_FILES += $(BIN)/TestMixedInterpolation $(BIN)/TestX
 
 all: $(TEST_FILES)
 

@@ -27,7 +27,17 @@ showAllArgsDetails()
   echo ""
 }
 
-showArgsDetails()
+show3ArgsDetails()
+{
+  echo ""
+  echo " 4 arguments are required:"
+  echo "   - arg 1 : Space dimension [$2]"
+  echo "   - arg 2 : Number of test points [$3]"
+  echo "   - arg 3 : Number of iteration in AI algorithm [$5]"
+  echo ""
+}
+
+show2Details()
 {
   echo ""
   echo " 2 arguments are required:"
@@ -54,6 +64,14 @@ then
         fi
     fi
 
+elif [ "$1" = "MIXTE" ]
+then
+    show3ArgsDetails
+    if [ $# != 4 ]
+    then echo "Invalid number of arguments"
+    else ./bin/TestMixedInterpolation $2 $3 $4 0 0
+    fi
+
 elif [ "$1" = "PATH" ]
 then
     showAllArgsDetails
@@ -70,7 +88,7 @@ then
 
 elif [ "$1" = "PLOT" ]
 then
-    showArgsDetails
+    show2Details
     if [ $# != 3 ]
     then echo "Invalid number of arguments"
     else
