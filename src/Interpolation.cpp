@@ -1,11 +1,13 @@
 #include "../include/Interpolation.hpp"
 
-Interpolation::Interpolation(int d, int nIter) : m_d(d), m_maxIteration(nIter)
+template <typename T>
+Interpolation<T>::Interpolation(int d, int nIter) : m_d(d), m_maxIteration(nIter)
 {
     m_interpolationPoints.resize(m_d);
 }
 
-void Interpolation::displayInterpolationPointsInEachDirection()
+template <typename T>
+void Interpolation<T>::displayInterpolationPointsInEachDirection()
 {
     vector<double>::iterator it;
     for (int i=0; i<m_d; ++i)
@@ -17,7 +19,8 @@ void Interpolation::displayInterpolationPointsInEachDirection()
     }
 }
 
-void Interpolation::displayInterpolationMultiVariatePoints()
+template <typename T>
+void Interpolation<T>::displayInterpolationMultiVariatePoints()
 {
     cout << " - Interpolation nodes: { ";
     for (MultiVariatePoint<double> x : m_interpolationNodes)
@@ -25,7 +28,8 @@ void Interpolation::displayInterpolationMultiVariatePoints()
     cout << "}" << endl;
 }
 
-void Interpolation::saveErrorsInFile()
+template <typename T>
+void Interpolation<T>::saveErrorsInFile()
 {
   ofstream file("data/interpolation_error.txt", ios::out | ios::trunc);
   if(file)

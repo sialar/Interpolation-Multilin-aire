@@ -125,7 +125,7 @@ int main( int argc, char* argv[] )
     }
 
     Utils::separateur();
-    char display;
+    char display = 'x';
     while (display!='y' && display!='n')
     {
       cout << " - Display path and interpolation points: (y/n) " ;

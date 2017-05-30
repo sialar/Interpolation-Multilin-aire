@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#make clean
+make clean
 make -j8
 
 help()
@@ -45,7 +45,7 @@ then
 elif [ "$1" = "AI" ]
 then
     showAllArgsDetails
-    if [ $# -le 4 ]
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
     else
         if [ $4 = 0 ]
@@ -57,10 +57,9 @@ then
 elif [ "$1" = "PATH" ]
 then
     showArgsDetails
-    if [ $# -le 2 ]
+    if [ $# != 3 ]
     then echo "Invalid number of arguments"
     else
-        echo "$2"
         if [ $2 = 0 ]
         then ./bin/TestLagrangeInterpolation 2 1 $3 1 0
         else ./bin/TestPiecewiseInterpolation 2 1 $2 $3 1 0
@@ -71,26 +70,22 @@ then
 
 elif [ "$1" = "PLOT" ]
 then
-    showAllArgsDetails
-    if [ $# -le 4 ]
+    showArgsDetails
+    if [ $# != 3 ]
     then echo "Invalid number of arguments"
     else
-        if [ $2 -lt 1 -o $2 -gt 2 ]
-        then echo "Dimension must be 1 or 2"
-        else
-            if [ $4 = 0 ]
-            then ./bin/TestLagrangeInterpolation $2 1000 $5 1 0
-            else ./bin/TestPiecewiseInterpolation $2 1000 $4 $5 1 0
-            fi
-        cd python
-        python3.5 -W ignore plot_basis_functions_"$2"D.py
+        if [ $2 = 0 ]
+        then ./bin/TestLagrangeInterpolation 1 1000 $3 1 0
+        else ./bin/TestPiecewiseInterpolation 1 1000 $2 $3 1 0
         fi
+        cd python
+        python3.5 -W ignore plot_interpolation_progression.py
     fi
 
 elif [ "$1" = "ERROR" ]
 then
     showAllArgsDetails
-    if [ $# -le 4 ]
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
     else
         if [ $4 = 0 ]

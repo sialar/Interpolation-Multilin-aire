@@ -137,12 +137,10 @@ int main( int argc, char* argv[] )
         interp->storeInterpolationBasisFunctions();
         interp->storeInterpolationProgression();
         interp->savePathInFile();
-        interp->storeInterpolationBasisFunctions2d();
-        interp->storeInterpolationProgression2d();
     }
 
     Utils::separateur();
-    char display;
+    char display = 'x';
     while (display!='y' && display!='n')
     {
       cout << " - Display path and interpolation points: (y/n) " ;
