@@ -28,7 +28,7 @@ def prepare_initial_grid_for_leja_points(n,m):
             leja_sequence_y.append(v2)
     plt.subplot(122)
     plt.axis([-1.1, 1.1, -1.1, 1.1])
-    plt.scatter(leja_sequence_x, leja_sequence_y, s=s, c='w')
+    plt.scatter(leja_sequence_x, leja_sequence_y, s=s/2, c='w')
 
 def prepare_initial_grid_for_middle_points():
     dichotomy_file = open( "../data/dichotomy_sequence.txt", "r")
@@ -53,12 +53,15 @@ def plot_picked_points_progressively(indices,points,s,dt):
             nu = indices[i]
             plt.subplot(121)
             plt.axis([-1, n, -1, m])
-            plt.scatter(nu[0], nu[1], s=s, c='g')
+            plt.scatter(nu[0], nu[1], s=s, c='r')
             plt.subplot(122)
 
         p = points[i]
         plt.axis([-1.1, 1.1, -1.1, 1.1])
-        plt.scatter(p[0], p[1], s=s, c='g')
+        if method==0:
+            plt.scatter(p[0], p[1], s=s/2, c='r')
+        else:
+            plt.scatter(p[0], p[1], s=s, c='r')
         plt.pause(dt)
 
 
@@ -81,7 +84,7 @@ n = int(lines[0].split(" ")[0])
 m = int(lines[0].split(" ")[1])
 nb_points = int(lines[1])
 offset = 2
-s = 50
+s = 80
 
 for i in range(n):
     for j in range(m):

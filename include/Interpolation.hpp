@@ -122,8 +122,8 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
             std::chrono::duration<double> run_time = end_time - start_time;
             double error = tryWithCurentPath();
             if (m_saveError) m_errors.insert(pair<int, double>(iteration, tryWithCurentPath()));
-            cout << "   - Interpolation error after " << iteration << " iterations: " << error;
-            cout << " | Elapsed time : "  << run_time.count() << endl;
+            cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
+            cout << " | Elapsed time : "  << run_time.count();
             if (error < threshold)
             {
                 cout << endl << "   - AI Algo stop after " << iteration << " iterations";
