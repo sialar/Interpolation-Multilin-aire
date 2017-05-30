@@ -76,13 +76,6 @@ class BinaryTree
         static double getValueFromCode(string code);
         static string getParentCode(string code);
         static vector<string> computeChildrenCodes(string code);
-
-        static int getIndice(double l);
-        static double getValue(int i);
-        static int getParentIndice(int i);
-        static double getParentValue(int i);
-        static vector<double> computeChildrenValue(int i);
-        static bool isAncestorOf(int i, int j);
 };
 typedef std::shared_ptr<BinaryTree> BinaryTreePtr;
 

@@ -52,7 +52,7 @@ void PiecewiseInterpolation::computeBoundariesForBasisFunction(double t, double*
     else *inf = t;
 
     // Or using trees
-    m_trees[axis]->searchNode(t,inf,sup,false);
+    //m_trees[axis]->searchNode(t,inf,sup,false);
 }
 
 /******************************************************************************/
