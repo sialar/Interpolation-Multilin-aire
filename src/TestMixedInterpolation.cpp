@@ -139,7 +139,14 @@ int main( int argc, char* argv[] )
     {
         interp->storeInterpolationBasisFunctions();
         interp->storeInterpolationProgression();
-        interp->savePathInFile();
+        Utils::separateur();
+        char plot = 'x';
+        while (plot!='y' && plot!='n')
+        {
+          cout << " - Plot path: (y/n) " ;
+          cin >> plot;
+        }
+        interp->savePathInFile(plot=='y');
     }
 
     Utils::separateur();

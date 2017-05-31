@@ -45,6 +45,7 @@ class MixedInterpolation : public Interpolation<string>
       double basisFunction_1D(string code, double t, int axis);
 
       /********************** Display functions *****************************/
+      void savePathInFile(bool plot);
       void storeInterpolationBasisFunctions();
 };
 

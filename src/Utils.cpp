@@ -41,11 +41,11 @@ MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
 
 double Utils::interpolationError(vector<double> realValue, vector<double> estimate)
 {
-    double e = 0;
+    vector<double> e;
     int n = min(int(realValue.size()),int(estimate.size()));
     for (int k=0; k<n; k++)
-        e += abs(estimate[k] - realValue[k]);
-    return e/n;
+        e.push_back(abs(estimate[k] - realValue[k]));
+    return *max_element(e.begin(), e.end());
 }
 
 bool Utils::isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold)
@@ -170,7 +170,7 @@ double Utils::gNd(MultiVariatePoint<double> x)
     }
     else if (x.getD()==2)
     {
-        return sqrt(1-x(0)*x(0)) * exp(-(x(0)*x(0) + x(1)*x(1)));
+        return sqrt(1-x(0)*x(0)) * exp(-x(0)*x(0)-x(1)*x(1));
     }
     else
     {

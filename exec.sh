@@ -69,8 +69,10 @@ then
     show3ArgsDetails
     if [ $# != 4 ]
     then echo "Invalid number of arguments"
-    else ./bin/TestMixedInterpolation $2 $3 $4 0 0
+  else ./bin/TestMixedInterpolation $2 $3 $4 1 0
     fi
+    cd python
+    python3.5 -W ignore plot_mixed_path.py $2
 
 elif [ "$1" = "PATH" ]
 then

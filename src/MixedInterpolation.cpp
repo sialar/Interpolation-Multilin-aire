@@ -42,10 +42,6 @@ void MixedInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 }
 void MixedInterpolation::computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis)
 {
-    if (m_methods[axis]==0)
-    {
-      cout << "ERROR\n"; exit(1);
-    }
     vector<double> higherPoints, lowerPoints;
     for (double x : m_interpolationPoints[axis])
     {
@@ -172,6 +168,36 @@ bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 /******************************************************************************/
 
 /************************* Display functions **********************************/
+void MixedInterpolation::savePathInFile(bool plot)
+{
+  ofstream file("data/path.txt", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==2 || m_d==3)
+    {
+        file << plot << endl;
+        for (int i=0; i<m_d; i++)
+            file << m_interpolationPoints[i].size() << " ";
+        file << endl;
+        for (int i=0; i<m_d; i++)
+            file << m_methods[i] << " ";
+            file << endl << m_path.size() << endl;
+        MultiVariatePoint<double> x(m_d,0.0);
+        for (MultiVariatePointPtr<string> nu : m_path)
+        {
+            x = getPoint(nu);
+            for (int i=0; i<m_d; i++)
+                file << x(i) << " ";
+            for (int i=0; i<m_d; i++)
+                file << (*nu)(i) << " " ;
+            file << endl;
+        }
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 void MixedInterpolation::storeInterpolationBasisFunctions()
 {
   ofstream file("data/basis_functions.txt", ios::out | ios::trunc);

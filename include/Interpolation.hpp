@@ -8,6 +8,8 @@
 #include <memory>
 #include <cmath>
 #include <chrono>
+#include <iomanip>
+#include <limits>
 
 #include "MultiVariatePoint.hpp"
 #include "BinaryTree.hpp"
@@ -78,6 +80,7 @@ using InterpolationPtr = shared_ptr<Interpolation<T>>;
 template <typename T>
 Interpolation<T>::Interpolation(int d, int nIter) : m_d(d), m_maxIteration(nIter)
 {
+    setprecision (std::numeric_limits<double>::digits10 + 1);
     m_interpolationPoints.resize(m_d);
 }
 
@@ -88,6 +91,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     m_curentNeighbours.clear();
     m_path.clear();
     MultiVariatePointPtr<T> argmax = getFirstMultivariatePoint();
+    MultiVariatePointPtr<T> old;
     m_curentNeighbours.push_back(argmax);
     int iteration = 0;
     double val;
@@ -199,7 +203,7 @@ void Interpolation<T>::displayInterpolationPointsInEachDirection()
     {
         cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
         for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << *it << " ";
+            cout << setprecision(numeric_limits<double>::digits10+1) << *it << " ";
         cout << "}" << endl;
     }
 }
@@ -208,7 +212,7 @@ void Interpolation<T>::displayInterpolationMultiVariatePoints()
 {
     cout << " - Interpolation nodes: { ";
     for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << x << " ";
+        cout << setprecision(numeric_limits<double>::digits10+1) << x << " ";
     cout << "}" << endl;
 }
 template <typename T>
@@ -221,8 +225,8 @@ void Interpolation<T>::displayPath()
     {
         if (i>0) cout << "\t";
         cout << " " << i << " :";
-        cout << " [" << *m_path[i] << ":" << getPoint(m_path[i]) << ":" << m_path[i] << "]";
-        cout << " --> alpha" << *m_path[i] << " = " << m_path[i]->getAlpha() << endl;
+        cout << " [" << *m_path[i] << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(m_path[i]);
+        cout << ":" << m_path[i] << "] --> alpha" << *m_path[i] << " = " << m_path[i]->getAlpha() << endl;
     }
     cout << endl;
 }
@@ -231,7 +235,10 @@ void Interpolation<T>::displayCurentNeighbours()
 {
     cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
-        cout << "(" << (*nu) << ":" << getPoint(nu) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
+    {
+        cout << "(" << (*nu) << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(nu) << ":";
+        cout << nu << ") [" << nu->getWaitingTime() << "] | ";
+    }
     cout << endl << endl;
 }
 template <typename T>
