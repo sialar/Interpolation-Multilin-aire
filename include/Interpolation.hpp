@@ -54,7 +54,7 @@ class Interpolation
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
         double computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
-        virtual MultiVariatePointPtr<T> maxElement(int iteration, int frequence) = 0;
+        virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
@@ -94,24 +94,20 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     MultiVariatePointPtr<T> old;
     m_curentNeighbours.push_back(argmax);
     int iteration = 0;
-    double val;
     while (!m_curentNeighbours.empty() && iteration < m_maxIteration)
     {
+        for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
+            if (!nu->alphaAlreadyComputed())
+                computeLastAlphaNu(nu);
+
         if (debug)
         {
             Utils::separateur();
             displayPath();
             displayCurentNeighbours();
         }
-        for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
-        {
-            if (nu->alphaAlreadyComputed()) val = nu->getAlpha();
-            else val =  computeLastAlphaNu(nu);
-            if (debug) cout << *nu << " " << val << " | ";
-        }
-        if (debug) cout << endl;
 
-        argmax = maxElement(iteration, 4);
+        argmax = maxElement(iteration);
         m_path.push_back(argmax);
         addInterpolationPoint(getPoint(argmax));
         updateCurentNeighbours(argmax);
@@ -237,7 +233,7 @@ void Interpolation<T>::displayCurentNeighbours()
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
     {
         cout << "(" << (*nu) << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(nu) << ":";
-        cout << nu << ") [" << nu->getWaitingTime() << "] | ";
+        cout << nu->getAlpha() << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     }
     cout << endl << endl;
 }

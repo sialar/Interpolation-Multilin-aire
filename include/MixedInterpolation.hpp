@@ -35,7 +35,7 @@ class MixedInterpolation : public Interpolation<string>
 
       /************************* AI algo ************************************/
       MultiVariatePointPtr<string> getFirstMultivariatePoint();
-      MultiVariatePointPtr<string> maxElement(int iteration, int frequence);
+      MultiVariatePointPtr<string> maxElement(int iteration);
       bool indiceInPath(MultiVariatePoint<string> index);
       bool indiceInNeighborhood(MultiVariatePoint<string> index);
       void updateCurentNeighbours(MultiVariatePointPtr<string> nu);

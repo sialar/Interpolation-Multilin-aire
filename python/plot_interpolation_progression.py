@@ -30,11 +30,11 @@ def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
         plt.subplot(212)
         plt.axis([-1.1, 1.1, y_min, 1.1])
         for j in range(i):
-            plt.plot(x, y[j*len(x):(j+1)*len(x)], c='y')
+            plt.plot(x, y[j*len(x):(j+1)*len(x)], c='y', alpha=0.7*j/i)
             plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
 
         plt.subplot(211)
-        plt.axis([-1.1, 1.1, y_min, 1.1])
+        plt.axis([-1.1, 1.1, min(z)-0.1, max(z)+0.1])
         plt.plot(x, zero, 'k', c='k')
         plt.plot(x, g, 'k', c='g')
         plt.plot(x, z[i*len(x):(i+1)*len(x)], c='r')
@@ -84,7 +84,7 @@ nb_functions = int(lines_basis_functions[0].split(" ")[0])
 nb_points = int(lines_basis_functions[0].split(" ")[1])
 method = int(lines_basis_functions[0].split(" ")[2])
 
-dt = 1.5
+dt = 0.1
 nb_colors = 10
 cmap = get_cmap(nb_colors)
 taille = (25,10)

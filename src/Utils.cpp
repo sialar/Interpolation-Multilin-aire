@@ -160,23 +160,26 @@ vector<double> Utils::createSequenceByDichotomy(int length)
 }
 double Utils::gNd(MultiVariatePoint<double> x)
 {
-    double temp;
     if (x.getD()==1)
     {
-        temp = 1;
-        for (int i=0; i<x.getD(); i++)
-        temp *= sqrt(1 - pow(x(i),2));
-        return temp;
+        double f = 10;
+        if (x(0)<0) return cos(2*M_PI*f*x(0));
+        else return cos(0.1*M_PI*f*x(0));
+        //return sqrt(1-pow(x(0),2));
     }
     else if (x.getD()==2)
     {
-        return sqrt(1-x(0)*x(0)) * exp(-x(0)*x(0)-x(1)*x(1));
+        //double f = 10;
+        //if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
+        //else return exp(-x(0)*x(0))*sin(x(1));
+        return sqrt(1- x(0)*x(0)) * cos(x(1));
     }
+
     else
     {
-        temp = 0;
+        double temp = 0;
         for (int i=0; i<x.getD(); i++)
-        temp += pow(x(i),2);
+            temp += pow(x(i),2);
         return sin(sqrt(temp));
         //return temp + 1;
     }

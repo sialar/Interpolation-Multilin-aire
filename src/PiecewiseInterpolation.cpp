@@ -67,9 +67,19 @@ bool ageLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
     return nu->getWaitingTime() < mu->getWaitingTime();
 }
-MultiVariatePointPtr<string> PiecewiseInterpolation::maxElement(int iteration, int frequence)
+MultiVariatePointPtr<string> PiecewiseInterpolation::maxElement(int iteration)
 {
-    return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),(iteration%frequence) ? alphaLess : ageLess);
+    if (iteration%4)
+        return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),alphaLess);
+    else
+    {
+        MultiVariatePointPtr<string> mu = *max_element(m_curentNeighbours.begin(), \
+                                            m_curentNeighbours.end(),ageLess);
+        for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
+            if (!nu->getAlpha() && nu->getWaitingTime()==mu->getWaitingTime())
+                return nu;
+        return mu;
+    }
 }
 MultiVariatePointPtr<string> PiecewiseInterpolation::getFirstMultivariatePoint()
 {

@@ -16,7 +16,7 @@ def prepare_initial_grid(methods,n,m):
     dichotomy_x, dichotomy_y = [], []
     leja_values, dichotomy_values = [], []
     x, y = [], []
-    nb_pts_leja = min(n,m)
+    nb_pts_leja = min(100,min(n,m))
     nb_pts_dichotomy = int(dichotomy_lines[0])
 
     for i in range(nb_pts_leja):
@@ -61,14 +61,14 @@ def prepare_initial_grid(methods,n,m):
         y = dichotomy_y
 
     plt.axis([-1.1, 1.1, -1.1, 1.1])
-    plt.scatter(x, y, s=s, c='w')
+    plt.scatter(x, y, s=s/2, c='w')
 
 def plot_picked_points_progressively_2d(indices,points,s,dt):
-    plt.hold(True)
+    #plt.hold(True)
     plt.axis([-1.1, 1.1, -1.1, 1.1])
     for i in range(len(points)):
         p = points[i]
-        plt.scatter(p[0], p[1], s=s, c='r')
+        plt.scatter(p[0], p[1], s=s/2, c='r')
         plt.pause(dt)
 
 def plot_picked_points_progressively_3d(indices,points,s,dt):
@@ -76,7 +76,7 @@ def plot_picked_points_progressively_3d(indices,points,s,dt):
     ax.set_xlim(-1.1, 1.1)
     ax.set_ylim(-1.1, 1.1)
     ax.set_zlim(-1.1, 1.1)
-    plt.hold(True)
+    #plt.hold(True)
     for i in range(len(points)):
         p = points[i]
         ax.scatter(p[0], p[1], p[2], c='r', s=s, marker='o')

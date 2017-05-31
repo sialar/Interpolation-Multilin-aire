@@ -73,10 +73,19 @@ bool customAgeLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string>
 {
     return nu->getWaitingTime() < mu->getWaitingTime();
 }
-MultiVariatePointPtr<string> MixedInterpolation::maxElement(int iteration, int frequence)
+MultiVariatePointPtr<string> MixedInterpolation::maxElement(int iteration)
 {
-    return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(), \
-                        (iteration%frequence) ? customAlphaLess : customAgeLess);
+    if (iteration%2)
+        return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),customAlphaLess);
+    else
+    {
+        MultiVariatePointPtr<string> mu = *max_element(m_curentNeighbours.begin(), \
+                                            m_curentNeighbours.end(),customAgeLess);
+        for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
+            if (!nu->getAlpha() && nu->getWaitingTime()==mu->getWaitingTime())
+                return nu;
+        return mu;
+    }
 }
 MultiVariatePointPtr<string> MixedInterpolation::getFirstMultivariatePoint()
 {
