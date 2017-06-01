@@ -171,16 +171,20 @@ double Utils::gNd(MultiVariatePoint<double> x)
     {
         //double f = 10;
         //if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
-        //else return exp(-x(0)*x(0))*sin(x(1));
-        return sqrt(1- x(0)*x(0)) * cos(x(1));
+        //else return exp(-x(0)-x(1));
+        return sqrt(1- x(0)*x(0)) * exp(-x(1));
     }
 
     else
     {
-        double temp = 0;
-        for (int i=0; i<x.getD(); i++)
-            temp += pow(x(i),2);
-        return sin(sqrt(temp));
+        double temp = 1;
+        for (int i=1; i<x.getD(); i++)
+            temp *= exp(-x(i));
+        return sqrt(1- x(0)*x(0)) * temp;
+        //double temp = 0;
+        //for (int i=0; i<x.getD(); i++)
+        //    temp += pow(x(i),2);
+        //return sin(sqrt(temp));
         //return temp + 1;
     }
 }

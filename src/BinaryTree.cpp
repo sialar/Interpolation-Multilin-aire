@@ -20,18 +20,18 @@ Node::Node(Node* node)
 }
 void Node::displayNode()
 {
-    cout << "[" << key();
+    cout << "[" << setprecision(numeric_limits<double>::digits10+1) << key();
     cout << ", ";
-    if (parent()) cout << parent()->key();
+    if (parent()) cout << setprecision(numeric_limits<double>::digits10+1) << parent()->key();
     else cout << "X";
     cout << ", ";
     if (isLeaf()) cout << "X, X, True";
     else
     {
-        if (left()) cout << left()->key();
+        if (left()) cout << setprecision(numeric_limits<double>::digits10+1) << left()->key();
         else cout << "X";
         cout << ", ";
-        if (right()) cout << right()->key();
+        if (right()) cout << setprecision(numeric_limits<double>::digits10+1) << right()->key();
         else cout << "X";
         cout << ", ";
         cout << "False";
@@ -54,14 +54,13 @@ void Node::displayNodesRecursively(Node* node)
 
 void Node::clearNodesRecursively(Node* node)
 {
-    Node* tmpNode = node;
-    if (!node) return;
-    if (tmpNode->left())  clearNodesRecursively(tmpNode->left());
-    if (tmpNode->right()) clearNodesRecursively(tmpNode->right());
-    delete tmpNode;
-    node = NULL;
+    if (node!=NULL)
+    {
+        clearNodesRecursively(node->left());
+        clearNodesRecursively(node->right());
+        delete node;
+    }
 }
-
 
 /******************************** BinaryTree **********************************/
 BinaryTree::BinaryTree() {}
@@ -105,7 +104,10 @@ void BinaryTree::addNode(double key)
             }
         }
         else
-            cout << "L'élément " << key << " existe déjà!" << endl;
+        {
+            cout << "L'élément " << setprecision(numeric_limits<double>::digits10+1) << key << " existe déjà!" << endl;
+            exit(1);
+        }
     }
     while(tmpTree);
     else
@@ -263,10 +265,15 @@ void BinaryTree::tree2Vector(Node* node)
 
 void BinaryTree::clearTree()
 {
-  Node::clearNodesRecursively(m_root);
+  if (m_root)
+  {
+      Node::clearNodesRecursively(m_root);
+      m_root = NULL;
+  }
 }
 
 void BinaryTree::displayBinaryTree()
 {
-    Node::displayNodesRecursively(m_root);
+  if (m_root)
+      Node::displayNodesRecursively(m_root);
 }

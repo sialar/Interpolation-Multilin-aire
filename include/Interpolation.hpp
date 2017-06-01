@@ -23,6 +23,7 @@ class Interpolation
     protected:
         int m_d;
         int m_maxIteration;
+        int nbMethods = 3;
 
         vector<vector<double>> m_interpolationPoints;
         vector<MultiVariatePoint<double>> m_interpolationNodes;
@@ -62,7 +63,6 @@ class Interpolation
         double interpolation_ND(MultiVariatePoint<double>& x, int end);
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
 
-
         /************************* Display function ***************************/
         void displayInterpolationPointsInEachDirection();
         void displayInterpolationMultiVariatePoints();
@@ -71,19 +71,31 @@ class Interpolation
         void saveErrorsInFile();
         void savePathInFile();
         void displayPath();
+        void displayAll();
+        void clearAll();
 };
 
 template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
 
-
 template <typename T>
 Interpolation<T>::Interpolation(int d, int nIter) : m_d(d), m_maxIteration(nIter)
 {
-    setprecision (std::numeric_limits<double>::digits10 + 1);
     m_interpolationPoints.resize(m_d);
+    m_saveError = false;
 }
 
+template <typename T>
+void Interpolation<T>::clearAll()
+{
+    m_path.clear();
+    m_alphaMap.clear();
+    m_curentNeighbours.clear();
+    m_interpolationNodes.clear();
+    for (int i=0; i<m_d; i++)
+        m_interpolationPoints[i].clear();
+    m_interpolationPoints.clear();
+}
 /***************************** AI algo ****************************************/
 template <typename T>
 int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
@@ -121,12 +133,12 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
             double error = tryWithCurentPath();
-            if (m_saveError) m_errors.insert(pair<int, double>(iteration, tryWithCurentPath()));
+            if (m_saveError) m_errors.insert(pair<int, double>(iteration, error));
             cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
             cout << " | Elapsed time : "  << run_time.count();
             if (error < threshold)
             {
-                cout << endl << "   - AI Algo stop after " << iteration << " iterations";
+                cout << "   - AI Algo stoped after " << iteration << " iterations";
                 cout << " | Elapsed time : "  << run_time.count() << endl;
                 return iteration;
             }
@@ -158,7 +170,7 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug)
   int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug);
   auto end_time = chrono::steady_clock::now();
   std::chrono::duration<double> run_time = end_time - start_time;
-  cout << endl << " - Time required to compute the path with " << nbIterations <<
+  cout << endl << "   - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
 }
 template <typename T>
@@ -215,7 +227,7 @@ template <typename T>
 void Interpolation<T>::displayPath()
 {
     // Format: (nu:points[nu]) --> () ...
-    cout << "Chemin =";
+    cout << " - Path =";
     int n = m_path.size();
     for (int i=0; i<n; i++)
     {
@@ -229,7 +241,7 @@ void Interpolation<T>::displayPath()
 template <typename T>
 void Interpolation<T>::displayCurentNeighbours()
 {
-    cout << "Curent neighbours (" << m_curentNeighbours.size() << ") = ";
+    cout << " - Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
     {
         cout << "(" << (*nu) << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(nu) << ":";
@@ -237,6 +249,16 @@ void Interpolation<T>::displayCurentNeighbours()
     }
     cout << endl << endl;
 }
+
+template <typename T>
+void Interpolation<T>::displayAll()
+{
+    displayPath();
+    displayCurentNeighbours();
+    displayInterpolationMultiVariatePoints();
+    displayInterpolationPointsInEachDirection();
+}
+
 template <typename T>
 void Interpolation<T>::storeInterpolationProgression()
 {

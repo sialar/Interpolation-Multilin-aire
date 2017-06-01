@@ -10,6 +10,7 @@
 #include <cstring>
 #include <memory>
 #include <limits>
+#include <iomanip>
 
 using namespace std;
 
@@ -49,6 +50,7 @@ class Node
         void displayNode();
         static void displayNodesRecursively(Node* node);
         static void clearNodesRecursively(Node* node);
+        void clearNode();
 };
 
 class BinaryTree

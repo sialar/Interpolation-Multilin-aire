@@ -31,18 +31,18 @@ int chooseNbTestPoints(int argc, char* argv[])
   return nbTestPoints;
 }
 
-vector<int> chooseMethods(int dim)
+MultiVariatePoint<int> chooseMethods(int dim)
 {
-    vector<int> methods(dim,-1);
+    MultiVariatePoint<int> methods(dim,-1);
     for (int i=0; i<dim; i++)
     {
-        while (methods[i]!=0 && methods[i]!=1 && methods[i]!=2)
+        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
         {
             cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
             cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
             cout << "\t - 1: Using piecewise functions and middle points: " << endl;
             cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
-            cin >> methods[i];
+            cin >> methods(i);
         }
     }
     return methods;
@@ -61,28 +61,16 @@ int chooseMaxIteration(int argc, char* argv[])
   return maxIteration;
 }
 
-bool withBackup(int argc, char* argv[])
+bool plotPath(int argc, char* argv[])
 {
   if (argc > 4) return stoi(argv[4]);
-  char store = 'x';
-  while (store!='y' && store!='n')
+  char plot = 'x';
+  while (plot!='y' && plot!='n')
   {
-      cout << " - Store path and interpolation progression? (y/n) ";
-      cin >> store;
+      cout << " - Save and plot interpolation points? (y/n) ";
+      cin >> plot;
   }
-  return (store=='y');
-}
-
-bool saveError(int argc, char* argv[])
-{
-  if (argc > 5) return stoi(argv[5]);
-  char e = 'x';
-  while (e!='y' && e!='n')
-  {
-      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
-      cin >> e;
-  }
-  return (e=='y');
+  return (plot=='y');
 }
 
 int main( int argc, char* argv[] )
@@ -92,13 +80,10 @@ int main( int argc, char* argv[] )
     Utils::separateur();
     int dim = chooseDimension(argc,argv);
     int nbTestPoints = chooseNbTestPoints(argc,argv);
-    vector<int> methods = chooseMethods(dim);
+    MultiVariatePoint<int> methods = chooseMethods(dim);
     int maxIteration = chooseMaxIteration(argc,argv);
-    bool store = withBackup(argc,argv);
-    bool error = saveError(argc,argv);
 
     MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods));
-    interp->setSaveError(error);
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -134,38 +119,8 @@ int main( int argc, char* argv[] )
 
     // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-
-    if (store)
-    {
-        interp->storeInterpolationBasisFunctions();
-        interp->storeInterpolationProgression();
-        Utils::separateur();
-        char plot = 'x';
-        while (plot!='y' && plot!='n')
-        {
-          cout << " - Plot path: (y/n) " ;
-          cin >> plot;
-        }
-        interp->savePathInFile(plot=='y');
-    }
-
+    interp->savePathInFile();
     Utils::separateur();
-    char display = 'x';
-    while (display!='y' && display!='n')
-    {
-      cout << " - Display path and interpolation points: (y/n) " ;
-      cin >> display;
-    }
-    if (display=='y' /*maxIteration<pow(10,dim)+1*/)
-    {
-      Utils::separateur();
-      interp->displayPath();
-      Utils::separateur();
-      interp->displayInterpolationMultiVariatePoints();
-      cout << endl;
-      interp->displayInterpolationPointsInEachDirection();
-    }
 
-    Utils::separateur();
     return 0;
 }

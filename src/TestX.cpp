@@ -3,6 +3,7 @@
 #include <fstream>
 #include <time.h>
 #include "../include/Utils.hpp"
+#include "../include/BinaryTree.hpp"
 #include "../include/MultiVariatePoint.hpp"
 #include "../include/PiecewiseInterpolation.hpp"
 #include "../include/LagrangeInterpolation.hpp"

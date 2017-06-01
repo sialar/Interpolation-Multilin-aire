@@ -20,18 +20,19 @@ class MixedInterpolation : public Interpolation<string>
 {
     private:
       vector<double> m_lejaSequence;
-      vector<int> m_methods; // 0 ou 1 ou 2 sur chaque variable
+      MultiVariatePoint<int> m_methods; // 0 ou 1 ou 2 sur chaque variable
+      map<MultiVariatePoint<int>,double> m_methods_errors;
       vector<BinaryTreePtr> m_trees;
 
     public:
-      MixedInterpolation(int d, int nIter, vector<int> methods);
+      MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods);
       ~MixedInterpolation() {};
-
 
       /************************* Data points ********************************/
       MultiVariatePoint<double> getPoint(MultiVariatePointPtr<string> nu);
       void addInterpolationPoint(MultiVariatePoint<double> p);
       void computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis);
+      void setMethods(MultiVariatePoint<int> methods) { m_methods = methods; }
 
       /************************* AI algo ************************************/
       MultiVariatePointPtr<string> getFirstMultivariatePoint();
@@ -43,9 +44,11 @@ class MixedInterpolation : public Interpolation<string>
 
       /*********************** Interpolation ********************************/
       double basisFunction_1D(string code, double t, int axis);
+      double tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
+      MultiVariatePoint<int> tryAllCases(double threshold);
 
       /********************** Display functions *****************************/
-      void savePathInFile(bool plot);
+      void savePathInFile();
       void storeInterpolationBasisFunctions();
 };
 

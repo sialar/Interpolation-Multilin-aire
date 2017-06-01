@@ -25,7 +25,6 @@ def prepare_initial_grid(methods,n,m):
         dichotomy_values.append(float(dichotomy_lines[i+1]))
 
     if methods[0]==0 and methods[1]==0:
-        print(1)
         for v1 in leja_values:
             for v2 in leja_values:
                     leja_sequence_x.append(v1)
@@ -34,7 +33,6 @@ def prepare_initial_grid(methods,n,m):
         y = leja_sequence_y
 
     elif methods[0]==0 and methods[1]!=0:
-        print(2)
         for v1 in leja_values:
             for v2 in dichotomy_values:
                     leja_sequence_x.append(v1)
@@ -43,7 +41,6 @@ def prepare_initial_grid(methods,n,m):
         y = dichotomy_y
 
     elif methods[0]!=0 and methods[1]==0:
-        print(3)
         for v1 in dichotomy_values:
             for v2 in leja_values:
                     dichotomy_x.append(v1)
@@ -52,7 +49,6 @@ def prepare_initial_grid(methods,n,m):
         y = leja_sequence_y
 
     elif methods[0]!=0 and methods[1]!=0:
-        print(4)
         for v1 in dichotomy_values:
             for v2 in dichotomy_values:
                     dichotomy_x.append(v1)
@@ -98,35 +94,35 @@ ai_output_file = open( "../data/path.txt", "r")
 lines = ai_output_file.readlines()
 ai_output_file.close()
 
-if int(lines[0]):
-    l = 1
-    n = int(lines[1].split(" ")[0])
-    m = int(lines[1].split(" ")[1])
+if len(lines)==0:
+    sys.exit(1)
+
+l = 1
+n = int(lines[0].split(" ")[0])
+m = int(lines[0].split(" ")[1])
+if dim==3:
+    l = int(lines[0].split(" ")[2])
+
+offset = 3
+s = 80
+dt = 0.01
+
+methods = []
+for i in range(dim):
+    methods.append(int(lines[1].split(" ")[i]))
+
+nb_points = int(lines[2])
+for i in range(nb_points):
+    x = float(lines[i+offset].split(" ")[0])
+    y = float(lines[i+offset].split(" ")[1])
+    z = 0
     if dim==3:
-        l = int(lines[1].split(" ")[2])
+        z = float(lines[i+offset].split(" ")[2])
+    picked_points.append((x,y,z))
 
-    offset = 4
-    s = 80
-    dt = 0.01
-
-    methods = []
-    for i in range(dim):
-        methods.append(int(lines[2].split(" ")[i]))
-
-    nb_points = int(lines[3])
-
-    for i in range(nb_points):
-        x = float(lines[i+offset].split(" ")[0])
-        y = float(lines[i+offset].split(" ")[1])
-        z = 0
-        if dim==3:
-            z = float(lines[i+offset].split(" ")[2])
-        picked_points.append((x,y,z))
-
-
-    if dim==2:
-        prepare_initial_grid(methods,n,m)
-        plot_picked_points_progressively_2d(picked_indices, picked_points,s,dt)
-    else:
-        plot_picked_points_progressively_3d(picked_indices, picked_points,s,dt)
-    plt.show()
+if dim==2:
+    prepare_initial_grid(methods,n,m)
+    plot_picked_points_progressively_2d(picked_indices, picked_points,s,dt)
+else:
+    plot_picked_points_progressively_3d(picked_indices, picked_points,s,dt)
+plt.show()

@@ -1,6 +1,6 @@
 #include "../include/MixedInterpolation.hpp"
 
-MixedInterpolation::MixedInterpolation(int d, int nIter, vector<int> methods) :
+MixedInterpolation::MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods) :
     Interpolation(d,nIter)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
@@ -16,7 +16,7 @@ MultiVariatePoint<double> MixedInterpolation::getPoint(MultiVariatePointPtr<stri
     MultiVariatePoint<double> point(m_d,0.0);
     for (int i=0; i<m_d; i++)
     {
-        if (m_methods[i])
+        if (m_methods(i))
             point(i) = BinaryTree::getValueFromCode((*nu)(i));
         else
             point(i) = m_lejaSequence[stoi((*nu)(i))];
@@ -36,7 +36,7 @@ void MixedInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
         if (!found)
         {
             m_interpolationPoints[i].push_back(p(i));
-            if (m_methods[i]) m_trees[i]->addNode(p(i));
+            if (m_methods(i)) m_trees[i]->addNode(p(i));
         }
     }
 }
@@ -75,7 +75,7 @@ bool customAgeLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string>
 }
 MultiVariatePointPtr<string> MixedInterpolation::maxElement(int iteration)
 {
-    if (iteration%2)
+    if (iteration%4)
         return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),customAlphaLess);
     else
     {
@@ -91,7 +91,7 @@ MultiVariatePointPtr<string> MixedInterpolation::getFirstMultivariatePoint()
 {
     MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,"");
     for (int i=0; i<m_d; i++)
-        if (!m_methods[i])
+        if (!m_methods(i))
             (*nu)(i) = "0";
     return nu;
 }
@@ -104,7 +104,7 @@ void MixedInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string> nu)
     vector<string> childrenCodes;
     for (int i=0; i<m_d; i++)
     {
-        if (m_methods[i])
+        if (m_methods(i))
         {
             childrenCodes = BinaryTree::computeChildrenCodes((*nu)(i));
             for (int k=0; k<int(childrenCodes.size()); k++)
@@ -135,7 +135,7 @@ bool MixedInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<str
     string temp;
     for (int i=0; i<m_d; i++)
     {
-        if (m_methods[i])
+        if (m_methods(i))
         {
             if ((*nu)(i).compare("")!=0)
             {
@@ -177,20 +177,19 @@ bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 /******************************************************************************/
 
 /************************* Display functions **********************************/
-void MixedInterpolation::savePathInFile(bool plot)
+void MixedInterpolation::savePathInFile()
 {
   ofstream file("data/path.txt", ios::out | ios::trunc);
   if(file)
   {
     if (m_d==2 || m_d==3)
     {
-        file << plot << endl;
         for (int i=0; i<m_d; i++)
             file << m_interpolationPoints[i].size() << " ";
         file << endl;
         for (int i=0; i<m_d; i++)
-            file << m_methods[i] << " ";
-            file << endl << m_path.size() << endl;
+            file << m_methods(i) << " ";
+        file << endl << m_path.size() << endl;
         MultiVariatePoint<double> x(m_d,0.0);
         for (MultiVariatePointPtr<string> nu : m_path)
         {
@@ -219,7 +218,7 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
       for (int i=0; i<nbPoints; i++)
           x.push_back(m_testPoints[i](0));
       sort(x.begin(), x.end());
-      file << m_path.size() << " " << nbPoints << " " << m_methods[0] << endl;
+      file << m_path.size() << " " << nbPoints << " " << m_methods(0) << endl;
       MultiVariatePoint<double> p;
       for (int j=0; j<nbPoints; j++)
       {
@@ -241,13 +240,64 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
   else
   cerr << "Error while opening the file!" << endl;
 }
+
 /******************************************************************************/
 
 
 /*********************** Interpolation ****************************************/
+double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
+{
+    clearAll();
+    for (int i=0; i<int(m_trees.size()); i++)
+        m_trees[i]->clearTree();
+    cout << "   - Interpolation using methods " << methods;
+    vector<double> errors;
+    setMethods(methods);
+    testPathBuilt(threshold, m_maxIteration<21);
+    vector<double> realValues, estimate;
+    for (MultiVariatePoint<double> p : m_testPoints)
+    {
+        realValues.push_back(Utils::gNd(p));
+        estimate.push_back(interpolation_ND(p,m_path.size()));
+    }
+    return Utils::interpolationError(realValues,estimate);
+}
+MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
+{
+    MultiVariatePoint<int> methods(m_d, 0);
+    vector<double> error(3, 0);
+    for (int i=0; i<m_d; i++)
+    {
+        Utils::separateur();
+        cout << " - Comparing methods in direction " << i << ": " << endl;
+        for (int j=0; j<nbMethods; j++)
+        {
+            methods(i) = j;
+            map<MultiVariatePoint<int>,double>::iterator it = m_methods_errors.find(methods);
+            if (it == m_methods_errors.end())
+            {
+                error[j] = tryWithDifferentMethods(methods, threshold);
+                m_methods_errors.insert(pair<MultiVariatePoint<int>,double>(methods,error[j]));
+            }
+            else error[j] = get<1>(*it);
+            cout << "   ---> Interpolation error when using " << methods << " = " << error[j] << endl;
+        }
+        methods(i) = distance(error.begin(),min_element(error.begin(), error.end()));
+        cout << endl << " ---> Chosen method in direction " << i << ": " <<  methods(i) << endl;
+    }
+    Utils::separateur();
+    cout << " - The optimal choice of methods is " << methods << endl;
+    cout << " - Interpolation error = " << *min_element(error.begin(), error.end()) << endl;
+    if (*min_element(error.begin(), error.end())>0.01)
+    {
+        cout << " - The interpolation error is quite big, ";
+        cout << "you should increase the maximum number of iterations" << endl;
+    }
+    return methods;
+}
 double MixedInterpolation::basisFunction_1D(string code, double t, int axis)
 {
-    if (m_methods[axis]==0)
+    if (m_methods(axis)==0)
     {
         if (code.compare("0")==0) return 1;
         int k = stoi(code);
@@ -256,7 +306,7 @@ double MixedInterpolation::basisFunction_1D(string code, double t, int axis)
             prod *= (t-m_lejaSequence[i]) / (m_lejaSequence[k]-m_lejaSequence[i]) ;
         return prod;
     }
-    else if (m_methods[axis]==1)
+    else if (m_methods(axis)==1)
     {
         if (code.compare("")==0) return 1;
         else if (code.compare("0")==0) return (t>0) ? 0 : -t;
