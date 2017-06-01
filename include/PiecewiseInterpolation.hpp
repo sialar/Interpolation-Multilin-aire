@@ -25,6 +25,7 @@ class PiecewiseInterpolation : public Interpolation<string>
     public:
         PiecewiseInterpolation(int d, int nIter, int method);
         ~PiecewiseInterpolation() {};
+        void clearAllTrees();
 
         /************************* Data points ********************************/
         MultiVariatePoint<double> getPoint(MultiVariatePointPtr<string> nu);

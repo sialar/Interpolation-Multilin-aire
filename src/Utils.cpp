@@ -158,34 +158,40 @@ vector<double> Utils::createSequenceByDichotomy(int length)
     }
     return sequence;
 }
-double Utils::gNd(MultiVariatePoint<double> x)
+double Utils::g(MultiVariatePoint<double> x)
 {
     if (x.getD()==1)
-    {
-        double f = 10;
-        if (x(0)<0) return cos(2*M_PI*f*x(0));
-        else return cos(0.1*M_PI*f*x(0));
-        //return sqrt(1-pow(x(0),2));
-    }
+        return sqrt(1-pow(x(0),2));
     else if (x.getD()==2)
-    {
-        //double f = 10;
-        //if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
-        //else return exp(-x(0)-x(1));
         return sqrt(1- x(0)*x(0)) * exp(-x(1));
-    }
-
     else
     {
         double temp = 1;
         for (int i=1; i<x.getD(); i++)
             temp *= exp(-x(i));
         return sqrt(1- x(0)*x(0)) * temp;
-        //double temp = 0;
-        //for (int i=0; i<x.getD(); i++)
-        //    temp += pow(x(i),2);
-        //return sin(sqrt(temp));
-        //return temp + 1;
+    }
+}
+double Utils::f(MultiVariatePoint<double> x)
+{
+    if (x.getD()==1)
+    {
+        double f = 10;
+        if (x(0)<0) return cos(2*M_PI*f*x(0));
+        else return cos(0.1*M_PI*f*x(0));
+    }
+    else if (x.getD()==2)
+    {
+        double f = 10;
+        if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
+        else return exp(-x(0)-x(1));
+    }
+    else
+    {
+        double temp = 0;
+        for (int i=0; i<x.getD(); i++)
+            temp += pow(x(i),2);
+        return sin(sqrt(temp));
     }
 }
 

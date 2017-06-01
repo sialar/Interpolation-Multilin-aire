@@ -129,7 +129,7 @@ void LagrangeInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<int> nu : m_path)
             file << " " << basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::gNd(p);
+        file << " " <<  Utils::g(p);
         file << endl;
       }
       for (MultiVariatePointPtr<int> nu : m_path)

@@ -71,11 +71,11 @@ int main( int argc, char* argv[] )
     cout << " - Each time, the algorithm will stop when the interpolation error becomes lower than"
          << " a threshold = " << threshold << endl;
 
-    MultiVariatePoint<int> optimalMethods = interp->tryAllCases(threshold);
+    MultiVariatePoint<int> optimalMethods = interp->tryAllCases(threshold,0);
     interp->setMethods(optimalMethods);
 
     Utils::separateur();
-    interp->tryWithDifferentMethods(optimalMethods, threshold);
+    interp->tryWithDifferentMethods(optimalMethods, threshold,0);
     interp->savePathInFile();
     Utils::separateur();
 

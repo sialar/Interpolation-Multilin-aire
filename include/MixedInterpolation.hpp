@@ -27,6 +27,7 @@ class MixedInterpolation : public Interpolation<string>
     public:
       MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods);
       ~MixedInterpolation() {};
+      void clearAllTrees();
 
       /************************* Data points ********************************/
       MultiVariatePoint<double> getPoint(MultiVariatePointPtr<string> nu);
@@ -44,8 +45,8 @@ class MixedInterpolation : public Interpolation<string>
 
       /*********************** Interpolation ********************************/
       double basisFunction_1D(string code, double t, int axis);
-      double tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
-      MultiVariatePoint<int> tryAllCases(double threshold);
+      double tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold, int function);
+      MultiVariatePoint<int> tryAllCases(double threshold, int function);
 
       /********************** Display functions *****************************/
       void savePathInFile();

@@ -8,6 +8,12 @@ PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method) :
       m_trees[i] = make_shared<BinaryTree>();
   }
 
+void PiecewiseInterpolation::clearAllTrees()
+{
+    for (int i=0; i<int(m_trees.size()); i++)
+        m_trees[i]->clearTree();
+}
+
 /************************* Data Points ****************************************/
 MultiVariatePoint<double> PiecewiseInterpolation::getPoint(MultiVariatePointPtr<string> nu)
 {
@@ -172,7 +178,7 @@ void PiecewiseInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<string> nu : m_path)
           file << " " <<  basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::gNd(p);
+        file << " " <<  Utils::g(p);
         file << endl;
       }
       for (MultiVariatePointPtr<string> nu : m_path)

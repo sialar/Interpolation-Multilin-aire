@@ -9,6 +9,11 @@ MixedInterpolation::MixedInterpolation(int d, int nIter, MultiVariatePoint<int> 
     for (int i=0; i<m_d; i++)
       m_trees[i] = make_shared<BinaryTree>();
 }
+void MixedInterpolation::clearAllTrees()
+{
+    for (int i=0; i<int(m_trees.size()); i++)
+        m_trees[i]->clearTree();
+}
 
 /************************* Data Points ****************************************/
 MultiVariatePoint<double> MixedInterpolation::getPoint(MultiVariatePointPtr<string> nu)
@@ -226,7 +231,7 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<string> nu : m_path)
             file << " " << basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::gNd(p);
+        file << " " <<  Utils::g(p);
         file << endl;
       }
       for (MultiVariatePointPtr<string> nu : m_path)
@@ -245,24 +250,25 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
 
 
 /*********************** Interpolation ****************************************/
-double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
+double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold, int function)
 {
     clearAll();
+    clearAllTrees();
     for (int i=0; i<int(m_trees.size()); i++)
         m_trees[i]->clearTree();
     cout << "   - Interpolation using methods " << methods;
     vector<double> errors;
     setMethods(methods);
-    testPathBuilt(threshold, m_maxIteration<21);
+    testPathBuilt(threshold, m_maxIteration<21, function);
     vector<double> realValues, estimate;
     for (MultiVariatePoint<double> p : m_testPoints)
     {
-        realValues.push_back(Utils::gNd(p));
+        realValues.push_back(Utils::g(p));
         estimate.push_back(interpolation_ND(p,m_path.size()));
     }
     return Utils::interpolationError(realValues,estimate);
 }
-MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
+MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold, int function)
 {
     MultiVariatePoint<int> methods(m_d, 0);
     vector<double> error(3, 0);
@@ -276,7 +282,7 @@ MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
             map<MultiVariatePoint<int>,double>::iterator it = m_methods_errors.find(methods);
             if (it == m_methods_errors.end())
             {
-                error[j] = tryWithDifferentMethods(methods, threshold);
+                error[j] = tryWithDifferentMethods(methods, threshold, function);
                 m_methods_errors.insert(pair<MultiVariatePoint<int>,double>(methods,error[j]));
             }
             else error[j] = get<1>(*it);

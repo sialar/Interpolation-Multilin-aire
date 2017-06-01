@@ -49,11 +49,11 @@ class Interpolation
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
 
         /************************* AI algo ************************************/
-        double tryWithCurentPath();
+        double tryWithCurentPath(int function);
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
-        void testPathBuilt(double threshold, bool debug);
-        int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
-        double computeLastAlphaNu(MultiVariatePointPtr<T> nu);
+        void testPathBuilt(double threshold, bool debug, int function);
+        int buildPathWithAIAlgo(auto start_time, double threshold, bool debug, int function);
+        double computeLastAlphaNu(MultiVariatePointPtr<T> nu, int function);
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
@@ -98,7 +98,7 @@ void Interpolation<T>::clearAll()
 }
 /***************************** AI algo ****************************************/
 template <typename T>
-int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
+int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug, int function)
 {
     m_curentNeighbours.clear();
     m_path.clear();
@@ -110,7 +110,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     {
         for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
             if (!nu->alphaAlreadyComputed())
-                computeLastAlphaNu(nu);
+                computeLastAlphaNu(nu, function);
 
         if (debug)
         {
@@ -132,7 +132,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
-            double error = tryWithCurentPath();
+            double error = tryWithCurentPath(function);
             if (m_saveError) m_errors.insert(pair<int, double>(iteration, error));
             cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
             cout << " | Elapsed time : "  << run_time.count();
@@ -148,10 +148,12 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     return iteration;
 }
 template <typename T>
-double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
+double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu, int function)
 {
     double basisFuncProd;
-    double res = Utils::gNd(getPoint(nu));
+    double res = 0;
+    if (function) res = Utils::f(getPoint(nu));
+    else res = Utils::g(getPoint(nu));
     for (MultiVariatePointPtr<T> l : m_path)
     {
         basisFuncProd = 1;
@@ -164,22 +166,23 @@ double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
     return res;
 }
 template <typename T>
-void Interpolation<T>::testPathBuilt(double threshold, bool debug)
+void Interpolation<T>::testPathBuilt(double threshold, bool debug, int function)
 {
   auto start_time = chrono::steady_clock::now();
-  int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug);
+  int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug, function);
   auto end_time = chrono::steady_clock::now();
   std::chrono::duration<double> run_time = end_time - start_time;
   cout << endl << "   - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
 }
 template <typename T>
-double Interpolation<T>::tryWithCurentPath()
+double Interpolation<T>::tryWithCurentPath(int function)
 {
   vector<double> realValues, estimate;
   for (MultiVariatePoint<double> p : m_testPoints)
   {
-    realValues.push_back(Utils::gNd(p));
+    if (function) realValues.push_back(Utils::f(p));
+    else realValues.push_back(Utils::g(p));
     estimate.push_back(interpolation_ND(p,m_path.size()));
   }
   return Utils::interpolationError(realValues,estimate);

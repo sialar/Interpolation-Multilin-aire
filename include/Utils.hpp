@@ -42,7 +42,8 @@ class Utils
         static void storeDichotomySequenceInFile(int length);
 
         // Function to approximate
-        static double gNd(MultiVariatePoint<double> x);
+        static double g(MultiVariatePoint<double> x);
+        static double f(MultiVariatePoint<double> x);
 
         // Useful for uniform points and Leja sequence creation
         static void binaryDecomposition(int number, vector<double>& binary_decomp);
