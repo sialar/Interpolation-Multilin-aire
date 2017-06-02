@@ -39,7 +39,6 @@ class MixedInterpolation : public Interpolation<string>
       MultiVariatePointPtr<string> getFirstMultivariatePoint();
       MultiVariatePointPtr<string> maxElement(int iteration);
       bool indiceInPath(MultiVariatePoint<string> index);
-      bool indiceInNeighborhood(MultiVariatePoint<string> index);
       void updateCurentNeighbours(MultiVariatePointPtr<string> nu);
       bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu);
 

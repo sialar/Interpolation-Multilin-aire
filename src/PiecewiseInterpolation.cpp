@@ -41,6 +41,7 @@ void PiecewiseInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 }
 void PiecewiseInterpolation::computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis)
 {
+    /*
     vector<double> higherPoints, lowerPoints;
     for (double x : m_interpolationPoints[axis])
     {
@@ -56,9 +57,9 @@ void PiecewiseInterpolation::computeBoundariesForBasisFunction(double t, double*
     if (lowerPoints.size())
         *inf = *max_element(lowerPoints.begin(),lowerPoints.end());
     else *inf = t;
-
+    */
     // Or using trees
-    //m_trees[axis]->searchNode(t,inf,sup,false);
+    m_trees[axis]->searchNode(t,inf,sup,false);
 }
 
 /******************************************************************************/
@@ -113,31 +114,19 @@ void PiecewiseInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string>
 }
 bool PiecewiseInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu)
 {
-    bool isNeighbour[m_d];
-    for (int i=0; i<m_d; i++)
-        isNeighbour[i] = true;
-
     MultiVariatePoint<string> mu(*nu);
     string temp;
     for (int i=0; i<m_d; i++)
+    {
         if ((*nu)(i).compare("")!=0)
         {
             temp = mu(i);
             mu(i) = BinaryTree::getParentCode(temp);
-            isNeighbour[i] = indiceInPath(mu) && !indiceInNeighborhood(mu);
+            if (!indiceInPath(mu)) return false;
             mu(i) = temp;
         }
-    bool res = true;
-    for (int i=0; i<m_d; i++)
-        res = res && isNeighbour[i];
-    return res;
-}
-bool PiecewiseInterpolation::indiceInNeighborhood(MultiVariatePoint<string> index)
-{
-    for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
-        if (Utils::equals(index,*nu))
-            return true;
-    return false;
+    }
+    return true;
 }
 bool PiecewiseInterpolation::indiceInPath(MultiVariatePoint<string> index)
 {

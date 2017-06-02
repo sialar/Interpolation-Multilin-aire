@@ -75,29 +75,18 @@ void LagrangeInterpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
 }
 bool LagrangeInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<int> nu)
 {
-    bool isNeighbour[m_d];
+    MultiVariatePoint<int> mu(*nu);
+    string temp;
     for (int i=0; i<m_d; i++)
-        isNeighbour[i] = true;
-
-    MultiVariatePoint<int> index(*nu);
-    for (int i=0; i<m_d; i++)
+    {
         if ((*nu)(i))
         {
-            index(i)--;
-            isNeighbour[i] = indiceInPath(index) && !indiceInNeighborhood(index);
-            index(i)++;
+            mu(i)--;
+            if (!indiceInPath(mu)) return false;
+            mu(i)++;
         }
-    bool res = true;
-    for (int i=0; i<m_d; i++)
-        res = res && isNeighbour[i];
-    return res;
-}
-bool LagrangeInterpolation::indiceInNeighborhood(MultiVariatePoint<int> index)
-{
-    for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
-        if (index==*nu)
-            return true;
-    return false;
+    }
+    return true;
 }
 bool LagrangeInterpolation::indiceInPath(MultiVariatePoint<int> index)
 {

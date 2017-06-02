@@ -47,6 +47,7 @@ void MixedInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 }
 void MixedInterpolation::computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis)
 {
+    /*
     vector<double> higherPoints, lowerPoints;
     for (double x : m_interpolationPoints[axis])
     {
@@ -62,9 +63,9 @@ void MixedInterpolation::computeBoundariesForBasisFunction(double t, double* inf
     if (lowerPoints.size())
         *inf = *max_element(lowerPoints.begin(),lowerPoints.end());
     else *inf = t;
-
+    */
     // Or using trees
-    //m_trees[axis]->searchNode(t,inf,sup,false);
+    m_trees[axis]->searchNode(t,inf,sup,false);
 }
 /******************************************************************************/
 
@@ -132,10 +133,6 @@ void MixedInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string> nu)
 
 bool MixedInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu)
 {
-    bool isNeighbour[m_d];
-    for (int i=0; i<m_d; i++)
-        isNeighbour[i] = true;
-
     MultiVariatePoint<string> mu(*nu);
     string temp;
     for (int i=0; i<m_d; i++)
@@ -146,7 +143,7 @@ bool MixedInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<str
             {
                 temp = mu(i);
                 mu(i) = BinaryTree::getParentCode(temp);
-                isNeighbour[i] = indiceInPath(mu) && !indiceInNeighborhood(mu);
+                if (!indiceInPath(mu)) return false;
                 mu(i) = temp;
             }
         }
@@ -155,22 +152,12 @@ bool MixedInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<str
             if ((*nu)(i).compare("0")!=0)
             {
                 mu(i) = to_string(stoi(mu(i))-1);
-                isNeighbour[i] = indiceInPath(mu) && !indiceInNeighborhood(mu);
+                if (!indiceInPath(mu)) return false;
                 mu(i) = to_string(stoi(mu(i))+1);
             }
         }
     }
-    bool res = true;
-    for (int i=0; i<m_d; i++)
-        res = res && isNeighbour[i];
-    return res;
-}
-bool MixedInterpolation::indiceInNeighborhood(MultiVariatePoint<string> index)
-{
-    for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
-        if (Utils::equals(index,*nu))
-            return true;
-    return false;
+    return true;
 }
 bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 {

@@ -204,7 +204,7 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug, int function)
   int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug, function);
   auto end_time = chrono::steady_clock::now();
   std::chrono::duration<double> run_time = end_time - start_time;
-  cout << endl << " - Time required to compute the path with " << nbIterations <<
+  cout << endl << "   - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
 }
 template <typename T>
