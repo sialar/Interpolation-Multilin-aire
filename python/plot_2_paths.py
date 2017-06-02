@@ -70,10 +70,10 @@ def plot_picked_points_progressively_3d(alpha1, alpha2, points1, points2, s, dt)
             ax2.scatter(q2[0], q2[1], q2[2], c='y', s=s, marker='o')
         p1 = points1[i]
         ax1.scatter(p1[0], p1[1], p1[2], c='k', s=s, marker='o')
-        plt.title(alpha1[i])
+        #ax1.set_title(alpha1[i])
         p2 = points2[i]
         ax2.scatter(p2[0], p2[1], p2[2], c='k', s=s, marker='o')
-        plt.title(alpha2[i])
+        #ax2.set_title(alpha2[i])
         plt.pause(dt)
 
 

@@ -98,7 +98,7 @@ then
         else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 1 0
         fi
         cd python
-        python3.5 -W ignore plot_path.py $2 $4 
+        python3.5 -W ignore plot_path.py $2 $4
     fi
 
 elif [ "$1" = "PLOT" ]
@@ -123,7 +123,7 @@ then
     else ./bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5
     fi
     cd python
-    python3.5 -W ignore plot_both_path.py $2 $4
+    python3.5 -W ignore plot_2_paths.py $2 $4
 
 
 elif [ "$1" = "DIFF_FUNC" ]
@@ -134,7 +134,7 @@ then
     else ./bin/TestSamePathWithDifferentFunctions $2 $3 $4 $5
     fi
     cd python
-    python3.5 -W ignore plot_both_path.py $2 $4
+    python3.5 -W ignore plot_2_paths.py $2 $4
 
 elif [ "$1" = "ERROR" ]
 then

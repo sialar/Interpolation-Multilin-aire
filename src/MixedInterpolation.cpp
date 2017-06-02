@@ -192,6 +192,9 @@ void MixedInterpolation::savePathInFile(string fileName)
                 file << (*nu)(i) << " " ;
             file << endl;
         }
+        for (MultiVariatePointPtr<string> nu : m_path)
+            file << nu->getAlpha() << " ";
+        file << endl;
     }
     file.close();
   }

@@ -59,15 +59,16 @@ def prepare_initial_grid(methods,n,m):
     plt.axis([-1.1, 1.1, -1.1, 1.1])
     plt.scatter(x, y, s=s/2, c='w')
 
-def plot_picked_points_progressively_2d(indices,points,s,dt):
+def plot_picked_points_progressively_2d(alpha, indices,points,s,dt):
     #plt.hold(True)
     plt.axis([-1.1, 1.1, -1.1, 1.1])
     for i in range(len(points)):
         p = points[i]
         plt.scatter(p[0], p[1], s=s/2, c='r')
+        plt.title(alpha[i])
         plt.pause(dt)
 
-def plot_picked_points_progressively_3d(indices,points,s,dt):
+def plot_picked_points_progressively_3d(alpha, indices,points,s,dt):
     ax = fig.gca(projection='3d')
     ax.set_xlim(-1.1, 1.1)
     ax.set_ylim(-1.1, 1.1)
@@ -76,6 +77,7 @@ def plot_picked_points_progressively_3d(indices,points,s,dt):
     for i in range(len(points)):
         p = points[i]
         ax.scatter(p[0], p[1], p[2], c='r', s=s, marker='o')
+        ax.set_title(alpha[i])
         plt.pause(dt)
 
 
@@ -108,6 +110,8 @@ s = 80
 dt = 0.05
 
 methods = []
+alpha = []
+
 for i in range(dim):
     methods.append(int(lines[1].split(" ")[i]))
 
@@ -119,10 +123,11 @@ for i in range(nb_points):
     if dim==3:
         z = float(lines[i+offset].split(" ")[2])
     picked_points.append((x,y,z))
+    alpha.append(float(lines[nb_points+offset].split(" ")[i]))
 
 if dim==2:
     prepare_initial_grid(methods,n,m)
-    plot_picked_points_progressively_2d(picked_indices, picked_points,s,dt)
+    plot_picked_points_progressively_2d(alpha, picked_indices, picked_points, s, dt)
 else:
-    plot_picked_points_progressively_3d(picked_indices, picked_points,s,dt)
+    plot_picked_points_progressively_3d(alpha, picked_indices, picked_points, s, dt)
 plt.show()
