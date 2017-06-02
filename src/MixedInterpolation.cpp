@@ -1,7 +1,7 @@
 #include "../include/MixedInterpolation.hpp"
 
-MixedInterpolation::MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods) :
-    Interpolation(d,nIter)
+MixedInterpolation::MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods, Function f) :
+    Interpolation(d,nIter,f)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
     m_trees.resize(m_d);
@@ -237,14 +237,14 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
 
 
 /*********************** Interpolation ****************************************/
-double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold, int function)
+double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
 {
     clearAll();
     clearAllTrees();
     cout << "   - Interpolation using methods " << methods;
     vector<double> errors;
     setMethods(methods);
-    testPathBuilt(threshold, m_maxIteration<21, function);
+    testPathBuilt(threshold, m_maxIteration<21);
     vector<double> realValues, estimate;
     for (MultiVariatePoint<double> p : m_testPoints)
     {
@@ -253,7 +253,7 @@ double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> method
     }
     return Utils::interpolationError(realValues,estimate);
 }
-MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold, int function)
+MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
 {
     MultiVariatePoint<int> methods(m_d, 0);
     vector<double> error(3, 0);
@@ -267,7 +267,7 @@ MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold, int fun
             map<MultiVariatePoint<int>,double>::iterator it = m_methods_errors.find(methods);
             if (it == m_methods_errors.end())
             {
-                error[j] = tryWithDifferentMethods(methods, threshold, function);
+                error[j] = tryWithDifferentMethods(methods, threshold);
                 m_methods_errors.insert(pair<MultiVariatePoint<int>,double>(methods,error[j]));
             }
             else error[j] = get<1>(*it);

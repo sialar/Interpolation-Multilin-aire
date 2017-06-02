@@ -79,7 +79,7 @@ int main( int argc, char* argv[] )
     bool store = withBackup(argc,argv);
     bool error = saveError(argc,argv);
 
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration));
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration,Utils::g));
     interp->setSaveError(error);
 
     // Initialisation of test points
@@ -95,13 +95,13 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
-    interp->testPathBuilt(threshold, maxIteration<11,0);
+    interp->testPathBuilt(threshold, maxIteration<11);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
     for (MultiVariatePoint<double> p : testPoints)
     {
-        realValues.push_back(Utils::g(p));
+        realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
     if (nbTestPoints < 11)

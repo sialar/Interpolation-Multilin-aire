@@ -82,7 +82,7 @@ int main( int argc, char* argv[] )
     int nbTestPoints = chooseNbTestPoints(argc,argv);
     MultiVariatePoint<int> methods = chooseMethods(dim);
     int maxIteration = chooseMaxIteration(argc,argv);
-    MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods));
+    MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods,Utils::g));
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -97,13 +97,13 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
-    interp->testPathBuilt(threshold, maxIteration<21,0);
+    interp->testPathBuilt(threshold, maxIteration<21);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
     for (MultiVariatePoint<double> p : testPoints)
     {
-        realValues.push_back(Utils::g(p));
+        realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
     if (nbTestPoints < 11)

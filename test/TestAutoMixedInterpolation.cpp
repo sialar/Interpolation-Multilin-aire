@@ -54,7 +54,7 @@ int main( int argc, char* argv[] )
     MultiVariatePoint<int> methods(dim,0);
     int maxIteration = chooseMaxIteration(argc,argv);
 
-    MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods));
+    MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods,Utils::g));
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -71,11 +71,11 @@ int main( int argc, char* argv[] )
     cout << " - Each time, the algorithm will stop when the interpolation error becomes lower than"
          << " a threshold = " << threshold << endl;
 
-    MultiVariatePoint<int> optimalMethods = interp->tryAllCases(threshold,0);
+    MultiVariatePoint<int> optimalMethods = interp->tryAllCases(threshold);
     interp->setMethods(optimalMethods);
 
     Utils::separateur();
-    interp->tryWithDifferentMethods(optimalMethods, threshold,0);
+    interp->tryWithDifferentMethods(optimalMethods, threshold);
     interp->savePathInFile("data/path.txt");
     Utils::separateur();
 

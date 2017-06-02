@@ -5,6 +5,7 @@
 #include "../include/Utils.hpp"
 #include "../include/BinaryTree.hpp"
 #include "../include/MultiVariatePoint.hpp"
+#include "../include/Interpolation.hpp"
 #include "../include/PiecewiseInterpolation.hpp"
 #include "../include/LagrangeInterpolation.hpp"
 
@@ -39,18 +40,18 @@ vector<MultiVariatePoint<double>> parseFile(string fileName)
 
 double evaluateCrossSection(vector<MultiVariatePoint<double>> dataPoints,
                             vector<double> dataValues, int method,
-                            MultiVariatePoint<double>& x, int iteration)
+                            MultiVariatePoint<double>& x, int iteration, Function f)
 {
     int dim = x.getD();
     if (method)
     {
-        PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,pow(10,dim),method));
+        PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,pow(10,dim),method,f));
         interp->testPathBuilt(1e-5, false, 0);
         return interp->interpolation_ND(x,interp->path().size());
     }
     else
     {
-        LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,pow(10,dim)));
+        LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,pow(10,dim),f));
         interp->testPathBuilt(1e-5, false, 0);
         return interp->interpolation_ND(x,interp->path().size());
     }

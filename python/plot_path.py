@@ -119,7 +119,7 @@ else:
 nb_points = int(lines[1])
 offset = 2
 s = 80
-dt = 0.1
+dt = 0.05
 
 for i in range(n):
     for j in range(m):

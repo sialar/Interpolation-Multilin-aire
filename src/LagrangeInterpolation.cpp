@@ -1,7 +1,7 @@
 #include "../include/LagrangeInterpolation.hpp"
 
-LagrangeInterpolation::LagrangeInterpolation(int d, int nIter) :
-    Interpolation(d,nIter)
+LagrangeInterpolation::LagrangeInterpolation(int d, int nIter, Function f) :
+    Interpolation(d,nIter,f)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
 }

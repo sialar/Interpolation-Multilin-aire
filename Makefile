@@ -11,8 +11,8 @@ OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
 TEST_FILES = $(BIN)/TestLagrangeInterpolation $(BIN)/TestPiecewiseInterpolation
 TEST_FILES += $(BIN)/TestMixedInterpolation $(BIN)/TestAutoMixedInterpolation
-TEST_FILES += $(BIN)/TestSamePathWithDifferentFunctions $(BIN)/TestX
-TEST_FILES += $(BIN)/TestSameFunctionWithDifferentPaths $(BIN)/TestX
+TEST_FILES += $(BIN)/TestSamePathWithDifferentFunctions
+TEST_FILES += $(BIN)/TestSameFunctionWithDifferentPaths
 
 all: $(TEST_FILES)
 

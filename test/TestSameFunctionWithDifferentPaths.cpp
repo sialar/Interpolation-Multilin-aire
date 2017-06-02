@@ -69,7 +69,7 @@ int main( int argc, char* argv[] )
     int method = chooseMethod(argc,argv);
     int maxIteration = chooseMaxIteration(argc,argv);
 
-    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,maxIteration,method));
+    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,maxIteration,method,Utils::g));
 
     // Initialisation of test points
     vector<MultiVariatePoint<double>> testPoints;
@@ -81,11 +81,11 @@ int main( int argc, char* argv[] )
 
     double threshold = 1e-6;
     cout << " - Interpolation of function g using the path of g" << endl;
-    interp->testPathBuilt(threshold, maxIteration<21,0);
+    interp->testPathBuilt(threshold, maxIteration<21);
     interp->savePathInFile("data/path.txt");
     for (MultiVariatePoint<double> p : testPoints)
     {
-        realValues.push_back(Utils::g(p));
+        realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
@@ -98,13 +98,16 @@ int main( int argc, char* argv[] )
 
     cout << " - Interpolation of function g using the path of f" << endl;
     cout << " - Computing the interpolation points obtained with function f" << endl;
-    interp->testPathBuilt(threshold, maxIteration<21,1);
+
+    interp->setFunc(Utils::f);
+    interp->testPathBuilt(threshold, maxIteration<21);
     interp->clearAllAlpha();
-    interp->computeAllAlphaNuInPredefinedPath(0);
+    interp->setFunc(Utils::g);
+    interp->computeAllAlphaNuInPredefinedPath();
     interp->savePathInFile("data/other_path.txt");
     for (MultiVariatePoint<double> p : testPoints)
     {
-        realValues.push_back(Utils::g(p));
+        realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;

@@ -1,7 +1,7 @@
 #include "../include/PiecewiseInterpolation.hpp"
 
-PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method) :
-    Interpolation(d, nIter), m_method(method)
+PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method, Function f) :
+    Interpolation(d, nIter, f), m_method(method)
 {
     m_trees.resize(m_d);
     for (int i=0; i<m_d; i++)
