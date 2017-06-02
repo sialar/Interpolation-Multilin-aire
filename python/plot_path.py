@@ -104,7 +104,7 @@ else:
 taille = (16,8)
 fig = plt.figure(figsize=taille)
 
-ai_output_file = open( "../data/path.txt", "r")
+ai_output_file = open("../data/path.txt", "r")
 lines = ai_output_file.readlines()
 ai_output_file.close()
 
@@ -119,7 +119,7 @@ else:
 nb_points = int(lines[1])
 offset = 2
 s = 80
-dt = 0.01
+dt = 0.1
 
 for i in range(n):
     for j in range(m):

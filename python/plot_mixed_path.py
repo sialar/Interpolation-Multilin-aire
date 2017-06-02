@@ -105,7 +105,7 @@ if dim==3:
 
 offset = 3
 s = 80
-dt = 0.01
+dt = 0.1
 
 methods = []
 for i in range(dim):

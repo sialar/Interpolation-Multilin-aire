@@ -39,7 +39,8 @@ class MultiVariatePoint
         void setAlpha(double alpha) { m_alpha = alpha; };
 
         bool alphaAlreadyComputed() { return (m_alpha != m_initialAlpha); };
-
+        void reinit() { m_alpha = m_initialAlpha; };
+        
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toBiVariatePoint(T vec0, T vec1);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);

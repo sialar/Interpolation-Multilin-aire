@@ -79,37 +79,38 @@ int main( int argc, char* argv[] )
         testPoints[j] = Utils::createRandomMultiVariatePoint(dim);
     interp->setTestPoints(testPoints);
 
-    // Path creation
     double threshold = 1e-6;
-    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
-         << threshold;
+    cout << " - Interpolation of function g using the path of g" << endl;
     interp->testPathBuilt(threshold, maxIteration<21,0);
-
-    // Computing real values, and approximation of function g at test points
-    Utils::separateur();
+    interp->savePathInFile("data/path.txt");
     for (MultiVariatePoint<double> p : testPoints)
     {
         realValues.push_back(Utils::g(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
-    // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
 
-    /*
-    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
-         << threshold;
-    interp->testPathBuilt(threshold, maxIteration<21,1);
+
     Utils::separateur();
+    interp->clearAllTrees();
+    interp->clearAll();
+    realValues.clear();
+    estimate.clear();
+
+
+    cout << " - Interpolation of function f using the path of g" << endl;
+    cout << " - Computing the interpolation points obtained with function f" << endl;
+    interp->testPathBuilt(threshold, maxIteration<21,0);
+    interp->clearAllAlpha();
+    interp->computeAllAlphaNuInPredefinedPath(1);
+    interp->savePathInFile("data/other_path.txt");
     for (MultiVariatePoint<double> p : testPoints)
     {
         realValues.push_back(Utils::f(p));
         estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
     }
-    // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-    */
+
     Utils::separateur();
     return 0;
 }

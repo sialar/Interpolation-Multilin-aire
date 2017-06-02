@@ -1,4 +1,5 @@
 SRC = src
+TEST = test
 INCLUDE = include
 BIN = bin
 
@@ -10,7 +11,8 @@ OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
 TEST_FILES = $(BIN)/TestLagrangeInterpolation $(BIN)/TestPiecewiseInterpolation
 TEST_FILES += $(BIN)/TestMixedInterpolation $(BIN)/TestAutoMixedInterpolation
-TEST_FILES += $(BIN)/TestInterpolationWithDifferentPath $(BIN)/TestX
+TEST_FILES += $(BIN)/TestSamePathWithDifferentFunctions $(BIN)/TestX
+TEST_FILES += $(BIN)/TestSameFunctionWithDifferentPaths $(BIN)/TestX
 
 all: $(TEST_FILES)
 
@@ -19,7 +21,7 @@ $(BIN)/Test% : $(BIN)/Test%.o $(OBJ_FILES) $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Construction des objets (file.o)
-$(BIN)/Test%.o : $(SRC)/Test%.cpp $(INCLUDE_FILES)
+$(BIN)/Test%.o : $(TEST)/Test%.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)

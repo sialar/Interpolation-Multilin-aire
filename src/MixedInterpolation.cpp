@@ -182,9 +182,9 @@ bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 /******************************************************************************/
 
 /************************* Display functions **********************************/
-void MixedInterpolation::savePathInFile()
+void MixedInterpolation::savePathInFile(string fileName)
 {
-  ofstream file("data/path.txt", ios::out | ios::trunc);
+  ofstream file(fileName, ios::out | ios::trunc);
   if(file)
   {
     if (m_d==2 || m_d==3)
@@ -254,8 +254,6 @@ double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> method
 {
     clearAll();
     clearAllTrees();
-    for (int i=0; i<int(m_trees.size()); i++)
-        m_trees[i]->clearTree();
     cout << "   - Interpolation using methods " << methods;
     vector<double> errors;
     setMethods(methods);

@@ -82,7 +82,6 @@ int main( int argc, char* argv[] )
     int nbTestPoints = chooseNbTestPoints(argc,argv);
     MultiVariatePoint<int> methods = chooseMethods(dim);
     int maxIteration = chooseMaxIteration(argc,argv);
-
     MixedInterpolationPtr interp(new MixedInterpolation(dim,maxIteration,methods));
 
     // Initialisation of test points
@@ -119,7 +118,7 @@ int main( int argc, char* argv[] )
 
     // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-    interp->savePathInFile();
+    interp->savePathInFile("data/path.txt");
     Utils::separateur();
 
     return 0;

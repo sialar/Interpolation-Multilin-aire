@@ -34,6 +34,7 @@ class Interpolation
         list<MultiVariatePointPtr<T>> m_curentNeighbours;
 
         map<int, double> m_errors;
+        bool m_displayProgress = false;
         bool m_saveError;
 
     public:
@@ -45,6 +46,7 @@ class Interpolation
         const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
         void setSaveError(bool error) { m_saveError = error; };
+        void enableProgressDisplay() { m_displayProgress = true; };
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
 
@@ -54,6 +56,7 @@ class Interpolation
         void testPathBuilt(double threshold, bool debug, int function);
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug, int function);
         double computeLastAlphaNu(MultiVariatePointPtr<T> nu, int function);
+        void computeAllAlphaNuInPredefinedPath(int function);
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
@@ -69,10 +72,11 @@ class Interpolation
         void storeInterpolationProgression();
         void displayCurentNeighbours();
         void saveErrorsInFile();
-        void savePathInFile();
+        void savePathInFile(string fileName);
         void displayPath();
         void displayAll();
         void clearAll();
+        void clearAllAlpha();
 };
 
 template <typename T>
@@ -94,7 +98,15 @@ void Interpolation<T>::clearAll()
     m_interpolationNodes.clear();
     for (int i=0; i<m_d; i++)
         m_interpolationPoints[i].clear();
-    m_interpolationPoints.clear();
+    //m_interpolationPoints.clear();
+}
+
+template <typename T>
+void Interpolation<T>::clearAllAlpha()
+{
+    m_alphaMap.clear();
+    for (MultiVariatePointPtr<T> nu : m_path)
+        nu->reinit();
 }
 /***************************** AI algo ****************************************/
 template <typename T>
@@ -128,7 +140,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
         int fact = (m_saveError) ? m_maxIteration : 10;
-        if (m_maxIteration>=10 && iteration%(m_maxIteration/fact)==0)
+        if (m_displayProgress && m_maxIteration>=10 && iteration%(m_maxIteration/fact)==0)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
@@ -166,13 +178,33 @@ double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu, int func
     return res;
 }
 template <typename T>
+void Interpolation<T>::computeAllAlphaNuInPredefinedPath(int function)
+{
+    double basisFuncProd;
+    double res = 0;
+    for (int i=0; i<int(m_path.size()); i++)
+    {
+        if (function) res = Utils::f(getPoint(m_path[i]));
+        else res = Utils::g(getPoint(m_path[i]));
+        for (int j=0; j<i; j++)
+        {
+            basisFuncProd = 1;
+            for (int p=0; p<m_d; p++)
+                basisFuncProd *= basisFunction_1D((*m_path[j])(p),getPoint(m_path[i])(p),p);
+            res -= m_path[j]->getAlpha() * basisFuncProd;
+        }
+        m_alphaMap.insert(pair<MultiVariatePointPtr<T>,double>(m_path[i],res));
+        (m_path[i])->setAlpha(res);
+    }
+}
+template <typename T>
 void Interpolation<T>::testPathBuilt(double threshold, bool debug, int function)
 {
   auto start_time = chrono::steady_clock::now();
   int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug, function);
   auto end_time = chrono::steady_clock::now();
   std::chrono::duration<double> run_time = end_time - start_time;
-  cout << endl << "   - Time required to compute the path with " << nbIterations <<
+  cout << endl << " - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
 }
 template <typename T>
@@ -308,9 +340,9 @@ void Interpolation<T>::saveErrorsInFile()
       cerr << "Error while opening the file!" << endl;
 }
 template <typename T>
-void Interpolation<T>::savePathInFile()
+void Interpolation<T>::savePathInFile(string fileName)
 {
-  ofstream file("data/path.txt", ios::out | ios::trunc);
+  ofstream file(fileName, ios::out | ios::trunc);
   if(file)
   {
     if (m_d==2 || m_d==3)
@@ -328,6 +360,9 @@ void Interpolation<T>::savePathInFile()
                 file << (*nu)(i) << " " ;
             file << endl;
         }
+        for (MultiVariatePointPtr<T> nu : m_path)
+            file << nu->getAlpha() << " ";
+        file << endl;
     }
     file.close();
   }

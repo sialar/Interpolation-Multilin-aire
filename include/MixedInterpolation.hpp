@@ -49,7 +49,7 @@ class MixedInterpolation : public Interpolation<string>
       MultiVariatePoint<int> tryAllCases(double threshold, int function);
 
       /********************** Display functions *****************************/
-      void savePathInFile();
+      void savePathInFile(string fileName);
       void storeInterpolationBasisFunctions();
 };
 

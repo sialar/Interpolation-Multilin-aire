@@ -182,9 +182,10 @@ double Utils::f(MultiVariatePoint<double> x)
     }
     else if (x.getD()==2)
     {
-        double f = 10;
-        if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
-        else return exp(-x(0)-x(1));
+        //double f = 10;
+        //if (x(0)<0) return cos(2*M_PI*f*x(0))*exp(-x(1));
+        //else return exp(-x(0)-x(1));
+        return (x(0)*x(0)+2*x(1)) * exp(-x(0)-x(1));
     }
     else
     {
