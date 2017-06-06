@@ -53,6 +53,7 @@ class Interpolation
         const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
         void setSaveError(bool error) { m_saveError = error; };
+        map<int, double>& errors() { return m_errors; };
         void setFunc(Function f) { m_function = f; };
         double func(MultiVariatePoint<double> x) { return m_function(x); };
         void enableProgressDisplay() { m_displayProgress = true; };
@@ -149,15 +150,18 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-        int fact = (m_saveError) ? m_maxIteration : 10;
-        if (m_displayProgress && m_maxIteration>=10 && iteration%(m_maxIteration/fact)==0)
+        int fact = (m_saveError) ? 100 : 10;
+        if (m_maxIteration>=10 && iteration%(m_maxIteration/fact)==0)
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
             double error = tryWithCurentPath();
             if (m_saveError) m_errors.insert(pair<int, double>(iteration, error));
-            cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
-            cout << " | Elapsed time : "  << run_time.count();
+            if (m_displayProgress)
+            {
+                cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
+                cout << " | Elapsed time : "  << run_time.count();
+            }
             if (error < threshold)
             {
                 cout << "   - AI Algo stoped after " << iteration << " iterations";

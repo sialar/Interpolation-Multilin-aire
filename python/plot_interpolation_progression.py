@@ -6,11 +6,6 @@ import warnings
 import random
 import sys
 
-def separator(N):
-    for i in range(N):
-        print("*",end='')
-    print("\n")
-
 def get_cmap(N):
     '''Returns a function that maps each index in 0, 1, ... N-1 to a distinct
     RGB color.'''
@@ -23,8 +18,6 @@ def get_cmap(N):
 def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
     for i in range(int(len(y)/len(x))):
         plt.hold(True)
-        print("\t\t\t\t\t\t\t\t\t\t\tx(", i, ") = ", interp_points[i])
-        print("\t\t\t\t\t\t\t\t\t\t\talpha(", i,") = ", alpha[i], end="\n\n")
         plt.clf()
 
         plt.subplot(212)
@@ -38,9 +31,10 @@ def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
         plt.plot(x, zero, 'k', c='k')
         plt.plot(x, g, 'k', c='g')
         plt.plot(x, z[i*len(x):(i+1)*len(x)], c='r')
+        msg = ("alpha("+ str(interp_points[i]) + ") = " + str(alpha[i]))
+        plt.title(msg)
 
         plt.pause(dt)
-        separator(206)
 
 def prepare_interpolation_data(lines):
     x, g, zero, y, alpha, interp_points = [], [], [], [], [], []
@@ -84,7 +78,7 @@ nb_functions = int(lines_basis_functions[0].split(" ")[0])
 nb_points = int(lines_basis_functions[0].split(" ")[1])
 method = int(lines_basis_functions[0].split(" ")[2])
 
-dt = 0.1
+dt = 0.5
 nb_colors = 10
 cmap = get_cmap(nb_colors)
 taille = (25,10)
