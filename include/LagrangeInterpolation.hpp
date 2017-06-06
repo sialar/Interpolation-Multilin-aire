@@ -34,7 +34,6 @@ class LagrangeInterpolation : public Interpolation<int>
       MultiVariatePointPtr<int> getFirstMultivariatePoint();
       MultiVariatePointPtr<int> maxElement(int iteration);
       bool indiceInPath(MultiVariatePoint<int> index);
-      bool indiceInNeighborhood(MultiVariatePoint<int> index);
       void updateCurentNeighbours(MultiVariatePointPtr<int> nu);
       bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<int> nu);
 
