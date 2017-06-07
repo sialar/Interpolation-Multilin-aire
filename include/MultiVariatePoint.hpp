@@ -40,13 +40,15 @@ class MultiVariatePoint
 
         bool alphaAlreadyComputed() { return (m_alpha != m_initialAlpha); };
         void reinit() { m_alpha = m_initialAlpha; };
-        
+
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toBiVariatePoint(T vec0, T vec1);
         static MultiVariatePoint<T> toMonoVariatePoint(T vec);
 
         T &operator()(int d) const { return m_nu[d]; };
         MultiVariatePoint& operator+=(const MultiVariatePoint & v);
+        MultiVariatePoint& operator-=(const MultiVariatePoint & v);
+        MultiVariatePoint& operator*=(const double & r);
         MultiVariatePoint& operator=(MultiVariatePoint const &nu);
 };
 
@@ -135,6 +137,50 @@ MultiVariatePoint<T>& MultiVariatePoint<T>::operator+=(const MultiVariatePoint<T
     for (int i=0; i<nu.getD(); i++)
         (*this)(i) += nu(i);
     return *this;
+}
+
+template <typename T>
+MultiVariatePoint<T>& MultiVariatePoint<T>::operator-=(const MultiVariatePoint<T> & nu)
+{
+    for (int i=0; i<nu.getD(); i++)
+        (*this)(i) -= nu(i);
+    return *this;
+}
+
+template <typename T>
+MultiVariatePoint<T>& MultiVariatePoint<T>::operator*=(const double & r)
+{
+    for (int i=0; i<getD(); i++)
+        (*this)(i) *= r;
+    return *this;
+}
+
+
+template <typename T>
+MultiVariatePoint<T> operator+(const MultiVariatePoint<T> & p1 ,const MultiVariatePoint<T> & p2)
+{
+    MultiVariatePoint<T> p(p1);
+    for (int i=0;i<p.getD();i++)
+        p(i) += p2(i);
+    return p;
+}
+
+template <typename T>
+MultiVariatePoint<T> operator-(const MultiVariatePoint<T> & p1 ,const MultiVariatePoint<T> & p2)
+{
+    MultiVariatePoint<T> p(p1);
+    for (int i=0;i<p.getD();i++)
+        p(i) -= p2(i);
+    return p;
+}
+
+template <typename T>
+MultiVariatePoint<T> operator*(MultiVariatePoint<T> p1 , const double & r)
+{
+    MultiVariatePoint<T> p(p1);
+    for (int i=0;i<p.getD();i++)
+        p(i) *= r;
+    return p;
 }
 
 template <typename T>
