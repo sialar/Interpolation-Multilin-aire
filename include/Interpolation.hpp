@@ -35,7 +35,6 @@ class Interpolation
         vector<MultiVariatePoint<double>> m_testPoints;
 
         vector<MultiVariatePointPtr<T>> m_path;
-        map<MultiVariatePointPtr<T>, double> m_alphaMap;
         list<MultiVariatePointPtr<T>> m_curentNeighbours;
 
         map<int, double> m_errors;
@@ -73,7 +72,7 @@ class Interpolation
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
         /************************* Interpolation ******************************/
-        double interpolation_ND(MultiVariatePoint<double>& x, int end);
+        double interpolation(MultiVariatePoint<double>& x, int end);
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
 
         /************************* Display function ***************************/
@@ -104,18 +103,15 @@ template <typename T>
 void Interpolation<T>::clearAll()
 {
     m_path.clear();
-    m_alphaMap.clear();
     m_curentNeighbours.clear();
     m_interpolationNodes.clear();
     for (int i=0; i<m_d; i++)
         m_interpolationPoints[i].clear();
-    //m_interpolationPoints.clear();
 }
 
 template <typename T>
 void Interpolation<T>::clearAllAlpha()
 {
-    m_alphaMap.clear();
     for (MultiVariatePointPtr<T> nu : m_path)
         nu->reinit();
 }
@@ -185,7 +181,6 @@ double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
             basisFuncProd *= basisFunction_1D((*l)(p),getPoint(nu)(p),p);
         res -= l->getAlpha() * basisFuncProd;
     }
-    m_alphaMap.insert(pair<MultiVariatePointPtr<T>,double>(nu,res));
     nu->setAlpha(res);
     return res;
 }
@@ -204,7 +199,6 @@ void Interpolation<T>::computeAllAlphaNuInPredefinedPath()
                 basisFuncProd *= basisFunction_1D((*m_path[j])(p),getPoint(m_path[i])(p),p);
             res -= m_path[j]->getAlpha() * basisFuncProd;
         }
-        m_alphaMap.insert(pair<MultiVariatePointPtr<T>,double>(m_path[i],res));
         (m_path[i])->setAlpha(res);
     }
 }
@@ -225,7 +219,7 @@ double Interpolation<T>::tryWithCurentPath()
   for (MultiVariatePoint<double> p : m_testPoints)
   {
     realValues.push_back(m_function(p));
-    estimate.push_back(interpolation_ND(p,m_path.size()));
+    estimate.push_back(interpolation(p,m_path.size()));
   }
   return Utils::interpolationError(realValues,estimate);
 }
@@ -233,7 +227,7 @@ double Interpolation<T>::tryWithCurentPath()
 
 /*************************** Interpolation ************************************/
 template <typename T>
-double Interpolation<T>::interpolation_ND(MultiVariatePoint<double>& x, int end)
+double Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int end)
 {
   double l_prod, sum = 0;
   for (int k=0; k<end; k++)
@@ -324,7 +318,7 @@ void Interpolation<T>::storeInterpolationProgression()
               for (int i=0; i<int(m_path.size()); i++)
               {
                   p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-                  file << interpolation_ND(p, i+1) << " ";
+                  file << interpolation(p, i+1) << " ";
               }
               file << endl;
           }

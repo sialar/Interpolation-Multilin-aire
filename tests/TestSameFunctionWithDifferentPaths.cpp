@@ -86,7 +86,7 @@ int main( int argc, char* argv[] )
     for (MultiVariatePoint<double> p : testPoints)
     {
         realValues.push_back(interp->func(p));
-        estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
+        estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
 
@@ -108,7 +108,7 @@ int main( int argc, char* argv[] )
     for (MultiVariatePoint<double> p : testPoints)
     {
         realValues.push_back(interp->func(p));
-        estimate.push_back(interp->interpolation_ND(p,interp->path().size()));
+        estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
 

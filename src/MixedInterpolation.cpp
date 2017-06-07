@@ -252,7 +252,7 @@ double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> method
     for (MultiVariatePoint<double> p : m_testPoints)
     {
         realValues.push_back(Utils::g(p));
-        estimate.push_back(interpolation_ND(p,m_path.size()));
+        estimate.push_back(interpolation(p,m_path.size()));
     }
     return Utils::interpolationError(realValues,estimate);
 }
