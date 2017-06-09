@@ -7,88 +7,23 @@
 
 using namespace std;
 
-int chooseDimension(int argc, char* argv[])
-{
-    if (argc > 1) return stoi(argv[1]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension : ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int chooseNbTestPoints(int argc, char* argv[])
-{
-  if (argc > 2) return stoi(argv[2]);
-  int nbTestPoints = -1;
-  while (nbTestPoints < 0)
-  {
-    cout << " - Choose the number ot test points : ";
-    cin >> nbTestPoints;
-  }
-  return nbTestPoints;
-}
-
-int chooseMaxIteration(int argc, char* argv[])
-{
-  if (argc > 3) return stoi(argv[3]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
-  {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
-  }
-  Utils::separateur();
-  return maxIteration;
-}
-
-bool withBackup(int argc, char* argv[])
-{
-  if (argc > 4) return stoi(argv[4]);
-  char store = 'x';
-  while (store!='y' && store!='n')
-  {
-      cout << " - Store path and interpolation progression? (y/n) ";
-      cin >> store;
-  }
-  return (store=='y');
-}
-
-bool saveError(int argc, char* argv[])
-{
-  if (argc > 5) return stoi(argv[5]);
-  char e = 'x';
-  while (e!='y' && e!='n')
-  {
-      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
-      cin >> e;
-  }
-  return (e=='y');
-}
-
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
 
     Utils::separateur();
-    int dim = chooseDimension(argc,argv);
-    int nbTestPoints = chooseNbTestPoints(argc,argv);
-    int maxIteration = chooseMaxIteration(argc,argv);
-    bool store = withBackup(argc,argv);
-    bool error = saveError(argc,argv);
+    int dimD = Utils::chooseDimensionD(argc,argv,1);
+    int dimN = Utils::chooseDimensionN(argc,argv,2);
+    int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
+    int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
+    bool save = Utils::saveResults(argc,argv,5);
+    bool error = Utils::saveError(argc,argv,6);
 
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,maxIteration,Utils::g));
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,dimN,maxIteration,Utils::g));
     interp->setSaveError(error);
 
     // Initialisation of test points
-    vector<MultiVariatePoint<double>> testPoints;
-    vector<double> realValues, estimate;
-    testPoints.resize(nbTestPoints);
-    for (int j=0; j<nbTestPoints; j++)
-        testPoints[j] = Utils::createRandomMultiVariatePoint(dim);
-    interp->setTestPoints(testPoints);
+    interp->setRandomTestPoints(nbTestPoints);
 
     // Path creation
     double threshold = 1e-6;
@@ -99,7 +34,8 @@ int main( int argc, char* argv[] )
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
-    for (MultiVariatePoint<double> p : testPoints)
+    vector<vector<double>> realValues, estimate;
+    for (MultiVariatePoint<double> p : interp->testPoints())
     {
         realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation(p,interp->path().size()));
@@ -107,31 +43,24 @@ int main( int argc, char* argv[] )
     if (nbTestPoints < 11)
     {
         cout << " - Sequence of " << nbTestPoints << " random test points : " << endl;
-        Utils::displayPoints(testPoints);
+        Utils::displayPoints(interp->testPoints());
         cout << " - Real values of function g evaluated at test points :" << endl;
         Utils::displayPoints(realValues);
         cout << " - Approximation of function g at test points : " << endl;
         Utils::displayPoints(estimate);
     }
-
     // Evaluation
     cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
 
-    if (store)
+    if (save)
     {
-        interp->storeInterpolationBasisFunctions();
-        interp->storeInterpolationProgression();
+        interp->saveInterpolationBasisFunctions();
+        interp->saveInterpolationProgression();
         interp->savePathInFile("data/path.txt");
     }
 
     Utils::separateur();
-    char display = 'x';
-    while (display!='y' && display!='n')
-    {
-      cout << " - Display path and interpolation points: (y/n) " ;
-      cin >> display;
-    }
-    if (display=='y' /*maxIteration<pow(10,dim)+1*/)
+    if (Utils::displayResults())
     {
       Utils::separateur();
       interp->displayPath();

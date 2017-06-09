@@ -22,7 +22,7 @@ class LagrangeInterpolation : public Interpolation<int>
       vector<double> m_lejaSequence;
 
     public:
-      LagrangeInterpolation(int d, int nIter, Function f);
+      LagrangeInterpolation(int d, int n, int nIter, Function f);
       ~LagrangeInterpolation() {};
 
 
@@ -41,7 +41,7 @@ class LagrangeInterpolation : public Interpolation<int>
       double basisFunction_1D(int code, double t, int axis);
 
       /********************** Display functions *****************************/
-      void storeInterpolationBasisFunctions();
+      void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<LagrangeInterpolation> LagrangeInterpolationPtr;

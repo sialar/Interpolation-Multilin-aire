@@ -21,21 +21,23 @@ help()
 showAllArgsDetails()
 {
   echo ""
-  echo " 4 arguments are required:"
-  echo "   - arg 1 : Space dimension [$2]"
-  echo "   - arg 2 : Number of test points [$3]"
-  echo "   - arg 3 : Method [$4]"
-  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
+  echo " 5 arguments are required:"
+  echo "   - arg 1 : Space dimension D [$2]"
+  echo "   - arg 2 : Space dimension N [$3]"
+  echo "   - arg 3 : Number of test points [$4]"
+  echo "   - arg 4 : Method [$5]"
+  echo "   - arg 5 : Number of iteration in AI algorithm [$6]"
   echo ""
 }
 
-show3ArgsDetails()
+show4ArgsDetails()
 {
   echo ""
   echo " 4 arguments are required:"
-  echo "   - arg 1 : Space dimension [$2]"
-  echo "   - arg 2 : Number of test points [$3]"
-  echo "   - arg 3 : Number of iteration in AI algorithm [$5]"
+  echo "   - arg 1 : Space dimension D [$2]"
+  echo "   - arg 2 : Space dimension N [$3]"
+  echo "   - arg 3 : Number of test points [$4]"
+  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
   echo ""
 }
 
@@ -52,10 +54,11 @@ showErrorArgsDetails()
 {
   echo ""
   echo " 4 arguments are required:"
-  echo "   - arg 1 : Space dimension [$2]"
-  echo "   - arg 2 : Number of test points [$3]"
-  echo "   - arg 3 : Method [$4] (ALL : to see all methods results)"
-  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
+  echo "   - arg 1 : Space dimension D [$2]"
+  echo "   - arg 2 : Space dimension N [$3]"
+  echo "   - arg 3 : Number of test points [$4]"
+  echo "   - arg 3 : Method [$5] (ALL : to see all methods results)"
+  echo "   - arg 4 : Number of iteration in AI algorithm [$6]"
   echo ""
 }
 
@@ -68,31 +71,31 @@ then
 elif [ "$1" = "AI" ]
 then
     showAllArgsDetails
-    if [ $# != 5 ]
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
     else
-        if [ $4 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $5 0 0
-      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 0 0
+        if [ $4 = 5 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0
+      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0
         fi
     fi
 
 elif [ "$1" = "MIX" ]
 then
-    show3ArgsDetails
-    if [ $# != 4 ]
+    show4ArgsDetails
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
-  else ./bin/TestMixedInterpolation $2 $3 $4
+  else ./bin/TestMixedInterpolation $2 $3 $4 $5
     fi
     cd python
     python3.5 -W ignore plot_mixed_path.py $2
 
 elif [ "$1" = "AUTO" ]
 then
-    show3ArgsDetails
-    if [ $# != 4 ]
+    show4ArgsDetails
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
-  else ./bin/TestAutoMixedInterpolation $2 $3 $4
+  else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5
     fi
     cd python
     python3.5 -W ignore plot_mixed_path.py $2
@@ -100,15 +103,15 @@ then
 elif [ "$1" = "PATH" ]
 then
     showAllArgsDetails
-    if [ $# != 5 ]
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
     else
-        if [ $4 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $5 1 0
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 1 0
+        if [ $5 = 0 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0
+      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
         fi
         cd python
-        python3.5 -W ignore plot_path.py $2 $4
+        python3.5 -W ignore plot_path.py $2 $5
     fi
 
 elif [ "$1" = "PLOT" ]
@@ -118,8 +121,8 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $2 = 0 ]
-        then ./bin/TestLagrangeInterpolation 1 1000 $3 1 0
-        else ./bin/TestPiecewiseInterpolation 1 1000 $2 $3 1 0
+        then ./bin/TestLagrangeInterpolation 1 1 1000 $3 1 0
+        else ./bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 1 0
         fi
         cd python
         python3.5 -W ignore plot_interpolation_progression.py
@@ -128,24 +131,24 @@ then
 elif [ "$1" = "DIFF" ]
 then
     showAllArgsDetails
-    if [ $# != 5 ]
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
-    else ./bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5
+  else ./bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6
     fi
     cd python
-    python3.5 -W ignore plot_2_paths.py $2 $4
+    python3.5 -W ignore plot_2_paths.py $2 $5
 
 elif [ "$1" = "ERROR" ]
 then
     showErrorArgsDetails
-    if [ $# != 5 ]
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
     else
-        if [ $4 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $5 0 1
+        if [ $5 = 0 ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $4 $5 0 1
         elif [ "$4" = "ALL" ]
-        then ./bin/TestErrors $2 $3 $5
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 0 1
+        then ./bin/TestErrors $2 $3 $4 $6
+      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
         fi
         cd python
         python3.5 -W ignore plot_error.py

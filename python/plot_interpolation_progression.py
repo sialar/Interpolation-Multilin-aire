@@ -78,7 +78,7 @@ nb_functions = int(lines_basis_functions[0].split(" ")[0])
 nb_points = int(lines_basis_functions[0].split(" ")[1])
 method = int(lines_basis_functions[0].split(" ")[2])
 
-dt = 0.5
+dt = 1
 nb_colors = 10
 cmap = get_cmap(nb_colors)
 taille = (25,10)

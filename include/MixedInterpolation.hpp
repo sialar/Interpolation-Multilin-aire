@@ -25,7 +25,7 @@ class MixedInterpolation : public Interpolation<string>
       vector<BinaryTreePtr> m_trees;
 
     public:
-      MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods, Function f);
+      MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods, Function f);
       ~MixedInterpolation() {};
       void clearAllTrees();
 
@@ -49,7 +49,7 @@ class MixedInterpolation : public Interpolation<string>
 
       /********************** Display functions *****************************/
       void savePathInFile(string fileName);
-      void storeInterpolationBasisFunctions();
+      void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<MixedInterpolation> MixedInterpolationPtr;

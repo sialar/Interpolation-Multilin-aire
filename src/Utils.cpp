@@ -1,6 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
+vector<vector<vector<double>>> Utils::m_coefs;
 
 void Utils::separateur()
 {
@@ -26,6 +27,25 @@ void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
     cout << points[points.size()-1] << " }" << endl;
 }
 
+void Utils::displayPoints(vector<vector<double>> points)
+{
+    int n = points[0].size();
+    cout << "{ ";
+    for (size_t i=0; i<points.size()-1; ++i)
+    {
+        cout << "(";
+        for (int j=0; j<n-1; ++j)
+            cout << points[i][j] << ",";
+        cout << points[i][n-1] << ")";
+        cout << " ; ";
+    }
+    cout << "(";
+    for (size_t i=0; i<points[points.size()-1].size()-1; ++i)
+        cout << points[points.size()-1][i] << ",";
+    cout << points[points.size()-1][n-1] << ")";
+    cout << " }" << endl;
+}
+
 double Utils::randomValue(double a, double b)
 {
   return ( rand()/(double)RAND_MAX ) * (b-a) + a;
@@ -33,19 +53,39 @@ double Utils::randomValue(double a, double b)
 
 MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
 {
-    MultiVariatePoint<double> point(d,0);
+    MultiVariatePoint<double> point(d,0,0);
     for (int i=0; i<d; i++)
         point(i) = Utils::randomValue(-1,1);
     return point;
 }
 
-double Utils::interpolationError(vector<double> realValue, vector<double> estimate)
+double Utils::interpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate)
 {
     vector<double> e;
     int n = min(int(realValue.size()),int(estimate.size()));
     for (int k=0; k<n; k++)
-        e.push_back(abs(estimate[k] - realValue[k]));
+        e.push_back(norm(diff(estimate[k],realValue[k]),0));
     return *max_element(e.begin(), e.end());
+}
+
+double Utils::norm(vector<double> x, int p)
+{
+    if (!p) return *max_element(x.begin(), x.end());
+    else
+    {
+        double res = 0.0;
+        for (int i=0; i<int(x.size()); i++)
+            res += pow(x[i],2);
+        return sqrt(res);
+    }
+}
+
+vector<double> Utils::diff(vector<double> x,vector<double> y)
+{
+    vector<double> res;
+    for (int i=0; i<int(x.size()); i++)
+        res.push_back(x[i]-y[i]);
+    return res;
 }
 
 bool Utils::isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold)
@@ -158,37 +198,92 @@ vector<double> Utils::createSequenceByDichotomy(int length)
     }
     return sequence;
 }
-double Utils::g(MultiVariatePoint<double> x)
+
+vector<double> Utils::toVector(double x, int n)
+{
+    vector<double> res(n,x);
+    for (int i=0; i<n; i++)
+        if (i%2)
+            res[i] *= -1;
+    return res;
+}
+
+string Utils::vector2str(vector<double> x)
+{
+    string s = "(" + to_string(x[0]);
+    for (int i=1; i<int(x.size()); i++)
+        s = s + ", " + to_string(x[i]);
+    s = s + ") ";
+    return s;
+}
+
+vector<double> Utils::g(MultiVariatePoint<double> x, int n)
 {
     if (x.getD()==1)
-        return sqrt(1-pow(x(0),2));
+        return toVector(sqrt(1-pow(x(0),2)),n);
     else if (x.getD()==2)
-        return sqrt(1- x(0)*x(0)) * exp(-x(1));
+    {
+        if (n==2)
+        {
+            vector<double> vec2(2,0.0);
+            vec2[0] = sqrt(1- x(0)*x(0)) * exp(-x(1));
+            vec2[1] = cos(2*M_PI*x(0)) * exp(-x(1));
+            return vec2;
+        }
+        return toVector(sqrt(1- x(0)*x(0)) * exp(-x(1)),n);
+    }
     else
     {
-        double temp = 1;
-        for (int i=1; i<x.getD(); i++)
-            temp *= exp(-x(i));
-        return sqrt(1- x(0)*x(0)) * temp;
+        //double temp = 1;
+        //for (int i=1; i<x.getD(); i++)
+        //    temp *= exp(-x(i));
+        //return toVector(sqrt(1- x(0)*x(0)) * temp,n);
+        return polynomial(x,7,n);
     }
 }
-double Utils::f(MultiVariatePoint<double> x)
+vector<double> Utils::f(MultiVariatePoint<double> x, int n)
 {
     if (x.getD()==1)
     {
         double f = 10;
-        if (x(0)<0) return cos(2*M_PI*f*x(0));
-        else return cos(0.1*M_PI*f*x(0));
+        if (x(0)<0) return toVector(cos(2*M_PI*f*x(0)),n);
+        else return toVector(cos(0.1*M_PI*f*x(0)),n);
     }
     else
     {
         double temp = 0;
         for (int i=0; i<x.getD(); i++)
             temp += pow(x(i),2);
-        return sin(sqrt(temp));
+        return toVector(sin(sqrt(temp)),n);
     }
 }
 
+void Utils::setCoefs(int degree, int d, int n)
+{
+    m_coefs.resize(n);
+    for (int i=0; i<n; i++)
+        m_coefs[i].resize(degree);
+    for (int i=0; i<n; i++)
+        for (int j=0; j<degree; j++)
+            m_coefs[i][j].resize(d);
+
+    for (int i=0; i<n; i++)
+        for (int j=0; j<degree; j++)
+            for (int k=0; k<d; k++)
+                m_coefs[i][j][k] = Utils::randomValue(-1,1);
+
+}
+
+vector<double> Utils::polynomial(MultiVariatePoint<double> x, int degree, int n)
+{
+    vector<double> res;
+    res.resize(n,0);
+    for (int i=0; i<n; i++)
+        for (int j=0; j<degree; j++)
+            for (int k=0; k<x.getD(); k++)
+                res[i] += m_coefs[i][j][k] * pow(x(k),j+1);
+    return res;
+}
 vector<double> Utils::createUniformSequence(int nbPoints)
 {
     double sum = 0;
@@ -246,4 +341,116 @@ bool Utils::equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2)
         if (nu1(i).compare(nu2(i))!=0)
             return false;
     return true;
+}
+
+int Utils::chooseDimensionD(int argc, char* argv[], int argNum)
+{
+    if (argc > argNum) return stoi(argv[argNum]);
+    int dim = -1;
+    while (dim < 0)
+    {
+        cout << " - Choose the space dimension d: ";
+        cin >> dim;
+    }
+    return dim;
+}
+
+int Utils::chooseDimensionN(int argc, char* argv[], int argNum)
+{
+    if (argc > argNum) return stoi(argv[argNum]);
+    int dim = -1;
+    while (dim < 0)
+    {
+        cout << " - Choose the space dimension n: ";
+        cin >> dim;
+    }
+    return dim;
+}
+
+int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int nbTestPoints = -1;
+  while (nbTestPoints < 0)
+  {
+    cout << " - Choose the number ot test points : ";
+    cin >> nbTestPoints;
+  }
+  return nbTestPoints;
+}
+
+
+
+int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int maxIteration = -1;
+  while (maxIteration < 0)
+  {
+    cout << " - Choose the maximum number of iteration : ";
+    cin >> maxIteration;
+  }
+  Utils::separateur();
+  return maxIteration;
+}
+
+int Utils::chooseMethod(int argc, char* argv[], int argNum)
+{
+    int method = -1;
+    if (argc > 4) method = stoi(argv[4]);
+    while (method!=1 && method!=2)
+    {
+        cout << " - Choose the method of interpolation: " << endl;
+        cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+        cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
+        cin >> method;
+    }
+    return method;
+}
+
+bool Utils::saveResults(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  char store = 'x';
+  while (store!='y' && store!='n')
+  {
+      cout << " - Store path and interpolation progression? (y/n) ";
+      cin >> store;
+  }
+  return (store=='y');
+}
+
+bool Utils::saveError(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  char e = 'x';
+  while (e!='y' && e!='n')
+  {
+      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
+      cin >> e;
+  }
+  return (e=='y');
+}
+
+bool Utils::plotPath(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  char plot = 'x';
+  while (plot!='y' && plot!='n')
+  {
+      cout << " - Save and plot interpolation points? (y/n) ";
+      cin >> plot;
+  }
+  return (plot=='y');
+}
+
+bool Utils::displayResults()
+{
+  char display = 'x';
+  while (display!='y' && display!='n')
+  {
+      cout << " - Display path and interpolation points: (y/n) " ;
+      cin >> display;
+  }
+  return (display=='y');
 }

@@ -8,42 +8,6 @@
 
 using namespace std;
 
-int chooseDimension(int argc, char* argv[])
-{
-    if (argc > 1) return stoi(argv[1]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension : ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int chooseNbTestPoints(int argc, char* argv[])
-{
-  if (argc > 2) return stoi(argv[2]);
-  int nbTestPoints = -1;
-  while (nbTestPoints < 0)
-  {
-    cout << " - Choose the number ot test points : ";
-    cin >> nbTestPoints;
-  }
-  return nbTestPoints;
-}
-
-int chooseMaxIteration(int argc, char* argv[])
-{
-  if (argc > 3) return stoi(argv[3]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
-  {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
-  }
-  Utils::separateur();
-  return maxIteration;
-}
 
 void saveAllErrorsInFile(vector<MultiVariatePoint<double>> errors, vector<int> iterations)
 {
@@ -65,26 +29,21 @@ int main( int argc, char* argv[] )
 {
     srand (time(NULL));
     Utils::separateur();
-    int dim = chooseDimension(argc,argv);
-    int nbTestPoints = chooseNbTestPoints(argc,argv);
-    int maxIteration = chooseMaxIteration(argc,argv);
-    // Initialisation of test points
-    vector<MultiVariatePoint<double>> testPoints;
-    vector<double> realValues, estimate;
-    testPoints.resize(nbTestPoints);
-    for (int j=0; j<nbTestPoints; j++)
-        testPoints[j] = Utils::createRandomMultiVariatePoint(dim);
+    int dimD = Utils::chooseDimensionD(argc,argv,1);
+    int dimN = Utils::chooseDimensionN(argc,argv,2);
+    int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
+    int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
+
+    double threshold = 1e-10;
+    vector<vector<double>> realValues, estimate;
 
     // Method 1
-    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dim,maxIteration,Utils::g));
-    interp_0->setTestPoints(testPoints);
+    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dimD,dimN,maxIteration,Utils::g));
+    interp_0->setRandomTestPoints(nbTestPoints);
     interp_0->setSaveError(true);
-    // Path creation
-    double threshold = 1e-10;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     interp_0->testPathBuilt(threshold, maxIteration<21);
-    // Computing real values, and approximation of function g at test points
-    for (MultiVariatePoint<double> p : testPoints)
+    for (MultiVariatePoint<double> p : interp_0->testPoints())
     {
         realValues.push_back(interp_0->func(p));
         estimate.push_back(interp_0->interpolation(p,interp_0->path().size()));
@@ -95,14 +54,12 @@ int main( int argc, char* argv[] )
     Utils::separateur();
 
     // Method 2
-    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dim,maxIteration,1,Utils::g));
-    interp_1->setTestPoints(testPoints);
+    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dimD,dimN,maxIteration,1,Utils::g));
+    interp_1->setRandomTestPoints(nbTestPoints);
     interp_1->setSaveError(true);
-    // Path creation
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     interp_1->testPathBuilt(threshold, maxIteration<21);
-    // Computing real values, and approximation of function g at test points
-    for (MultiVariatePoint<double> p : testPoints)
+    for (MultiVariatePoint<double> p : interp_1->testPoints())
     {
         realValues.push_back(interp_1->func(p));
         estimate.push_back(interp_1->interpolation(p,interp_1->path().size()));
@@ -114,14 +71,12 @@ int main( int argc, char* argv[] )
 
 
     // Method 3
-    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dim,maxIteration,2,Utils::g));
-    interp_2->setTestPoints(testPoints);
+    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dimD,dimN,maxIteration,2,Utils::g));
+    interp_2->setRandomTestPoints(nbTestPoints);
     interp_2->setSaveError(true);
-    // Path creation
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     interp_2->testPathBuilt(threshold, maxIteration<21);
-    // Computing real values, and approximation of function g at test points
-    for (MultiVariatePoint<double> p : testPoints)
+    for (MultiVariatePoint<double> p : interp_2->testPoints())
     {
         realValues.push_back(interp_2->func(p));
         estimate.push_back(interp_2->interpolation(p,interp_2->path().size()));
@@ -138,7 +93,7 @@ int main( int argc, char* argv[] )
         iterations.push_back(get<0>(*it));
     for (int i=0; i<int(iterations.size()); i++)
     {
-        MultiVariatePoint<double> p(3,0);
+        MultiVariatePoint<double> p(3,0,0);
         p(0) = interp_0->errors()[iterations[i]];
         p(1) = interp_1->errors()[iterations[i]];
         p(2) = interp_2->errors()[iterations[i]];

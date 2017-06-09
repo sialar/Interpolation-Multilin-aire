@@ -1,7 +1,7 @@
 #include "../include/MixedInterpolation.hpp"
 
-MixedInterpolation::MixedInterpolation(int d, int nIter, MultiVariatePoint<int> methods, Function f) :
-    Interpolation(d,nIter,f)
+MixedInterpolation::MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods, Function f) :
+    Interpolation(d,n,nIter,f)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
     m_trees.resize(m_d);
@@ -18,7 +18,7 @@ void MixedInterpolation::clearAllTrees()
 /************************* Data Points ****************************************/
 MultiVariatePoint<double> MixedInterpolation::getPoint(MultiVariatePointPtr<string> nu)
 {
-    MultiVariatePoint<double> point(m_d,0.0);
+    MultiVariatePoint<double> point(m_d,0,0.0);
     for (int i=0; i<m_d; i++)
     {
         if (m_methods(i))
@@ -73,7 +73,7 @@ void MixedInterpolation::computeBoundariesForBasisFunction(double t, double* inf
 /************************* AI algo ********************************************/
 bool customAlphaLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
-    return abs(nu->getAlpha()) < abs(mu->getAlpha());
+    return Utils::norm(nu->getAlpha(),2) < Utils::norm(mu->getAlpha(),2);
 }
 bool customAgeLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
@@ -88,14 +88,14 @@ MultiVariatePointPtr<string> MixedInterpolation::maxElement(int iteration)
         MultiVariatePointPtr<string> mu = *max_element(m_curentNeighbours.begin(), \
                                             m_curentNeighbours.end(),customAgeLess);
         for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
-            if (!nu->getAlpha() && nu->getWaitingTime()==mu->getWaitingTime())
+            if (nu->alphaIsNull() && nu->getWaitingTime()==mu->getWaitingTime())
                 return nu;
         return mu;
     }
 }
 MultiVariatePointPtr<string> MixedInterpolation::getFirstMultivariatePoint()
 {
-    MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,"");
+    MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,m_n,"");
     for (int i=0; i<m_d; i++)
         if (!m_methods(i))
             (*nu)(i) = "0";
@@ -182,7 +182,7 @@ void MixedInterpolation::savePathInFile(string fileName)
         for (int i=0; i<m_d; i++)
             file << m_methods(i) << " ";
         file << endl << m_path.size() << endl;
-        MultiVariatePoint<double> x(m_d,0.0);
+        MultiVariatePoint<double> x(m_d,0,0.0);
         for (MultiVariatePointPtr<string> nu : m_path)
         {
             x = getPoint(nu);
@@ -193,7 +193,7 @@ void MixedInterpolation::savePathInFile(string fileName)
             file << endl;
         }
         for (MultiVariatePointPtr<string> nu : m_path)
-            file << nu->getAlpha() << " ";
+            file << Utils::vector2str(nu->getAlpha()) << " ";
         file << endl;
     }
     file.close();
@@ -201,7 +201,7 @@ void MixedInterpolation::savePathInFile(string fileName)
   else
   cerr << "Error while opening the file!" << endl;
 }
-void MixedInterpolation::storeInterpolationBasisFunctions()
+void MixedInterpolation::saveInterpolationBasisFunctions()
 {
   ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
@@ -221,11 +221,11 @@ void MixedInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<string> nu : m_path)
             file << " " << basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::g(p);
+        file << " " <<  Utils::vector2str(func(p));
         file << endl;
       }
       for (MultiVariatePointPtr<string> nu : m_path)
-      file << nu->getAlpha() << " ";
+      file << Utils::vector2str(nu->getAlpha()) << " ";
       file << endl;
       for (MultiVariatePoint<double> nu : m_interpolationNodes)
       file << nu(0) << " ";
@@ -248,17 +248,17 @@ double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> method
     vector<double> errors;
     setMethods(methods);
     testPathBuilt(threshold, m_maxIteration<21);
-    vector<double> realValues, estimate;
+    vector<vector<double>> realValues, estimate;
     for (MultiVariatePoint<double> p : m_testPoints)
     {
-        realValues.push_back(Utils::g(p));
+        realValues.push_back(func(p));
         estimate.push_back(interpolation(p,m_path.size()));
     }
     return Utils::interpolationError(realValues,estimate);
 }
 MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
 {
-    MultiVariatePoint<int> methods(m_d, 0);
+    MultiVariatePoint<int> methods(m_d, 0, 0);
     vector<double> error(3, 0);
     for (int i=0; i<m_d; i++)
     {

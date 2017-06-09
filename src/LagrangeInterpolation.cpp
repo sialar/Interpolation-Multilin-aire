@@ -1,7 +1,7 @@
 #include "../include/LagrangeInterpolation.hpp"
 
-LagrangeInterpolation::LagrangeInterpolation(int d, int nIter, Function f) :
-    Interpolation(d,nIter,f)
+LagrangeInterpolation::LagrangeInterpolation(int d, int n, int nIter, Function f) :
+    Interpolation(d,n,nIter,f)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
 }
@@ -9,7 +9,7 @@ LagrangeInterpolation::LagrangeInterpolation(int d, int nIter, Function f) :
 /************************* Data Points ****************************************/
 MultiVariatePoint<double> LagrangeInterpolation::getPoint(MultiVariatePointPtr<int> nu)
 {
-    MultiVariatePoint<double> point(m_d,0.0);
+    MultiVariatePoint<double> point(m_d,0,0.0);
     for (int i=0; i<m_d; i++)
         point(i) = m_lejaSequence[(*nu)(i)];
     return point;
@@ -34,7 +34,7 @@ void LagrangeInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 /************************* AI algo ********************************************/
 bool alphaLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
-    return abs(nu->getAlpha()) < abs(mu->getAlpha());
+    return Utils::norm(nu->getAlpha(),2) < Utils::norm(mu->getAlpha(),2);
 }
 bool ageLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
@@ -49,14 +49,14 @@ MultiVariatePointPtr<int> LagrangeInterpolation::maxElement(int iteration)
       MultiVariatePointPtr<int> mu = *max_element(m_curentNeighbours.begin(), \
                                           m_curentNeighbours.end(),ageLess);
       for (MultiVariatePointPtr<int> nu : m_curentNeighbours)
-          if (!nu->getAlpha() && nu->getWaitingTime()==mu->getWaitingTime())
+          if (nu->alphaIsNull() && nu->getWaitingTime()==mu->getWaitingTime())
               return nu;
       return mu;
   }
 }
 MultiVariatePointPtr<int> LagrangeInterpolation::getFirstMultivariatePoint()
 {
-    MultiVariatePointPtr<int> nu = make_shared<MultiVariatePoint<int>>(m_d,0);
+    MultiVariatePointPtr<int> nu = make_shared<MultiVariatePoint<int>>(m_d,m_n,0);
     return nu;
 }
 void LagrangeInterpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
@@ -98,7 +98,7 @@ bool LagrangeInterpolation::indiceInPath(MultiVariatePoint<int> index)
 /******************************************************************************/
 
 /************************* Display functions **********************************/
-void LagrangeInterpolation::storeInterpolationBasisFunctions()
+void LagrangeInterpolation::saveInterpolationBasisFunctions()
 {
   ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
@@ -118,11 +118,11 @@ void LagrangeInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<int> nu : m_path)
             file << " " << basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::g(p);
+        file << " " <<  Utils::vector2str(func(p));
         file << endl;
       }
       for (MultiVariatePointPtr<int> nu : m_path)
-      file << nu->getAlpha() << " ";
+      file << Utils::vector2str(nu->getAlpha()) << " ";
       file << endl;
       for (MultiVariatePoint<double> nu : m_interpolationNodes)
       file << nu(0) << " ";

@@ -18,7 +18,7 @@
 using namespace std;
 
 
-typedef double(*Function)(MultiVariatePoint<double>);
+typedef vector<double>(*Function)(MultiVariatePoint<double>, int n);
 
 template <typename T>
 class Interpolation
@@ -26,7 +26,7 @@ class Interpolation
     public:
 
     protected:
-        int m_d;
+        int m_d, m_n;
         int m_maxIteration;
         int nbMethods = 3;
 
@@ -44,27 +44,31 @@ class Interpolation
         Function m_function;
 
     public:
-        Interpolation(int d, int nIter, Function f);
+        Interpolation(int d, int m_n, int nIter, Function f);
         virtual ~Interpolation() {};
 
         /************************* Data points ********************************/
-        const vector<vector<double>>& points() { return m_interpolationPoints; };
         const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
-        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
-        void setSaveError(bool error) { m_saveError = error; };
-        map<int, double>& errors() { return m_errors; };
-        void setFunc(Function f) { m_function = f; };
-        double func(MultiVariatePoint<double> x) { return m_function(x); };
-        void enableProgressDisplay() { m_displayProgress = true; };
+        const vector<vector<double>>& points() { return m_interpolationPoints; };
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
+
+        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
+        vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
+        void setRandomTestPoints(int nbTestPoints);
+
+        vector<double> func(MultiVariatePoint<double> x) { return m_function(x,m_n); };
+        void setFunc(Function f) { m_function = f; };
+        void setSaveError(bool error) { m_saveError = error; };
+        map<int, double>& errors() { return m_errors; };
+        void enableProgressDisplay() { m_displayProgress = true; };
 
         /************************* AI algo ************************************/
         double tryWithCurentPath();
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
         void testPathBuilt(double threshold, bool debug);
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
-        double computeLastAlphaNu(MultiVariatePointPtr<T> nu);
+        void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         void computeAllAlphaNuInPredefinedPath();
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
@@ -72,13 +76,13 @@ class Interpolation
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
         /************************* Interpolation ******************************/
-        double interpolation(MultiVariatePoint<double>& x, int end);
+        vector<double> interpolation(MultiVariatePoint<double>& x, int end);
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
 
         /************************* Display function ***************************/
         void displayInterpolationPointsInEachDirection();
         void displayInterpolationMultiVariatePoints();
-        void storeInterpolationProgression();
+        void saveInterpolationProgression();
         void displayCurentNeighbours();
         void saveErrorsInFile();
         void savePathInFile(string fileName);
@@ -92,11 +96,15 @@ template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
 
 template <typename T>
-Interpolation<T>::Interpolation(int d, int nIter, Function f) : m_d(d), m_maxIteration(nIter)
+Interpolation<T>::Interpolation(int d, int n, int nIter, Function f)
 {
-    m_interpolationPoints.resize(m_d);
+    m_interpolationPoints.resize(d);
+    m_maxIteration = nIter;
+    Utils::setCoefs(7,d,n);
     m_saveError = false;
     m_function = f;
+    m_d = d;
+    m_n = n;
 }
 
 template <typename T>
@@ -115,6 +123,19 @@ void Interpolation<T>::clearAllAlpha()
     for (MultiVariatePointPtr<T> nu : m_path)
         nu->reinit();
 }
+
+/*************************** Data Points **************************************/
+template <typename T>
+void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
+{
+  vector<MultiVariatePoint<double>> testPoints;
+  testPoints.resize(nbTestPoints);
+  for (int j=0; j<nbTestPoints; j++)
+      testPoints[j] = Utils::createRandomMultiVariatePoint(m_d);
+  setTestPoints(testPoints);
+}
+/******************************************************************************/
+
 /***************************** AI algo ****************************************/
 template <typename T>
 int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
@@ -125,8 +146,10 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     MultiVariatePointPtr<T> old;
     m_curentNeighbours.push_back(argmax);
     int iteration = 0;
+
     while (!m_curentNeighbours.empty() && iteration < m_maxIteration)
     {
+
         for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
             if (!nu->alphaAlreadyComputed())
                 computeLastAlphaNu(nu);
@@ -160,7 +183,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
             }
             if (error < threshold)
             {
-                cout << "   - AI Algo stoped after " << iteration << " iterations";
+                cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
                 cout << " | Elapsed time : "  << run_time.count() << endl;
                 return iteration;
             }
@@ -170,36 +193,37 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
     return iteration;
 }
 template <typename T>
-double Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
+void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
-    double basisFuncProd;
-    double res = m_function(getPoint(nu));
+    double basisFuncProd = 1.0;
+    vector<double> res = func(getPoint(nu));
     for (MultiVariatePointPtr<T> l : m_path)
     {
-        basisFuncProd = 1;
+        basisFuncProd = 1.0;
         for (int p=0; p<m_d; p++)
             basisFuncProd *= basisFunction_1D((*l)(p),getPoint(nu)(p),p);
-        res -= l->getAlpha() * basisFuncProd;
+        for (int k=0; k<m_n; k++)
+            res[k] -= l->getAlpha()[k] * basisFuncProd;
     }
     nu->setAlpha(res);
-    return res;
 }
 template <typename T>
 void Interpolation<T>::computeAllAlphaNuInPredefinedPath()
 {
-    double basisFuncProd;
-    double res = 0;
+    double basisFuncProd = 1.0;
+    vector<double> res(m_n,0.0);
     for (int i=0; i<int(m_path.size()); i++)
     {
-        res = m_function(getPoint(m_path[i]));
+        res = func(getPoint(m_path[i]));
         for (int j=0; j<i; j++)
         {
-            basisFuncProd = 1;
+            basisFuncProd = 1.1;
             for (int p=0; p<m_d; p++)
                 basisFuncProd *= basisFunction_1D((*m_path[j])(p),getPoint(m_path[i])(p),p);
-            res -= m_path[j]->getAlpha() * basisFuncProd;
+            for (int k=0; k<m_n; k++)
+                res[k] -= m_path[j]->getAlpha()[k] * basisFuncProd;
         }
-        (m_path[i])->setAlpha(res);
+        m_path[i]->setAlpha(res);
     }
 }
 template <typename T>
@@ -215,10 +239,10 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug)
 template <typename T>
 double Interpolation<T>::tryWithCurentPath()
 {
-  vector<double> realValues, estimate;
+  vector<vector<double>> realValues, estimate;
   for (MultiVariatePoint<double> p : m_testPoints)
   {
-    realValues.push_back(m_function(p));
+    realValues.push_back(func(p));
     estimate.push_back(interpolation(p,m_path.size()));
   }
   return Utils::interpolationError(realValues,estimate);
@@ -227,15 +251,17 @@ double Interpolation<T>::tryWithCurentPath()
 
 /*************************** Interpolation ************************************/
 template <typename T>
-double Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int end)
+vector<double> Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int end)
 {
-  double l_prod, sum = 0;
+  double l_prod = 1.0;
+  vector<double> sum(m_n,0.0);
   for (int k=0; k<end; k++)
   {
-      l_prod = 1;
+      l_prod = 1.0;
       for (int i=0; i<m_d; i++)
           l_prod *= basisFunction_1D((*m_path[k])(i),x(i),i);
-      sum += l_prod * m_path[k]->getAlpha();
+      for (int i=0; i<m_n; i++)
+          sum[i] += (m_path[k]->getAlpha())[i] * l_prod;
   }
   return sum;
 }
@@ -273,7 +299,7 @@ void Interpolation<T>::displayPath()
         if (i>0) cout << "\t";
         cout << " " << i << " :";
         cout << " [" << *m_path[i] << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(m_path[i]);
-        cout << ":" << m_path[i] << "] --> alpha" << *m_path[i] << " = " << m_path[i]->getAlpha() << endl;
+        cout << ":" << m_path[i] << "] --> alpha" << *m_path[i] << " = " << Utils::vector2str(m_path[i]->getAlpha()) << endl;
     }
     cout << endl;
 }
@@ -284,7 +310,7 @@ void Interpolation<T>::displayCurentNeighbours()
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
     {
         cout << "(" << (*nu) << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(nu) << ":";
-        cout << nu->getAlpha() << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
+        cout << Utils::vector2str(nu->getAlpha()) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     }
     cout << endl << endl;
 }
@@ -299,7 +325,7 @@ void Interpolation<T>::displayAll()
 }
 
 template <typename T>
-void Interpolation<T>::storeInterpolationProgression()
+void Interpolation<T>::saveInterpolationProgression()
 {
   ofstream file("data/interpolation_progression.txt", ios::out | ios::trunc);
   if(file)
@@ -318,7 +344,7 @@ void Interpolation<T>::storeInterpolationProgression()
               for (int i=0; i<int(m_path.size()); i++)
               {
                   p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-                  file << interpolation(p, i+1) << " ";
+                  file << Utils::vector2str(interpolation(p, i+1)) << " ";
               }
               file << endl;
           }
@@ -354,7 +380,7 @@ void Interpolation<T>::savePathInFile(string fileName)
         for (int i=0; i<m_d; i++)
             file << m_interpolationPoints[i].size() << " ";
         file << endl << m_path.size() << endl;
-        MultiVariatePoint<double> x(m_d,0.0);
+        MultiVariatePoint<double> x(m_d,0,0.0);
         for (MultiVariatePointPtr<T> nu : m_path)
         {
             x = getPoint(nu);
@@ -365,7 +391,7 @@ void Interpolation<T>::savePathInFile(string fileName)
             file << endl;
         }
         for (MultiVariatePointPtr<T> nu : m_path)
-            file << nu->getAlpha() << " ";
+            file << Utils::vector2str(nu->getAlpha()) << " ";
         file << endl;
     }
     file.close();

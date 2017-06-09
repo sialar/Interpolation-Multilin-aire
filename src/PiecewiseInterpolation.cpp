@@ -1,7 +1,7 @@
 #include "../include/PiecewiseInterpolation.hpp"
 
-PiecewiseInterpolation::PiecewiseInterpolation(int d, int nIter, int method, Function f) :
-    Interpolation(d, nIter, f), m_method(method)
+PiecewiseInterpolation::PiecewiseInterpolation(int d, int n, int nIter, int method, Function f) :
+    Interpolation(d, n, nIter, f), m_method(method)
 {
     m_trees.resize(m_d);
     for (int i=0; i<m_d; i++)
@@ -17,7 +17,7 @@ void PiecewiseInterpolation::clearAllTrees()
 /************************* Data Points ****************************************/
 MultiVariatePoint<double> PiecewiseInterpolation::getPoint(MultiVariatePointPtr<string> nu)
 {
-    MultiVariatePoint<double> point(m_d,0.0);
+    MultiVariatePoint<double> point(m_d,0,0.0);
     for (int i=0; i<m_d; i++)
         point(i) = BinaryTree::getValueFromCode((*nu)(i));
     return point;
@@ -68,7 +68,7 @@ void PiecewiseInterpolation::computeBoundariesForBasisFunction(double t, double*
 /************************* AI algo ********************************************/
 bool alphaLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
-    return abs(nu->getAlpha()) < abs(mu->getAlpha());
+    return Utils::norm(nu->getAlpha(),2) < Utils::norm(mu->getAlpha(),2);
 }
 bool ageLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
@@ -83,14 +83,14 @@ MultiVariatePointPtr<string> PiecewiseInterpolation::maxElement(int iteration)
         MultiVariatePointPtr<string> mu = *max_element(m_curentNeighbours.begin(), \
                                             m_curentNeighbours.end(),ageLess);
         for (MultiVariatePointPtr<string> nu : m_curentNeighbours)
-            if (!nu->getAlpha() && nu->getWaitingTime()==mu->getWaitingTime())
+            if (nu->alphaIsNull() && nu->getWaitingTime()==mu->getWaitingTime())
                 return nu;
         return mu;
     }
 }
 MultiVariatePointPtr<string> PiecewiseInterpolation::getFirstMultivariatePoint()
 {
-    MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,"");
+    MultiVariatePointPtr<string> nu = make_shared<MultiVariatePoint<string>>(m_d,m_n,"");
     return nu;
 }
 void PiecewiseInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string> nu)
@@ -111,6 +111,7 @@ void PiecewiseInterpolation::updateCurentNeighbours(MultiVariatePointPtr<string>
               m_curentNeighbours.push_back(mu);
       }
   }
+
 }
 bool PiecewiseInterpolation::isCorrectNeighbourToCurentPath(MultiVariatePointPtr<string> nu)
 {
@@ -147,7 +148,7 @@ void PiecewiseInterpolation::displayTrees()
         cout << endl;
     }
 }
-void PiecewiseInterpolation::storeInterpolationBasisFunctions()
+void PiecewiseInterpolation::saveInterpolationBasisFunctions()
 {
   ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
@@ -167,11 +168,11 @@ void PiecewiseInterpolation::storeInterpolationBasisFunctions()
         for (MultiVariatePointPtr<string> nu : m_path)
           file << " " <<  basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::g(p);
+        file << " " <<  Utils::vector2str(func(p));
         file << endl;
       }
       for (MultiVariatePointPtr<string> nu : m_path)
-      file << nu->getAlpha() << " ";
+      file << Utils::vector2str(nu->getAlpha()) << " ";
       file << endl;
       for (MultiVariatePoint<double> nu : m_interpolationNodes)
       file << nu(0) << " ";

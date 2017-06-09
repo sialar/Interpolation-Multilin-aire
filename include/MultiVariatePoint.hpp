@@ -8,6 +8,7 @@
 #include <cstring>
 #include <memory>
 #include <limits>
+#include <sstream>
 
 #include "BinaryTree.hpp"
 
@@ -17,29 +18,31 @@ template <typename T>
 class MultiVariatePoint
 {
     private:
-        int m_d;
+        int m_d, m_n;
         T* m_nu = NULL;
-        double m_alpha;
+        vector<double> m_alpha;
         double m_initialAlpha;
         int m_waitingTime;
 
    public:
 
         ~MultiVariatePoint();
-        MultiVariatePoint() : m_d(0) {};
-        MultiVariatePoint(int d, T val);
+        MultiVariatePoint() : m_d(0), m_n(0) {};
+        MultiVariatePoint(int d, int n, T val);
         MultiVariatePoint(const MultiVariatePoint<T>& nu);
 
         int getD() const { return m_d; };
+        int getN() const { return m_n; };
 
         int getWaitingTime() { return m_waitingTime; };
         void incrWaitingTime() { m_waitingTime++; };
 
-        double getAlpha() const { return m_alpha; };
-        void setAlpha(double alpha) { m_alpha = alpha; };
+        vector<double> getAlpha() const { return m_alpha; };
+        void setAlpha(vector<double> alpha);
 
-        bool alphaAlreadyComputed() { return (m_alpha != m_initialAlpha); };
-        void reinit() { m_alpha = m_initialAlpha; };
+        bool alphaAlreadyComputed();
+        bool alphaIsNull();
+        void reinit();
 
         static MultiVariatePoint<T> toMultiVariatePoint(vector<T> vec);
         static MultiVariatePoint<T> toBiVariatePoint(T vec0, T vec1);
@@ -63,7 +66,7 @@ MultiVariatePoint<T>::~MultiVariatePoint()
 }
 
 template <typename T>
-MultiVariatePoint<T>::MultiVariatePoint(int d, T val) : m_d(d)
+MultiVariatePoint<T>::MultiVariatePoint(int d, int n, T val) : m_d(d), m_n(n)
 {
     if (m_d != 0)
     {
@@ -71,8 +74,8 @@ MultiVariatePoint<T>::MultiVariatePoint(int d, T val) : m_d(d)
         for (int i=0; i<m_d; i++)
             m_nu[i] = val;
     }
-    m_alpha = numeric_limits<int>::max();
     m_initialAlpha = numeric_limits<int>::max();
+    m_alpha.resize(m_n,m_initialAlpha);
     m_waitingTime = 0;
 }
 
@@ -80,20 +83,54 @@ template <typename T>
 MultiVariatePoint<T>::MultiVariatePoint(const MultiVariatePoint<T>& nu)
 {
     m_d = nu.m_d;
+    m_n = nu.m_n;
     if (m_d != 0)
     {
         m_nu = new T[m_d];
         for (int i=0; i<m_d; i++)
             m_nu[i] = nu.m_nu[i];
     }
-    m_alpha = numeric_limits<int>::max();
     m_initialAlpha = numeric_limits<int>::max();
+    m_alpha.resize(m_n,m_initialAlpha);
     m_waitingTime = 0;
 };
+
+template <typename T>
+void MultiVariatePoint<T>::setAlpha(vector<double> alpha)
+{
+    for (int i=0; i<m_n; i++)
+        m_alpha[i] = alpha[i];
+}
+
+template <typename T>
+bool MultiVariatePoint<T>::alphaAlreadyComputed()
+{
+    for (int i=0; i<m_n; i++)
+        if (m_alpha[i]!=m_initialAlpha)
+            return true;
+    return false;
+}
+
+template <typename T>
+bool MultiVariatePoint<T>::alphaIsNull()
+{
+    for (int i=0; i<m_n; i++)
+        if (m_alpha[i])
+            return false;
+    return true;
+}
+
+template <typename T>
+void MultiVariatePoint<T>::reinit()
+{
+    for (int i=0; i<m_n; i++)
+        m_alpha[i] = m_initialAlpha;
+}
+
 template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
 {
-    MultiVariatePoint<T> x(vec.size(),0);
+    MultiVariatePoint<T> x(vec.size(),0,0);
     for (int i=0; i<x.getD(); i++)
        x(i) = vec[i];
     return x;
@@ -101,7 +138,7 @@ MultiVariatePoint<T> MultiVariatePoint<T>::toMultiVariatePoint(vector<T> vec)
 template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toBiVariatePoint(T t0, T t1)
 {
-    MultiVariatePoint<T> x(2,0);
+    MultiVariatePoint<T> x(2,0,0);
     x(0) = t0;
     x(1) = t1;
     return x;
@@ -110,7 +147,7 @@ MultiVariatePoint<T> MultiVariatePoint<T>::toBiVariatePoint(T t0, T t1)
 template <typename T>
 MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
 {
-    return MultiVariatePoint<T>(1,t);
+    return MultiVariatePoint<T>(1,0,t);
 }
 
 template <typename T>
@@ -119,12 +156,13 @@ MultiVariatePoint<T>& MultiVariatePoint<T>::operator=(const MultiVariatePoint<T>
     if (this != &nu)
     {
         m_d = nu.getD();
+        m_n = nu.getN();
         if (m_d != 0)
         {
             delete[] m_nu;
             m_nu = new T[m_d];
             m_waitingTime = 0;
-            m_alpha = 0;
+            m_alpha.resize(m_n,0);
             memcpy(m_nu,nu.m_nu,sizeof(T)*nu.getD());
         }
     }

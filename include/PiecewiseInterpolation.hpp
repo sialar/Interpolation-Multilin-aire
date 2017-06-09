@@ -23,7 +23,7 @@ class PiecewiseInterpolation : public Interpolation<string>
         vector<BinaryTreePtr> m_trees;
 
     public:
-        PiecewiseInterpolation(int d, int nIter, int method, Function f);
+        PiecewiseInterpolation(int d, int n, int nIter, int method, Function f);
         ~PiecewiseInterpolation() {};
         void clearAllTrees();
 
@@ -44,7 +44,7 @@ class PiecewiseInterpolation : public Interpolation<string>
 
         /********************** Display functions *****************************/
         void displayTrees();
-        void storeInterpolationBasisFunctions();
+        void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<PiecewiseInterpolation> PiecewiseInterpolationPtr;

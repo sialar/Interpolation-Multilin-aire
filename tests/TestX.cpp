@@ -45,13 +45,13 @@ double evaluateCrossSection(vector<MultiVariatePoint<double>> dataPoints,
     int dim = x.getD();
     if (method)
     {
-        PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,pow(10,dim),method,f));
+        PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dim,1,pow(10,dim),method,f));
         interp->testPathBuilt(1e-5, false, 0);
         return interp->interpolation(x,interp->path().size());
     }
     else
     {
-        LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,pow(10,dim),f));
+        LagrangeInterpolationPtr interp(new LagrangeInterpolation(dim,1,pow(10,dim),f));
         interp->testPathBuilt(1e-5, false, 0);
         return interp->interpolation(x,interp->path().size());
     }
