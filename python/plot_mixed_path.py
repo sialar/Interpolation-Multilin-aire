@@ -123,7 +123,7 @@ for i in range(nb_points):
     if dim==3:
         z = float(lines[i+offset].split(" ")[2])
     picked_points.append((x,y,z))
-    alpha.append(float(lines[nb_points+offset].split(" ")[i]))
+    alpha.append(lines[nb_points+offset].split(";")[i])
 
 if dim==2:
     prepare_initial_grid(methods,n,m)

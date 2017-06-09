@@ -168,11 +168,11 @@ void PiecewiseInterpolation::saveInterpolationBasisFunctions()
         for (MultiVariatePointPtr<string> nu : m_path)
           file << " " <<  basisFunction_1D((*nu)(0),x[j],0);
         p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::vector2str(func(p));
+        file << " " <<  func(p)[0];
         file << endl;
       }
       for (MultiVariatePointPtr<string> nu : m_path)
-      file << Utils::vector2str(nu->getAlpha()) << " ";
+      file << nu->getAlpha()[0] << " ";
       file << endl;
       for (MultiVariatePoint<double> nu : m_interpolationNodes)
       file << nu(0) << " ";

@@ -344,7 +344,7 @@ void Interpolation<T>::saveInterpolationProgression()
               for (int i=0; i<int(m_path.size()); i++)
               {
                   p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-                  file << Utils::vector2str(interpolation(p, i+1)) << " ";
+                  file << interpolation(p, i+1)[0] << " ";
               }
               file << endl;
           }
@@ -390,9 +390,9 @@ void Interpolation<T>::savePathInFile(string fileName)
                 file << (*nu)(i) << " " ;
             file << endl;
         }
-        for (MultiVariatePointPtr<T> nu : m_path)
-            file << Utils::vector2str(nu->getAlpha()) << " ";
-        file << endl;
+        for (int i=0; i<int(m_path.size())-1; i++)
+            file << Utils::vector2str(m_path[i]->getAlpha()) << " ; ";
+        file << Utils::vector2str(m_path[m_path.size()-1]->getAlpha()) << endl;
     }
     file.close();
   }

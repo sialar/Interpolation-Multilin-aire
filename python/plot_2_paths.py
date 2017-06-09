@@ -116,8 +116,8 @@ for i in range(nb_points):
         z2 = float(lines2[i+offset].split(" ")[2])
     picked_points1.append((x1,y1,z1))
     picked_points2.append((x2,y2,z2))
-    alpha1.append(float(lines1[nb_points+offset].split(" ")[i]))
-    alpha2.append(float(lines2[nb_points+offset].split(" ")[i]))
+    alpha1.append(lines1[nb_points+offset].split(";")[i])
+    alpha2.append(lines2[nb_points+offset].split(";")[i])
 
 if dim==2:
     prepare_initial_grid_for_middle_points()

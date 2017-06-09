@@ -192,9 +192,9 @@ void MixedInterpolation::savePathInFile(string fileName)
                 file << (*nu)(i) << " " ;
             file << endl;
         }
-        for (MultiVariatePointPtr<string> nu : m_path)
-            file << Utils::vector2str(nu->getAlpha()) << " ";
-        file << endl;
+        for (int i=0; i<int(m_path.size())-1; i++)
+            file << Utils::vector2str(m_path[i]->getAlpha()) << " ; ";
+        file << Utils::vector2str(m_path[m_path.size()-1]->getAlpha()) << endl;
     }
     file.close();
   }
@@ -224,9 +224,9 @@ void MixedInterpolation::saveInterpolationBasisFunctions()
         file << " " <<  Utils::vector2str(func(p));
         file << endl;
       }
-      for (MultiVariatePointPtr<string> nu : m_path)
-      file << Utils::vector2str(nu->getAlpha()) << " ";
-      file << endl;
+      for (int i=0; i<int(m_path.size())-1; i++)
+          file << Utils::vector2str(m_path[i]->getAlpha()) << " ; ";
+      file << Utils::vector2str(m_path[m_path.size()-1]->getAlpha()) << endl;
       for (MultiVariatePoint<double> nu : m_interpolationNodes)
       file << nu(0) << " ";
     }

@@ -86,19 +86,19 @@ then
     if [ $# != 5 ]
     then echo "Invalid number of arguments"
   else ./bin/TestMixedInterpolation $2 $3 $4 $5
-    fi
     cd python
     python3.5 -W ignore plot_mixed_path.py $2
+    fi
 
 elif [ "$1" = "AUTO" ]
 then
     show4ArgsDetails
     if [ $# != 5 ]
     then echo "Invalid number of arguments"
-  else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5
-    fi
+    else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5
     cd python
     python3.5 -W ignore plot_mixed_path.py $2
+    fi
 
 elif [ "$1" = "PATH" ]
 then
@@ -108,7 +108,7 @@ then
     else
         if [ $5 = 0 ]
         then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0
-      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
+        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
         fi
         cd python
         python3.5 -W ignore plot_path.py $2 $5
@@ -134,9 +134,9 @@ then
     if [ $# != 6 ]
     then echo "Invalid number of arguments"
   else ./bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6
-    fi
     cd python
     python3.5 -W ignore plot_2_paths.py $2 $5
+    fi
 
 elif [ "$1" = "ERROR" ]
 then
@@ -145,10 +145,10 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $4 $5 0 1
-        elif [ "$4" = "ALL" ]
+        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 0 1
+      elif [ "$5" = "ALL" ]
         then ./bin/TestErrors $2 $3 $4 $6
-      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
+        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
         fi
         cd python
         python3.5 -W ignore plot_error.py

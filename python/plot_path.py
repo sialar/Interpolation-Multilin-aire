@@ -19,7 +19,7 @@ def prepare_initial_grid_for_leja_points(n,m):
     leja_sequence_file.close()
     leja_sequence_x, leja_sequence_y = [], []
     values = []
-    nb_pts = max(n,m)
+    nb_pts = 20
     for i in range(nb_pts):
         values.append(float(line[i]))
     for v1 in values:

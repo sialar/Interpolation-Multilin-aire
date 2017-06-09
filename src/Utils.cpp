@@ -68,9 +68,13 @@ double Utils::interpolationError(vector<vector<double>> realValue, vector<vector
     return *max_element(e.begin(), e.end());
 }
 
+bool normLess(double x, double y)
+{
+    return abs(x) < abs(y);
+}
 double Utils::norm(vector<double> x, int p)
 {
-    if (!p) return *max_element(x.begin(), x.end());
+    if (!p) return abs(*max_element(x.begin(), x.end(), normLess));
     else
     {
         double res = 0.0;
