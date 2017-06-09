@@ -4,7 +4,7 @@ INCLUDE = include
 BIN = bin
 
 CXX = g++
-CXXFLAGS = -O3 -lm -std=c++14 -Wall -g
+CXXFLAGS = -O3 -lm -std=c++14 -g -Wall 
 
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o
 OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
@@ -12,6 +12,7 @@ INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
 TEST_FILES = $(BIN)/TestLagrangeInterpolation $(BIN)/TestPiecewiseInterpolation
 TEST_FILES += $(BIN)/TestMixedInterpolation $(BIN)/TestAutoMixedInterpolation
 TEST_FILES += $(BIN)/TestErrors $(BIN)/TestSameFunctionWithDifferentPaths
+TEST_FILES += $(BIN)/TestX
 
 all: $(TEST_FILES)
 
