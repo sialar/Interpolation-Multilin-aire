@@ -48,7 +48,7 @@ void Utils::displayPoints(vector<vector<double>> points)
 
 double Utils::randomValue(double a, double b)
 {
-  return ( rand()/(double)RAND_MAX ) * (b-a) + a;
+  return (rand()/(double)RAND_MAX) * (b-a) + a;
 }
 
 MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
