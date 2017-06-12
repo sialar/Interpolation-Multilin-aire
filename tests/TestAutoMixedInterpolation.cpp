@@ -18,7 +18,7 @@ int main( int argc, char* argv[] )
     MultiVariatePoint<int> methods(dimD,0,0);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
 
-    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Utils::g));
+    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Functions::f));
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);

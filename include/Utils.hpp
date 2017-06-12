@@ -18,7 +18,6 @@ class Utils
         static vector<double> m_1dGrid;
 
     public:
-      static vector<vector<vector<double>>> m_coefs;
         Utils()  {};
         ~Utils() {};
 
@@ -28,9 +27,9 @@ class Utils
         static void displayPoints(vector<MultiVariatePoint<double>> v);
 
         // Useful functions
-        static double interpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate);
+        static double relativeInterpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate);
+        static double mseInterpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate);
         static MultiVariatePoint<double> createRandomMultiVariatePoint(int d);
-        static vector<double> toVector(double x, int n);
         static vector<double> diff(vector<double> x,vector<double> y);
         static double randomValue(double a, double b);
         static string vector2str(vector<double> x);
@@ -45,12 +44,6 @@ class Utils
         static vector<double> createSequenceByDichotomy(int length);
         static void storeDichotomySequenceInFile(int length);
         static void storeLejaSequenceInFile(int length);
-
-        // Function to approximate
-        static void setCoefs(int degree, int d, int n);
-        static vector<double> g(MultiVariatePoint<double> x, int n);
-        static vector<double> f(MultiVariatePoint<double> x, int n);
-        static vector<double> polynomial(MultiVariatePoint<double> x, int degree, int n);
 
         // Useful for uniform points and Leja sequence creation
         static void binaryDecomposition(int number, vector<double>& binary_decomp);

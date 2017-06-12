@@ -34,13 +34,13 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     MultiVariatePoint<int> methods = chooseMethods(dimD);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
-    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Utils::g));
+    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Functions::f));
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);
 
     // Path creation
-    double threshold = 1e-6;
+    double threshold = 1e-10;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
@@ -66,7 +66,8 @@ int main( int argc, char* argv[] )
     }
 
     // Evaluation
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     interp->savePathInFile("data/path.txt");
     Utils::separateur();
 

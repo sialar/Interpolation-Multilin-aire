@@ -83,7 +83,7 @@ then
     if [ $# != 6 ]
     then echo "Invalid number of arguments"
     else
-        if [ $4 = 5 ]
+        if [ $5 = 0 ]
         then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0
       else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0
         fi

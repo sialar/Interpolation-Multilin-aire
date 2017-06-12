@@ -44,7 +44,7 @@ class MixedInterpolation : public Interpolation<string>
 
       /*********************** Interpolation ********************************/
       double basisFunction_1D(string code, double t, int axis);
-      double tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
+      vector<double> tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
       MultiVariatePoint<int> tryAllCases(double threshold);
 
       /********************** Display functions *****************************/

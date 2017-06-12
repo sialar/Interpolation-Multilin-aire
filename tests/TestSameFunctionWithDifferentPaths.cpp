@@ -18,12 +18,12 @@ int main( int argc, char* argv[] )
     int method = Utils::chooseMethod(argc,argv,4);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,5);
 
-    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,Utils::g));
+    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,Functions::f));
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);
 
-    double threshold = 1e-6;
+    double threshold = 1e-10;
     cout << " - Interpolation of function g using the path of g" << endl;
     interp->testPathBuilt(threshold, maxIteration<21);
     interp->savePathInFile("data/path.txt");
@@ -33,7 +33,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     Utils::separateur();
     interp->clearAllTrees();
@@ -44,10 +45,10 @@ int main( int argc, char* argv[] )
     cout << " - Interpolation of function g using the path of f" << endl;
     cout << " - Computing the interpolation points obtained with function f" << endl;
 
-    interp->setFunc(Utils::f);
+    interp->setFunc(Functions::sinOfNorm2);
     interp->testPathBuilt(threshold, maxIteration<21);
     interp->clearAllAlpha();
-    interp->setFunc(Utils::g);
+    interp->setFunc(Functions::f);
     interp->computeAllAlphaNuInPredefinedPath();
     interp->savePathInFile("data/other_path.txt");
     for (MultiVariatePoint<double> p : interp->testPoints())
@@ -55,7 +56,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     Utils::separateur();
     return 0;

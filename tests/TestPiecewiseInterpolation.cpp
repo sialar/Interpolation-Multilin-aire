@@ -20,14 +20,16 @@ int main( int argc, char* argv[] )
     bool save = Utils::saveResults(argc,argv,6);
     bool error = Utils::saveError(argc,argv,7);
 
-    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,Utils::g));
+    Function f = Functions::f;
+    if (save) f = Functions::functionToPlot;
+    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,f));
     interp->setSaveError(error);
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);
 
     // Path creation
-    double threshold = 1e-6;
+    double threshold = 1e-10;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
@@ -51,7 +53,8 @@ int main( int argc, char* argv[] )
         Utils::displayPoints(estimate);
     }
     // Evaluation
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     if (save)
     {

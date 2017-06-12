@@ -38,7 +38,7 @@ int main( int argc, char* argv[] )
     vector<vector<double>> realValues, estimate;
 
     // Method 1
-    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dimD,dimN,maxIteration,Utils::g));
+    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dimD,dimN,maxIteration,Functions::f));
     interp_0->setRandomTestPoints(nbTestPoints);
     interp_0->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
@@ -48,13 +48,14 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_0->func(p));
         estimate.push_back(interp_0->interpolation(p,interp_0->path().size()));
     }
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     realValues.clear();
     estimate.clear();
     Utils::separateur();
 
     // Method 2
-    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dimD,dimN,maxIteration,1,Utils::g));
+    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dimD,dimN,maxIteration,1,Functions::f));
     interp_1->setRandomTestPoints(nbTestPoints);
     interp_1->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
@@ -64,14 +65,14 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_1->func(p));
         estimate.push_back(interp_1->interpolation(p,interp_1->path().size()));
     }
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
-    realValues.clear();
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;    realValues.clear();
     estimate.clear();
     Utils::separateur();
 
 
     // Method 3
-    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dimD,dimN,maxIteration,2,Utils::g));
+    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dimD,dimN,maxIteration,2,Functions::f));
     interp_2->setRandomTestPoints(nbTestPoints);
     interp_2->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
@@ -81,9 +82,9 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_2->func(p));
         estimate.push_back(interp_2->interpolation(p,interp_2->path().size()));
     }
-    cout << " - Interpolation error = " << Utils::interpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     Utils::separateur();
-
 
     vector<MultiVariatePoint<double>> allErrors;
     map<int,double>::iterator it;

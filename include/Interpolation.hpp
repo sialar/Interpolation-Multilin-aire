@@ -13,12 +13,10 @@
 
 #include "MultiVariatePoint.hpp"
 #include "BinaryTree.hpp"
+#include "Functions.hpp"
 #include "Utils.hpp"
 
 using namespace std;
-
-
-typedef vector<double>(*Function)(MultiVariatePoint<double>, int n);
 
 template <typename T>
 class Interpolation
@@ -64,7 +62,7 @@ class Interpolation
         void enableProgressDisplay() { m_displayProgress = true; };
 
         /************************* AI algo ************************************/
-        double tryWithCurentPath();
+        vector<double> tryWithCurentPath();
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
         void testPathBuilt(double threshold, bool debug);
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
@@ -100,7 +98,7 @@ Interpolation<T>::Interpolation(int d, int n, int nIter, Function f)
 {
     m_interpolationPoints.resize(d);
     m_maxIteration = nIter;
-    Utils::setCoefs(7,d,n);
+    Functions::setCoefs(7,d,n);
     m_saveError = false;
     m_function = f;
     m_d = d;
@@ -174,14 +172,15 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
         {
             auto end_time = chrono::steady_clock::now();
             std::chrono::duration<double> run_time = end_time - start_time;
-            double error = tryWithCurentPath();
-            if (m_saveError) m_errors.insert(pair<int, double>(iteration, error));
+            vector<double> errors = tryWithCurentPath();
+            if (m_saveError) m_errors.insert(pair<int, double>(iteration, errors[0]));
             if (m_displayProgress)
             {
-                cout << endl << "\t- Interpolation error after " << iteration << " iterations: " << error;
-                cout << " | Elapsed time : "  << run_time.count();
+                cout << endl << "\t- Interpolation error after " << iteration << " iterations: ";
+                cout << "(Relative_e = " << errors[0] << ", MSE_e = " << errors[1];
+                cout << ") | Elapsed time : "  << run_time.count();
             }
-            if (error < threshold)
+            if (errors[0] < threshold && errors[1] < threshold)
             {
                 cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
                 cout << " | Elapsed time : "  << run_time.count() << endl;
@@ -237,15 +236,18 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug)
   " iterations: " << run_time.count() << "s" << endl;
 }
 template <typename T>
-double Interpolation<T>::tryWithCurentPath()
+vector<double> Interpolation<T>::tryWithCurentPath()
 {
   vector<vector<double>> realValues, estimate;
+  vector<double> errors;
   for (MultiVariatePoint<double> p : m_testPoints)
   {
     realValues.push_back(func(p));
     estimate.push_back(interpolation(p,m_path.size()));
   }
-  return Utils::interpolationError(realValues,estimate);
+  errors.push_back(Utils::relativeInterpolationError(realValues,estimate));
+  errors.push_back(Utils::mseInterpolationError(realValues,estimate));
+  return errors;
 }
 /******************************************************************************/
 

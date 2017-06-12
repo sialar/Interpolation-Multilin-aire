@@ -240,7 +240,7 @@ void MixedInterpolation::saveInterpolationBasisFunctions()
 
 
 /*********************** Interpolation ****************************************/
-double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
+vector<double> MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
 {
     clearAll();
     clearAllTrees();
@@ -254,7 +254,9 @@ double MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> method
         realValues.push_back(func(p));
         estimate.push_back(interpolation(p,m_path.size()));
     }
-    return Utils::interpolationError(realValues,estimate);
+    errors.push_back(Utils::relativeInterpolationError(realValues,estimate));
+    errors.push_back(Utils::mseInterpolationError(realValues,estimate));
+    return errors;
 }
 MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
 {
@@ -270,18 +272,18 @@ MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
             map<MultiVariatePoint<int>,double>::iterator it = m_methods_errors.find(methods);
             if (it == m_methods_errors.end())
             {
-                error[j] = tryWithDifferentMethods(methods, threshold);
+                error[j] = tryWithDifferentMethods(methods, threshold)[0];
                 m_methods_errors.insert(pair<MultiVariatePoint<int>,double>(methods,error[j]));
             }
             else error[j] = get<1>(*it);
-            cout << "   ---> Interpolation error when using " << methods << " = " << error[j] << endl;
+            cout << "   ---> Relative Interpolation error when using " << methods << " = " << error[j] << endl;
         }
         methods(i) = distance(error.begin(),min_element(error.begin(), error.end()));
         cout << endl << " ---> Chosen method in direction " << i << ": " <<  methods(i) << endl;
     }
     Utils::separateur();
     cout << " - The optimal choice of methods is " << methods << endl;
-    cout << " - Interpolation error = " << *min_element(error.begin(), error.end()) << endl;
+    cout << " - Relative Interpolation error = " << *min_element(error.begin(), error.end()) << endl;
     if (*min_element(error.begin(), error.end())>0.01)
     {
         cout << " - The interpolation error is quite big, ";
