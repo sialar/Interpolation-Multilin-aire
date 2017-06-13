@@ -48,8 +48,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_0->func(p));
         estimate.push_back(interp_0->interpolation(p,interp_0->path().size()));
     }
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     realValues.clear();
     estimate.clear();
     Utils::separateur();
@@ -65,8 +65,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_1->func(p));
         estimate.push_back(interp_1->interpolation(p,interp_1->path().size()));
     }
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;    realValues.clear();
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;    realValues.clear();
     estimate.clear();
     Utils::separateur();
 
@@ -82,8 +82,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp_2->func(p));
         estimate.push_back(interp_2->interpolation(p,interp_2->path().size()));
     }
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
     vector<MultiVariatePoint<double>> allErrors;

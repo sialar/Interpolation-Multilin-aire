@@ -80,14 +80,15 @@ class Interpolation
         /************************* Display function ***************************/
         void displayInterpolationPointsInEachDirection();
         void displayInterpolationMultiVariatePoints();
+        void savePathInFile(string fileName);
         void saveInterpolationProgression();
         void displayCurentNeighbours();
+        void saveTestPointsInFile();
         void saveErrorsInFile();
-        void savePathInFile(string fileName);
+        void clearAllAlpha();
         void displayPath();
         void displayAll();
         void clearAll();
-        void clearAllAlpha();
 };
 
 template <typename T>
@@ -131,6 +132,7 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
   for (int j=0; j<nbTestPoints; j++)
       testPoints[j] = Utils::createRandomMultiVariatePoint(m_d);
   setTestPoints(testPoints);
+  saveTestPointsInFile();
 }
 /******************************************************************************/
 
@@ -356,6 +358,25 @@ void Interpolation<T>::saveInterpolationProgression()
   else
       cerr << "Error while opening the file!" << endl;
 }
+
+template <typename T>
+void Interpolation<T>::saveTestPointsInFile()
+{
+    ofstream file("data/test_points.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        for (MultiVariatePoint<double> x : m_testPoints)
+        {
+            for (int i=0; i<m_d-1; i++)
+                file << x(i) << " ";
+            file << x(m_d-1) << endl;
+        }
+        file.close();
+    }
+    else
+        cerr << "Error while opening the file!" << endl;
+}
+
 template <typename T>
 void Interpolation<T>::saveErrorsInFile()
 {

@@ -53,8 +53,8 @@ int main( int argc, char* argv[] )
         Utils::displayPoints(estimate);
     }
     // Evaluation
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     if (save)
     {

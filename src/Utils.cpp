@@ -4,10 +4,8 @@ vector<double> Utils::m_1dGrid;
 
 void Utils::separateur()
 {
+    for (int i=0; i<206; i++) cout << "=";
     cout << endl;
-    for (int i=0; i<206; i++)
-        cout << "*";
-    cout << endl << endl;
 }
 
 void Utils::displayPoints(vector<MultiVariatePoint<double>> points)

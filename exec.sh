@@ -31,6 +31,18 @@ showAllArgsDetails()
   echo ""
 }
 
+showMixArgsDetails()
+{
+  echo ""
+  echo " 5 arguments are required:"
+  echo "   - arg 1 : Space dimension D [$2]"
+  echo "   - arg 2 : Space dimension N [$3]"
+  echo "   - arg 3 : Number of test points [$4]"
+  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
+  echo "   - arg 4 : Plot interpolation points ? [$6]"
+  echo ""
+}
+
 showErrorArgsDetails()
 {
   echo ""
@@ -54,11 +66,30 @@ show4ArgsDetails()
   echo ""
 }
 
+show3ArgsDetails()
+{
+  echo ""
+  echo " 3 arguments are required:"
+  echo "   - arg 1 : Mumber of test points [$2]"
+  echo "   - arg 2 : Method [$3]"
+  echo "   - arg 3 : Number of iteration in AI algorithm [$4]"
+  echo ""
+}
+
 show2ArgsDetails()
 {
   echo ""
   echo " 2 arguments are required:"
   echo "   - arg 1 : Method [$2]"
+  echo "   - arg 2 : Number of iteration in AI algorithm [$3]"
+  echo ""
+}
+
+showAutoCompArgsDetails()
+{
+  echo ""
+  echo " 2 arguments are required:"
+  echo "   - arg 1 : Number of test points [$2]"
   echo "   - arg 2 : Number of iteration in AI algorithm [$3]"
   echo ""
 }
@@ -91,22 +122,28 @@ then
 
 elif [ "$1" = "MIX" ]
 then
-    show4ArgsDetails
-    if [ $# != 5 ]
+    showMixArgsDetails
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
-  else ./bin/TestMixedInterpolation $2 $3 $4 $5
-    cd python
-    python3.5 -W ignore plot_mixed_path.py $2
+    else ./bin/TestMixedInterpolation $2 $3 $4 $5 $6
+      if [ $6 = 1 ]
+      then
+      cd python
+      python3.5 -W ignore plot_mixed_path.py $2
+      fi
     fi
 
 elif [ "$1" = "AUTO" ]
 then
-    show4ArgsDetails
-    if [ $# != 5 ]
+    showMixArgsDetails
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
-    else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5
-    cd python
-    python3.5 -W ignore plot_mixed_path.py $2
+    else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5 $6
+      if [ $6 = 1 ]
+      then
+        cd python
+        python3.5 -W ignore plot_mixed_path.py $2
+      fi
     fi
 
 elif [ "$1" = "PATH" ]
@@ -171,6 +208,45 @@ then
     else cd tucker
          python testTuckerDecomposition_withGreedy.py $2
     fi
+
+elif [ "$1" = "COMP" ]
+then
+    show3ArgsDetails
+    if [ $# != 4 ]
+    then echo "Invalid number of arguments"
+    else
+        echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
+        echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
+        echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
+        if [ $3 = 0 ]
+        then ./bin/TestLagrangeInterpolation 3 1 $2 $4 0 0
+        else ./bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 0 0
+        fi
+        echo "\n"
+        echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
+        echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
+        echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
+        cd tucker
+        python -W ignore testTuckerDecomposition_withGreedy.py $2
+    fi
+
+elif [ "$1" = "AUTO_COMP" ]
+  then
+      showAutoCompArgsDetails
+      if [ $# != 3 ]
+      then echo "Invalid number of arguments"
+      else
+          echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
+          echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
+          echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
+          ./bin/TestAutoMixedInterpolation 3 1 $2 $3 0
+          echo "\n"
+          echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
+          echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
+          echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
+          cd tucker
+          python -W ignore testTuckerDecomposition_withGreedy.py $2
+      fi
 else
     help
     exit

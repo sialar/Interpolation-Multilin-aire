@@ -33,8 +33,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     Utils::separateur();
     interp->clearAllTrees();
@@ -56,8 +56,8 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp->func(p));
         estimate.push_back(interp->interpolation(p,interp->path().size()));
     }
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
 
     Utils::separateur();
     return 0;

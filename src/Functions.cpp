@@ -6,7 +6,7 @@ int Functions::m_polynomialDegree;
 vector<double> Functions::f(MultiVariatePoint<double> x, int n)
 {
     // write here the interpolated function
-    return autoPolynomialFunction(x,n);
+    return functionToPlot(x,n);
 }
 
 vector<double> Functions::toAlternatingVector(double x, int n)

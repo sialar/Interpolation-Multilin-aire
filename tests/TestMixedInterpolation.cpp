@@ -34,6 +34,8 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     MultiVariatePoint<int> methods = chooseMethods(dimD);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
+    bool save = Utils::saveResults(argc,argv,5);
+
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Functions::f));
 
     // Initialisation of test points
@@ -66,9 +68,9 @@ int main( int argc, char* argv[] )
     }
 
     // Evaluation
-    cout << " - Relative Interpolation error = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error = " << Utils::mseInterpolationError(realValues,estimate) << endl;
-    interp->savePathInFile("data/path.txt");
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    if (save) interp->savePathInFile("data/path.txt");
     Utils::separateur();
 
     return 0;

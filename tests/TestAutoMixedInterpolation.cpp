@@ -17,6 +17,7 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     MultiVariatePoint<int> methods(dimD,0,0);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
+    bool save = Utils::saveResults(argc,argv,5);
 
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Functions::f));
 
@@ -35,7 +36,7 @@ int main( int argc, char* argv[] )
 
     Utils::separateur();
     interp->tryWithDifferentMethods(optimalMethods, threshold);
-    interp->savePathInFile("data/path.txt");
+    if (save) interp->savePathInFile("data/path.txt");
     Utils::separateur();
 
     return 0;

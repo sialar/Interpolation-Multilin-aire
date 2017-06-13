@@ -21,7 +21,7 @@ class MixedInterpolation : public Interpolation<string>
     private:
       vector<double> m_lejaSequence;
       MultiVariatePoint<int> m_methods; // 0 ou 1 ou 2 sur chaque variable
-      map<MultiVariatePoint<int>,double> m_methods_errors;
+      map<MultiVariatePoint<int>,vector<double>> m_methods_errors;
       vector<BinaryTreePtr> m_trees;
 
     public:
