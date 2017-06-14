@@ -16,6 +16,7 @@ def get_cmap(N):
     return map_index_to_rgb_color
 
 def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
+    print (nb_functions,int(len(y)/len(x)))
     for i in range(int(len(y)/len(x))):
         plt.hold(True)
         plt.clf()
@@ -24,10 +25,11 @@ def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
         plt.axis([-1.1, 1.1, y_min, 1.1])
         for j in range(i):
             plt.plot(x, y[j*len(x):(j+1)*len(x)], c='y', alpha=0.7*j/i)
-            plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
+        plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
 
         plt.subplot(211)
-        plt.axis([-1.1, 1.1, min(z)-0.1, max(z)+0.1])
+        plt.axis([-1.1, 1.1, min(g)-0.1, max(g)+0.1])
+
         plt.plot(x, zero, 'k', c='k')
         plt.plot(x, g, 'k', c='g')
         plt.plot(x, z[i*len(x):(i+1)*len(x)], c='r')

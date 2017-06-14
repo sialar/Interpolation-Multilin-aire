@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
     bool error = Utils::saveError(argc,argv,7);
 
     Function f = Functions::f;
-    if (save) f = Functions::functionToPlot;
+    //if (save) f = Functions::functionToPlot;
     PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,f));
     interp->setSaveError(error);
 
@@ -30,6 +30,7 @@ int main( int argc, char* argv[] )
 
     // Path creation
     double threshold = 1e-10;
+    if (error) threshold = 1e-20;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;

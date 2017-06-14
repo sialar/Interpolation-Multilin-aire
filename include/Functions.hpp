@@ -30,6 +30,7 @@ class Functions
         static vector<double> function1D(MultiVariatePoint<double> x, int n);
         static vector<double> sinOfNorm2(MultiVariatePoint<double> x, int n);
         static vector<double> autoPolynomialFunction(MultiVariatePoint<double> x, int n);
+        static vector<double> h(MultiVariatePoint<double> x, int n);
         static void saveCoefsInFile(int d, int n);
 
         // Function to approximate

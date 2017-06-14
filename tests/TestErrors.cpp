@@ -34,7 +34,7 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
 
-    double threshold = 1e-10;
+    double threshold = 1e-20;
     vector<vector<double>> realValues, estimate;
 
     // Method 1
@@ -89,19 +89,18 @@ int main( int argc, char* argv[] )
     vector<MultiVariatePoint<double>> allErrors;
     map<int,double>::iterator it;
     vector<int> iterations;
-    double epsilon = 1e-10;
     for (it=interp_0->errors().begin();it!=interp_0->errors().end(); it++)
         iterations.push_back(get<0>(*it));
+
     for (int i=0; i<int(iterations.size()); i++)
     {
         MultiVariatePoint<double> p(3,0,0);
         p(0) = interp_0->errors()[iterations[i]];
         p(1) = interp_1->errors()[iterations[i]];
         p(2) = interp_2->errors()[iterations[i]];
-        if (p(0)>epsilon && p(1)>epsilon && p(2)>epsilon)
+        if (p(0)>threshold && p(1)>threshold && p(2)>threshold)
             allErrors.push_back(p);
     }
     saveAllErrorsInFile(allErrors, iterations);
-
     return 0;
 }

@@ -21,6 +21,8 @@ for i in range(n):
     if len(lines[i+1].split(" ")) > 3:
         y2.append(float(lines[i+1].split(" ")[3]))
 
+
+
 plt.plot(x,y0,c='g')
 if len(y1) > 0:
     plt.plot(x,y1,c='r')

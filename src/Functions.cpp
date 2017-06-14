@@ -13,25 +13,22 @@ vector<double> Functions::toAlternatingVector(double x, int n)
 {
     vector<double> res(n,x);
     for (int i=0; i<n; i++)
-        if (i%2)
-            res[i] *= -1;
+        if (i%2) res[i] *= -1;
     return res;
 }
 
 vector<double> Functions::functionToPlot(MultiVariatePoint<double> x, int n)
 {
     double temp = 1;
-    for (int i=1; i<x.getD(); i++)
-    temp *= exp(-x(i));
+    for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));
+    return toAlternatingVector(sqrt(1-x(0)*x(0)) * temp, n);
+}
 
-    if (n==2)
-    {
-        vector<double> vec2(2,0.0);
-        vec2[0] = sqrt(1-x(0)*x(0)) * temp;
-        vec2[1] = cos(2*M_PI*x(0)) * temp;
-        return vec2;
-    }
-    else return toAlternatingVector(sqrt(1-x(0)*x(0)) * temp, n);
+vector<double> Functions::h(MultiVariatePoint<double> x, int n)
+{
+    double temp = 1, f = 10;
+    for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));
+    return toAlternatingVector(cos(2*M_PI*f*x(0)) * temp,n);
 }
 
 vector<double> Functions::function1D(MultiVariatePoint<double> x, int n)
