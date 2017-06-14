@@ -141,6 +141,7 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 template <typename T>
 int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
 {
+    debug = false;
     m_curentNeighbours.clear();
     m_path.clear();
     MultiVariatePointPtr<T> argmax = getFirstMultivariatePoint();
@@ -171,7 +172,8 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
         int fact = (m_saveError) ? 100 : 10;
-        int step = floor(m_maxIteration/fact)+1;
+        int step = floor(m_maxIteration/fact);
+        if (!step) step = 1;
         if (iteration%step==0)
         {
             auto end_time = chrono::steady_clock::now();

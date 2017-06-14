@@ -3,10 +3,15 @@
 vector<vector<vector<double>>> Functions::m_coefs;
 int Functions::m_polynomialDegree;
 
+double Functions::changeFunctionDomain(double a, double b, double x)
+{
+    return (2*x)/(b-a) + 1 - (2*b)/(b-a);
+}
+
 vector<double> Functions::f(MultiVariatePoint<double> x, int n)
 {
     // write here the interpolated function
-    return functionToPlot(x,n);
+    return h(x,n);
 }
 
 vector<double> Functions::toAlternatingVector(double x, int n)
