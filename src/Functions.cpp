@@ -11,7 +11,7 @@ double Functions::changeFunctionDomain(double a, double b, double x)
 vector<double> Functions::f(MultiVariatePoint<double> x, int n)
 {
     // write here the interpolated function
-    return h(x,n);
+    return autoPolynomialFunction(x,n);
 }
 
 vector<double> Functions::toAlternatingVector(double x, int n)

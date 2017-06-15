@@ -28,7 +28,7 @@ def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
         plt.plot(x, y[i*len(x):(i+1)*len(x)], c='r')
 
         plt.subplot(211)
-        plt.axis([-1.1, 1.1, min(g)-0.1, max(g)+0.1])
+        plt.axis([-1.1, 1.1, min(min(z),min(g))-0.1, max(max(z),max(g))+0.1])
 
         plt.plot(x, zero, 'k', c='k')
         plt.plot(x, g, 'k', c='g')

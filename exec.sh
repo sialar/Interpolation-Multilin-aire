@@ -17,7 +17,7 @@ help()
   echo "   - DIFF     : to see the interpolation results when using interpolation points obtained with different function."
   echo "   - TUCKER   : to see results obtained with Tucker method."
   echo "   - COMP     : to compare results of both methods (Tucker and AI algo)."
-  echo "   - MIX_COMP : to compare results of both methods (Tucker and AI algo)."
+  echo "   - MIX_COMP : to compare results of both methods (Tucker and Mixed AI algo)."
   echo ""
 }
 
@@ -52,8 +52,9 @@ showErrorArgsDetails()
   echo "   - arg 1 : Space dimension D [$2]"
   echo "   - arg 2 : Space dimension N [$3]"
   echo "   - arg 3 : Number of test points [$4]"
-  echo "   - arg 3 : Method [$5] (ALL : to see all methods results)"
-  echo "   - arg 4 : Number of iteration in AI algorithm [$6]"
+  echo "   - arg 4 : Method [$5] (ALL : to see all methods results)"
+  echo "   - arg 5 : Number of iteration in AI algorithm [$6]"
+  echo "   - arg 6 : The starting iteration in plot [$6]"
   echo ""
 }
 
@@ -189,7 +190,7 @@ then
 elif [ "$1" = "ERROR" ]
 then
     showErrorArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
@@ -199,7 +200,7 @@ then
         else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
         fi
         cd python
-        python3.5 -W ignore plot_error.py
+        python3.5 -W ignore plot_error.py $7
     fi
 
 elif [ "$1" = "TUCKER" ]

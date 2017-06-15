@@ -21,7 +21,11 @@ for i in range(n):
     if len(lines[i+1].split(" ")) > 3:
         y2.append(float(lines[i+1].split(" ")[3]))
 
-
+for i in range(int(sys.argv[1])):
+    x.pop(0)
+    y0.pop(0)
+    y1.pop(1)
+    y2.pop(2)
 
 plt.plot(x,y0,c='g')
 if len(y1) > 0:

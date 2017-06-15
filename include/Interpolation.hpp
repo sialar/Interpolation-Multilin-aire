@@ -36,14 +36,15 @@ class Interpolation
         list<MultiVariatePointPtr<T>> m_curentNeighbours;
 
         map<int, double> m_errors;
-        bool m_displayProgress = false;
+        bool m_displayProgress = true;
         bool m_saveError;
 
         Function m_function;
 
     public:
-        Interpolation(int d, int m_n, int nIter, Function f);
+        Interpolation() {};
         virtual ~Interpolation() {};
+        Interpolation(int d, int m_n, int nIter, Function f);
 
         /************************* Data points ********************************/
         const int maxIteration() { return m_maxIteration; };
@@ -60,7 +61,7 @@ class Interpolation
         void setFunc(Function f) { m_function = f; };
         void setSaveError(bool error) { m_saveError = error; };
         map<int, double>& errors() { return m_errors; };
-        void enableProgressDisplay() { m_displayProgress = true; };
+        void disableProgressDisplay() { m_displayProgress = false; };
 
         /************************* AI algo ************************************/
         vector<double> tryWithCurentPath();
@@ -185,12 +186,12 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
                 cout << endl << "\t- Interpolation error after " << iteration << " iterations: ";
                 cout << "(Relative_e = " << errors[0]; //<< ", MSE_e = " << errors[1];
                 cout << ") | Elapsed time : "  << run_time.count();
-            }
-            if (errors[0] < threshold /*&& errors[1] < threshold*/)
-            {
-                cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
-                cout << " | Elapsed time : "  << run_time.count() << endl;
-                return iteration;
+                if (errors[0] < threshold /*&& errors[1] < threshold*/)
+                {
+                    cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
+                    cout << " | Elapsed time : "  << run_time.count() << endl;
+                    return iteration;
+                }
             }
             saveErrorsInFile();
         }
