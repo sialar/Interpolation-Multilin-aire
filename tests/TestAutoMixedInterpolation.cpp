@@ -36,7 +36,7 @@ int main( int argc, char* argv[] )
 
     Utils::separateur();
     interp->tryWithDifferentMethods(optimalMethods, threshold);
-    if (save) interp->savePathInFile("data/path.txt");
+    if (save) interp->savePathInFile(Utils::projectPath + "data/path.txt");
     Utils::separateur();
 
     return 0;

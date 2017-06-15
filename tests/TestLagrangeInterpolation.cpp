@@ -60,9 +60,9 @@ int main( int argc, char* argv[] )
     {
         interp->saveInterpolationBasisFunctions();
         interp->saveInterpolationProgression();
-        interp->savePathInFile("data/path.txt");
+        interp->savePathInFile(Utils::projectPath + "data/path.txt");
     }
-
+    /*
     Utils::separateur();
     if (Utils::displayResults())
     {
@@ -73,7 +73,7 @@ int main( int argc, char* argv[] )
       cout << endl;
       interp->displayInterpolationPointsInEachDirection();
     }
-
+    */
     Utils::separateur();
     return 0;
 }

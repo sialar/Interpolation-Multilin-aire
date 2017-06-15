@@ -18,6 +18,8 @@ class Utils
         static vector<double> m_1dGrid;
 
     public:
+        static string projectPath;
+
         Utils()  {};
         ~Utils() {};
 

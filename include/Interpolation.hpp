@@ -66,7 +66,7 @@ class Interpolation
         /************************* AI algo ************************************/
         vector<double> tryWithCurentPath();
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
-        void testPathBuilt(double threshold, bool debug);
+        double testPathBuilt(double threshold, bool debug);
         int buildPathWithAIAlgo(auto start_time, double threshold, bool debug);
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         void computeAllAlphaNuInPredefinedPath();
@@ -134,7 +134,7 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
   for (int j=0; j<nbTestPoints; j++)
       testPoints[j] = Utils::createRandomMultiVariatePoint(m_d);
   setTestPoints(testPoints);
-  saveTestPointsInFile();
+  //saveTestPointsInFile();
 }
 /******************************************************************************/
 
@@ -234,7 +234,7 @@ void Interpolation<T>::computeAllAlphaNuInPredefinedPath()
     }
 }
 template <typename T>
-void Interpolation<T>::testPathBuilt(double threshold, bool debug)
+double Interpolation<T>::testPathBuilt(double threshold, bool debug)
 {
   auto start_time = chrono::steady_clock::now();
   int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug);
@@ -242,6 +242,7 @@ void Interpolation<T>::testPathBuilt(double threshold, bool debug)
   std::chrono::duration<double> run_time = end_time - start_time;
   cout << endl << "   - Time required to compute the path with " << nbIterations <<
   " iterations: " << run_time.count() << "s" << endl;
+  return run_time.count();
 }
 template <typename T>
 vector<double> Interpolation<T>::tryWithCurentPath()
@@ -337,7 +338,7 @@ void Interpolation<T>::displayAll()
 template <typename T>
 void Interpolation<T>::saveInterpolationProgression()
 {
-  ofstream file("data/interpolation_progression.txt", ios::out | ios::trunc);
+  ofstream file(Utils::projectPath + "data/interpolation_progression.txt", ios::out | ios::trunc);
   if(file)
   {
       if (m_d==1)
@@ -368,7 +369,7 @@ void Interpolation<T>::saveInterpolationProgression()
 template <typename T>
 void Interpolation<T>::saveTestPointsInFile()
 {
-    ofstream file("data/test_points.txt", ios::out | ios::trunc);
+    ofstream file(Utils::projectPath + "data/test_points.txt", ios::out | ios::trunc);
     if(file)
     {
         for (MultiVariatePoint<double> x : m_testPoints)
@@ -386,7 +387,7 @@ void Interpolation<T>::saveTestPointsInFile()
 template <typename T>
 void Interpolation<T>::saveErrorsInFile()
 {
-  ofstream file("data/interpolation_error.txt", ios::out | ios::trunc);
+  ofstream file(Utils::projectPath + "data/interpolation_error.txt", ios::out | ios::trunc);
   if(file)
   {
       file << m_errors.size() << endl;

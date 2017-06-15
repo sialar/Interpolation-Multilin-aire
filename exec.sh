@@ -1,5 +1,9 @@
 #!/bin/sh
 
+
+PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code"
+cd $PROJECT_PATH
+
 #make clean
 make -j8
 
@@ -118,8 +122,8 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0
-      else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0
         fi
     fi
 
@@ -128,7 +132,7 @@ then
     showMixArgsDetails
     if [ $# != 6 ]
     then echo "Invalid number of arguments"
-    else ./bin/TestMixedInterpolation $2 $3 $4 $5 $6
+    else "$PROJECT_PATH"/bin/TestMixedInterpolation $2 $3 $4 $5 $6
       if [ $6 = 1 ]
       then
       cd python
@@ -141,7 +145,7 @@ then
     showMixArgsDetails
     if [ $# != 6 ]
     then echo "Invalid number of arguments"
-    else ./bin/TestAutoMixedInterpolation $2 $3 $4 $5 $6
+    else "$PROJECT_PATH"/bin/TestAutoMixedInterpolation $2 $3 $4 $5 $6
       if [ $6 = 1 ]
       then
         cd python
@@ -156,8 +160,8 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0
+        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
         fi
         cd python
         python3.5 -W ignore plot_path.py $2 $5
@@ -170,8 +174,8 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $2 = 0 ]
-        then ./bin/TestLagrangeInterpolation 1 1 1000 $3 1 0
-        else ./bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 1 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 1 1 1000 $3 1 0
+        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 1 0
         fi
         cd python
         python3.5 -W ignore plot_interpolation_progression.py
@@ -182,7 +186,7 @@ then
     showAllArgsDetails
     if [ $# != 6 ]
     then echo "Invalid number of arguments"
-  else ./bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6
+  else "$PROJECT_PATH"/bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6
     cd python
     python3.5 -W ignore plot_2_paths.py $2 $5
     fi
@@ -194,10 +198,10 @@ then
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then ./bin/TestLagrangeInterpolation $2 $3 $4 $6 0 1
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 1
       elif [ "$5" = "ALL" ]
-        then ./bin/TestErrors $2 $3 $4 $6
-        else ./bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
+        then "$PROJECT_PATH"/bin/TestErrors $2 $3 $4 $6
+        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
         fi
         cd python
         python3.5 -W ignore plot_error.py $7
@@ -222,8 +226,8 @@ then
         echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
         if [ $3 = 0 ]
-        then ./bin/TestLagrangeInterpolation 3 1 $2 $4 0 0
-        else ./bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 0 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 3 1 $2 $4 0 0
+        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 0 0
         fi
         echo "\n"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
@@ -242,7 +246,7 @@ elif [ "$1" = "MIX_COMP" ]
           echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
           echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
           echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
-          ./bin/TestMixedInterpolation 3 1 $2 $3 0
+          "$PROJECT_PATH"/bin/TestMixedInterpolation 3 1 $2 $3 0
           echo "\n"
           echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
           echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"

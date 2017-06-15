@@ -70,7 +70,7 @@ int main( int argc, char* argv[] )
     // Evaluation
     cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
     cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
-    if (save) interp->savePathInFile("data/path.txt");
+    if (save) interp->savePathInFile(Utils::projectPath + "data/path.txt");
     Utils::separateur();
 
     return 0;

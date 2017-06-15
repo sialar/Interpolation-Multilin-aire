@@ -40,7 +40,7 @@ int main( int argc, char* argv[] )
 
     interp0->disableProgressDisplay();
     interp12->disableProgressDisplay();
-    
+
     // Initialisation of test points
     if (method) interp12->setRandomTestPoints(nbTestPoints);
     else interp0->setRandomTestPoints(nbTestPoints);
@@ -49,8 +49,8 @@ int main( int argc, char* argv[] )
     cout << " - Interpolation of function g using the path of g" << endl;
     if (method) interp12->testPathBuilt(threshold, maxIteration<21);
     else interp0->testPathBuilt(threshold, maxIteration<21);
-    if (method) interp12->savePathInFile("data/path.txt");
-    else interp0->savePathInFile("data/path.txt");
+    if (method) interp12->savePathInFile(Utils::projectPath + "data/path.txt");
+    else interp0->savePathInFile(Utils::projectPath + "data/path.txt");
 
     vector<vector<double>> realValues, estimate;
     for (int i=0; i<nbTestPoints; i++)
@@ -80,7 +80,7 @@ int main( int argc, char* argv[] )
       interp12->clearAllAlpha();
       interp12->setFunc(Functions::f);
       interp12->computeAllAlphaNuInPredefinedPath();
-      interp12->savePathInFile("data/other_path.txt");
+      interp12->savePathInFile(Utils::projectPath + "data/other_path.txt");
     }
     else
     {
@@ -89,7 +89,7 @@ int main( int argc, char* argv[] )
         interp0->clearAllAlpha();
         interp0->setFunc(Functions::f);
         interp0->computeAllAlphaNuInPredefinedPath();
-        interp0->savePathInFile("data/other_path.txt");
+        interp0->savePathInFile(Utils::projectPath + "data/other_path.txt");
     }
     for (int i=0; i<nbTestPoints; i++)
     {

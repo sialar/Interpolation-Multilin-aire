@@ -11,7 +11,7 @@ using namespace std;
 
 void saveAllErrorsInFile(vector<MultiVariatePoint<double>> errors, vector<int> iterations)
 {
-  ofstream file("data/interpolation_error.txt", ios::out | ios::trunc);
+  ofstream file(Utils::projectPath + "data/interpolation_error.txt", ios::out | ios::trunc);
   if(file)
   {
       file << errors.size() << endl;

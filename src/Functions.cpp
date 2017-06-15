@@ -86,7 +86,7 @@ void Functions::setCoefs(int degree, int d, int n)
 
 void Functions::saveCoefsInFile(int d, int n)
 {
-    ofstream file("data/polynomial_coefs.txt", ios::out | ios::trunc);
+    ofstream file(Utils::projectPath + "data/polynomial_coefs.txt", ios::out | ios::trunc);
     if(file)
     {
         file << n << " " << m_polynomialDegree << " " << d << endl;

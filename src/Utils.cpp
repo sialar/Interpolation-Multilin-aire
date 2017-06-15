@@ -1,6 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
+string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/";
 
 void Utils::separateur()
 {
@@ -139,7 +140,7 @@ void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
 
 void Utils::storeDichotomySequenceInFile(int length)
 {
-    ofstream file("data/dichotomy_sequence.txt", ios::out | ios::trunc);
+    ofstream file(projectPath + "data/dichotomy_sequence.txt", ios::out | ios::trunc);
     if(file)
     {
         file << length << endl;
@@ -154,7 +155,7 @@ void Utils::storeDichotomySequenceInFile(int length)
 
 void Utils::storeLejaSequenceInFile(int length)
 {
-    ofstream file("data/leja_sequence.txt", ios::out | ios::trunc);
+    ofstream file(projectPath + "data/leja_sequence.txt", ios::out | ios::trunc);
     if(file)
     {
         vector<double> lejaSeq = createLejaSequence(length);
@@ -168,7 +169,7 @@ void Utils::storeLejaSequenceInFile(int length)
 
 vector<double> Utils::loadLejaSequenceFromFile(int length)
 {
-    ifstream file("data/leja_sequence.txt", ios::in);
+    ifstream file(projectPath + "data/leja_sequence.txt", ios::in);
     vector<double> lejaSeq;
     string line;
     int line_index = 0;
@@ -182,7 +183,7 @@ vector<double> Utils::loadLejaSequenceFromFile(int length)
         file.close();
     }
     else
-        cerr << "Erreur à l'ouverture du fichier!" << endl;
+        cerr << "Erreur à l'ouverture du fichier! " << endl;
     return lejaSeq;
 }
 
@@ -310,8 +311,6 @@ int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
   }
   return nbTestPoints;
 }
-
-
 
 int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
 {

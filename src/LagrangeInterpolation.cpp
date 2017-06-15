@@ -100,7 +100,7 @@ bool LagrangeInterpolation::indiceInPath(MultiVariatePoint<int> index)
 /************************* Display functions **********************************/
 void LagrangeInterpolation::saveInterpolationBasisFunctions()
 {
-  ofstream file("data/basis_functions.txt", ios::out | ios::trunc);
+  ofstream file(Utils::projectPath + "data/basis_functions.txt", ios::out | ios::trunc);
   if(file)
   {
     if (m_d==1)
