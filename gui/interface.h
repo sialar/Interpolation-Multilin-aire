@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QWidget>
+#include <QDoubleSpinBox>
 #include <QPushButton>
 #include <QSlider>
 #include <iostream>
@@ -29,8 +30,13 @@ public slots:
     void chooseMethod2();
 
 private:
-    QGroupBox *createExclusiveGroupForFunctions();
-    QGroupBox *createExclusiveGroupForMethods();
+    void createExclusiveGroupForFunctions();
+    void createExclusiveGroupForMethods();
+    void createInputFieldForPointCoordinates();
+    void createInputFieldsForParameters();
+    void createOutputFieldForResults();
+
+
 };
 
 #endif

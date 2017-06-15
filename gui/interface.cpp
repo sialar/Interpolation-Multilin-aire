@@ -4,12 +4,126 @@
 
 Window::Window() : QWidget()
 {
-    setFixedSize(1200, 675);
+    setFixedSize(890, 650);
     createExclusiveGroupForFunctions();
     createExclusiveGroupForMethods();
+    createInputFieldForPointCoordinates();
+    createInputFieldsForParameters();
+    createOutputFieldForResults();
 }
 
-QGroupBox *Window::createExclusiveGroupForFunctions()
+void Window::createOutputFieldForResults()
+{
+    QGroupBox *valuesGroupBox = new QGroupBox(tr("Results"), this);
+    QGroupBox *errorGroupBox = new QGroupBox(tr("Interpolation Error"), this);
+
+    QLabel *exactValueLabel = new QLabel(tr("Exact value of f(X)"));
+    QTextEdit *exactValue = new QTextEdit;
+    exactValue->setReadOnly(true);
+
+    QLabel *approxValueLabel = new QLabel(tr("Approx value of f(X)"));
+    QTextEdit *approxValue = new QTextEdit;
+    approxValue->setReadOnly(true);
+
+    QLabel *rErrorValueLabel = new QLabel(tr("Relative interpolation error"));
+    QTextEdit *rErrorValue = new QTextEdit;
+    rErrorValue->setReadOnly(true);
+
+    QLabel *mseValueLabel = new QLabel(tr("MSE interpolation error"));
+    QTextEdit *mseErrorValue = new QTextEdit;
+    mseErrorValue->setReadOnly(true);
+
+    QVBoxLayout *valuesLayout = new QVBoxLayout;
+    valuesLayout->addWidget(exactValueLabel);
+    valuesLayout->addWidget(exactValue);
+    valuesLayout->addWidget(approxValueLabel);
+    valuesLayout->addWidget(approxValue);
+    valuesGroupBox->setLayout(valuesLayout);
+    valuesGroupBox->setFixedSize(320,140);
+    valuesGroupBox->move(50,450);
+
+    QVBoxLayout *errorLayout = new QVBoxLayout;
+    errorLayout->addWidget(rErrorValueLabel);
+    errorLayout->addWidget(rErrorValue);
+    errorLayout->addWidget(mseValueLabel);
+    errorLayout->addWidget(mseErrorValue);
+    errorGroupBox->setLayout(errorLayout);
+    errorGroupBox->setFixedSize(320,140);
+    errorGroupBox->move(470,450);
+}
+
+void Window::createInputFieldsForParameters()
+{
+    QGroupBox *groupBox = new QGroupBox(tr("Parameters"), this);
+
+    QLabel *maxIterLabel = new QLabel(tr("Max number of iteration (between %1 and %2)").arg(1).arg(10000));
+    QSpinBox *maxIterSpinBox = new QSpinBox;
+    maxIterSpinBox->setRange(1, 10000);
+    maxIterSpinBox->setSingleStep(10);
+    maxIterSpinBox->setValue(1000);
+
+    QLabel *dLabel = new QLabel(tr("Space dimention d (between %1 and %2)").arg(1).arg(10));
+    QSpinBox *dSpinBox = new QSpinBox;
+    dSpinBox->setRange(1, 10);
+    dSpinBox->setSingleStep(1);
+    dSpinBox->setValue(3);
+
+    QLabel *nLabel = new QLabel(tr("Number of function to interpolate"));
+    QSpinBox *nSpinBox = new QSpinBox;
+    nSpinBox->setRange(1, 100);
+    nSpinBox->setSingleStep(1);
+    nSpinBox->setValue(1);
+
+    QVBoxLayout *parametersLayout = new QVBoxLayout;
+    parametersLayout->addWidget(maxIterLabel);
+    parametersLayout->addWidget(maxIterSpinBox);
+    parametersLayout->addWidget(dLabel);
+    parametersLayout->addWidget(dSpinBox);
+    parametersLayout->addWidget(nLabel);
+    parametersLayout->addWidget(nSpinBox);
+    groupBox->setLayout(parametersLayout);
+
+    groupBox->setFixedSize(320,200);
+    groupBox->move(50,200);
+}
+
+void Window::createInputFieldForPointCoordinates()
+{
+
+    QGroupBox *groupBox = new QGroupBox(tr("Point coordinates X = (x,y,z)"), this);
+
+    QLabel *xLabel = new QLabel(tr("x between %1 and %2:").arg(-1.0).arg(1.0));
+    QDoubleSpinBox *xSpinBox = new QDoubleSpinBox;
+    xSpinBox->setRange(-1.0, 1.0);
+    xSpinBox->setSingleStep(0.1);
+    xSpinBox->setValue(0);
+
+    QLabel *yLabel = new QLabel(tr("y between %1 and %2:").arg(-1.0).arg(1.0));
+    QDoubleSpinBox *ySpinBox = new QDoubleSpinBox;
+    ySpinBox->setRange(-1.0, 1.0);
+    ySpinBox->setSingleStep(0.1);
+    ySpinBox->setValue(0);
+
+    QLabel *zLabel = new QLabel(tr("z between %1 and %2:").arg(-1.0).arg(1.0));
+    QDoubleSpinBox *zSpinBox = new QDoubleSpinBox;
+    zSpinBox->setRange(-1.0, 1.0);
+    zSpinBox->setSingleStep(0.1);
+    zSpinBox->setValue(0);
+
+    QVBoxLayout *coordinatesLayout = new QVBoxLayout;
+    coordinatesLayout->addWidget(xLabel);
+    coordinatesLayout->addWidget(xSpinBox);
+    coordinatesLayout->addWidget(yLabel);
+    coordinatesLayout->addWidget(ySpinBox);
+    coordinatesLayout->addWidget(zLabel);
+    coordinatesLayout->addWidget(zSpinBox);
+    groupBox->setLayout(coordinatesLayout);
+
+    groupBox->setFixedSize(320,200);
+    groupBox->move(470,200);
+}
+
+void Window::createExclusiveGroupForFunctions()
 {
     QGroupBox *groupBox = new QGroupBox(tr("Choose the function to interpolate at point X=(x,y,z)"), this);
     QRadioButton *radio1 = new QRadioButton(tr("f1(x) = random_polynomial of degree 7"));
@@ -31,10 +145,9 @@ QGroupBox *Window::createExclusiveGroupForFunctions()
 
     groupBox->setFixedSize(320,100);
     groupBox->move(50,50);
-    return groupBox;
 }
 
-QGroupBox *Window::createExclusiveGroupForMethods()
+void Window::createExclusiveGroupForMethods()
 {
     QGroupBox *groupBox = new QGroupBox(tr("Choose the method of interpolation"), this);
     QRadioButton *radio1 = new QRadioButton(tr("M0 = Using lagrange polynomial functions and leja points"));
@@ -54,9 +167,8 @@ QGroupBox *Window::createExclusiveGroupForMethods()
     vbox->addStretch(1);
     groupBox->setLayout(vbox);
 
-    groupBox->setFixedSize(320,100);
+    groupBox->setFixedSize(420,100);
     groupBox->move(420,50);
-    return groupBox;
 }
 
 void Window::chooseFunction1()
