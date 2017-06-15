@@ -82,7 +82,5 @@ int main( int argc, char* argv[] )
     file << mseError << endl;
     file << execTime << endl;
 
-    string s = "-3.21252e-16 ";
-    cout << s << " " << stod(s) << endl;
     return 0;
 }
