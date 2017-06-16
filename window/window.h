@@ -65,7 +65,7 @@ private:
     string mse_error;
     string exec_time;
 
-    QTextEdit *approxValue, *exactValue, *rErrorValue, *mseErrorValue;
+    QTextEdit *approxValue, *exactValue, *rErrorValue, *mseErrorValue, *execTimeValue;
 
     void updateGUI();
     void updateCoordsField();

@@ -38,7 +38,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
-    interp->testPathBuilt(threshold, maxIteration<11);
+    double execTime = interp->testPathBuilt(threshold, maxIteration<11);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
@@ -58,8 +58,10 @@ int main( int argc, char* argv[] )
         Utils::displayPoints(estimate);
     }
     // Evaluation
-    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
-    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    double relativeError = Utils::relativeInterpolationError(realValues,estimate);
+    double mseError = Utils::mseInterpolationError(realValues,estimate);
+    cout << " - Relative Interpolation error (pcm) = " << relativeError << endl;
+    cout << " - MSE Interpolation error (pcm) = " << mseError << endl;
 
     if (save)
     {
@@ -79,6 +81,11 @@ int main( int argc, char* argv[] )
       interp->displayInterpolationPointsInEachDirection();
     }
     */
-    Utils::separateur();
+
+    ofstream file(Utils::projectPath + "data/res.txt", ios::out | ios::trunc);
+    file << relativeError << endl;
+    file << mseError << endl;
+    file << execTime << endl;
+
     return 0;
 }

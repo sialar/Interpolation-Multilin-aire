@@ -22,6 +22,7 @@ void Window::updateGUI()
     approxValue->setText(QString::fromStdString(f_tilde));
     rErrorValue->setText(QString::fromStdString(relative_error));
     mseErrorValue->setText(QString::fromStdString(mse_error));
+    execTimeValue->setText(QString::fromStdString(exec_time));
 }
 
 void Window::updateCoordsField()
@@ -71,8 +72,8 @@ void Window::createControlButtons()
     buttonsLayout->addWidget(errorButton);
     buttonsGroupBox->setLayout(buttonsLayout);
 
-    buttonsGroupBox->setFixedSize(200,200);
-    buttonsGroupBox->move(890, 200);
+    buttonsGroupBox->setFixedSize(200,300);
+    buttonsGroupBox->move(890, 160);
 }
 
 void Window::createOutputFieldForResults()
@@ -96,23 +97,29 @@ void Window::createOutputFieldForResults()
     mseErrorValue = new QTextEdit;
     mseErrorValue->setReadOnly(true);
 
+    QLabel *timeLabel = new QLabel(tr("Exectution time"));
+    execTimeValue = new QTextEdit;
+    execTimeValue->setReadOnly(true);
+
     QVBoxLayout *valuesLayout = new QVBoxLayout;
     valuesLayout->addWidget(exactValueLabel);
     valuesLayout->addWidget(exactValue);
     valuesLayout->addWidget(approxValueLabel);
     valuesLayout->addWidget(approxValue);
     valuesGroupBox->setLayout(valuesLayout);
-    valuesGroupBox->setFixedSize(320,140);
-    valuesGroupBox->move(50,470);
+    valuesGroupBox->setFixedSize(320,130);
+    valuesGroupBox->move(470,470);
 
     QVBoxLayout *errorLayout = new QVBoxLayout;
     errorLayout->addWidget(rErrorValueLabel);
     errorLayout->addWidget(rErrorValue);
     errorLayout->addWidget(mseValueLabel);
     errorLayout->addWidget(mseErrorValue);
+    errorLayout->addWidget(timeLabel);
+    errorLayout->addWidget(execTimeValue);
     errorGroupBox->setLayout(errorLayout);
-    errorGroupBox->setFixedSize(320,140);
-    errorGroupBox->move(470,470);
+    errorGroupBox->setFixedSize(320,180);
+    errorGroupBox->move(50,440);
 }
 
 void Window::createInputFieldsForParameters()
@@ -152,7 +159,7 @@ void Window::createInputFieldsForParameters()
     groupBox->setLayout(parametersLayout);
 
     groupBox->setFixedSize(320,200);
-    groupBox->move(50,210);
+    groupBox->move(50,190);
 }
 
 void Window::createInputFieldForPointCoordinates()
@@ -285,8 +292,12 @@ void Window::plotResults()
 {
     int n = (maxIteration > 200) ? 100 : maxIteration;
     string cmd = projectPath + "exec.sh PLOT " + to_string(method) + " " + to_string(n) + " " + to_string(f);
-    std::cout << cmd << std::endl;
     system(cmd.c_str());
+    std::ifstream file(projectPath + "data/res.txt", ios::in);
+    getline(file,relative_error);
+    getline(file,mse_error);
+    getline(file,exec_time);
+    updateGUI();
 }
 
 void Window::plotInterpolationPoints()
@@ -295,6 +306,11 @@ void Window::plotInterpolationPoints()
             to_string(maxIteration) + " " + to_string(f);
     std::cout << cmd << std::endl;
     system(cmd.c_str());
+    std::ifstream file(projectPath + "data/res.txt", ios::in);
+    getline(file,relative_error);
+    getline(file,mse_error);
+    getline(file,exec_time);
+    updateGUI();
 }
 
 void Window::plotErrors()
@@ -303,6 +319,11 @@ void Window::plotErrors()
             to_string(maxIteration) + " 0 " + to_string(f);
     std::cout << cmd << std::endl;
     system(cmd.c_str());
+    std::ifstream file(projectPath + "data/res.txt", ios::in);
+    getline(file,relative_error);
+    getline(file,mse_error);
+    getline(file,exec_time);
+    updateGUI();
 }
 
 void Window::randomPoint()

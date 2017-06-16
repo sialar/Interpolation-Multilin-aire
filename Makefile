@@ -29,4 +29,4 @@ $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 
 # Nettoyage du projet
 clean:
-	@rm -rf $(BIN)/*
+	@rm -rf $(BIN)/* build-window-Desktop_Qt_5_7_0_GCC_64bit-Debug/
