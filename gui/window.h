@@ -32,9 +32,11 @@ public slots:
     void f2() { f = 2; }
     void f3() { f = 3; }
 
-    void m0() { method = 0; }
-    void m1() { method = 1; }
-    void m2() { method = 2; }
+    void mx(int m) { m0 = m; }
+    void my(int m) { m1 = m; }
+    void mz(int m) { m2 = m; }
+    void mt(int m) { m3 = m; }
+    void ms(int m) { m4 = m; }
 
     void updateX(double _x) { x = _x; }
     void updateY(double _y) { y = _y; }
@@ -54,7 +56,7 @@ public slots:
 
 private:
     int f;
-    int method;
+    int m0, m1, m2, m3, m4;
     int maxIteration;
     int d, n;
     double x, y, z, t, s;

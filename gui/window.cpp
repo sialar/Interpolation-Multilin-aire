@@ -4,7 +4,7 @@
 
 std::string Window::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/";
 
-Window::Window() : f(1), method(0), d(3), n(1),
+Window::Window() : f(1), m0(0), m1(0), m2(0), m3(0), m4(0), d(3), n(1),
         maxIteration(1000), x(0), y(0), z(0), t(0), s(0), QWidget()
 {
     int l = 1200, h = 800;
@@ -196,6 +196,11 @@ void Window::createInputFieldForMethod(int a, int b, int c, int d)
     msSpinBox->setSingleStep(1);
     msSpinBox->setValue(0);
 
+    connect(mxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(mx(int)));
+    connect(mySpinBox,SIGNAL(valueChanged(int)),this,SLOT(my(int)));
+    connect(mzSpinBox,SIGNAL(valueChanged(int)),this,SLOT(mz(int)));
+    connect(mtSpinBox,SIGNAL(valueChanged(int)),this,SLOT(mt(int)));
+    connect(msSpinBox,SIGNAL(valueChanged(int)),this,SLOT(ms(int)));
 
     coordinatesLayout->addWidget(mxSpinBox);
     coordinatesLayout->addWidget(mySpinBox);
@@ -295,8 +300,10 @@ void Window::createExclusiveGroupForFunctions(int a, int b, int c, int d)
 void Window::startInterpolation()
 {
     string cmd = projectPath + "bin/TestX " + to_string(d) + " " + to_string(n) + " 100 " + \
-            to_string(method) + " " + to_string(maxIteration) + " " + to_string(x) + " " + \
-            to_string(y) + " " + to_string(z) + " " + to_string(f);
+            " " + to_string(maxIteration) + " " + to_string(f) + " " + to_string(x) + " " + \
+            to_string(y) + " " + to_string(z) + " " + to_string(t) + " " + to_string(s) + \
+            " " + to_string(m0) + " " + to_string(m1) + " " + to_string(m2) + \
+            " " + to_string(m3) + " " + to_string(m4);
     std::cout << cmd << std::endl;
     system(cmd.c_str());
     std::ifstream file(projectPath + "data/res.txt", ios::in);
@@ -313,7 +320,7 @@ void Window::startInterpolation()
 void Window::plotResults()
 {
     int n = (maxIteration > 200) ? 100 : maxIteration;
-    string cmd = projectPath + "exec.sh PLOT " + to_string(method) + " " + to_string(n) + " " + to_string(f);
+    string cmd = projectPath + "exec.sh PLOT " + to_string(m0) + " " + to_string(n) + " " + to_string(f);
     system(cmd.c_str());
     std::ifstream file(projectPath + "data/res.txt", ios::in);
     getline(file,relative_error);
@@ -324,7 +331,7 @@ void Window::plotResults()
 
 void Window::plotInterpolationPoints()
 {
-    string cmd = projectPath + "exec.sh PATH " + to_string(d) + " 1 10 " + to_string(method) + " " + \
+    string cmd = projectPath + "exec.sh PATH " + to_string(d) + " 1 10 " + to_string(m0) + " " + \
             to_string(maxIteration) + " " + to_string(f);
     std::cout << cmd << std::endl;
     system(cmd.c_str());
