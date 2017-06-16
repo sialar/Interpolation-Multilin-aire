@@ -11,7 +11,9 @@ def prepare_initial_grid_for_indices(points,n,m):
 
     plt.subplot(121)
     plt.axis([-1, n, -1, m])
-    plt.scatter(x, y, s=s/2, c='w')
+    print(min(n,m))
+    if (max(n,m)<100):
+        plt.scatter(x, y, s=s/2, c='w')
 
 def prepare_initial_grid_for_leja_points(n,m):
     leja_sequence_file = open( "../data/leja_sequence.txt", "r")

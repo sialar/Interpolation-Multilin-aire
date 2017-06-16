@@ -52,7 +52,7 @@ int main( int argc, char* argv[] )
     if (method) interp12->setRandomTestPoints(nbTestPoints);
     else interp0->setRandomTestPoints(nbTestPoints);
 
-    double threshold = 1e-10;
+    double threshold = 1e-9;
     cout << " - Interpolation of function g using the path of g" << endl;
     if (method) interp12->testPathBuilt(threshold, maxIteration<21);
     else interp0->testPathBuilt(threshold, maxIteration<21);

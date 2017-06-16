@@ -328,7 +328,7 @@ int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
 int Utils::chooseMethod(int argc, char* argv[], int argNum)
 {
     int method = -1;
-    if (argc > 4) method = stoi(argv[4]);
+    if (argc > argNum) method = stoi(argv[argNum]);
     while (method!=1 && method!=2)
     {
         cout << " - Choose the method of interpolation: " << endl;
@@ -377,8 +377,8 @@ bool Utils::plotPath(int argc, char* argv[], int argNum)
 
 int Utils::chooseFunction(int argc, char* argv[], int argNum)
 {
-  if (argc > argNum) return stoi(argv[argNum]);
   int f = 0;
+  if (argc > argNum) f = stoi(argv[argNum]);
   while (f!=1 && f!=2 && f!=3)
   {
       cout << " - Choose the function to interpolate (1, 2 or 3)";

@@ -7,13 +7,21 @@ std::string Window::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/";
 Window::Window() : f(1), method(0), d(3), n(1),
         maxIteration(1000), x(0), y(0), z(0), t(0), s(0), QWidget()
 {
-    setFixedSize(1170, 650);
-    createExclusiveGroupForFunctions();
-    createExclusiveGroupForMethods();
-    createInputFieldForPointCoordinates();
-    createInputFieldsForParameters();
-    createOutputFieldForResults();
-    createControlButtons();
+    int l = 1200, h = 800;
+    int offset = 30;
+    int lf = (l-4*offset)/3, hf = (h-3*offset)/2;
+    int lr = lf, hr = hf;
+    int lb = lf, hb = (h-8*offset)/2;
+    int lp = lf, hp = hb;
+    int lm = (lf-offset)/2, hm = h-10*offset;
+    int lc = lm, hc = hm;
+    setFixedSize(l, h);
+    createExclusiveGroupForFunctions(lf,hf,offset,offset);
+    createOutputFieldForResults(lr,hr,offset,2*offset+hf);
+    createControlButtons(lb,hb,2*offset+lf,2*offset);
+    createInputFieldsForParameters(lp,hp,2*offset+lr,h-2*offset-hp);
+    createInputFieldForMethod(lm,hm,l-2*offset-2*lm,5*offset);
+    createInputFieldForPointCoordinates(lc,hc,l-offset-lc,5*offset);
 }
 
 void Window::updateGUI()
@@ -48,14 +56,14 @@ void Window::updateCoordsField()
     xSpinBox->setValue(x);
 }
 
-void Window::createControlButtons()
+void Window::createControlButtons(int a, int b, int c, int d)
 {
     QGroupBox *buttonsGroupBox = new QGroupBox(tr(""), this);
 
     QPushButton *randomButton = new QPushButton("Random point",this);
     QPushButton *startButton = new QPushButton("Interpolate",this);
-    QPushButton *plotButton = new QPushButton("Plot results",this);
-    QPushButton *plotPath = new QPushButton("Plot interpolation points",this);
+    QPushButton *plotButton = new QPushButton("Plot results (1d) ",this);
+    QPushButton *plotPath = new QPushButton("Plot interpolation points (2d ou 3d)",this);
     QPushButton *errorButton = new QPushButton("Plot interpolation error",this);
 
     QObject::connect(randomButton, SIGNAL(clicked()), this, SLOT(randomPoint()));
@@ -72,14 +80,13 @@ void Window::createControlButtons()
     buttonsLayout->addWidget(errorButton);
     buttonsGroupBox->setLayout(buttonsLayout);
 
-    buttonsGroupBox->setFixedSize(200,300);
-    buttonsGroupBox->move(890, 160);
+    buttonsGroupBox->setFixedSize(a,b);
+    buttonsGroupBox->move(c,d);
 }
 
-void Window::createOutputFieldForResults()
+void Window::createOutputFieldForResults(int a, int b, int c, int d)
 {
     QGroupBox *valuesGroupBox = new QGroupBox(tr("Results"), this);
-    QGroupBox *errorGroupBox = new QGroupBox(tr("Interpolation Error"), this);
 
     QLabel *exactValueLabel = new QLabel(tr("Exact value of f(X)"));
     exactValue = new QTextEdit;
@@ -106,23 +113,19 @@ void Window::createOutputFieldForResults()
     valuesLayout->addWidget(exactValue);
     valuesLayout->addWidget(approxValueLabel);
     valuesLayout->addWidget(approxValue);
+    valuesLayout->addWidget(rErrorValueLabel);
+    valuesLayout->addWidget(rErrorValue);
+    valuesLayout->addWidget(mseValueLabel);
+    valuesLayout->addWidget(mseErrorValue);
+    valuesLayout->addWidget(timeLabel);
+    valuesLayout->addWidget(execTimeValue);
     valuesGroupBox->setLayout(valuesLayout);
-    valuesGroupBox->setFixedSize(320,130);
-    valuesGroupBox->move(470,470);
 
-    QVBoxLayout *errorLayout = new QVBoxLayout;
-    errorLayout->addWidget(rErrorValueLabel);
-    errorLayout->addWidget(rErrorValue);
-    errorLayout->addWidget(mseValueLabel);
-    errorLayout->addWidget(mseErrorValue);
-    errorLayout->addWidget(timeLabel);
-    errorLayout->addWidget(execTimeValue);
-    errorGroupBox->setLayout(errorLayout);
-    errorGroupBox->setFixedSize(320,180);
-    errorGroupBox->move(50,440);
+    valuesGroupBox->setFixedSize(a,b);
+    valuesGroupBox->move(c,d);
 }
 
-void Window::createInputFieldsForParameters()
+void Window::createInputFieldsForParameters(int a, int b, int c, int d)
 {
     QGroupBox *groupBox = new QGroupBox(tr("Parameters"), this);
 
@@ -158,11 +161,54 @@ void Window::createInputFieldsForParameters()
     parametersLayout->addWidget(nSpinBox);
     groupBox->setLayout(parametersLayout);
 
-    groupBox->setFixedSize(320,200);
-    groupBox->move(50,190);
+    groupBox->setFixedSize(a,b);
+    groupBox->move(c,d);
 }
 
-void Window::createInputFieldForPointCoordinates()
+void Window::createInputFieldForMethod(int a, int b, int c, int d)
+{
+
+    QGroupBox *groupBox = new QGroupBox(tr("Methods"), this);
+    QVBoxLayout *coordinatesLayout = new QVBoxLayout;
+
+    mxSpinBox = new QSpinBox;
+    mxSpinBox->setRange(0, 2);
+    mxSpinBox->setSingleStep(1);
+    mxSpinBox->setValue(0);
+
+    mySpinBox = new QSpinBox;
+    mySpinBox->setRange(0, 2);
+    mySpinBox->setSingleStep(1);
+    mySpinBox->setValue(0);
+
+    mzSpinBox = new QSpinBox;
+    mzSpinBox->setRange(0, 2);
+    mzSpinBox->setSingleStep(1);
+    mzSpinBox->setValue(0);
+
+    mtSpinBox = new QSpinBox;
+    mtSpinBox->setRange(0, 2);
+    mtSpinBox->setSingleStep(1);
+    mtSpinBox->setValue(0);
+
+    msSpinBox = new QSpinBox;
+    msSpinBox->setRange(0, 2);
+    msSpinBox->setSingleStep(1);
+    msSpinBox->setValue(0);
+
+
+    coordinatesLayout->addWidget(mxSpinBox);
+    coordinatesLayout->addWidget(mySpinBox);
+    coordinatesLayout->addWidget(mzSpinBox);
+    coordinatesLayout->addWidget(mtSpinBox);
+    coordinatesLayout->addWidget(msSpinBox);
+    groupBox->setLayout(coordinatesLayout);
+
+    groupBox->setFixedSize(a,b);
+    groupBox->move(c,d);
+}
+
+void Window::createInputFieldForPointCoordinates(int a, int b, int c, int d)
 {
 
     QGroupBox *groupBox = new QGroupBox(tr("Point coordinates X"), this);
@@ -218,11 +264,11 @@ void Window::createInputFieldForPointCoordinates()
     coordinatesLayout->addWidget(sSpinBox);
     groupBox->setLayout(coordinatesLayout);
 
-    groupBox->setFixedSize(320,300);
-    groupBox->move(470,160);
+    groupBox->setFixedSize(a,b);
+    groupBox->move(c,d);
 }
 
-void Window::createExclusiveGroupForFunctions()
+void Window::createExclusiveGroupForFunctions(int a, int b, int c, int d)
 {
     QGroupBox *groupBox = new QGroupBox(tr("Choose the function to interpolate at point X=(x,y,z)"), this);
     QRadioButton *radio1 = new QRadioButton(tr("f1(x) = random_polynomial of degree 7"));
@@ -242,32 +288,8 @@ void Window::createExclusiveGroupForFunctions()
     vbox->addStretch(1);
     groupBox->setLayout(vbox);
 
-    groupBox->setFixedSize(320,100);
-    groupBox->move(50,50);
-}
-
-void Window::createExclusiveGroupForMethods()
-{
-    QGroupBox *groupBox = new QGroupBox(tr("Choose the method of interpolation"), this);
-    QRadioButton *radio1 = new QRadioButton(tr("M0 = Using lagrange polynomial functions and leja points"));
-    QRadioButton *radio2 = new QRadioButton(tr("M1 = Using piecewise linear functions and middle points"));
-    QRadioButton *radio3 = new QRadioButton(tr("M2 = Using piecewise quadratic functions and middle points"));
-
-    connect(radio1, SIGNAL(clicked()), this, SLOT(m0()));
-    connect(radio2, SIGNAL(clicked()), this, SLOT(m1()));
-    connect(radio3, SIGNAL(clicked()), this, SLOT(m2()));
-
-    radio1->setChecked(true);
-
-    QVBoxLayout *vbox = new QVBoxLayout;
-    vbox->addWidget(radio1);
-    vbox->addWidget(radio2);
-    vbox->addWidget(radio3);
-    vbox->addStretch(1);
-    groupBox->setLayout(vbox);
-
-    groupBox->setFixedSize(420,100);
-    groupBox->move(420,50);
+    groupBox->setFixedSize(a,b);
+    groupBox->move(c,d);
 }
 
 void Window::startInterpolation()

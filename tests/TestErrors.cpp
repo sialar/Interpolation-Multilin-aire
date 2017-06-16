@@ -4,10 +4,27 @@
 #include <time.h>
 #include "../include/LagrangeInterpolation.hpp"
 #include "../include/PiecewiseInterpolation.hpp"
+#include "../include/MixedInterpolation.hpp"
 #include "../include/Utils.hpp"
 
 using namespace std;
 
+MultiVariatePoint<int> chooseMethods(int dim)
+{
+    MultiVariatePoint<int> methods(dim,0,-1);
+    for (int i=0; i<dim; i++)
+    {
+        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
+        {
+            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
+            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
+            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
+            cin >> methods(i);
+        }
+    }
+    return methods;
+}
 
 void saveAllErrorsInFile(vector<MultiVariatePoint<double>> errors, vector<int> iterations)
 {
@@ -18,7 +35,7 @@ void saveAllErrorsInFile(vector<MultiVariatePoint<double>> errors, vector<int> i
       int size = errors.size();
       for (int i=0; i<size; i++)
           file << iterations[i] << " " << errors[i](0) << " " << errors[i](1) \
-               << " " << errors[i](2) << endl;
+               << " " << errors[i](2) << " " << errors[i](3) << endl;
       file.close();
   }
   else
@@ -93,6 +110,24 @@ int main( int argc, char* argv[] )
     }
     cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
     cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
+    estimate.clear();
+    Utils::separateur();
+
+    // Method 3
+    MultiVariatePoint<int> methods = chooseMethods(dimD);
+    MixedInterpolationPtr interp_mix(new MixedInterpolation(dimD,dimN,maxIteration,methods,interpFunc));
+    interp_mix->disableProgressDisplay();
+    interp_mix->setRandomTestPoints(nbTestPoints);
+    interp_mix->setSaveError(true);
+    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
+    interp_mix->testPathBuilt(threshold, maxIteration<21);
+    for (MultiVariatePoint<double> p : interp_mix->testPoints())
+    {
+        realValues.push_back(interp_mix->func(p));
+        estimate.push_back(interp_mix->interpolation(p,interp_mix->path().size()));
+    }
+    cout << " - Relative Interpolation error (pcm) = " << Utils::relativeInterpolationError(realValues,estimate) << endl;
+    cout << " - MSE Interpolation error (pcm) = " << Utils::mseInterpolationError(realValues,estimate) << endl;
     Utils::separateur();
 
     vector<MultiVariatePoint<double>> allErrors;
@@ -103,11 +138,12 @@ int main( int argc, char* argv[] )
 
     for (int i=0; i<int(iterations.size()); i++)
     {
-        MultiVariatePoint<double> p(3,0,0);
+        MultiVariatePoint<double> p(4,0,0);
         p(0) = interp_0->errors()[iterations[i]];
         p(1) = interp_1->errors()[iterations[i]];
         p(2) = interp_2->errors()[iterations[i]];
-        if (p(0)>threshold && p(1)>threshold && p(2)>threshold)
+        p(3) = interp_mix->errors()[iterations[i]];
+        if (p(0)>threshold && p(1)>threshold && p(2)>threshold && p(3)>threshold)
             allErrors.push_back(p);
     }
     saveAllErrorsInFile(allErrors, iterations);

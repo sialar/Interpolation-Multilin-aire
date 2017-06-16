@@ -37,7 +37,7 @@ class Interpolation
 
         map<int, double> m_errors;
         bool m_displayProgress = true;
-        bool m_saveError;
+        bool m_saveError = false;
 
         Function m_function;
 

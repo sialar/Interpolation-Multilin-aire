@@ -59,6 +59,7 @@ private:
     int d, n;
     double x, y, z, t, s;
     QDoubleSpinBox *xSpinBox, *ySpinBox, *zSpinBox, *tSpinBox, *sSpinBox;
+    QSpinBox *mxSpinBox, *mySpinBox, *mzSpinBox, *mtSpinBox, *msSpinBox;
     string real_f;
     string f_tilde;
     string relative_error;
@@ -69,14 +70,12 @@ private:
 
     void updateGUI();
     void updateCoordsField();
-    void createControlButtons();
-    void createExclusiveGroupForFunctions();
-    void createExclusiveGroupForMethods();
-    void createInputFieldForPointCoordinates();
-    void createInputFieldsForParameters();
-    void createOutputFieldForResults();
-
-
+    void createControlButtons(int a, int b, int c, int d);
+    void createExclusiveGroupForFunctions(int a, int b, int c, int d);
+    void createInputFieldForPointCoordinates(int a, int b, int c, int d);
+    void createInputFieldForMethod(int a, int b, int c, int d);
+    void createInputFieldsForParameters(int a, int b, int c, int d);
+    void createOutputFieldForResults(int a, int b, int c, int d);
 };
 
 #endif

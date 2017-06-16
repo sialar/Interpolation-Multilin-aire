@@ -17,8 +17,8 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     MultiVariatePoint<int> methods(dimD,0,0);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
-    bool save = Utils::saveResults(argc,argv,5);
-    int f = Utils::chooseFunction(argc,argv,6);
+    int f = Utils::chooseFunction(argc,argv,5);
+    bool save = Utils::saveResults(argc,argv,6);
 
     Function interpFunc;
     if (f==1) interpFunc = Functions::autoPolynomialFunction;
@@ -26,12 +26,13 @@ int main( int argc, char* argv[] )
     if (f==3) interpFunc = Functions::sinOfNorm2;
 
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,interpFunc));
+    interp->disableProgressDisplay();
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);
 
     // Path creation
-    double threshold = 1e-10;
+    double threshold = 1e-9;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will be tested with different methods in each direction." << endl;
     cout << " - Each time, the algorithm will stop when the interpolation error becomes lower than"
