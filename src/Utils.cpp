@@ -375,6 +375,18 @@ bool Utils::plotPath(int argc, char* argv[], int argNum)
   return (plot=='y');
 }
 
+int Utils::chooseFunction(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int f = 0;
+  while (f!=1 && f!=2 && f!=3)
+  {
+      cout << " - Choose the function to interpolate (1, 2 or 3)";
+      cin >> f;
+  }
+  return f;
+}
+
 bool Utils::displayResults()
 {
   char display = 'x';

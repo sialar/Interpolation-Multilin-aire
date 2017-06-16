@@ -34,9 +34,16 @@ int main( int argc, char* argv[] )
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     int method = chooseMethod(argc,argv,4);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,5);
+    int f = Utils::chooseFunction(argc,argv,6);
 
-    LagrangeInterpolationPtr interp0(new LagrangeInterpolation(dimD,dimN,maxIteration,Functions::f));
-    PiecewiseInterpolationPtr interp12(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,Functions::f));
+    Function interpFunc;
+    if (f==1) interpFunc = Functions::autoPolynomialFunction;
+    if (f==2) interpFunc = Functions::functionToPlot;
+    if (f==3) interpFunc = Functions::sinOfNorm2;
+
+
+    LagrangeInterpolationPtr interp0(new LagrangeInterpolation(dimD,dimN,maxIteration,interpFunc));
+    PiecewiseInterpolationPtr interp12(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,interpFunc));
 
     interp0->disableProgressDisplay();
     interp12->disableProgressDisplay();
@@ -70,24 +77,24 @@ int main( int argc, char* argv[] )
     realValues.clear();
     estimate.clear();
 
-    cout << " - Interpolation of function g using the path of f: x -> sin(norm(x))" << endl;
+    cout << " - Interpolation of function g using the path of f /= g" << endl;
     cout << " - Computing the interpolation points obtained with function f" << endl;
 
     if (method)
     {
-      interp12->setFunc(Functions::sinOfNorm2);
+      interp12->setFunc(Functions::h);
       interp12->testPathBuilt(threshold, maxIteration<21);
       interp12->clearAllAlpha();
-      interp12->setFunc(Functions::f);
+      interp12->setFunc(interpFunc);
       interp12->computeAllAlphaNuInPredefinedPath();
       interp12->savePathInFile(Utils::projectPath + "data/other_path.txt");
     }
     else
     {
-        interp0->setFunc(Functions::sinOfNorm2);
+        interp0->setFunc(Functions::h);
         interp0->testPathBuilt(threshold, maxIteration<21);
         interp0->clearAllAlpha();
-        interp0->setFunc(Functions::f);
+        interp0->setFunc(interpFunc);
         interp0->computeAllAlphaNuInPredefinedPath();
         interp0->savePathInFile(Utils::projectPath + "data/other_path.txt");
     }

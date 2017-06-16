@@ -33,12 +33,19 @@ int main( int argc, char* argv[] )
     int dimN = Utils::chooseDimensionN(argc,argv,2);
     int nbTestPoints = Utils::chooseNbTestPoints(argc,argv,3);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
+    int f = Utils::chooseFunction(argc,argv,5);
+
+    Function interpFunc;
+    if (f==1) interpFunc = Functions::autoPolynomialFunction;
+    if (f==2) interpFunc = Functions::functionToPlot;
+    if (f==3) interpFunc = Functions::sinOfNorm2;
 
     double threshold = 1e-20;
     vector<vector<double>> realValues, estimate;
 
     // Method 1
-    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dimD,dimN,maxIteration,Functions::f));
+    LagrangeInterpolationPtr interp_0(new LagrangeInterpolation(dimD,dimN,maxIteration,interpFunc));
+    interp_0->disableProgressDisplay();
     interp_0->setRandomTestPoints(nbTestPoints);
     interp_0->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
@@ -55,7 +62,8 @@ int main( int argc, char* argv[] )
     Utils::separateur();
 
     // Method 2
-    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dimD,dimN,maxIteration,1,Functions::f));
+    PiecewiseInterpolationPtr interp_1(new PiecewiseInterpolation(dimD,dimN,maxIteration,1,interpFunc));
+    interp_1->disableProgressDisplay();
     interp_1->setRandomTestPoints(nbTestPoints);
     interp_1->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
@@ -72,7 +80,8 @@ int main( int argc, char* argv[] )
 
 
     // Method 3
-    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dimD,dimN,maxIteration,2,Functions::f));
+    PiecewiseInterpolationPtr interp_2(new PiecewiseInterpolation(dimD,dimN,maxIteration,2,interpFunc));
+    interp_2->disableProgressDisplay();
     interp_2->setRandomTestPoints(nbTestPoints);
     interp_2->setSaveError(true);
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;

@@ -31,7 +31,7 @@ vector<double> Functions::functionToPlot(MultiVariatePoint<double> x, int n)
 
 vector<double> Functions::h(MultiVariatePoint<double> x, int n)
 {
-    double temp = 1, f = 10;
+    double temp = 1, f = 2;
     for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));
     return toAlternatingVector(cos(2*M_PI*f*x(0)) * temp,n);
 }

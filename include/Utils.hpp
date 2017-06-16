@@ -71,6 +71,7 @@ class Utils
         static bool saveResults(int argc, char* argv[], int argNum);
         static bool saveError(int argc, char* argv[], int argNum);
         static bool plotPath(int argc, char* argv[], int argNum);
+        static int chooseFunction(int argc, char* argv[], int argNum);
         static bool displayResults();
 
 };

@@ -18,11 +18,16 @@ int main( int argc, char* argv[] )
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
     bool save = Utils::saveResults(argc,argv,5);
     bool error = Utils::saveError(argc,argv,6);
+    int f = Utils::chooseFunction(argc,argv,7);
 
-    Function f = Functions::f;
-    //if (save) f = Functions::functionToPlot;
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,dimN,maxIteration,f));
+    Function interpFunc;
+    if (f==1) interpFunc = Functions::autoPolynomialFunction;
+    if (f==2) interpFunc = Functions::functionToPlot;
+    if (f==3) interpFunc = Functions::sinOfNorm2;
+
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,dimN,maxIteration,interpFunc));
     interp->setSaveError(error);
+    if (error) interp->disableProgressDisplay();
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);

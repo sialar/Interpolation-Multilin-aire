@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -38,19 +39,26 @@ public slots:
     void updateX(double _x) { x = _x; }
     void updateY(double _y) { y = _y; }
     void updateZ(double _z) { z = _z; }
+    void updateT(double _t) { t = _t; }
+    void updateS(double _s) { s = _s; }
 
     void updateMaxIter(int _nIter) { maxIteration = _nIter; }
-    void updateD(int _d) { d = _d; }
+    void updateD(int _d) { d = _d; updateCoordsField(); }
     void updateN(int _n) { n = _n; }
 
     void startInterpolation();
+    void plotResults();
+    void plotInterpolationPoints();
+    void plotErrors();
+    void randomPoint();
 
 private:
     int f;
     int method;
     int maxIteration;
     int d, n;
-    double x, y, z;
+    double x, y, z, t, s;
+    QDoubleSpinBox *xSpinBox, *ySpinBox, *zSpinBox, *tSpinBox, *sSpinBox;
     string real_f;
     string f_tilde;
     string relative_error;
@@ -60,6 +68,7 @@ private:
     QTextEdit *approxValue, *exactValue, *rErrorValue, *mseErrorValue;
 
     void updateGUI();
+    void updateCoordsField();
     void createControlButtons();
     void createExclusiveGroupForFunctions();
     void createExclusiveGroupForMethods();

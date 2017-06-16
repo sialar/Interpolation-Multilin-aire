@@ -18,8 +18,14 @@ int main( int argc, char* argv[] )
     MultiVariatePoint<int> methods(dimD,0,0);
     int maxIteration = Utils::chooseMaxIteration(argc,argv,4);
     bool save = Utils::saveResults(argc,argv,5);
+    int f = Utils::chooseFunction(argc,argv,6);
 
-    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,Functions::f));
+    Function interpFunc;
+    if (f==1) interpFunc = Functions::autoPolynomialFunction;
+    if (f==2) interpFunc = Functions::functionToPlot;
+    if (f==3) interpFunc = Functions::sinOfNorm2;
+
+    MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,interpFunc));
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);

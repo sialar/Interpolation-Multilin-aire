@@ -19,11 +19,15 @@ int main( int argc, char* argv[] )
     int maxIteration = Utils::chooseMaxIteration(argc,argv,5);
     bool save = Utils::saveResults(argc,argv,6);
     bool error = Utils::saveError(argc,argv,7);
+    int f = Utils::chooseFunction(argc,argv,8);
 
-    Function f = Functions::f;
-    //if (save) f = Functions::functionToPlot;
-    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,f));
+    Function interpFunc;
+    if (f==1) interpFunc = Functions::autoPolynomialFunction;
+    if (f==2) interpFunc = Functions::functionToPlot;
+    if (f==3) interpFunc = Functions::sinOfNorm2;
+    PiecewiseInterpolationPtr interp(new PiecewiseInterpolation(dimD,dimN,maxIteration,method,interpFunc));
     interp->setSaveError(error);
+    if (error) interp->disableProgressDisplay();
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);

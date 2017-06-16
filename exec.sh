@@ -28,24 +28,26 @@ help()
 showAllArgsDetails()
 {
   echo ""
-  echo " 5 arguments are required:"
+  echo " 6 arguments are required:"
   echo "   - arg 1 : Space dimension D [$2]"
   echo "   - arg 2 : Space dimension N [$3]"
   echo "   - arg 3 : Number of test points [$4]"
   echo "   - arg 4 : Method [$5]"
   echo "   - arg 5 : Number of iteration in AI algorithm [$6]"
+  echo "   - arg 6 : Function to interpolate [$7]"
   echo ""
 }
 
 showMixArgsDetails()
 {
   echo ""
-  echo " 5 arguments are required:"
+  echo " 6 arguments are required:"
   echo "   - arg 1 : Space dimension D [$2]"
   echo "   - arg 2 : Space dimension N [$3]"
   echo "   - arg 3 : Number of test points [$4]"
   echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
-  echo "   - arg 4 : Plot interpolation points ? [$6]"
+  echo "   - arg 5 : Plot interpolation points ? [$6]"
+  echo "   - arg 6 : Function to interpolate [$7]"
   echo ""
 }
 
@@ -59,6 +61,7 @@ showErrorArgsDetails()
   echo "   - arg 4 : Method [$5] (ALL : to see all methods results)"
   echo "   - arg 5 : Number of iteration in AI algorithm [$6]"
   echo "   - arg 6 : The starting iteration in plot [$6]"
+  echo "   - arg 7 : Function to interpolate [$7]"
   echo ""
 }
 
@@ -66,10 +69,10 @@ show4ArgsDetails()
 {
   echo ""
   echo " 4 arguments are required:"
-  echo "   - arg 1 : Space dimension D [$2]"
-  echo "   - arg 2 : Space dimension N [$3]"
-  echo "   - arg 3 : Number of test points [$4]"
-  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
+  echo "   - arg 1 : Mumber of test points [$2]"
+  echo "   - arg 2 : Method [$3]"
+  echo "   - arg 3 : Number of iteration in AI algorithm [$4]"
+  echo "   - arg 4 : Function to interpolate [$5]"
   echo ""
 }
 
@@ -77,35 +80,28 @@ show3ArgsDetails()
 {
   echo ""
   echo " 3 arguments are required:"
-  echo "   - arg 1 : Mumber of test points [$2]"
-  echo "   - arg 2 : Method [$3]"
-  echo "   - arg 3 : Number of iteration in AI algorithm [$4]"
-  echo ""
-}
-
-show2ArgsDetails()
-{
-  echo ""
-  echo " 2 arguments are required:"
   echo "   - arg 1 : Method [$2]"
   echo "   - arg 2 : Number of iteration in AI algorithm [$3]"
+  echo "   - arg 3 : Function to interpolate [$4]"
   echo ""
 }
 
 showMixCompArgsDetails()
 {
   echo ""
-  echo " 2 arguments are required:"
+  echo " 3 arguments are required:"
   echo "   - arg 1 : Number of test points [$2]"
   echo "   - arg 2 : Number of iteration in AI algorithm [$3]"
+  echo "   - arg 3 : Function to interpolate [$4]"
   echo ""
 }
 
-show1ArgsDetails()
+show2ArgsDetails()
 {
   echo ""
-  echo " 1 argument is required:"
-  echo "   - arg : Sample size of accuracy measurment [$2]"
+  echo " 2 argument is required:"
+  echo "   - arg 1 : Number of test points [$2]"
+  echo "   - arg 2 : Function to interpolate [$3]"
   echo ""
 }
 
@@ -118,50 +114,60 @@ then
 elif [ "$1" = "AI" ]
 then
     showAllArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0
-      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 0 $7
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 0 $7
         fi
     fi
 
 elif [ "$1" = "MIX" ]
 then
     showMixArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
-    else "$PROJECT_PATH"/bin/TestMixedInterpolation $2 $3 $4 $5 $6
+    else "$PROJECT_PATH"/bin/TestMixedInterpolation $2 $3 $4 $5 $6 $7
       if [ $6 = 1 ]
       then
-      cd python
-      python3.5 -W ignore plot_mixed_path.py $2
+        if [ $2 != 2 ] && [ $2 != 3 ]
+        then echo "To plot results, space dimension (arg 1) must be 2 or 3"
+        else
+        cd python
+        python3.5 -W ignore plot_mixed_path.py $2
+        fi
       fi
     fi
 
 elif [ "$1" = "AUTO" ]
 then
     showMixArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
-    else "$PROJECT_PATH"/bin/TestAutoMixedInterpolation $2 $3 $4 $5 $6
+    else "$PROJECT_PATH"/bin/TestAutoMixedInterpolation $2 $3 $4 $5 $6 $7
       if [ $6 = 1 ]
       then
+        if [ $2 != 2 ] && [ $2 != 3 ]
+        then echo "To plot results, space dimension (arg 1) must be 2 or 3"
+        else
         cd python
         python3.5 -W ignore plot_mixed_path.py $2
+        fi
       fi
     fi
 
 elif [ "$1" = "PATH" ]
 then
     showAllArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
+    elif [ $2 != 2 ] && [ $2 != 3 ]
+    then echo "Space dimension (arg 1) must be 2 or 3"
     else
         if [ $5 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0
-        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 1 0 $7
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 1 0 $7
         fi
         cd python
         python3.5 -W ignore plot_path.py $2 $5
@@ -169,13 +175,13 @@ then
 
 elif [ "$1" = "PLOT" ]
 then
-    show2ArgsDetails
-    if [ $# != 3 ]
+    show3ArgsDetails
+    if [ $# != 4 ]
     then echo "Invalid number of arguments"
     else
         if [ $2 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 1 1 1000 $3 1 0
-        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 1 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 1 1 1000 $3 1 0 $4
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 1 0 $4
         fi
         cd python
         python3.5 -W ignore plot_interpolation_progression.py
@@ -184,9 +190,9 @@ then
 elif [ "$1" = "DIFF" ]
 then
     showAllArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
-  else "$PROJECT_PATH"/bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6
+  else "$PROJECT_PATH"/bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6 $7
     cd python
     python3.5 -W ignore plot_2_paths.py $2 $5
     fi
@@ -194,14 +200,14 @@ then
 elif [ "$1" = "ERROR" ]
 then
     showErrorArgsDetails
-    if [ $# != 7 ]
+    if [ $# != 8 ]
     then echo "Invalid number of arguments"
     else
         if [ $5 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 1
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 $3 $4 $6 0 1 $8
       elif [ "$5" = "ALL" ]
-        then "$PROJECT_PATH"/bin/TestErrors $2 $3 $4 $6
-        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1
+        then "$PROJECT_PATH"/bin/TestErrors $2 $3 $4 $6 $8
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 0 1 $8
         fi
         cd python
         python3.5 -W ignore plot_error.py $7
@@ -209,50 +215,50 @@ then
 
 elif [ "$1" = "TUCKER" ]
 then
-    show1ArgsDetails
-    if [ $# != 2 ]
+    show2ArgsDetails
+    if [ $# != 3 ]
     then echo "Invalid number of arguments"
     else cd tucker
-         python testTuckerDecomposition_withGreedy.py $2
+         python testTuckerDecomposition_withGreedy.py $2 $3
     fi
 
 elif [ "$1" = "COMP" ]
 then
-    show3ArgsDetails
-    if [ $# != 4 ]
+    show4ArgsDetails
+    if [ $# != 5 ]
     then echo "Invalid number of arguments"
     else
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
         echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
         if [ $3 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 3 1 $2 $4 0 0
-        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 0 0
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 3 1 $2 $4 0 0 $5
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 0 0 $5
         fi
         echo "\n"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         cd tucker
-        python -W ignore testTuckerDecomposition_withGreedy.py $2
+        python -W ignore testTuckerDecomposition_withGreedy.py $2 $5
     fi
 
 elif [ "$1" = "MIX_COMP" ]
   then
       showMixCompArgsDetails
-      if [ $# != 3 ]
+      if [ $# != 4 ]
       then echo "Invalid number of arguments"
       else
           echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
           echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
           echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
-          "$PROJECT_PATH"/bin/TestMixedInterpolation 3 1 $2 $3 0
+          "$PROJECT_PATH"/bin/TestMixedInterpolation 3 1 $2 $3 0 $4
           echo "\n"
           echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
           echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
           echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
           cd tucker
-          python -W ignore testTuckerDecomposition_withGreedy.py $2
+          python -W ignore testTuckerDecomposition_withGreedy.py $2 $4
       fi
 else
     help

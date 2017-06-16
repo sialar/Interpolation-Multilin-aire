@@ -5,9 +5,9 @@
 std::string Window::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/";
 
 Window::Window() : f(1), method(0), d(3), n(1),
-        maxIteration(1000), x(0), y(0), z(0), QWidget()
+        maxIteration(1000), x(0), y(0), z(0), t(0), s(0), QWidget()
 {
-    setFixedSize(1150, 650);
+    setFixedSize(1170, 650);
     createExclusiveGroupForFunctions();
     createExclusiveGroupForMethods();
     createInputFieldForPointCoordinates();
@@ -24,22 +24,51 @@ void Window::updateGUI()
     mseErrorValue->setText(QString::fromStdString(mse_error));
 }
 
+void Window::updateCoordsField()
+{
+    if (d<5) sSpinBox->setReadOnly(true);
+    else sSpinBox->setReadOnly(false);
+    if (d<4) tSpinBox->setReadOnly(true);
+    else tSpinBox->setReadOnly(false);
+    if (d<3) zSpinBox->setReadOnly(true);
+    else zSpinBox->setReadOnly(false);
+    if (d<2) ySpinBox->setReadOnly(true);
+    else ySpinBox->setReadOnly(false);
+
+
+    if (d<5) s=0;
+    sSpinBox->setValue(s);
+    if (d<4) t=0;
+    else tSpinBox->setValue(t);
+    if (d<3) z=0;
+    else zSpinBox->setValue(z);
+    if (d<2) y=0;
+    else ySpinBox->setValue(y);
+    xSpinBox->setValue(x);
+}
+
 void Window::createControlButtons()
 {
     QGroupBox *buttonsGroupBox = new QGroupBox(tr(""), this);
 
+    QPushButton *randomButton = new QPushButton("Random point",this);
     QPushButton *startButton = new QPushButton("Interpolate",this);
     QPushButton *plotButton = new QPushButton("Plot results",this);
     QPushButton *plotPath = new QPushButton("Plot interpolation points",this);
-    QPushButton *displayResults = new QPushButton("Display results",this);
+    QPushButton *errorButton = new QPushButton("Plot interpolation error",this);
 
+    QObject::connect(randomButton, SIGNAL(clicked()), this, SLOT(randomPoint()));
     QObject::connect(startButton, SIGNAL(clicked()), this, SLOT(startInterpolation()));
+    QObject::connect(plotPath, SIGNAL(clicked()), this, SLOT(plotInterpolationPoints()));
+    QObject::connect(plotButton, SIGNAL(clicked()), this, SLOT(plotResults()));
+    QObject::connect(errorButton, SIGNAL(clicked()), this, SLOT(plotErrors()));
 
     QVBoxLayout *buttonsLayout = new QVBoxLayout;
+    buttonsLayout->addWidget(randomButton);
     buttonsLayout->addWidget(startButton);
     buttonsLayout->addWidget(plotButton);
     buttonsLayout->addWidget(plotPath);
-    buttonsLayout->addWidget(displayResults);
+    buttonsLayout->addWidget(errorButton);
     buttonsGroupBox->setLayout(buttonsLayout);
 
     buttonsGroupBox->setFixedSize(200,200);
@@ -74,7 +103,7 @@ void Window::createOutputFieldForResults()
     valuesLayout->addWidget(approxValue);
     valuesGroupBox->setLayout(valuesLayout);
     valuesGroupBox->setFixedSize(320,140);
-    valuesGroupBox->move(50,450);
+    valuesGroupBox->move(50,470);
 
     QVBoxLayout *errorLayout = new QVBoxLayout;
     errorLayout->addWidget(rErrorValueLabel);
@@ -83,7 +112,7 @@ void Window::createOutputFieldForResults()
     errorLayout->addWidget(mseErrorValue);
     errorGroupBox->setLayout(errorLayout);
     errorGroupBox->setFixedSize(320,140);
-    errorGroupBox->move(470,450);
+    errorGroupBox->move(470,470);
 }
 
 void Window::createInputFieldsForParameters()
@@ -93,12 +122,12 @@ void Window::createInputFieldsForParameters()
     QLabel *maxIterLabel = new QLabel(tr("Max number of iteration (between %1 and %2)").arg(1).arg(10000));
     QSpinBox *maxIterSpinBox = new QSpinBox;
     maxIterSpinBox->setRange(1, 10000);
-    maxIterSpinBox->setSingleStep(10);
+    maxIterSpinBox->setSingleStep(100);
     maxIterSpinBox->setValue(1000);
 
-    QLabel *dLabel = new QLabel(tr("Space dimention d (between %1 and %2)").arg(1).arg(10));
+    QLabel *dLabel = new QLabel(tr("Space dimention d (between %1 and %2)").arg(1).arg(5));
     QSpinBox *dSpinBox = new QSpinBox;
-    dSpinBox->setRange(1, 10);
+    dSpinBox->setRange(1, 5);
     dSpinBox->setSingleStep(1);
     dSpinBox->setValue(3);
 
@@ -123,47 +152,67 @@ void Window::createInputFieldsForParameters()
     groupBox->setLayout(parametersLayout);
 
     groupBox->setFixedSize(320,200);
-    groupBox->move(50,200);
+    groupBox->move(50,210);
 }
 
 void Window::createInputFieldForPointCoordinates()
 {
 
-    QGroupBox *groupBox = new QGroupBox(tr("Point coordinates X = (x,y,z)"), this);
+    QGroupBox *groupBox = new QGroupBox(tr("Point coordinates X"), this);
+    QVBoxLayout *coordinatesLayout = new QVBoxLayout;
 
     QLabel *xLabel = new QLabel(tr("x between %1 and %2:").arg(-1.0).arg(1.0));
-    QDoubleSpinBox *xSpinBox = new QDoubleSpinBox;
+    xSpinBox = new QDoubleSpinBox;
     xSpinBox->setRange(-1.0, 1.0);
     xSpinBox->setSingleStep(0.1);
     xSpinBox->setValue(0);
 
     QLabel *yLabel = new QLabel(tr("y between %1 and %2:").arg(-1.0).arg(1.0));
-    QDoubleSpinBox *ySpinBox = new QDoubleSpinBox;
+    ySpinBox = new QDoubleSpinBox;
     ySpinBox->setRange(-1.0, 1.0);
     ySpinBox->setSingleStep(0.1);
     ySpinBox->setValue(0);
 
     QLabel *zLabel = new QLabel(tr("z between %1 and %2:").arg(-1.0).arg(1.0));
-    QDoubleSpinBox *zSpinBox = new QDoubleSpinBox;
+    zSpinBox = new QDoubleSpinBox;
     zSpinBox->setRange(-1.0, 1.0);
     zSpinBox->setSingleStep(0.1);
     zSpinBox->setValue(0);
 
+    QLabel *tLabel = new QLabel(tr("t between %1 and %2:").arg(-1.0).arg(1.0));
+    tSpinBox = new QDoubleSpinBox;
+    tSpinBox->setRange(-1.0, 1.0);
+    tSpinBox->setSingleStep(0.1);
+    tSpinBox->setValue(0);
+
+    QLabel *sLabel = new QLabel(tr("s between %1 and %2:").arg(-1.0).arg(1.0));
+    sSpinBox = new QDoubleSpinBox;
+    sSpinBox->setRange(-1.0, 1.0);
+    sSpinBox->setSingleStep(0.1);
+    sSpinBox->setValue(0);
+
+    updateCoordsField();
+
     connect(xSpinBox,SIGNAL(valueChanged(double)),this,SLOT(updateX(double)));
     connect(ySpinBox,SIGNAL(valueChanged(double)),this,SLOT(updateY(double)));
     connect(zSpinBox,SIGNAL(valueChanged(double)),this,SLOT(updateZ(double)));
+    connect(tSpinBox,SIGNAL(valueChanged(double)),this,SLOT(updateT(double)));
+    connect(tSpinBox,SIGNAL(valueChanged(double)),this,SLOT(updateS(double)));
 
-    QVBoxLayout *coordinatesLayout = new QVBoxLayout;
     coordinatesLayout->addWidget(xLabel);
     coordinatesLayout->addWidget(xSpinBox);
     coordinatesLayout->addWidget(yLabel);
     coordinatesLayout->addWidget(ySpinBox);
     coordinatesLayout->addWidget(zLabel);
     coordinatesLayout->addWidget(zSpinBox);
+    coordinatesLayout->addWidget(tLabel);
+    coordinatesLayout->addWidget(tSpinBox);
+    coordinatesLayout->addWidget(sLabel);
+    coordinatesLayout->addWidget(sSpinBox);
     groupBox->setLayout(coordinatesLayout);
 
-    groupBox->setFixedSize(320,200);
-    groupBox->move(470,200);
+    groupBox->setFixedSize(320,300);
+    groupBox->move(470,160);
 }
 
 void Window::createExclusiveGroupForFunctions()
@@ -230,6 +279,40 @@ void Window::startInterpolation()
     getline(file,exec_time);
 
     updateGUI();
+}
+
+void Window::plotResults()
+{
+    int n = (maxIteration > 200) ? 100 : maxIteration;
+    string cmd = projectPath + "exec.sh PLOT " + to_string(method) + " " + to_string(n) + " " + to_string(f);
+    std::cout << cmd << std::endl;
+    system(cmd.c_str());
+}
+
+void Window::plotInterpolationPoints()
+{
+    string cmd = projectPath + "exec.sh PATH " + to_string(d) + " 1 10 " + to_string(method) + " " + \
+            to_string(maxIteration) + " " + to_string(f);
+    std::cout << cmd << std::endl;
+    system(cmd.c_str());
+}
+
+void Window::plotErrors()
+{
+    string cmd = projectPath + "exec.sh ERROR " + to_string(d) + " " + to_string(n) + " 10 ALL " + \
+            to_string(maxIteration) + " 0 " + to_string(f);
+    std::cout << cmd << std::endl;
+    system(cmd.c_str());
+}
+
+void Window::randomPoint()
+{
+    x = (rand()/(double)RAND_MAX)*2 - 1;
+    y = (rand()/(double)RAND_MAX)*2 - 1;
+    z = (rand()/(double)RAND_MAX)*2 - 1;
+    t = (rand()/(double)RAND_MAX)*2 - 1;
+    s = (rand()/(double)RAND_MAX)*2 - 1;
+    updateCoordsField();
 }
 
 Window::~Window()
