@@ -24,15 +24,17 @@ class Functions
         Functions()  {};
         ~Functions() {};
 
-        static void setCoefs(int degree, int d, int n);
         static void saveCoefsInFile(int d, int n);
+        static void setCoefs(int degree, int d, int n);
         static double changeFunctionDomain(double a, double b, double x);
+        static double hat(double a, double b, double fa, double fb, double t);
 
         static vector<double> toAlternatingVector(double x, int n);
         static vector<double> functionToPlot(MultiVariatePoint<double> x, int n);
         static vector<double> function1D(MultiVariatePoint<double> x, int n);
         static vector<double> sinOfNorm2(MultiVariatePoint<double> x, int n);
         static vector<double> autoPolynomialFunction(MultiVariatePoint<double> x, int n);
+        static vector<double> cosinus(MultiVariatePoint<double> x, int n);
         static vector<double> h(MultiVariatePoint<double> x, int n);
 
         // Function to approximate

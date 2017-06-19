@@ -56,6 +56,7 @@ int main( int argc, char* argv[] )
     if (f==1) interpFunc = Functions::autoPolynomialFunction;
     if (f==2) interpFunc = Functions::functionToPlot;
     if (f==3) interpFunc = Functions::sinOfNorm2;
+    if (f==4) interpFunc = Functions::h;
 
     double threshold = 1e-20;
     vector<vector<double>> realValues, estimate;

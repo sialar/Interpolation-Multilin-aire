@@ -3,6 +3,14 @@
 vector<vector<vector<double>>> Functions::m_coefs;
 int Functions::m_polynomialDegree;
 
+double Functions::hat(double a, double b, double fa, double fb, double t)
+{
+    double c = (a+b)/2;
+    if (t <= c && t >= a) return ((t-a)/(c-a)+fa);
+    else if (t >= c && t <= b) return ((t-b)/(c-b)+fb);
+    else return 0;
+}
+
 double Functions::changeFunctionDomain(double a, double b, double x)
 {
     return (2*x)/(b-a) + 1 - (2*b)/(b-a);
@@ -30,6 +38,20 @@ vector<double> Functions::functionToPlot(MultiVariatePoint<double> x, int n)
 }
 
 vector<double> Functions::h(MultiVariatePoint<double> x, int n)
+{
+    double temp = 1;
+    for (int i=1; i<x.getD(); i++) temp *= exp(-x(i)*x(i));
+    return toAlternatingVector(sin(x(0)+x(1)) * temp,n);
+    /*
+    double xc = 0.5, ec = 0.1;
+    if (x(0)>=xc && x(0)<=xc+ec)
+        return toAlternatingVector(2*hat(xc,xc+ec,sin(xc+x(1)),sin(xc+ec+x(1)),x(0)) * temp,n);
+    else
+        return toAlternatingVector(sin(x(0)+x(1)) * temp,n);
+    */
+}
+
+vector<double> Functions::cosinus(MultiVariatePoint<double> x, int n)
 {
     double temp = 1, f = 2;
     for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));

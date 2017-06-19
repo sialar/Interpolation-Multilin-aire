@@ -379,9 +379,9 @@ int Utils::chooseFunction(int argc, char* argv[], int argNum)
 {
   int f = 0;
   if (argc > argNum) f = stoi(argv[argNum]);
-  while (f!=1 && f!=2 && f!=3)
+  while (f!=1 && f!=2 && f!=3 && f!=4)
   {
-      cout << " - Choose the function to interpolate (1, 2 or 3)";
+      cout << " - Choose the function to interpolate (1, 2, 3 or 4)";
       cin >> f;
   }
   return f;

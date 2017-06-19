@@ -44,40 +44,34 @@ public slots:
     void updateT(double _t) { t = _t; }
     void updateS(double _s) { s = _s; }
 
-    void updateMaxIter(int _nIter) { maxIteration = _nIter; }
-    void updateD(int _d) { d = _d; updateCoordsField(); }
     void updateN(int _n) { n = _n; }
+    void updateD(int _d) { d = _d; updateCoordsField(); }
+    void updateMaxIter(int _nIter) { maxIteration = _nIter; }
 
-    void startInterpolation();
-    void plotResults();
-    void plotInterpolationPoints();
     void plotErrors();
+    void plotResults();
     void randomPoint();
+    void startInterpolation();
+    void plotInterpolationPoints();
 
 private:
-    int f;
-    int m0, m1, m2, m3, m4;
-    int maxIteration;
-    int d, n;
     double x, y, z, t, s;
-    QDoubleSpinBox *xSpinBox, *ySpinBox, *zSpinBox, *tSpinBox, *sSpinBox;
+    int m0, m1, m2, m3, m4;
+    int d, n, f, maxIteration;
+    string real_f, f_tilde, relative_error, mse_error, exec_time;
     QSpinBox *mxSpinBox, *mySpinBox, *mzSpinBox, *mtSpinBox, *msSpinBox;
-    string real_f;
-    string f_tilde;
-    string relative_error;
-    string mse_error;
-    string exec_time;
-
+    QDoubleSpinBox *xSpinBox, *ySpinBox, *zSpinBox, *tSpinBox, *sSpinBox;
     QTextEdit *approxValue, *exactValue, *rErrorValue, *mseErrorValue, *execTimeValue;
+
 
     void updateGUI();
     void updateCoordsField();
     void createControlButtons(int a, int b, int c, int d);
+    void createInputFieldForMethod(int a, int b, int c, int d);
+    void createOutputFieldForResults(int a, int b, int c, int d);
+    void createInputFieldsForParameters(int a, int b, int c, int d);
     void createExclusiveGroupForFunctions(int a, int b, int c, int d);
     void createInputFieldForPointCoordinates(int a, int b, int c, int d);
-    void createInputFieldForMethod(int a, int b, int c, int d);
-    void createInputFieldsForParameters(int a, int b, int c, int d);
-    void createOutputFieldForResults(int a, int b, int c, int d);
 };
 
 #endif

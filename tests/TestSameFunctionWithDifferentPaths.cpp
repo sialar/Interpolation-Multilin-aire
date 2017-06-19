@@ -40,6 +40,7 @@ int main( int argc, char* argv[] )
     if (f==1) interpFunc = Functions::autoPolynomialFunction;
     if (f==2) interpFunc = Functions::functionToPlot;
     if (f==3) interpFunc = Functions::sinOfNorm2;
+    if (f==4) interpFunc = Functions::h;
 
 
     LagrangeInterpolationPtr interp0(new LagrangeInterpolation(dimD,dimN,maxIteration,interpFunc));
@@ -82,7 +83,7 @@ int main( int argc, char* argv[] )
 
     if (method)
     {
-      interp12->setFunc(Functions::h);
+      interp12->setFunc(Functions::cosinus);
       interp12->testPathBuilt(threshold, maxIteration<21);
       interp12->clearAllAlpha();
       interp12->setFunc(interpFunc);
@@ -91,7 +92,7 @@ int main( int argc, char* argv[] )
     }
     else
     {
-        interp0->setFunc(Functions::h);
+        interp0->setFunc(Functions::cosinus);
         interp0->testPathBuilt(threshold, maxIteration<21);
         interp0->clearAllAlpha();
         interp0->setFunc(interpFunc);

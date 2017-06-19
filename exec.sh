@@ -77,11 +77,12 @@ showDIFFArgsDetails()
 showCOMPArgsDetails()
 {
   echo ""
-  echo " 4 arguments are required:"
+  echo " 5 arguments are required:"
   echo "   - arg 1 : Mumber of test points [$2]"
   echo "   - arg 2 : Method (0, 1, 2 or MIX) [$3]"
   echo "   - arg 3 : Number of iteration in AI algorithm [$4]"
   echo "   - arg 4 : Function to interpolate [$5]"
+  echo "   - arg 5 : Number of points for one Tucker grid [$3]"
   echo ""
 }
 
@@ -98,9 +99,10 @@ showPLOTArgsDetails()
 showTUCKERArgsDetails()
 {
   echo ""
-  echo " 2 argument is required:"
+  echo " 3 argument is required:"
   echo "   - arg 1 : Number of test points [$2]"
   echo "   - arg 2 : Function to interpolate [$3]"
+  echo "   - arg 3 : Number of points for one Tucker grid [$3]"
   echo ""
 }
 
@@ -190,16 +192,16 @@ then
 elif [ "$1" = "TUCKER" ]
 then
     showTUCKERArgsDetails
-    if [ $# != 3 ]
+    if [ $# != 4 ]
     then echo "Invalid number of arguments"
     else cd tucker
-         python testTuckerDecomposition_withGreedy.py $2 $3
+         python testTuckerDecomposition_withGreedy.py $2 $3 $4
     fi
 
 elif [ "$1" = "COMP" ]
 then
     showCOMPArgsDetails
-    if [ $# != 5 ]
+    if [ $# != 6 ]
     then echo "Invalid number of arguments"
     else
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
@@ -215,8 +217,10 @@ then
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
+        n=$(($4-64))
+        n=$((n/12))
         cd tucker
-        python -W ignore testTuckerDecomposition_withGreedy.py $2 $5
+        python -W ignore testTuckerDecomposition_withGreedy.py $2 $5 $n
     fi
 else
     help
