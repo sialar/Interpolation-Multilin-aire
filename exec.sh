@@ -78,11 +78,12 @@ showCOMPArgsDetails()
 {
   echo ""
   echo " 5 arguments are required:"
-  echo "   - arg 1 : Mumber of test points [$2]"
-  echo "   - arg 2 : Method (0, 1, 2 or MIX) [$3]"
-  echo "   - arg 3 : Number of iteration in AI algorithm [$4]"
-  echo "   - arg 4 : Function to interpolate [$5]"
-  echo "   - arg 5 : Number of points for one Tucker grid [$3]"
+  echo "   - arg 1 : Space dimension D [$2]"
+  echo "   - arg 2 : Mumber of test points [$3]"
+  echo "   - arg 3 : Method (0, 1, 2 or MIX) [$4]"
+  echo "   - arg 4 : Number of iteration in AI algorithm [$5]"
+  echo "   - arg 5 : Function to interpolate [$6]"
+  echo "   - arg 6 : Number of points for one Tucker grid [$7]"
   echo ""
 }
 
@@ -100,10 +101,24 @@ showTUCKERArgsDetails()
 {
   echo ""
   echo " 3 argument is required:"
-  echo "   - arg 1 : Number of test points [$2]"
+  echo "   - arg 1 : Space dimension D [$2]"
   echo "   - arg 2 : Function to interpolate [$3]"
-  echo "   - arg 3 : Number of points for one Tucker grid [$3]"
+  echo "   - arg 3 : Number of points for one Tucker grid [$4]"
   echo ""
+}
+
+pow() {
+    local x y res i
+    x=$1
+    y=$2
+    res=1
+    i=1
+    while [ $i -le $y ]; do
+        res=$(( res * x ))
+        i=$(( i + 1 ))
+    done
+    echo $res
+    return $res
 }
 
 if [ "$1" = "LEJA" ]
@@ -195,32 +210,37 @@ then
     if [ $# != 4 ]
     then echo "Invalid number of arguments"
     else cd tucker
+        "$PROJECT_PATH"/bin/TestX $2 1 10000 1 $3
          python testTuckerDecomposition_withGreedy.py $2 $3 $4
     fi
 
 elif [ "$1" = "COMP" ]
 then
     showCOMPArgsDetails
-    if [ $# != 6 ]
+    if [ $# != 7 ]
     then echo "Invalid number of arguments"
     else
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
         echo "\t\t\t\t\t\t\t\t\t-- Using Adaptative Interpolation method --"
         echo "\t\t\t\t\t\t\t\t\t-------------------------------------------"
-        if [ $3 = 0 ]
-        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 3 1 $2 $4 $5 0
-        elif [ "$3" = "MIX" ]
-        then "$PROJECT_PATH"/bin/TestMixedInterpolation 3 1 $2 $4 $5 0
-        else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 3 1 $2 $3 $4 $5 0
+        if [ $4 = 0 ]
+        then "$PROJECT_PATH"/bin/TestLagrangeInterpolation $2 1 $3 $5 $6 0
+      elif [ "$4" = "MIX" ]
+        then "$PROJECT_PATH"/bin/TestMixedInterpolation $2 1 $3 $5 $6 0
+      else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 1 $3 $4 $5 $6 0
         fi
         echo "\n"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
-        n=$(($4-64))
-        n=$((n/12))
         cd tucker
-        python -W ignore testTuckerDecomposition_withGreedy.py $2 $5 $n
+        m=`pow 4 $2`
+        n=$(($5-$m))
+        n=$((n/$2*4))
+        if [ $7 != 0 ]
+        then n=$7
+        fi
+        python -W ignore testTuckerDecomposition_withGreedy.py $2 $6 $n
     fi
 else
     help

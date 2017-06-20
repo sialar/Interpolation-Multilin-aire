@@ -18,7 +18,7 @@ int main( int argc, char* argv[] )
     MultiVariatePoint<double> p(dimD,0,0);
     MultiVariatePoint<int> methods(3,0,0);
     int f = (argc > 5) ? stoi(argv[5]) : 1;
-    cout << f << endl;
+
     for (int i=0; i<dimD; i++)
         p(i) = (argc > 6+i) ? stoi(argv[6+i]) : Utils::randomValue(-1,1);
     for (int i=0; i<dimD; i++)
@@ -31,16 +31,13 @@ int main( int argc, char* argv[] )
 
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,interpFunc));
     interp->setSaveError(false);
+    interp->disableProgressDisplay();
 
     // Initialisation of test points
     interp->setRandomTestPoints(nbTestPoints);
 
     // Path creation
-    double threshold = 1e-9;
-    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
-         << threshold;
-    double execTime = interp->testPathBuilt(threshold, maxIteration<21);
+    double execTime = interp->buildPathWithAIAlgo(chrono::steady_clock::now(), 1e-9, false);
 
     vector<vector<double>> realValues, estimate;
     for (MultiVariatePoint<double> p : interp->testPoints())

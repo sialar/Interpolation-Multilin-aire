@@ -280,7 +280,7 @@ MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
     {
         Utils::separateur();
         cout << " - Comparing methods in direction " << i << ": " << endl;
-        for (int j=0; j<nbMethods; j++)
+        for (int j=0; j<m_nbMethods; j++)
         {
             methods(i) = j;
             map<MultiVariatePoint<int>,vector<double>>::iterator it = m_methods_errors.find(methods);

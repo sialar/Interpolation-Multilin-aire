@@ -80,6 +80,7 @@ int main( int argc, char* argv[] )
     double mseError = Utils::mseInterpolationError(realValues,estimate);
     cout << " - Relative Interpolation error (pcm) = " << relativeError << endl;
     cout << " - MSE Interpolation error (pcm) = " << mseError << endl;
+    cout << " - Number of evaluation = " << interp->nbEvals() << endl;
 
     if (save) interp->savePathInFile(Utils::projectPath + "data/path.txt");
 

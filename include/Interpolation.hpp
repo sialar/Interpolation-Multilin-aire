@@ -26,7 +26,8 @@ class Interpolation
     protected:
         int m_d, m_n;
         int m_maxIteration;
-        int nbMethods = 3;
+        int m_nbEvals = 0;
+        int m_nbMethods = 0;
 
         vector<vector<double>> m_interpolationPoints;
         vector<MultiVariatePoint<double>> m_interpolationNodes;
@@ -48,6 +49,7 @@ class Interpolation
 
         /************************* Data points ********************************/
         const int maxIteration() { return m_maxIteration; };
+        const int nbEvals() { return m_nbEvals; };
         const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
         const vector<vector<double>>& points() { return m_interpolationPoints; };
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
@@ -134,7 +136,7 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
   for (int j=0; j<nbTestPoints; j++)
       testPoints[j] = Utils::createRandomMultiVariatePoint(m_d);
   setTestPoints(testPoints);
-  //saveTestPointsInFile();
+  saveTestPointsInFile();
 }
 /******************************************************************************/
 
@@ -204,6 +206,7 @@ void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
     double basisFuncProd = 1.0;
     vector<double> res = func(getPoint(nu));
+    m_nbEvals++;
     for (MultiVariatePointPtr<T> l : m_path)
     {
         basisFuncProd = 1.0;
@@ -372,6 +375,7 @@ void Interpolation<T>::saveTestPointsInFile()
     ofstream file(Utils::projectPath + "data/test_points.txt", ios::out | ios::trunc);
     if(file)
     {
+        file << m_testPoints.size() << endl;
         for (MultiVariatePoint<double> x : m_testPoints)
         {
             for (int i=0; i<m_d-1; i++)

@@ -41,7 +41,8 @@ vector<double> Functions::h(MultiVariatePoint<double> x, int n)
 {
     double temp = 1;
     for (int i=1; i<x.getD(); i++) temp *= exp(-x(i)*x(i));
-    return toAlternatingVector(sin(x(0)+x(1)) * temp,n);
+    if (n>1) return toAlternatingVector(sin(x(0) + x(1)) * temp,n);
+    else return toAlternatingVector(2*exp(-x(0)*x(0) + sin(2*M_PI*x(0))),n);
     /*
     double xc = 0.5, ec = 0.1;
     if (x(0)>=xc && x(0)<=xc+ec)
