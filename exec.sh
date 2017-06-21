@@ -234,13 +234,7 @@ then
         echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         cd tucker
-        m=`pow 4 $2`
-        n=$(($5-$m))
-        n=$((n/$2*4))
-        if [ $7 != 0 ]
-        then n=$7
-        fi
-        python -W ignore testTuckerDecomposition_withGreedy.py $2 $6 $n
+        python -W ignore testTuckerDecomposition_withGreedy.py $2 $6 $7
     fi
 else
     help

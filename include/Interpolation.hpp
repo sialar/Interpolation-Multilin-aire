@@ -27,7 +27,7 @@ class Interpolation
         int m_d, m_n;
         int m_maxIteration;
         int m_nbEvals = 0;
-        int m_nbMethods = 0;
+        int m_nbMethods = 3;
 
         vector<vector<double>> m_interpolationPoints;
         vector<MultiVariatePoint<double>> m_interpolationNodes;
@@ -174,6 +174,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
+        /*
         int fact = (m_saveError) ? 100 : 10;
         int step = floor(m_maxIteration/fact);
         if (!step) step = 1;
@@ -188,7 +189,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
                 cout << endl << "\t- Interpolation error after " << iteration << " iterations: ";
                 cout << "(Relative_e = " << errors[0]; //<< ", MSE_e = " << errors[1];
                 cout << ") | Elapsed time : "  << run_time.count();
-                if (errors[0] < threshold /*&& errors[1] < threshold*/)
+                if (errors[0] < threshold)
                 {
                     cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
                     cout << " | Elapsed time : "  << run_time.count() << endl;
@@ -197,6 +198,7 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
             }
             saveErrorsInFile();
         }
+        */
         iteration++;
     }
     return iteration;
