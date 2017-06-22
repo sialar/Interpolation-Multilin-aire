@@ -210,7 +210,7 @@ then
     if [ $# != 4 ]
     then echo "Invalid number of arguments"
     else cd tucker
-        "$PROJECT_PATH"/bin/TestX $2 1 10000 1 $3
+        "$PROJECT_PATH"/bin/TestX $2 1 1000 1 $3
          python testTuckerDecomposition_withGreedy.py $2 $3 $4
     fi
 

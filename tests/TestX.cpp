@@ -28,6 +28,7 @@ int main( int argc, char* argv[] )
     if (f==2) interpFunc = Functions::functionToPlot;
     if (f==3) interpFunc = Functions::sinOfNorm2;
     if (f==4) interpFunc = Functions::h;
+    if (f==5) interpFunc = Functions::phi;
 
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,dimN,maxIteration,methods,interpFunc));
     interp->setSaveError(false);

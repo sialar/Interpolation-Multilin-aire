@@ -104,6 +104,7 @@ Interpolation<T>::Interpolation(int d, int n, int nIter, Function f)
     m_interpolationPoints.resize(d);
     m_maxIteration = nIter;
     Functions::setCoefs(7,d,n);
+    Functions::savePerturbationsInFile();
     m_saveError = false;
     m_function = f;
     m_d = d;
@@ -136,6 +137,9 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
   for (int j=0; j<nbTestPoints; j++)
       testPoints[j] = Utils::createRandomMultiVariatePoint(m_d);
   setTestPoints(testPoints);
+  MultiVariatePoint<double> spetialTestPoint(m_d,0,Functions::getPointInPerturbationNeighborhood());
+  m_testPoints[0] = spetialTestPoint;
+  cout << spetialTestPoint << endl;
   saveTestPointsInFile();
 }
 /******************************************************************************/

@@ -2,6 +2,15 @@
 
 vector<vector<vector<double>>> Functions::m_coefs;
 int Functions::m_polynomialDegree;
+int Functions::m_nbPerturbations;
+vector<double> Functions::m_perturbations;
+vector<double> Functions::m_perturbationsWidth;
+
+double Functions::getPointInPerturbationNeighborhood()
+{
+    if (!m_perturbations.size()) return 0;
+    return m_perturbations[0] + m_perturbationsWidth[0]/10;
+}
 
 double Functions::hat(double a, double b, double fa, double fb, double t)
 {
@@ -43,13 +52,36 @@ vector<double> Functions::h(MultiVariatePoint<double> x, int n)
     for (int i=0; i<x.getD(); i++) temp += x(i);
     if (x.getD()>1) return toAlternatingVector(sin(temp),n);
     else return toAlternatingVector(2*exp(-x(0)*x(0) + sin(2*M_PI*x(0))),n);
-    /*
-    double xc = 0.5, ec = 0.1;
-    if (x(0)>=xc && x(0)<=xc+ec)
-        return toAlternatingVector(2*hat(xc,xc+ec,sin(xc+x(1)),sin(xc+ec+x(1)),x(0)) * temp,n);
+}
+
+int Functions::inOneHat(double x)
+{
+    double xc, xe;
+    for (int i=0; i<m_nbPerturbations; i++)
+    {
+        xc = m_perturbations[i];
+        xe = m_perturbationsWidth[i];
+        if (x>=xc-xe/2 && x<=xc+xe/2)
+            return i;
+    }
+    return -1;
+}
+vector<double> Functions::phi(MultiVariatePoint<double> x, int n)
+{
+    double temp = 1, f = 1;
+    for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));
+    int hatPos = inOneHat(x(0));
+    double xc, xe, a, b;
+    if (hatPos>-1)
+    {
+        xc = m_perturbations[hatPos];
+        xe = m_perturbationsWidth[hatPos];
+        a = xc - xe/2;
+        b = xc + xe/2;
+        return toAlternatingVector(hat(a,b,sin(2*M_PI*f*a),sin(2*M_PI*f*b),x(0)) * temp,n);
+    }
     else
-        return toAlternatingVector(sin(x(0)+x(1)) * temp,n);
-    */
+        return toAlternatingVector(sin(2*M_PI*f*x(0)) * temp,n);
 }
 
 vector<double> Functions::cosinus(MultiVariatePoint<double> x, int n)
@@ -91,6 +123,12 @@ vector<double> Functions::autoPolynomialFunction(MultiVariatePoint<double> x, in
 
 void Functions::setCoefs(int degree, int d, int n)
 {
+    m_nbPerturbations = Utils::randomValue(1,3);
+    for (int i=0; i<m_nbPerturbations; i++)
+    {
+        m_perturbations.push_back(Utils::randomValue(-0.9,0.9));
+        m_perturbationsWidth.push_back(Utils::randomValue(0.01,0.05));
+    }
     m_polynomialDegree = degree;
     m_coefs.resize(n);
     for (int i=0; i<n; i++)
@@ -125,6 +163,27 @@ void Functions::saveCoefsInFile(int d, int n)
             }
             file << endl;
         }
+        file.close();
+    }
+    else
+        cerr << "Erreur à l'ouverture du fichier!" << endl;
+}
+
+void Functions::savePerturbationsInFile()
+{
+    ofstream file(Utils::projectPath + "data/perturbations.txt", ios::out | ios::trunc);
+    if(file)
+    {
+        file << m_nbPerturbations << endl;
+
+        for (int i=0; i<m_nbPerturbations; ++i)
+            file << m_perturbations[i] << " ";
+        file << endl;
+
+        for (int i=0; i<m_nbPerturbations; ++i)
+            file << m_perturbationsWidth[i] << " ";
+        file << endl;
+
         file.close();
     }
     else
