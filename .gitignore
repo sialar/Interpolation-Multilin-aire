@@ -1,5 +1,6 @@
-bin/*
-tucker/*
-gui/gui.pro.user
-build-gui-Desktop_Qt_5_7_0_GCC_64bit-Debug
-Tucker_pourParis6_23062017
+Code_Analytic_Function/AI/bin/*
+Code_Analytic_Function/Tucker
+Code_Analytic_Function/AI/gui/gui.pro.user
+Code_Analytic_Function/AI/build-gui-Desktop_Qt_5_7_0_GCC_64bit-Debug
+Code_EDF_Data/AI/bin/*
+Code_EDF_Data/Tucker
