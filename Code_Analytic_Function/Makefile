@@ -1,7 +1,7 @@
-SRC = src
-TEST = tests
-INCLUDE = include
-BIN = bin
+SRC = AI/src
+TEST = AI/tests
+INCLUDE = AI/include
+BIN = AI/bin
 
 CXX = g++
 CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
@@ -29,4 +29,4 @@ $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 
 # Nettoyage du projet
 clean:
-	@rm -rf $(BIN)/* build-gui-Desktop_Qt_5_7_0_GCC_64bit-Debug
+	@rm -rf $(BIN)/* AI/build-gui-Desktop_Qt_5_7_0_GCC_64bit-Debug

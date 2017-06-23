@@ -1,7 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
-string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/";
+string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code//Code_Analytic_Function/AI/";
 
 void Utils::separateur()
 {
@@ -45,7 +45,7 @@ MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
 {
     MultiVariatePoint<double> point(d,0,0);
     for (int i=0; i<d; i++)
-        point(i) = Utils::randomValue(-1,1);
+        point(i) = Utils::randomValue(0,1);
     return point;
 }
 

@@ -139,7 +139,6 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
   setTestPoints(testPoints);
   MultiVariatePoint<double> spetialTestPoint(m_d,0,Functions::getPointInPerturbationNeighborhood());
   m_testPoints[0] = spetialTestPoint;
-  cout << spetialTestPoint << endl;
   saveTestPointsInFile();
 }
 /******************************************************************************/

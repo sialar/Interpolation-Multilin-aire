@@ -1,8 +1,7 @@
 #!/bin/sh
 
 
-PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code"
-cd $PROJECT_PATH
+PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_Analytic_Function/AI"
 
 #make clean
 make -j8
@@ -124,7 +123,7 @@ pow() {
 if [ "$1" = "LEJA" ]
 then
     echo " - Leja sequence: "
-    cd python
+    cd AI/python
     python3.5 -W ignore plot_leja_sequence.py $2 $3
 
 elif [ "$1" = "AI" ]
@@ -163,7 +162,7 @@ then
         then "$PROJECT_PATH"/bin/TestMixedInterpolation $2 $3 $4 $6 $7 1
         else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation $2 $3 $4 $5 $6 $7 1
         fi
-        cd python
+        cd AI/python
         if [ "$5" = "MIX" ]
         then python3.5 -W ignore plot_mixed_path.py $2
         else python3.5 -W ignore plot_path.py $2 $5
@@ -180,7 +179,7 @@ then
         then "$PROJECT_PATH"/bin/TestLagrangeInterpolation 1 1 1000 $3 $4 1
         else "$PROJECT_PATH"/bin/TestPiecewiseInterpolation 1 1 1000 $2 $3 $4 1
         fi
-        cd python
+        cd AI/python
         python3.5 -W ignore plot_interpolation_progression.py
     fi
 
@@ -190,7 +189,7 @@ then
     if [ $# != 7 ]
     then echo "Invalid number of arguments"
     else "$PROJECT_PATH"/bin/TestSameFunctionWithDifferentPaths $2 $3 $4 $5 $6 $7
-    cd python
+    cd AI/python
     python3.5 -W ignore plot_2_paths.py $2 $5
     fi
 
@@ -200,7 +199,7 @@ then
     if [ $# != 7 ]
     then echo "Invalid number of arguments"
     else "$PROJECT_PATH"/bin/TestErrors $2 $3 $4 $5 $6 $7
-    cd python
+    cd AI/python
     python3.5 -W ignore plot_error.py $6
   fi
 
@@ -209,7 +208,7 @@ then
     showTUCKERArgsDetails
     if [ $# != 4 ]
     then echo "Invalid number of arguments"
-    else cd tucker
+    else cd AI/pyth Tucker
         "$PROJECT_PATH"/bin/TestX $2 1 1000 1 $3
          python testTuckerDecomposition_withGreedy.py $2 $3 $4
     fi
@@ -233,7 +232,7 @@ then
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
         echo "\t\t\t\t\t\t\t\t\t\t-- Using Tucker method --"
         echo "\t\t\t\t\t\t\t\t\t\t-------------------------"
-        cd tucker
+        cd Tucker
         python -W ignore testTuckerDecomposition_withGreedy.py $2 $6 $7
     fi
 else

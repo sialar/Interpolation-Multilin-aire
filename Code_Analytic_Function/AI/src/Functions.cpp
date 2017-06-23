@@ -126,7 +126,7 @@ void Functions::setCoefs(int degree, int d, int n)
     m_nbPerturbations = Utils::randomValue(1,3);
     for (int i=0; i<m_nbPerturbations; i++)
     {
-        m_perturbations.push_back(Utils::randomValue(-0.9,0.9));
+        m_perturbations.push_back(Utils::randomValue(0.1,0.9));
         m_perturbationsWidth.push_back(Utils::randomValue(0.01,0.05));
     }
     m_polynomialDegree = degree;
