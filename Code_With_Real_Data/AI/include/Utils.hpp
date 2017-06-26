@@ -12,7 +12,6 @@
 #include "MultiVariatePoint.hpp"
 
 using namespace std;
-typedef vector<double>(*Function)(MultiVariatePoint<double>, int n);
 
 class Utils
 {
@@ -39,7 +38,7 @@ class Utils
         static string vector2str(vector<double> x);
         static double norm(vector<double> x, int p);
         static double adaptCoordsToFunctionDomain(double a, double b, double x);
-        static vector<double> f(MultiVariatePoint<double> x, int n);
+        static double convertToFunctionDomain(double a, double b, double x);
         static MultiVariatePoint<double> getCoordsFromString(string s);
 
         // Intermediate function for Leja points computation

@@ -5,21 +5,22 @@ BIN = AI/bin
 
 CXX = g++
 CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
+PYFLAGS = -lpython2.7
 
-OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o
+OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o $(BIN)/Functions.o
 OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
-INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp
+INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
 TEST_FILES += $(BIN)/TestAdaptativeInterpolation
 
 all: $(TEST_FILES)
 
 # Edition des liens et génération de l'exécutable:
 $(BIN)/Test% : $(BIN)/Test%.o $(OBJ_FILES) $(INCLUDE_FILES)
-		$(CXX) $(CXXFLAGS) -o $@ $^
+		$(CXX) $(CXXFLAGS) -o $@ $^ $(PYFLAGS)
 
 # Construction des objets (file.o)
 $(BIN)/Test%.o : $(TEST)/Test%.cpp $(INCLUDE_FILES)
-		$(CXX) $(CXXFLAGS) -c -o $@ $<
+		$(CXX) $(CXXFLAGS) -c -o $@ $< $(PYFLAGS)
 
 $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<

@@ -1,7 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
-string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/Code_EDF_Data/AI/";
+string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Real_Data/AI/";
 
 void Utils::separateur()
 {
@@ -41,12 +41,9 @@ double Utils::adaptCoordsToFunctionDomain(double a, double b, double x)
     return (2*x)/(b-a) + 1 - (2*b)/(b-a);
 }
 
-vector<double> Utils::f(MultiVariatePoint<double> x, int n)
+double Utils::convertToFunctionDomain(double a, double b, double x)
 {
-    double temp = 0;
-    for (int i=0; i<x.getD(); i++) temp += pow(x(i),i);
-    vector<double> res(n,temp);
-    return res;
+    return x*(b-a)/2 + (a+b)/2;
 }
 
 MultiVariatePoint<double> Utils::getCoordsFromString(string s)

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_EDF_Data/AI"
+PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Real_Data/AI"
 make -j8
 
 help()

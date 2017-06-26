@@ -1,3 +1,4 @@
+#include <python3.5/Python.h>
 #include <iostream>
 #include <string>
 #include <array>
@@ -27,13 +28,13 @@ MultiVariatePoint<int> chooseMethods(int dim)
 
 int main( int argc, char* argv[] )
 {
+
     srand (time(NULL));
 
     Utils::separateur();
     int dimD = 5;
-    Function interpFunc = Utils::f;
     int maxIteration = Utils::chooseMaxIteration(argc,argv,1);
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,1,maxIteration,interpFunc));
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,1,maxIteration));
     interp->readEDFTestPointsFromFile();
     interp->displayRealDomain();
     Utils::separateur();
@@ -41,16 +42,17 @@ int main( int argc, char* argv[] )
     // Path creation
     double threshold = 1e-9;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = " << threshold;
-    double execTime = interp->testPathBuilt(threshold, false);
+    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = " \
+         << threshold << endl;
+    interp->buildPathWithAIAlgo(threshold, false);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();
     vector<vector<double>> realValues, estimate;
-    for (MultiVariatePoint<double> p : interp->testPoints())
+    for (int i=0; i<10; i++)
     {
-        realValues.push_back(interp->func(p));
-        estimate.push_back(interp->interpolation(p,interp->path().size()));
+        realValues.push_back(interp->func(interp->testPoints()[i]));
+        estimate.push_back(interp->interpolation(interp->testPoints()[i],interp->path().size()));
     }
     // Evaluation
     double relativeError = Utils::relativeInterpolationError(realValues,estimate);
@@ -58,7 +60,9 @@ int main( int argc, char* argv[] )
     cout << " - Relative Interpolation error (pcm) = " << relativeError << endl;
     cout << " - MSE Interpolation error (pcm) = " << mseError << endl;
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
-    cout << " - Run Time = " << execTime << endl;
+    cout << " - Total Time = " << interp->totalTime() << endl;
+    cout << " - AI Run Time = " << interp->runTime() << endl;
+    cout << " - Communication Time with Tucker code = " << interp->totalTime()-interp->runTime() << endl;
 
     return 0;
 }

@@ -22,7 +22,7 @@ class LagrangeInterpolation : public Interpolation<int>
       vector<double> m_lejaSequence;
 
     public:
-      LagrangeInterpolation(int d, int n, int nIter, Function f);
+      LagrangeInterpolation(int d, int n, int nIter);
       ~LagrangeInterpolation() {};
 
 

@@ -13,6 +13,7 @@
 
 #include "MultiVariatePoint.hpp"
 #include "BinaryTree.hpp"
+#include "Functions.hpp"
 #include "Utils.hpp"
 
 using namespace std;
@@ -28,6 +29,9 @@ class Interpolation
         int m_nbTestPoints;
         int m_nbEvals = 0;
         int m_nbMethods = 3;
+        double m_runTime = 0.0;
+        double m_totalTime = 0.0;
+        chrono::time_point<chrono::_V2::steady_clock,chrono::duration<double>> m_lastCheckPt;
 
         vector<vector<double>> m_realDomain;
 
@@ -40,15 +44,16 @@ class Interpolation
 
         bool m_displayProgress = true;
 
-        map<MultiVariatePoint<double>,vector<double>> m_values;
-        Function m_function;
+        Functions m_function;
 
     public:
         Interpolation() {};
         virtual ~Interpolation() {};
-        Interpolation(int d, int m_n, int nIter, Function f);
+        Interpolation(int d, int m_n, int nIter);
 
         /************************* Data points ********************************/
+        const double runTime() { return m_runTime; };
+        const double totalTime() { return m_totalTime; };
         const int maxIteration() { return m_maxIteration; };
         const int nbEvals() { return m_nbEvals; };
         const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
@@ -60,15 +65,14 @@ class Interpolation
         vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
         void setRandomTestPoints(int nbTestPoints);
 
-        vector<double> func(MultiVariatePoint<double> x) { return m_function(x,m_n); };
-        void setFunc(Function f) { m_function = f; };
+        vector<double> func(MultiVariatePoint<double> x);
+        void setFunc(CoreType c, vector<ReactionType> vr);
         void disableProgressDisplay() { m_displayProgress = false; };
 
         /************************* AI algo ************************************/
         vector<double> tryWithCurentPath();
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
-        double testPathBuilt(double threshold, bool debug);
-        int buildPathWithAIAlgo(auto start_time, double threshold, bool debug, std::chrono::duration<double>* run_time);
+        int buildPathWithAIAlgo( double threshold, bool debug);
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
@@ -98,12 +102,11 @@ template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
 
 template <typename T>
-Interpolation<T>::Interpolation(int d, int n, int nIter, Function f)
+Interpolation<T>::Interpolation(int d, int n, int nIter)
 {
     m_interpolationPoints.resize(d);
     m_realDomain.resize(d);
     m_maxIteration = nIter;
-    m_function = f;
     m_d = d;
     m_n = n;
 }
@@ -125,6 +128,22 @@ void Interpolation<T>::clearAllAlpha()
         nu->reinit();
 }
 
+template <typename T>
+void Interpolation<T>::setFunc(CoreType c, vector<ReactionType> vr)
+{
+    m_function.setCoreType(c);
+    m_function.setReactionTypes(vr);
+    m_function.updateValues();
+}
+
+template <typename T>
+vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
+{
+    for (int i=0; i<m_d; i++)
+        x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
+    return m_function.evaluate(x);
+}
+
 /*************************** Data Points **************************************/
 template <typename T>
 void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
@@ -139,8 +158,11 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 
 /***************************** AI algo ****************************************/
 template <typename T>
-int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug, std::chrono::duration<double>* run_time)
+int Interpolation<T>::buildPathWithAIAlgo(double threshold, bool debug)
 {
+    auto start_time = chrono::steady_clock::now();
+    m_lastCheckPt = chrono::steady_clock::now();
+
     m_curentNeighbours.clear();
     m_path.clear();
     MultiVariatePointPtr<T> argmax = getFirstMultivariatePoint();
@@ -150,7 +172,6 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
 
     while (!m_curentNeighbours.empty() && iteration < m_maxIteration)
     {
-
         for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
             if (!nu->alphaAlreadyComputed())
                 computeLastAlphaNu(nu);
@@ -170,13 +191,13 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
 
         // Test with curent path and evaluate the interpolation error on test points
         // If the error is lower than a threshold : stop AI
-
+        /*
         int step = floor(m_maxIteration/10);
-        if (iteration%step==0)
+        if (iteration>10 && iteration%step==0)
         {
             auto end_time = chrono::steady_clock::now();
             *run_time = end_time - start_time;
-            vector<double> errors = tryWithCurentPath();
+            //vector<double> errors = tryWithCurentPath();
             if (m_displayProgress)
             {
                 cout << endl << "\t- Interpolation error after " << iteration << " iterations: ";
@@ -189,16 +210,26 @@ int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, boo
                     return iteration;
                 }
             }
-        }
-        iteration++;
+          }
+          */
+          iteration++;
     }
+
+    auto end_time = chrono::steady_clock::now();
+    std::chrono::duration<double> total_time = end_time - start_time;
+    m_totalTime = total_time.count();
     return iteration;
 }
 template <typename T>
 void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
     double basisFuncProd = 1.0;
+    auto stop_time = chrono::steady_clock::now();
+    std::chrono::duration<double> delta = stop_time - m_lastCheckPt;
+    m_runTime += delta.count();
+
     vector<double> res = func(getPoint(nu));
+    m_lastCheckPt = chrono::steady_clock::now();
     m_nbEvals++;
     for (MultiVariatePointPtr<T> l : m_path)
     {
@@ -209,16 +240,6 @@ void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
             res[k] -= l->getAlpha()[k] * basisFuncProd;
     }
     nu->setAlpha(res);
-}
-template <typename T>
-double Interpolation<T>::testPathBuilt(double threshold, bool debug)
-{
-  auto start_time = chrono::steady_clock::now();
-  std::chrono::duration<double> run_time;
-  int nbIterations = buildPathWithAIAlgo(start_time, threshold, debug, &run_time);
-  cout << endl << "   - Time required to compute the path with " << nbIterations <<
-  " iterations: " << run_time.count() << "s" << endl;
-  return run_time.count();
 }
 template <typename T>
 vector<double> Interpolation<T>::tryWithCurentPath()

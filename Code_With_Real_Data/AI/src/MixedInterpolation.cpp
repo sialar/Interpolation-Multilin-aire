@@ -1,7 +1,7 @@
 #include "../include/MixedInterpolation.hpp"
 
-MixedInterpolation::MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods, Function f) :
-    Interpolation(d,n,nIter,f)
+MixedInterpolation::MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods) :
+    Interpolation(d,n,nIter)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
     m_trees.resize(m_d);
@@ -215,7 +215,7 @@ vector<double> MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int
     cout << "   - Interpolation using methods " << methods;
     vector<double> errors;
     setMethods(methods);
-    testPathBuilt(threshold, m_maxIteration<21);
+    buildPathWithAIAlgo(threshold, m_maxIteration<21);
     vector<vector<double>> realValues, estimate;
     for (MultiVariatePoint<double> p : m_testPoints)
     {

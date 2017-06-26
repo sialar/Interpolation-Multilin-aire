@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_Analytic_Function/AI"
+PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Analytic_Function/AI"
 
 #make clean
 make -j8
@@ -208,7 +208,7 @@ then
     showTUCKERArgsDetails
     if [ $# != 4 ]
     then echo "Invalid number of arguments"
-    else cd AI/pyth Tucker
+  else cd Tucker
         "$PROJECT_PATH"/bin/TestX $2 1 1000 1 $3
          python testTuckerDecomposition_withGreedy.py $2 $3 $4
     fi
