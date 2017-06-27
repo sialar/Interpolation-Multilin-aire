@@ -9,32 +9,98 @@
 
 using namespace std;
 
-MultiVariatePoint<int> chooseMethods(int dim)
+
+string chooseCoreType(int argc, char* argv[], int argNum)
 {
-    MultiVariatePoint<int> methods(dim,0,-1);
-    for (int i=0; i<dim; i++)
+    if (argc > argNum)
     {
-        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
+        if (!Functions::validCoreType(argv[argNum]))
         {
-            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
-            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
-            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
-            cin >> methods(i);
+            cout << "Invalid core type!" << endl;
+            exit(1);
         }
+
+      return argv[argNum];
     }
-    return methods;
+    string core = "";
+    while (!Functions::validCoreType(core))
+    {
+      cout << " - Choose the core type from { 'MOX', 'UOX', 'UOX-Gd' } : ";
+      cin >> core;
+    }
+    Utils::separateur();
+    return core;
+}
+
+vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
+{
+    vector<string> reactions;
+    if (argc > argNum)
+    {
+        if (string(argv[argNum]).compare("ALL")==0)
+            return Functions::allReactionTypes;
+        for (int i=argNum; i<argc; i++)
+        {
+            if (!Functions::validReactionType(argv[i]))
+            {
+                cout << "Invalid reaction type!" << endl;
+                exit(1);
+            }
+            reactions.push_back(argv[i]);
+        }
+        return reactions;
+    }
+    int nbReactions = -1;
+    string reaction = "";
+    while (nbReactions < 0 || nbReactions > 12)
+    {
+      cout << " - Choose the number of reaction types : ";
+      cin >> nbReactions;
+    }
+    if (nbReactions==12) return Functions::allReactionTypes;
+    for (int i=0; i<nbReactions; i++)
+    {
+        reaction = "";
+        while (!Functions::validReactionType(reaction))
+        {
+          cout << " - Choose the reaction type " << i+1 << " from { 'macro_totale0', 'macro_totale1', "
+               << "'macro_absorption0', 'macro_absorption1', 'macro_scattering000', "
+               << "'macro_scattering001', 'macro_scattering010', 'macro_scattering011', "
+               << "'macro_nu*fission0', 'macro_nu*fission1', 'macro_fission0', 'macro_fission1', 'ALL' }\n - ";
+          cin >> reaction;
+        }
+        reactions.push_back(reaction);
+    }
+    Utils::separateur();
+    return reactions;
+}
+
+int chooseMaxIteration(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int maxIteration = -1;
+  while (maxIteration < 0)
+  {
+    cout << " - Choose the maximum number of iteration : ";
+    cin >> maxIteration;
+  }
+  Utils::separateur();
+  return maxIteration;
 }
 
 int main( int argc, char* argv[] )
 {
-
     srand (time(NULL));
-
     Utils::separateur();
+    Functions::createFunctionsDataBase();
     int dimD = 5;
-    int maxIteration = Utils::chooseMaxIteration(argc,argv,1);
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,1,maxIteration));
+    int maxIteration = chooseMaxIteration(argc,argv,1);
+    string core = chooseCoreType(argc,argv,2);
+    vector<string> reactions = chooseReactionsType(argc,argv,3);
+
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,reactions.size(),maxIteration));
+    interp->setFunc(core,reactions);
+
     interp->readEDFTestPointsFromFile();
     interp->displayRealDomain();
     Utils::separateur();
@@ -54,6 +120,7 @@ int main( int argc, char* argv[] )
         realValues.push_back(interp->func(interp->testPoints()[i]));
         estimate.push_back(interp->interpolation(interp->testPoints()[i],interp->path().size()));
     }
+
     // Evaluation
     double relativeError = Utils::relativeInterpolationError(realValues,estimate);
     double mseError = Utils::mseInterpolationError(realValues,estimate);
@@ -62,7 +129,6 @@ int main( int argc, char* argv[] )
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
     cout << " - Total Time = " << interp->totalTime() << endl;
     cout << " - AI Run Time = " << interp->runTime() << endl;
-    cout << " - Communication Time with Tucker code = " << interp->totalTime()-interp->runTime() << endl;
 
     return 0;
 }

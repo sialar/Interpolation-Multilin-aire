@@ -29,6 +29,7 @@ class Interpolation
         int m_nbTestPoints;
         int m_nbEvals = 0;
         int m_nbMethods = 3;
+
         double m_runTime = 0.0;
         double m_totalTime = 0.0;
         chrono::time_point<chrono::_V2::steady_clock,chrono::duration<double>> m_lastCheckPt;
@@ -44,7 +45,7 @@ class Interpolation
 
         bool m_displayProgress = true;
 
-        Functions m_function;
+        FunctionsPtr m_function;
 
     public:
         Interpolation() {};
@@ -52,50 +53,45 @@ class Interpolation
         Interpolation(int d, int m_n, int nIter);
 
         /************************* Data points ********************************/
+        const int nbEvals() { return m_nbEvals; };
         const double runTime() { return m_runTime; };
         const double totalTime() { return m_totalTime; };
         const int maxIteration() { return m_maxIteration; };
-        const int nbEvals() { return m_nbEvals; };
-        const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
+        void disableProgressDisplay() { m_displayProgress = false; };
+        const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
+        virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
         const vector<vector<double>>& points() { return m_interpolationPoints; };
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
-        virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
+        const vector<MultiVariatePoint<double>>& interpolationPoints() { return m_interpolationNodes; };
 
-        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
-        vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
         void setRandomTestPoints(int nbTestPoints);
+        vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
+        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
 
+        void setFunc(string c);
+        void setFunc(string c, vector<string> vr);
         vector<double> func(MultiVariatePoint<double> x);
-        void setFunc(CoreType c, vector<ReactionType> vr);
-        void disableProgressDisplay() { m_displayProgress = false; };
+
 
         /************************* AI algo ************************************/
-        vector<double> tryWithCurentPath();
-        const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
-        int buildPathWithAIAlgo( double threshold, bool debug);
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
-        virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
+        int buildPathWithAIAlgo( double threshold, bool debug);
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
+        virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
         /************************* Interpolation ******************************/
-        vector<double> interpolation(MultiVariatePoint<double>& x, int end);
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
+        vector<double> interpolation(MultiVariatePoint<double>& x, int end);
 
-        /************************* Display function ***************************/
-        void readEDFTestPointsFromFile();
-        void saveInterpolationProgression();
-
-        void displayInterpolationPointsInEachDirection();
-        void displayInterpolationMultiVariatePoints();
-        void displayCurentNeighbours();
-        void displayRealDomain();
-        void displayPath();
-        void displayAll();
-
-        void clearAllAlpha();
+        /************************* Other functions ****************************/
         void clearAll();
+        void displayPath();
+        void clearAllAlpha();
+        void displayRealDomain();
+        void displayCurentNeighbours();
+        void readEDFTestPointsFromFile();
 };
 
 template <typename T>
@@ -105,6 +101,7 @@ template <typename T>
 Interpolation<T>::Interpolation(int d, int n, int nIter)
 {
     m_interpolationPoints.resize(d);
+    m_function = make_shared<Functions>();
     m_realDomain.resize(d);
     m_maxIteration = nIter;
     m_d = d;
@@ -129,11 +126,17 @@ void Interpolation<T>::clearAllAlpha()
 }
 
 template <typename T>
-void Interpolation<T>::setFunc(CoreType c, vector<ReactionType> vr)
+void Interpolation<T>::setFunc(string c, vector<string> vr)
 {
-    m_function.setCoreType(c);
-    m_function.setReactionTypes(vr);
-    m_function.updateValues();
+    m_function->setCoreType(c);
+    m_function->setReactionTypes(vr);
+}
+
+template <typename T>
+void Interpolation<T>::setFunc(string c)
+{
+    m_function->setCoreType(c);
+    m_function->setAllReactionTypes();
 }
 
 template <typename T>
@@ -141,7 +144,7 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
     for (int i=0; i<m_d; i++)
         x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
-    return m_function.evaluate(x);
+    return m_function->evaluate(x);
 }
 
 /*************************** Data Points **************************************/
@@ -188,31 +191,7 @@ int Interpolation<T>::buildPathWithAIAlgo(double threshold, bool debug)
         m_path.push_back(argmax);
         addInterpolationPoint(getPoint(argmax));
         updateCurentNeighbours(argmax);
-
-        // Test with curent path and evaluate the interpolation error on test points
-        // If the error is lower than a threshold : stop AI
-        /*
-        int step = floor(m_maxIteration/10);
-        if (iteration>10 && iteration%step==0)
-        {
-            auto end_time = chrono::steady_clock::now();
-            *run_time = end_time - start_time;
-            //vector<double> errors = tryWithCurentPath();
-            if (m_displayProgress)
-            {
-                cout << endl << "\t- Interpolation error after " << iteration << " iterations: ";
-                cout << "(Relative_e = " << errors[0]; //<< ", MSE_e = " << errors[1];
-                cout << ") | Elapsed time : "  << run_time->count();
-                if (errors[0] < threshold)
-                {
-                    cout << endl << "   - AI Algo stoped after " << iteration << " iterations";
-                    cout << " | Elapsed time : "  << run_time->count() << endl;
-                    return iteration;
-                }
-            }
-          }
-          */
-          iteration++;
+        iteration++;
     }
 
     auto end_time = chrono::steady_clock::now();
@@ -220,6 +199,7 @@ int Interpolation<T>::buildPathWithAIAlgo(double threshold, bool debug)
     m_totalTime = total_time.count();
     return iteration;
 }
+
 template <typename T>
 void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
@@ -240,20 +220,6 @@ void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
             res[k] -= l->getAlpha()[k] * basisFuncProd;
     }
     nu->setAlpha(res);
-}
-template <typename T>
-vector<double> Interpolation<T>::tryWithCurentPath()
-{
-  vector<vector<double>> realValues, estimate;
-  vector<double> errors;
-  for (MultiVariatePoint<double> p : m_testPoints)
-  {
-    realValues.push_back(func(p));
-    estimate.push_back(interpolation(p,m_path.size()));
-  }
-  errors.push_back(Utils::relativeInterpolationError(realValues,estimate));
-  errors.push_back(Utils::mseInterpolationError(realValues,estimate));
-  return errors;
 }
 /******************************************************************************/
 
@@ -276,26 +242,7 @@ vector<double> Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int
 /******************************************************************************/
 
 /*************************** Display function *********************************/
-template <typename T>
-void Interpolation<T>::displayInterpolationPointsInEachDirection()
-{
-    vector<double>::iterator it;
-    for (int i=0; i<m_d; ++i)
-    {
-        cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
-        for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << setprecision(numeric_limits<double>::digits10+1) << *it << " ";
-        cout << "}" << endl;
-    }
-}
-template <typename T>
-void Interpolation<T>::displayInterpolationMultiVariatePoints()
-{
-    cout << " - Interpolation nodes: { ";
-    for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << setprecision(numeric_limits<double>::digits10+1) << x << " ";
-    cout << "}" << endl;
-}
+
 template <typename T>
 void Interpolation<T>::displayPath()
 {
@@ -311,6 +258,7 @@ void Interpolation<T>::displayPath()
     }
     cout << endl;
 }
+
 template <typename T>
 void Interpolation<T>::displayCurentNeighbours()
 {
@@ -332,51 +280,10 @@ void Interpolation<T>::displayRealDomain()
     cout << "[" << m_realDomain[m_d-1][0] << "," << m_realDomain[m_d-1][1] << "]" << endl;
 }
 
-
-template <typename T>
-void Interpolation<T>::displayAll()
-{
-    displayPath();
-    displayCurentNeighbours();
-    displayInterpolationMultiVariatePoints();
-    displayInterpolationPointsInEachDirection();
-}
-
-template <typename T>
-void Interpolation<T>::saveInterpolationProgression()
-{
-  ofstream file(Utils::projectPath + "data/interpolation_progression.dat", ios::out | ios::trunc);
-  if(file)
-  {
-      if (m_d==1)
-      {
-          vector<double> x;
-          int nbPoints = int(m_testPoints.size());
-          for (int i=0; i<nbPoints; i++)
-              x.push_back(m_testPoints[i](0));
-          sort(x.begin(), x.end());
-          MultiVariatePoint<double> p;
-          vector<double> tempPath;
-          for (int j=0; j<nbPoints; j++)
-          {
-              for (int i=0; i<int(m_path.size()); i++)
-              {
-                  p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-                  file << interpolation(p, i+1)[0] << " ";
-              }
-              file << endl;
-          }
-      }
-      file.close();
-  }
-  else
-      cerr << "Error while opening the file!" << endl;
-}
-
 template <typename T>
 void Interpolation<T>::readEDFTestPointsFromFile()
 {
-    ifstream file(Utils::projectPath + "data/reference_points.dat", ios::in);
+    ifstream file(Utils::projectPath + "AI/data/reference_points.dat", ios::in);
     if(file)
     {
         string line;
@@ -412,6 +319,5 @@ void Interpolation<T>::readEDFTestPointsFromFile()
         cerr << "Error while opening the file!" << endl;
 }
 /******************************************************************************/
-
 
 #endif

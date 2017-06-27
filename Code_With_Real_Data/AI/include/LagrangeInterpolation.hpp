@@ -39,9 +39,6 @@ class LagrangeInterpolation : public Interpolation<int>
 
       /*********************** Interpolation ********************************/
       double basisFunction_1D(int code, double t, int axis);
-
-      /********************** Display functions *****************************/
-      void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<LagrangeInterpolation> LagrangeInterpolationPtr;

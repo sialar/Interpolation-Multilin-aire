@@ -1,7 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
-string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Real_Data/AI/";
+string Utils::projectPath = "/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Real_Data/";
 
 void Utils::separateur()
 {
@@ -166,7 +166,7 @@ void Utils::binaryDecomposition(int number, vector<double>& binary_decomp)
 
 void Utils::storeDichotomySequenceInFile(int length)
 {
-    ofstream file(projectPath + "data/dichotomy_sequence.dat", ios::out | ios::trunc);
+    ofstream file(projectPath + "AI/data/dichotomy_sequence.dat", ios::out | ios::trunc);
     if(file)
     {
         file << length << endl;
@@ -181,7 +181,7 @@ void Utils::storeDichotomySequenceInFile(int length)
 
 void Utils::storeLejaSequenceInFile(int length)
 {
-    ofstream file(projectPath + "data/leja_sequence.dat", ios::out | ios::trunc);
+    ofstream file(projectPath + "AI/data/leja_sequence.dat", ios::out | ios::trunc);
     if(file)
     {
         vector<double> lejaSeq = createLejaSequence(length);
@@ -195,7 +195,7 @@ void Utils::storeLejaSequenceInFile(int length)
 
 vector<double> Utils::loadLejaSequenceFromFile(int length)
 {
-    ifstream file(projectPath + "data/leja_sequence.dat", ios::in);
+    ifstream file(projectPath + "AI/data/leja_sequence.dat", ios::in);
     vector<double> lejaSeq;
     string line;
     int line_index = 0;
@@ -300,117 +300,6 @@ bool Utils::equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2)
         if (nu1(i).compare(nu2(i))!=0)
             return false;
     return true;
-}
-
-int Utils::chooseDimensionD(int argc, char* argv[], int argNum)
-{
-    if (argc > argNum) return stoi(argv[argNum]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension d: ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int Utils::chooseDimensionN(int argc, char* argv[], int argNum)
-{
-    if (argc > argNum) return stoi(argv[argNum]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension n: ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  int nbTestPoints = -1;
-  while (nbTestPoints < 0)
-  {
-    cout << " - Choose the number ot test points : ";
-    cin >> nbTestPoints;
-  }
-  return nbTestPoints;
-}
-
-int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
-  {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
-  }
-  Utils::separateur();
-  return maxIteration;
-}
-
-int Utils::chooseMethod(int argc, char* argv[], int argNum)
-{
-    int method = -1;
-    if (argc > argNum) method = stoi(argv[argNum]);
-    while (method!=1 && method!=2)
-    {
-        cout << " - Choose the method of interpolation: " << endl;
-        cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-        cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
-        cin >> method;
-    }
-    return method;
-}
-
-bool Utils::saveResults(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  char store = 'x';
-  while (store!='y' && store!='n')
-  {
-      cout << " - Store path and interpolation progression? (y/n) ";
-      cin >> store;
-  }
-  return (store=='y');
-}
-
-bool Utils::saveError(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  char e = 'x';
-  while (e!='y' && e!='n')
-  {
-      cout << " - Store interpolation error at the end of the algorithm? (y/n) ";
-      cin >> e;
-  }
-  return (e=='y');
-}
-
-bool Utils::plotPath(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  char plot = 'x';
-  while (plot!='y' && plot!='n')
-  {
-      cout << " - Save and plot interpolation points? (y/n) ";
-      cin >> plot;
-  }
-  return (plot=='y');
-}
-
-int Utils::chooseFunction(int argc, char* argv[], int argNum)
-{
-  int f = 0;
-  if (argc > argNum) f = stoi(argv[argNum]);
-  while (f!=1 && f!=2 && f!=3 && f!=4 && f!=5)
-  {
-      cout << " - Choose the function to interpolate (1, 2, 3, 4 or 5)";
-      cin >> f;
-  }
-  return f;
 }
 
 bool Utils::displayResults()

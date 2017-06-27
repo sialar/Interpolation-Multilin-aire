@@ -168,45 +168,6 @@ bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 }
 /******************************************************************************/
 
-/************************* Display functions **********************************/
-void MixedInterpolation::saveInterpolationBasisFunctions()
-{
-  ofstream file(Utils::projectPath + "data/basis_functions.txt", ios::out | ios::trunc);
-  if(file)
-  {
-    if (m_d==1)
-    {
-      vector<double> x;
-      int nbPoints = int(m_testPoints.size());
-      for (int i=0; i<nbPoints; i++)
-          x.push_back(m_testPoints[i](0));
-      sort(x.begin(), x.end());
-      file << m_path.size() << " " << nbPoints << " " << m_methods(0) << endl;
-      MultiVariatePoint<double> p;
-      for (int j=0; j<nbPoints; j++)
-      {
-        file << x[j];
-        for (MultiVariatePointPtr<string> nu : m_path)
-            file << " " << basisFunction_1D((*nu)(0),x[j],0);
-        p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  Utils::vector2str(func(p));
-        file << endl;
-      }
-      for (int i=0; i<int(m_path.size())-1; i++)
-          file << Utils::vector2str(m_path[i]->getAlpha()) << " ; ";
-      file << Utils::vector2str(m_path[m_path.size()-1]->getAlpha()) << endl;
-      for (MultiVariatePoint<double> nu : m_interpolationNodes)
-      file << nu(0) << " ";
-    }
-    file.close();
-  }
-  else
-  cerr << "Error while opening the file!" << endl;
-}
-
-/******************************************************************************/
-
-
 /*********************** Interpolation ****************************************/
 vector<double> MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
 {

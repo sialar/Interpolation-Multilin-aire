@@ -41,10 +41,6 @@ class PiecewiseInterpolation : public Interpolation<string>
 
         /*********************** Interpolation ********************************/
         double basisFunction_1D(string code, double t, int axis);
-
-        /********************** Display functions *****************************/
-        void displayTrees();
-        void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<PiecewiseInterpolation> PiecewiseInterpolationPtr;

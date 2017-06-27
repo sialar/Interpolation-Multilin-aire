@@ -13,33 +13,38 @@
 #include "Utils.hpp"
 
 using namespace std;
-enum CoreType { MOX, UOX, UOX_Gd  };
-enum ReactionType { ABS_0, ABS_1, FIS_0, FIS_1, NU_FIS_0, NU_FIS_1, \
-                    SCAT_00, SCAT_01, SCAT_10, SCAT_11, TOT_0, TOT_1 };
 
 class Functions
 {
     private:
       int m_n;
-      CoreType m_coreType;
-      vector<ReactionType> m_reactionTypes;
-      map<MultiVariatePoint<double>, vector<double>> m_values;
+      string m_directory;
+      string m_coreType;
+      vector<string> m_reactionTypes;
+
 
     public:
       ~Functions() {};
       Functions() {};
-      Functions(int n, CoreType c, vector<ReactionType> vr);
+      Functions(int n, string c, vector<string> vr);
 
-      CoreType getCoreType() { return m_coreType; };
-      void setCoreType(CoreType c) { m_coreType = c; };
+      static vector<string> allCoreTypes;
+      static vector<string> allReactionTypes;
 
-      vector<ReactionType> getReactionType() { return m_reactionTypes; };
-      void setReactionTypes(vector<ReactionType> vr);
+      string getCoreType() { return m_coreType; };
+      void setCoreType(string c);
 
-      string getFunctionFileName(CoreType, ReactionType);
+      vector<string> getReactionType() { return m_reactionTypes; };
+      void setReactionTypes(vector<string> vr);
+      void setAllReactionTypes();
+
       vector<double> evaluate(MultiVariatePoint<double> x);
-      void setFunctionsMap();
-      void updateValues();
+
+      static void createFunctionsDataBase();
+      static bool validCoreType(string c);
+      static bool validReactionType(string r);
 };
+
+typedef std::shared_ptr<Functions> FunctionsPtr;
 
 #endif

@@ -26,6 +26,7 @@ class Utils
 
         // Display data and results
         static void separateur();
+        static bool displayResults();
         static void displayPoints(vector<vector<double>> v);
         static void displayPoints(vector<MultiVariatePoint<double>> v);
 
@@ -65,19 +66,6 @@ class Utils
 
         // Comparaison function
         static bool equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2);
-
-        // Read arguments
-        static int chooseDimensionD(int argc, char* argv[], int argNum);
-        static int chooseDimensionN(int argc, char* argv[], int argNum);
-        static int chooseNbTestPoints(int argc, char* argv[], int argNum);
-        static int chooseMaxIteration(int argc, char* argv[], int argNum);
-        static int chooseMethod(int argc, char* argv[], int argNum);
-        static bool saveResults(int argc, char* argv[], int argNum);
-        static bool saveError(int argc, char* argv[], int argNum);
-        static bool plotPath(int argc, char* argv[], int argNum);
-        static int chooseFunction(int argc, char* argv[], int argNum);
-        static bool displayResults();
-
 };
 
 #endif

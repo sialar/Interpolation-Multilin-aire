@@ -8,8 +8,8 @@ CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
 PYFLAGS = -lpython2.7
 
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o $(BIN)/Functions.o
-OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
-INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
+OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o #$(BIN)/LagrangePolynomial.o
+INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp #$(INCLUDE)/LagrangePolynomial.hpp
 TEST_FILES += $(BIN)/TestAdaptativeInterpolation
 
 all: $(TEST_FILES)

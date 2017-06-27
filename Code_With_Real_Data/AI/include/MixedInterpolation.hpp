@@ -46,10 +46,6 @@ class MixedInterpolation : public Interpolation<string>
       double basisFunction_1D(string code, double t, int axis);
       vector<double> tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
       MultiVariatePoint<int> tryAllCases(double threshold);
-
-      /********************** Display functions *****************************/
-      void savePathInFile(string fileName);
-      void saveInterpolationBasisFunctions();
 };
 
 typedef std::unique_ptr<MixedInterpolation> MixedInterpolationPtr;

@@ -138,52 +138,6 @@ bool PiecewiseInterpolation::indiceInPath(MultiVariatePoint<string> index)
 }
 /******************************************************************************/
 
-/************************* Display functions **********************************/
-void PiecewiseInterpolation::displayTrees()
-{
-    for (int i=0; i<m_d; i++)
-    {
-        cout << " - Binary Tree in direction " << i << " :" << endl;
-        m_trees[i]->displayBinaryTree();
-        cout << endl;
-    }
-}
-void PiecewiseInterpolation::saveInterpolationBasisFunctions()
-{
-  ofstream file(Utils::projectPath + "data/basis_functions.txt", ios::out | ios::trunc);
-  if(file)
-  {
-    if (m_d==1)
-    {
-      vector<double> x;
-      int nbPoints = int(m_testPoints.size());
-      for (int i=0; i<nbPoints; i++)
-          x.push_back(m_testPoints[i](0));
-      sort(x.begin(), x.end());
-      file << m_path.size() << " " << nbPoints << " " << m_method << endl;
-      MultiVariatePoint<double> p;
-      for (int j=0; j<nbPoints; j++)
-      {
-        file << x[j];
-        for (MultiVariatePointPtr<string> nu : m_path)
-          file << " " <<  basisFunction_1D((*nu)(0),x[j],0);
-        p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
-        file << " " <<  func(p)[0];
-        file << endl;
-      }
-      for (MultiVariatePointPtr<string> nu : m_path)
-      file << nu->getAlpha()[0] << " ";
-      file << endl;
-      for (MultiVariatePoint<double> nu : m_interpolationNodes)
-      file << nu(0) << " ";
-    }
-    file.close();
-  }
-  else
-  cerr << "Error while opening the file!" << endl;
-}
-/******************************************************************************/
-
 /*********************** Interpolation ****************************************/
 double PiecewiseInterpolation::basisFunction_1D(string code, double t, int axis)
 {
