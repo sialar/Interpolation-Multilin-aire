@@ -1,6 +1,7 @@
 #include "../../include/Tucker/TuckerApproximation.hpp"
 
 int TuckerApproximation::dimension = 5;
+vector<string> TuckerApproximation::keys;
 
 double min_elt(vector<double> v)
 {
@@ -29,7 +30,6 @@ double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, dou
     double min = min_elt(fct[0].axisValues());
     double max = max_elt(fct[n-1].axisValues());
 
-    cout << n << " " << min << " "  << x << " "   << max << " "   << endl;
     if (n == 1)  return fct[0].getInterpolation(x);
     if (x < min) return fct[0].getInterpolation(x);
     if (x > max) return fct[n-1].getInterpolation(x);
@@ -98,10 +98,10 @@ vector<double> vectorSequence(vector<double> vec, int i1, int i2)
     return res;
 }
 
-vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFcts( int Axis_k, \
-                              vector<vector<double>> listOfDomainBorders, \
-                              vector<vector<double>> listOfTuckerGridNodes, \
-                              vector<vector<vector<double>>> finalOrthNormalizedEigVects)
+vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFcts( string Axis_k, \
+                              map<string,vector<double>> listOfDomainBorders, \
+                              map<string,vector<double>> listOfTuckerGridNodes, \
+                              map<string,vector<vector<double>>> finalOrthNormalizedEigVects)
 {
     vector<vector<LagrangePolynomial>> listOfBasicFctsUsingLagrangeInterpolation_Axis_k;
     int nbExtremes =  listOfDomainBorders[Axis_k].size();
@@ -140,7 +140,7 @@ vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFc
     return listOfBasicFctsUsingLagrangeInterpolation_Axis_k;
 }
 
-double TuckerApproximation::evaluate(vector<vector<vector<LagrangePolynomial>>> listOfBasisFcts, \
+double TuckerApproximation::evaluate(map<string,vector<vector<LagrangePolynomial>>> listOfBasisFcts, \
                                      vector<vector<int>> listOfFinalCoefIndexes_arr, \
                                      vector<double> FinalTuckerCoeffs, vector<double> point)
 {
@@ -151,7 +151,7 @@ double TuckerApproximation::evaluate(vector<vector<vector<LagrangePolynomial>>> 
         vector<LagrangePolynomial> fct;
         for (int Axis_k=0; Axis_k<dimension; Axis_k++)
         {
-            fct = listOfBasisFcts[Axis_k][listOfFinalCoefIndexes_arr[i][Axis_k]];
+            fct = listOfBasisFcts[to_string(Axis_k)][listOfFinalCoefIndexes_arr[i][Axis_k]];
             d = d*getInterpolation(fct, point[Axis_k]);
         }
         approxValue = approxValue +  FinalTuckerCoeffs[i]*d;
@@ -167,7 +167,6 @@ bool isSubString(string str, string substr)
 
 string TuckerApproximation::check_string(string strs_begin, string strs_end, string NameFile)
 {
-    cout << NameFile << endl;
     ifstream file(NameFile, ios::in);
     if(file)
     {
@@ -215,7 +214,7 @@ vector<string> TuckerApproximation::get_list_check_string(string strs_begin, str
             if (isSubString(line,strs_begin) && !isSubString(line,strs_end))
             {
                 found_strs = found_strs + line;
-                while (isSubString(line,strs_end))
+                while (!isSubString(line,strs_end))
                 {
                     getline(file, line);
                     found_strs = found_strs + line;
@@ -238,83 +237,156 @@ string TuckerApproximation::convert_multiLines_oneLine(string lines)
     return converted_line;
 }
 
-string replace(string* str, string oldstr, string newstr)
-{
-    size_t found = str->find(oldstr);
-    str->replace(found,oldstr.length(),newstr);
-    return *str;
-}
-
 string TuckerApproximation::replace_str(string strs, string str_old, string str_new)
 {
-    if (isSubString(strs,str_old))
+    size_t found = strs.find(str_old);
+    while (found!=string::npos)
     {
-        string new_strs = replace(&strs, str_old, str_new);
-        return new_strs;
+        strs.replace(found, str_old.length(), str_new);
+        found = strs.find(str_old);
     }
-    else
-    {
-      cout << strs << endl;
-      cout << str_old << endl;
-      cout << str_new << endl;
-        cerr << "Warning : strs can not be replaced!" << endl;
-        exit(1);
-    }
-    return "";
+    return strs;
 }
 
-vector<vector<double>> TuckerApproximation::convert_str_dic(string strs, string strs_split)
+vector<double> getFirstVectorFromString(string s)
+{
+    // s : " 'k' : [ a0, a1, a2, ..., an ], ... " ---> vec = map['k'] = [ a0, a1, a2, ..., an ]
+    vector<double> vec;
+    size_t found = s.find("[");
+    s.replace(0, found+1, "");
+    found = s.find("]");
+    s.replace(found, s.length(), "");
+    stringstream ss(s);
+    string subs;
+    int i = 0;
+    while (getline(ss, subs, ','))
+    {
+        vec.push_back(stod(subs));
+        i++;
+    }
+    return vec;
+}
+
+map<string,vector<double>> TuckerApproximation::convert_str_dic_map(string strs, string strs_split)
+{
+    map<string,vector<double>> dic;
+    if (isSubString(strs,strs_split))
+    {
+        size_t found = strs.find(strs_split);
+        string temp, strs_dic = strs.substr(found+strs_split.length(),strs.length());
+        for (string k : TuckerApproximation::keys)
+        {
+            found = strs_dic.find(k);
+            temp = strs_dic.substr(found,strs_dic.length());
+            dic.insert(pair<string,vector<double>>(k,getFirstVectorFromString(temp)));
+        }
+        return dic;
+    }
+    else cerr << "Warning : strs_split is not in strs!" << endl;
+    return dic;
+}
+
+vector<vector<double>> convertStringToVectorOfVectors(string s)
+{
+    s.pop_back();
+    s.erase(0,1);
+    string str_temp, strs = s;
+    vector<vector<double>> dic;
+    size_t foundj, found2, found1 = strs.find("[");
+    while (found1!=string::npos)
+    {
+         strs = strs.substr(found1+1,strs.length());
+         found2 = strs.find("]");
+         str_temp = strs;
+         str_temp = str_temp.substr(0,found2);
+         found1 = strs.find("[");
+
+         stringstream ss(str_temp);
+         string subs;
+         vector<double> vec;
+         int i = 0;
+         //getline(ss, subs, ',');
+         while (getline(ss, subs, ','))
+         {
+              if (subs!="")
+              {
+                  foundj = strs.find("+");
+                  if (foundj!=string::npos)
+                      subs = subs.substr(0,foundj-1);
+                  if (subs!="")  vec.push_back(stod(subs));
+                  i++;
+              }
+         }
+         dic.push_back(vec);
+    }
+    return dic;
+}
+
+vector<vector<double>> TuckerApproximation::convert_str_dic_eigVects(string strs, string strs_split)
 {
     vector<vector<double>> dic;
+    vector<double> data;
+
     if (isSubString(strs,strs_split))
     {
         size_t found = strs.find(strs_split);
-        string strs_dic =  strs.substr(found,strs.length());
-        //dic = ast.literal_eval(strs_dic) //TODO
+        string strs_dic = strs.substr(found+strs_split.length(),strs.length());
+        dic = convertStringToVectorOfVectors(strs_dic);
         return dic;
     }
     else cerr << "Warning : strs_split is not in strs!" << endl;
     return dic;
 }
 
-vector<vector<int>> TuckerApproximation::convert_str_dic_int(string strs, string strs_split)
-{
-    vector<vector<int>> dic;
-    if (isSubString(strs,strs_split))
-    {
-        size_t found = strs.find(strs_split);
-        string strs_dic =  strs.substr(found,strs.length());
-        //dic = ast.literal_eval(strs_dic) //TODO
-        return dic;
-    }
-    else cerr << "Warning : strs_split is not in strs!" << endl;
-    return dic;
-}
-
-vector<vector<vector<double>>> TuckerApproximation::getFinalOrthNormalizedEigVects(string NameFile)
+map<string,vector<vector<double>>> TuckerApproximation::getFinalOrthNormalizedEigVects(string NameFile)
 {
     string strs_begin = "Orthonormalized eigenvectors";
     string strs_end = "]]";
     vector<string> list_check_string = get_list_check_string(strs_begin, strs_end, NameFile);
-    vector<vector<vector<double>>> finalOrthNormalizedEigVects;
+    map<string,vector<vector<double>>> finalOrthNormalizedEigVects;
     for (int i=0; i<dimension; i++)
     {
         string lines = list_check_string[i];
         string converted_line = convert_multiLines_oneLine(lines);
-        string str_old = "[ ";
-        string str_new = "[";
-        if (isSubString(converted_line,str_old))
-            converted_line = replace_str(converted_line, str_old, str_new);
-        str_old = "]] ";
-        str_new = "]]";
-        converted_line = replace_str(converted_line, str_old, str_new);
-        str_old = " ";
-        str_new = ", ";
-        converted_line = replace_str(converted_line, str_old, str_new);
-        string strs_split = "self.finalOrthNormalizedEigVects_Axis_k:, ";
-        finalOrthNormalizedEigVects.push_back(convert_str_dic(converted_line, strs_split));
+        converted_line = replace_str(converted_line, "   ", " ");
+        converted_line = replace_str(converted_line, "  ", " ");
+        converted_line = replace_str(converted_line, " ", ",");
+        string strs_split = "self.finalOrthNormalizedEigVects_Axis_k:,";
+        finalOrthNormalizedEigVects.insert(pair<string,vector<vector<double>>>(to_string(i), \
+                                                  convert_str_dic_eigVects(converted_line, strs_split)));
     }
     return finalOrthNormalizedEigVects;
+}
+
+vector<double> convertStringToVector(string s)
+{
+    s.pop_back();
+    s.pop_back();
+    s.erase(0,2);
+    s = TuckerApproximation::replace_str(s, "   ", " ");
+    s = TuckerApproximation::replace_str(s, "  ", " ");
+    s = TuckerApproximation::replace_str(s, " ", ",");
+    vector<double> dic;
+    stringstream ss(s);
+    string subs;
+    while (getline(ss, subs, ','))
+    {
+        if (subs!="") dic.push_back(stod(subs));
+    }
+    return dic;
+}
+
+vector<double> TuckerApproximation::convert_str_dic_tucker_coef(string strs, string strs_split)
+{
+    vector<double> dic;
+    if (isSubString(strs,strs_split))
+    {
+        size_t found = strs.find(strs_split);
+        string strs_dic = strs.substr(found+strs_split.length(),strs.length());
+        dic = convertStringToVector(strs_dic);
+    }
+    else cerr << "Warning : strs_split is not in strs!" << endl;
+    return dic;
 }
 
 vector<double> TuckerApproximation::getFinalTuckerCoeffs(string NameFile)
@@ -322,26 +394,49 @@ vector<double> TuckerApproximation::getFinalTuckerCoeffs(string NameFile)
     string strs_begin = "Coefficient values";
     string strs_end = "]";
     string lines = check_string(strs_begin, strs_end, NameFile);
+
     string converted_line = convert_multiLines_oneLine(lines);
-    string str_old = "[ ";
-    string str_new = "[";
-    if (isSubString(converted_line,str_old))
-        converted_line = replace_str(converted_line, str_old, str_new);
-
-    str_old = "]: ";
-    str_new = "]";
-    if (isSubString(converted_line,str_old))
-        converted_line = replace_str(converted_line, str_old, str_new);
-
-    str_old = " ";
-    str_new = ", ";
-    converted_line = replace_str(converted_line, str_old, str_new);
-
-    string strs_split = "self.FinalTuckerCoeffs, =";
-    vector<double> FinalTuckerCoeffs;// = convert_str_dic(converted_line, strs_split); //TODO
+    string strs_split = "self.FinalTuckerCoeffs =";
+    vector<double> FinalTuckerCoeffs = convert_str_dic_tucker_coef(converted_line, strs_split);
     return FinalTuckerCoeffs;
 }
+vector<vector<int>> convertStringToVectorOfVectorsOfIndexes(string s)
+{
+    s.pop_back();
+    s.erase(0,1);
+    string str_temp, strs = s;
+    vector<vector<int>> dic;
+    size_t found2, found1 = strs.find("[");
+    while (found1!=string::npos)
+    {
+         strs = strs.substr(found1+1,strs.length());
+         found2 = strs.find("]");
+         str_temp = strs;
+         str_temp = str_temp.substr(0,found2);
+         found1 = strs.find("[");
 
+         stringstream ss(str_temp);
+         string subs;
+         vector<int> vec;
+         while (getline(ss, subs, ','))
+              vec.push_back(stod(subs));
+         dic.push_back(vec);
+    }
+    return dic;
+}
+
+vector<vector<int>> TuckerApproximation::convert_str_dic_coef_index(string strs, string strs_split)
+{
+    vector<vector<int>> dic;
+    if (isSubString(strs,strs_split))
+    {
+        size_t found = strs.find(strs_split);
+        string strs_dic = strs.substr(found+strs_split.length(),strs.length());
+        dic = convertStringToVectorOfVectorsOfIndexes(strs_dic);
+    }
+    else cerr << "Warning : strs_split is not in strs!" << endl;
+    return dic;
+}
 
 vector<vector<int>> TuckerApproximation::getListOfFinalCoefIndexes_arr(string NameFile)
 {
@@ -350,22 +445,22 @@ vector<vector<int>> TuckerApproximation::getListOfFinalCoefIndexes_arr(string Na
     string lines = check_string(strs_begin, strs_end, NameFile);
     string converted_line = convert_multiLines_oneLine(lines);
     string strs_split = "self.listOfFinalCoefIndexes_arr = ";
-    vector<vector<int>> listOfFinalCoefIndexes_arr = convert_str_dic_int(converted_line, strs_split);
+    vector<vector<int>> listOfFinalCoefIndexes_arr = convert_str_dic_coef_index(converted_line, strs_split);
     return listOfFinalCoefIndexes_arr;
 }
 
-vector<vector<vector<LagrangePolynomial>>> TuckerApproximation::getListOfBasicFcts( \
-                                        vector<vector<double>> listOfDomainBorders, \
-                                        vector<vector<double>>  listOfTuckerGridNodes, \
-                                        vector<vector<vector<double>>> finalOrthNormalizedEigVects)
+map<string,vector<vector<LagrangePolynomial>>> TuckerApproximation::getListOfBasicFcts( \
+                                          map<string,vector<double>> listOfDomainBorders, \
+                                          map<string,vector<double>> listOfTuckerGridNodes, \
+                                          map<string,vector<vector<double>>> finalOrthNormalizedEigVects)
 {
-    vector<vector<vector<LagrangePolynomial>>> listOfBasicFctsUsingLagrangeInterpolation;
+    map<string,vector<vector<LagrangePolynomial>>> listOfBasicFctsUsingLagrangeInterpolation;
     vector<vector<LagrangePolynomial>> basisFcts_Axis_k;
-    for (int Axis_k=0; Axis_k<dimension; Axis_k++)
+    for (string Axis_k : TuckerApproximation::keys)
     {
         basisFcts_Axis_k = getListOfInterpolationFcts(Axis_k, listOfDomainBorders, listOfTuckerGridNodes, \
           finalOrthNormalizedEigVects);
-        listOfBasicFctsUsingLagrangeInterpolation[Axis_k] = basisFcts_Axis_k;
+        listOfBasicFctsUsingLagrangeInterpolation.insert(pair<string,vector<vector<LagrangePolynomial>>>(Axis_k,basisFcts_Axis_k));
     }
     return listOfBasicFctsUsingLagrangeInterpolation;
 }

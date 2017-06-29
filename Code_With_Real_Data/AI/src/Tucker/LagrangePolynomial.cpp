@@ -5,6 +5,7 @@ LagrangePolynomial::LagrangePolynomial(vector<double> x, vector<double> fx)
 {
     if (x.size() != fx.size())
     {
+        cout << x.size() << " " << fx.size() << endl;
         cout << "Error : x and fx must be the same size" << endl;
         exit(0);
     }

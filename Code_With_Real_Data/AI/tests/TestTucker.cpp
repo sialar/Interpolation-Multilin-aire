@@ -8,6 +8,42 @@
 
 using namespace std;
 
+void print1(vector<double> v)
+{
+    for (size_t i=0; i<v.size(); i++)
+    {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+}
+
+void print2(map<string,vector<double>> v)
+{
+    for (string k : TuckerApproximation::keys)
+    {
+        cout << k << " : ";
+        for (size_t j=0; j<v[k].size(); j++)
+            cout << v[k][j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void print3(vector<vector<vector<double>>> v)
+{
+    for (size_t i=0; i<v.size(); i++)
+    {
+        for (size_t j=0; j<v[i].size(); j++)
+        {
+            for (size_t k=0; k<v[i][j].size(); k++)
+                cout << v[i][j][k] << " ";
+            cout << endl;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
 int main( int argc, char* argv[] )
 {
     string core = "MOX/";
@@ -39,6 +75,11 @@ int main( int argc, char* argv[] )
     listOfFiles.insert(pair<string,string>("macro_fission0",Utils::projectPath+"AI/data/"+core+"TuckerInfor_macro_fission0.txt"));
     listOfFiles.insert(pair<string,string>("macro_fission1",Utils::projectPath+"AI/data/"+core+"TuckerInfor_macro_fission1.txt"));
 
+    TuckerApproximation::keys.push_back("0");
+    TuckerApproximation::keys.push_back("1");
+    TuckerApproximation::keys.push_back("2");
+    TuckerApproximation::keys.push_back("3");
+    TuckerApproximation::keys.push_back("4");
 
     vector<int> listOfSubdivisionDirection(5);
     vector<vector<double>> listOfValuesForSubdivision(5);
@@ -63,49 +104,45 @@ int main( int argc, char* argv[] )
     listOfNumberOfPointsForSubdivision[2] = listOfNumberOfPointsForSubdivision_2;
 
     string NameFile = Utils::projectPath + "AI/data/" + core + "GeneralInfor_MOX.txt";
+
     string strs_begin = "listOfDomainBorders = {";
     string strs_end = "}";
-
     string lines = TuckerApproximation::check_string(strs_begin, strs_end, NameFile);
     string converted_line = TuckerApproximation::convert_multiLines_oneLine(lines);
-
     string strs_split = " = ";
-    vector<vector<double>> listOfDomainBorders = TuckerApproximation::convert_str_dic(converted_line, strs_split);
+    map<string,vector<double>> listOfDomainBorders = TuckerApproximation::convert_str_dic_map(converted_line, strs_split);
+
     strs_begin = "listOfTuckerGridNodes = {";
     strs_end = "}";
-
     lines = TuckerApproximation::check_string(strs_begin, strs_end, NameFile);
-
     converted_line = TuckerApproximation::convert_multiLines_oneLine(lines);
     string str_old = "array(";
     string str_new = "";
     converted_line = TuckerApproximation::replace_str(converted_line, str_old, str_new);
-
     str_old = ")";
     str_new = "";
     converted_line = TuckerApproximation::replace_str(converted_line, str_old, str_new);
-
     strs_split = " = ";
-    vector<vector<double>> listOfTuckerGridNodes_dic = TuckerApproximation::convert_str_dic( converted_line, strs_split);
 
-    vector<vector<double>> listOfTuckerGridNodes = listOfTuckerGridNodes_dic;
-
-    map<string,vector<vector<vector<double>>>> finalOrthNormalizedEigVects;
+    map<string,vector<double>> listOfTuckerGridNodes = TuckerApproximation::convert_str_dic_map( converted_line, strs_split);
+    map<string,map<string,vector<vector<double>>>> finalOrthNormalizedEigVects;
     map<string,vector<double>> FinalTuckerCoeffs;
     map<string,vector<vector<int>>> listOfFinalCoefIndexes_arr;
-    map<string,vector<vector<vector<LagrangePolynomial>>>> listOfBasicFctsUsingLagrangeInterpolation;
+    map<string,map<string,vector<vector<LagrangePolynomial>>>> listOfBasicFctsUsingLagrangeInterpolation;
 
     for (string csName : listOfCrossSectionNamesWithArgs)
     {
         NameFile = listOfFiles[csName];
-        finalOrthNormalizedEigVects.insert(pair<string,vector<vector<vector<double>>>>(csName, \
-                                            TuckerApproximation::getFinalOrthNormalizedEigVects(NameFile)));
+        finalOrthNormalizedEigVects.insert(pair<string,map<string,vector<vector<double>>>>(csName, \
+                                          TuckerApproximation::getFinalOrthNormalizedEigVects(NameFile)));
+
         FinalTuckerCoeffs.insert(pair<string,vector<double>>(csName, TuckerApproximation::getFinalTuckerCoeffs(NameFile)));
         listOfFinalCoefIndexes_arr.insert(pair<string,vector<vector<int>>>(csName, TuckerApproximation::getListOfFinalCoefIndexes_arr(NameFile)));
-        listOfBasicFctsUsingLagrangeInterpolation.insert(pair<string,vector<vector<vector<LagrangePolynomial>>>>( \
-                                csName, TuckerApproximation::getListOfBasicFcts(listOfDomainBorders, listOfTuckerGridNodes, \
-                                finalOrthNormalizedEigVects[csName])));
+        listOfBasicFctsUsingLagrangeInterpolation.insert(pair<string,map<string,vector<vector<LagrangePolynomial>>>>( \
+                                                  csName, TuckerApproximation::getListOfBasicFcts(listOfDomainBorders, \
+                                                  listOfTuckerGridNodes, finalOrthNormalizedEigVects[csName])));
     }
+    /*
     vector<double> point(5,0.1);
     double value_T;
     vector<double> values;
@@ -118,5 +155,6 @@ int main( int argc, char* argv[] )
         cout << value_T << " ";
     }
     cout << endl;
+    */
     return 0;
 }
