@@ -30,6 +30,7 @@ class Interpolation
         int m_nbEvals = 0;
         int m_nbMethods = 3;
 
+
         double m_runTime = 0.0;
         double m_totalTime = 0.0;
         chrono::time_point<chrono::_V2::steady_clock,chrono::duration<double>> m_lastCheckPt;
@@ -70,6 +71,7 @@ class Interpolation
 
         void setFunc(string c);
         void setFunc(string c, vector<string> vr);
+        FunctionsPtr getFunc() { return m_function; };
         vector<double> func(MultiVariatePoint<double> x);
 
 
@@ -130,6 +132,7 @@ void Interpolation<T>::setFunc(string c, vector<string> vr)
 {
     m_function->setCoreType(c);
     m_function->setReactionTypes(vr);
+    m_function->setTuckerProgram();
 }
 
 template <typename T>
@@ -137,6 +140,7 @@ void Interpolation<T>::setFunc(string c)
 {
     m_function->setCoreType(c);
     m_function->setAllReactionTypes();
+    m_function->setTuckerProgram();
 }
 
 template <typename T>

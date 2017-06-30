@@ -52,36 +52,87 @@ void Functions::setAllReactionTypes()
     m_n = m_reactionTypes.size();
 }
 
+void Functions::setTuckerProgram()
+{
+    m_tuckerProgram = make_shared<TuckerApproximation>(m_coreType,m_reactionTypes);
+}
+
+vector<double> convert_str_to_vec(string s)
+{
+    s.pop_back();
+    s.erase(0,1);
+    vector<double> res;
+    stringstream ss(s);
+    string subs;
+    size_t found;
+    while (getline(ss, subs, ','))
+    {
+        found = subs.find("+");
+        if (found!=string::npos)
+        {
+            subs = subs.substr(0,found-1);
+            subs.erase(0,1);
+        }
+        res.push_back(stod(subs));
+    }
+    return res;
+}
+
+vector<double> parse_output(char* cmd)
+{
+    vector<double> res;
+    char buf[BUFSIZE];
+    FILE *fp;
+    if ((fp = popen(cmd, "r")) == NULL)
+        cerr << "Error opening pipe!" << endl;
+
+    while (fgets(buf, BUFSIZE, fp) != NULL)
+    {
+        string buf_str(buf);
+        res = convert_str_to_vec(buf_str);
+    }
+    if (pclose(fp))
+        cerr << "Command not found or exited with error status" << endl;
+    return res;
+}
+
 vector<double> Functions::evaluate(MultiVariatePoint<double> x)
 {
+    /*
+    auto t0 = chrono::steady_clock::now();
+
     string xstr = "";
     for (int i=0; i<x.getD(); i++)
         xstr += to_string(x(i)) + " ";
-
-    string fileName = Utils::projectPath + "AI/data/cross_section_value.dat";
-    string cmd = "cd " + m_directory + "\npython eval.py ";
+    string cmd_s = "cd " + m_directory + "\npython eval.py ";
     for (int i=0; i<m_n; i++)
-        cmd += m_reactionTypes[i] + " ";
-    cmd += xstr;
+        cmd_s += m_reactionTypes[i] + " ";
+    cmd_s += xstr;
+    char *cmd = new char[cmd_s.length() + 1];
+    strcpy(cmd, cmd_s.c_str());
+    vector<double> res = parse_output(cmd);
 
-    if (system(cmd.c_str()) == -1)
-    {
-        cout << " - Failed to execute Tucker program!" << endl;
-        exit(0);
-    }
+    auto t1 = chrono::steady_clock::now();
+    */
+    vector<double> result;
+    for (string csName : m_reactionTypes)
+        result.push_back(m_tuckerProgram->evaluate(x,csName));
+    /*
+    auto t2 = chrono::steady_clock::now();
 
-    ifstream file(fileName, ios::in);
-    vector<double> res;
-    if(file)
-    {
-        string line;
-        while (getline(file,line))
-            res.push_back(stof(line));
-        file.close();
-    }
-    else
-        cerr << "Error while opening the file! " << endl;
-    return res;
+    std::chrono::duration<double> delta1 = t1 - t0;
+    std::chrono::duration<double> delta2 = t2 - t1;
+    cout << x << endl;
+    cout << "[ ";
+    for (size_t i=0; i<res.size()-1; ++i)
+        cout << m_reactionTypes[i] << "|" << res[i] << " ; ";
+    cout << res[res.size()-1] << " ]" << delta1.count() << endl;
+    cout << "[ ";
+    for (size_t i=0; i<result.size()-1; ++i)
+        cout << m_reactionTypes[i] << "|" << result[i] << " ; ";
+    cout << result[result.size()-1] << " ]" << delta2.count() << endl << endl;
+    */
+    return result;
 }
 
 bool Functions::validCoreType(string c)

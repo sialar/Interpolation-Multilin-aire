@@ -9,6 +9,22 @@
 
 using namespace std;
 
+MultiVariatePoint<int> chooseMethods(int dim)
+{
+    MultiVariatePoint<int> methods(dim,0,-1);
+    for (int i=0; i<dim; i++)
+    {
+        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
+        {
+            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
+            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
+            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
+            cin >> methods(i);
+        }
+    }
+    return methods;
+}
 
 string chooseCoreType(int argc, char* argv[], int argNum)
 {
@@ -98,6 +114,9 @@ int main( int argc, char* argv[] )
     string core = chooseCoreType(argc,argv,2);
     vector<string> reactions = chooseReactionsType(argc,argv,3);
 
+    //MultiVariatePoint<int> methods = chooseMethods(dimD);
+    //MixedInterpolationPtr interp(new MixedInterpolation(dimD,reactions.size(),maxIteration,methods));
+
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,reactions.size(),maxIteration));
     interp->setFunc(core,reactions);
 
@@ -111,6 +130,7 @@ int main( int argc, char* argv[] )
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = " \
          << threshold << endl;
     interp->buildPathWithAIAlgo(threshold, false);
+
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();

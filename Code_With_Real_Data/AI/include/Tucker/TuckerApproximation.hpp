@@ -14,29 +14,37 @@
 
 
 #include "LagrangePolynomial.hpp"
+#include "../MultiVariatePoint.hpp"
+#include "../Utils.hpp"
 
 using namespace std;
 
 class TuckerApproximation
 {
+
     public:
         static vector<string> keys;
         static int dimension;
 
-        static double getInterpolation(vector<LagrangePolynomial> fct, double x);
-        static vector<double> getInterpolationArr(vector<LagrangePolynomial> fct, vector<double> x);
+        string core;
+        string infoFileName;
+        vector<string> listOfCrossSectionNames;
+        map<string,string> listOfFiles;
+        map<string,vector<double>> listOfDomainBorders;
+        map<string,vector<double>> listOfTuckerGridNodes;
+
+        map<string,map<string,vector<vector<double>>>> finalOrthNormalizedEigVects;
+        map<string,vector<double>> FinalTuckerCoeffs;
+        map<string,vector<vector<int>>> listOfFinalCoefIndexes_arr;
+        map<string,map<string,vector<vector<LagrangePolynomial>>>> listOfBasicFctsUsingLagrangeInterpolation;
+
+        ~TuckerApproximation() {};
+        TuckerApproximation(string _core, vector<string> listOfCrossSection);
 
         static double computeKinf(map<string, double> listOfValues);
         static double find_nearest(vector<double> myList, double value);
-        static vector<vector<LagrangePolynomial>> getListOfInterpolationFcts( string Axis_k, \
-                                      map<string,vector<double>> listOfDomainBorders, \
-                                      map<string,vector<double>> listOfTuckerGridNodes, \
-                                      map<string,vector<vector<double>>> finalOrthNormalizedEigVects);
-
-        static double evaluate(map<string,vector<vector<LagrangePolynomial>>> listOfBasisFcts, \
-                               vector<vector<int>> listOfFinalCoefIndexes_arr, \
-                               vector<double> FinalTuckerCoeffs, vector<double> point);
-
+        static double getInterpolation(vector<LagrangePolynomial> fct, double x);
+        static vector<double> getInterpolationArr(vector<LagrangePolynomial> fct, MultiVariatePoint<double> x);
         static string check_string(string strs_begin, string strs_end, string NameFile);
         static vector<string> get_list_check_string(string strs_begin, string strs_end, string NameFile);
         static string convert_multiLines_oneLine(string lines);
@@ -45,13 +53,20 @@ class TuckerApproximation
         static map<string,vector<double>> convert_str_dic_map(string strs, string strs_split);
         static vector<double> convert_str_dic_tucker_coef(string strs, string strs_split);
         static vector<vector<int>> convert_str_dic_coef_index(string strs, string strs_split);
-        static map<string,vector<vector<double>>> getFinalOrthNormalizedEigVects(string NameFile);
-        static vector<double> getFinalTuckerCoeffs(string NameFile);
-        static vector<vector<int>> getListOfFinalCoefIndexes_arr(string NameFile);
-        static map<string,vector<vector<LagrangePolynomial>>> getListOfBasicFcts( \
-                                    map<string,vector<double>> listOfDomainBorders, \
-                                    map<string,vector<double>>  listOfTuckerGridNodes, \
-                                    map<string,vector<vector<double>>> finalOrthNormalizedEigVects);
+
+        vector<vector<LagrangePolynomial>> getListOfInterpolationFcts(string Axis_k, string csName);
+        double evaluate(MultiVariatePoint<double> point, string csName);
+        map<string,vector<vector<double>>> getFinalOrthNormalizedEigVects(string NameFile);
+        vector<double> getFinalTuckerCoeffs(string NameFile);
+        vector<vector<int>> getListOfFinalCoefIndexes_arr(string NameFile);
+        map<string,vector<vector<LagrangePolynomial>>> getListOfBasicFcts(string NameFile);
+
+        void setListOfCrossSection(vector<string> listOfCrossSection);
+        void setTuckerGridNodes();
+        void setDomainBorders();
+        void setListOfFiles();
+        void setAll();
 };
 
+typedef std::shared_ptr<TuckerApproximation> TuckerApproximationPtr;
 #endif

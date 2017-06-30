@@ -8,9 +8,13 @@
 #include <sstream>
 #include <cmath>
 #include <limits>
+#include <stdio.h>
 
+#include "Tucker/TuckerApproximation.hpp"
 #include "MultiVariatePoint.hpp"
 #include "Utils.hpp"
+
+#define BUFSIZE 128
 
 using namespace std;
 
@@ -21,6 +25,7 @@ class Functions
       string m_directory;
       string m_coreType;
       vector<string> m_reactionTypes;
+      TuckerApproximationPtr m_tuckerProgram;
 
 
     public:
@@ -30,6 +35,9 @@ class Functions
 
       static vector<string> allCoreTypes;
       static vector<string> allReactionTypes;
+
+      TuckerApproximationPtr tuckerProgram() { return m_tuckerProgram; };
+      void setTuckerProgram();
 
       string getCoreType() { return m_coreType; };
       void setCoreType(string c);

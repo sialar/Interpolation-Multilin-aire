@@ -27,6 +27,7 @@ class Utils
         // Display data and results
         static void separateur();
         static bool displayResults();
+        static void displayValues(vector<double> v);
         static void displayPoints(vector<vector<double>> v);
         static void displayPoints(vector<MultiVariatePoint<double>> v);
 

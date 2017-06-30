@@ -9,6 +9,14 @@ void Utils::separateur()
     cout << endl;
 }
 
+void Utils::displayValues(vector<double> values)
+{
+    cout << "[ ";
+    for (size_t i=0; i<values.size()-1; ++i)
+        cout << values[i] << " ; ";
+    cout << values[values.size()-1] << " ]" << endl;
+}
+
 void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
 {
     cout << "{ ";
