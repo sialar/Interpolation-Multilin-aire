@@ -263,7 +263,7 @@ void Interpolation<T>::computeAIResults()
         {
             realValue = interpolation(m_testPoints[j])[i];
             ai_res.push_back(realValue);
-            ai_err.push_back(pow(10,5) * abs(realValue-m_tuckerResult[csName][j]));
+            ai_err.push_back(pow(10,5) * abs(realValue-m_tuckerResult[csName][j])); 
             //cout << func(m_testPoints[j])[0] << " " << m_tuckerResult[csName][j] << endl;
             //cout << realValue << " " << m_tuckerResult[csName][j] << " ";
             //cout << pow(10,5) * abs(realValue-m_tuckerResult[csName][j]) << endl;
