@@ -54,7 +54,7 @@ vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
     if (argc > argNum)
     {
         if (string(argv[argNum]).compare("ALL")==0)
-            return Functions::allReactionTypes;
+            return Functions::allCrossSectionType;
         for (int i=argNum; i<argc; i++)
         {
             if (!Functions::validReactionType(argv[i]))
@@ -73,7 +73,7 @@ vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
       cout << " - Choose the number of reaction types : ";
       cin >> nbReactions;
     }
-    if (nbReactions==12) return Functions::allReactionTypes;
+    if (nbReactions==12) return Functions::allCrossSectionType;
     for (int i=0; i<nbReactions; i++)
     {
         reaction = "";
@@ -115,13 +115,14 @@ int main( int argc, char* argv[] )
     vector<string> reactions = chooseReactionsType(argc,argv,3);
 
     //MultiVariatePoint<int> methods = chooseMethods(dimD);
-    //MixedInterpolationPtr interp(new MixedInterpolation(dimD,reactions.size(),maxIteration,methods));
+    //MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
 
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,reactions.size(),maxIteration));
-    interp->setFunc(core,reactions);
+    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 
     interp->readEDFTestPointsFromFile();
+    interp->readTuckerResultsFromFile();
     interp->displayRealDomain();
+    interp->displayCrossSectionNames();
     Utils::separateur();
 
     // Path creation
@@ -130,22 +131,18 @@ int main( int argc, char* argv[] )
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = " \
          << threshold << endl;
     interp->buildPathWithAIAlgo(threshold, false);
+    interp->computeAIResults();
+    interp->displayResults();
 
-
-    // Computing real values, and approximation of function g at test points
-    Utils::separateur();
     vector<vector<double>> realValues, estimate;
-    for (int i=0; i<10; i++)
+    for (int i=0; i<interp->nbTestPoints(); i++)
     {
         realValues.push_back(interp->func(interp->testPoints()[i]));
         estimate.push_back(interp->interpolation(interp->testPoints()[i],interp->path().size()));
     }
-
-    // Evaluation
     double relativeError = Utils::relativeInterpolationError(realValues,estimate);
-    double mseError = Utils::mseInterpolationError(realValues,estimate);
     cout << " - Relative Interpolation error (pcm) = " << relativeError << endl;
-    cout << " - MSE Interpolation error (pcm) = " << mseError << endl;
+
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
     cout << " - Total Time = " << interp->totalTime() << endl;
     cout << " - AI Run Time = " << interp->runTime() << endl;

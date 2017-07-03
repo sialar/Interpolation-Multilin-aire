@@ -9,38 +9,11 @@
 
 using namespace std;
 
-
-#define BUFSIZE 128
-
-int parse_output(void) {
-    string rep = Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_MOX_test";
-    string s = "cd " + rep + "\npython eval.py macro_fission0 macro_scattering000 0 0 0 0 0";
-    char *cmd = new char[s.length() + 1];
-    strcpy(cmd, s.c_str());
-
-    char buf[BUFSIZE];
-    FILE *fp;
-
-    if ((fp = popen(cmd, "r")) == NULL) {
-        printf("Error opening pipe!\n");
-        return -1;
-    }
-
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
-        // Do whatever you want here...
-        printf("OUTPUT: %s", buf);
-    }
-
-    if(pclose(fp))  {
-        printf("Command not found or exited with error status\n");
-        return -1;
-    }
-
-    return 0;
-}
-
 int main( int argc, char* argv[] )
 {
-    int a = parse_output();
+    string s = "8.39912e-323 1	0.0	20.0	0.40000000596	0.0	9.99999997475e-07	0.0125141628087	0.0125141618773	0.0125141618773	-0.00502291352693	-0.00502291355499";
+    cout << s << endl;
+    string ss = Utils::eraseExtraSpaces(s);
+    cout << ss << endl;
     return 0;
 }

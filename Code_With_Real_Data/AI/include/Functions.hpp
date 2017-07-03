@@ -14,7 +14,7 @@
 #include "MultiVariatePoint.hpp"
 #include "Utils.hpp"
 
-#define BUFSIZE 128
+#define BUFSIZE 1024
 
 using namespace std;
 
@@ -24,17 +24,17 @@ class Functions
       int m_n;
       string m_directory;
       string m_coreType;
-      vector<string> m_reactionTypes;
+      vector<string> m_crossSections;
       TuckerApproximationPtr m_tuckerProgram;
 
 
     public:
       ~Functions() {};
       Functions() {};
-      Functions(int n, string c, vector<string> vr);
+      Functions(string c, vector<string> cs);
 
       static vector<string> allCoreTypes;
-      static vector<string> allReactionTypes;
+      static vector<string> allCrossSectionType;
 
       TuckerApproximationPtr tuckerProgram() { return m_tuckerProgram; };
       void setTuckerProgram();
@@ -42,9 +42,9 @@ class Functions
       string getCoreType() { return m_coreType; };
       void setCoreType(string c);
 
-      vector<string> getReactionType() { return m_reactionTypes; };
-      void setReactionTypes(vector<string> vr);
-      void setAllReactionTypes();
+      vector<string> getReactionType() { return m_crossSections; };
+      void setCrossSectionType(vector<string> cs);
+      void setAllCrossSectionType();
 
       vector<double> evaluate(MultiVariatePoint<double> x);
 

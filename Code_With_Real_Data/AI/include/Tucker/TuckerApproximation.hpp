@@ -22,13 +22,12 @@ using namespace std;
 class TuckerApproximation
 {
 
-    public:
+    private:
         static vector<string> keys;
         static int dimension;
 
         string core;
         string infoFileName;
-        vector<string> listOfCrossSectionNames;
         map<string,string> listOfFiles;
         map<string,vector<double>> listOfDomainBorders;
         map<string,vector<double>> listOfTuckerGridNodes;
@@ -37,6 +36,9 @@ class TuckerApproximation
         map<string,vector<double>> FinalTuckerCoeffs;
         map<string,vector<vector<int>>> listOfFinalCoefIndexes_arr;
         map<string,map<string,vector<vector<LagrangePolynomial>>>> listOfBasicFctsUsingLagrangeInterpolation;
+
+    public:
+        vector<string> listOfCrossSectionNames;
 
         ~TuckerApproximation() {};
         TuckerApproximation(string _core, vector<string> listOfCrossSection);
@@ -48,7 +50,7 @@ class TuckerApproximation
         static string check_string(string strs_begin, string strs_end, string NameFile);
         static vector<string> get_list_check_string(string strs_begin, string strs_end, string NameFile);
         static string convert_multiLines_oneLine(string lines);
-        static string replace_str(string strs, string str_old, string str_new);
+
         static vector<vector<double>> convert_str_dic_eigVects(string strs, string strs_split);
         static map<string,vector<double>> convert_str_dic_map(string strs, string strs_split);
         static vector<double> convert_str_dic_tucker_coef(string strs, string strs_split);

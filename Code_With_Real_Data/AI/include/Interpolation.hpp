@@ -30,6 +30,8 @@ class Interpolation
         int m_nbEvals = 0;
         int m_nbMethods = 3;
 
+        string m_core;
+        vector<string> m_crossSections;
 
         double m_runTime = 0.0;
         double m_totalTime = 0.0;
@@ -44,20 +46,30 @@ class Interpolation
         vector<MultiVariatePointPtr<T>> m_path;
         list<MultiVariatePointPtr<T>> m_curentNeighbours;
 
-        bool m_displayProgress = true;
+        map<string,vector<double>> m_appoloResult;
+        map<string,vector<double>> m_cocagneResult;
+        map<string,vector<double>> m_tuckerResult;
+        map<string,vector<double>> m_aiResult;
 
+        map<string,vector<double>> m_cocagneError;
+        map<string,vector<double>> m_tuckerError;
+        map<string,vector<double>> m_aiError;
+
+        bool m_displayProgress = true;
         FunctionsPtr m_function;
 
     public:
+
         Interpolation() {};
         virtual ~Interpolation() {};
-        Interpolation(int d, int m_n, int nIter);
+        Interpolation(int d, string core, vector<string> cs, int nIter);
 
         /************************* Data points ********************************/
         const int nbEvals() { return m_nbEvals; };
         const double runTime() { return m_runTime; };
         const double totalTime() { return m_totalTime; };
         const int maxIteration() { return m_maxIteration; };
+        const int nbTestPoints() { return m_nbTestPoints; };
         void disableProgressDisplay() { m_displayProgress = false; };
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
@@ -76,6 +88,7 @@ class Interpolation
 
 
         /************************* AI algo ************************************/
+        void computeAIResults();
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
         int buildPathWithAIAlgo( double threshold, bool debug);
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
@@ -86,28 +99,35 @@ class Interpolation
         /************************* Interpolation ******************************/
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
         vector<double> interpolation(MultiVariatePoint<double>& x, int end);
+        vector<double> interpolation(MultiVariatePoint<double>& x);
 
         /************************* Other functions ****************************/
         void clearAll();
         void displayPath();
         void clearAllAlpha();
+        void displayResults();
         void displayRealDomain();
         void displayCurentNeighbours();
+        void displayCrossSectionNames();
         void readEDFTestPointsFromFile();
+        void readTuckerResultsFromFile();
 };
 
 template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
 
 template <typename T>
-Interpolation<T>::Interpolation(int d, int n, int nIter)
+Interpolation<T>::Interpolation(int d, string core, vector<string> cs, int nIter)
 {
-    m_interpolationPoints.resize(d);
-    m_function = make_shared<Functions>();
+    m_d = d;
+    m_core = core;
+    m_n = cs.size();
+    m_crossSections = cs;
     m_realDomain.resize(d);
     m_maxIteration = nIter;
-    m_d = d;
-    m_n = n;
+    m_interpolationPoints.resize(d);
+    m_function = make_shared<Functions>(core, cs);
+
 }
 
 template <typename T>
@@ -130,17 +150,23 @@ void Interpolation<T>::clearAllAlpha()
 template <typename T>
 void Interpolation<T>::setFunc(string c, vector<string> vr)
 {
+    m_core = c;
+    m_n = vr.size();
+    m_crossSections = vr;
     m_function->setCoreType(c);
-    m_function->setReactionTypes(vr);
+    m_function->setCrossSectionType(vr);
     m_function->setTuckerProgram();
 }
 
 template <typename T>
 void Interpolation<T>::setFunc(string c)
 {
+    m_core = c;
     m_function->setCoreType(c);
-    m_function->setAllReactionTypes();
+    m_function->setAllCrossSectionType();
     m_function->setTuckerProgram();
+    m_crossSections = m_function->getReactionType();
+    m_n = m_crossSections.size();
 }
 
 template <typename T>
@@ -225,6 +251,27 @@ void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
     }
     nu->setAlpha(res);
 }
+template <typename T>
+void Interpolation<T>::computeAIResults()
+{
+    for (int i=0; i<m_n; i++)
+    {
+        string csName = m_crossSections[i];
+        vector<double> ai_res, ai_err;
+        double realValue;
+        for (int j=0; j<m_nbTestPoints; j++)
+        {
+            realValue = interpolation(m_testPoints[j])[i];
+            ai_res.push_back(realValue);
+            ai_err.push_back(pow(10,5) * abs(realValue-m_tuckerResult[csName][j]));
+            //cout << func(m_testPoints[j])[0] << " " << m_tuckerResult[csName][j] << endl;
+            //cout << realValue << " " << m_tuckerResult[csName][j] << " ";
+            //cout << pow(10,5) * abs(realValue-m_tuckerResult[csName][j]) << endl;
+        }
+        m_aiResult.insert(pair<string,vector<double>>(csName,ai_res));
+        m_aiError.insert(pair<string,vector<double>>(csName,ai_err));
+    }
+}
 /******************************************************************************/
 
 /*************************** Interpolation ************************************/
@@ -242,6 +289,11 @@ vector<double> Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int
           sum[i] += (m_path[k]->getAlpha())[i] * l_prod;
   }
   return sum;
+}
+template <typename T>
+vector<double> Interpolation<T>::interpolation(MultiVariatePoint<double>& x)
+{
+  return interpolation(x,m_maxIteration);
 }
 /******************************************************************************/
 
@@ -285,6 +337,35 @@ void Interpolation<T>::displayRealDomain()
 }
 
 template <typename T>
+void Interpolation<T>::displayResults()
+{
+    vector<double> co_err, tu_err, ai_err;
+    for (int i=0; i<m_n; i++)
+    {
+        string csName = m_crossSections[i];
+        co_err.push_back(*max_element(m_cocagneError[csName].begin(),m_cocagneError[csName].end()));
+        tu_err.push_back(*max_element(m_tuckerError[csName].begin(),m_tuckerError[csName].end()));
+        ai_err.push_back(*max_element(m_aiError[csName].begin(),m_aiError[csName].end()));
+    }
+    cout << " - Interpolation error using Cocagne (pcm) = ";
+    Utils::displayValues(co_err);
+    cout << " - Interpolation error using Tucker (pcm) = ";
+    Utils::displayValues(tu_err);
+    cout << " - Interpolation error using AI (pcm) = ";
+    Utils::displayValues(ai_err);
+}
+
+template <typename T>
+void Interpolation<T>::displayCrossSectionNames()
+{
+    cout << " - Cross section types : [ " << m_crossSections[0];
+    for (int i=1; i<m_n; i++)
+        cout  << " ; " << m_crossSections[i];
+    cout << " ]" << endl;
+}
+
+
+template <typename T>
 void Interpolation<T>::readEDFTestPointsFromFile()
 {
     ifstream file(Utils::projectPath + "AI/data/reference_points.dat", ios::in);
@@ -321,6 +402,43 @@ void Interpolation<T>::readEDFTestPointsFromFile()
     }
     else
         cerr << "Error while opening the file!" << endl;
+}
+
+template <typename T>
+void Interpolation<T>::readTuckerResultsFromFile()
+{
+    for (string csName : m_crossSections)
+    {
+        string s = Utils::replace(csName,"*","_");
+        ifstream file(Utils::projectPath + "AI/data/" + m_core + "/FinalResults/" + s, ios::in);
+        if(file)
+        {
+            string line;
+            vector<double> data, ap_res, co_res, tu_res, co_err, tu_err;
+            while (getline(file, line))
+            {
+                line = Utils::eraseExtraSpaces(line);
+                stringstream ss(line);
+                data.clear();
+                string word;
+                while (getline(ss, word, ' '))
+                    data.push_back(stod(word));
+                ap_res.push_back(data[6]);
+                co_res.push_back(data[7]);
+                tu_res.push_back(data[8]);
+                co_err.push_back(data[9]);
+                tu_err.push_back(data[10]);
+            }
+            m_appoloResult.insert(pair<string,vector<double>>(csName,ap_res));
+            m_cocagneResult.insert(pair<string,vector<double>>(csName,co_res));
+            m_tuckerResult.insert(pair<string,vector<double>>(csName,tu_res));
+            m_cocagneError.insert(pair<string,vector<double>>(csName,co_err));
+            m_tuckerError.insert(pair<string,vector<double>>(csName,tu_err));
+            file.close();
+        }
+        else
+            cerr << "Error while opening " << csName << " file!" << endl;
+    }
 }
 /******************************************************************************/
 

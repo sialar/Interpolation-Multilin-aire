@@ -19,31 +19,15 @@ TuckerApproximation::TuckerApproximation(string _core, vector<string> listOfCros
     setTuckerGridNodes();
     setAll();
 }
-
 void TuckerApproximation::setListOfCrossSection(vector<string> listOfCrossSection)
 {
-    /*
-    listOfCrossSectionNames.push_back("macro_totale0");
-    listOfCrossSectionNames.push_back("macro_totale1");
-    listOfCrossSectionNames.push_back("macro_absorption0");
-    listOfCrossSectionNames.push_back("macro_absorption1");
-    listOfCrossSectionNames.push_back("macro_scattering000");
-    listOfCrossSectionNames.push_back("macro_scattering001");
-    listOfCrossSectionNames.push_back("macro_scattering010");
-    listOfCrossSectionNames.push_back("macro_scattering011");
-    listOfCrossSectionNames.push_back("macro_nu*fission0");
-    listOfCrossSectionNames.push_back("macro_nu*fission1");
-    listOfCrossSectionNames.push_back("macro_fission0");
-    listOfCrossSectionNames.push_back("macro_fission1");
-    */
     listOfCrossSectionNames = listOfCrossSection;
 }
-
 void TuckerApproximation::setListOfFiles()
 {
     for (string cs : listOfCrossSectionNames)
     {
-        string s = replace_str(cs,"*","_");
+        string s = Utils::replace(cs,"*","_");
         listOfFiles.insert(pair<string,string>(cs,Utils::projectPath + "AI/data/" + core + "/TuckerInfor_" + s + ".txt"));
     }
 }
@@ -124,7 +108,6 @@ bool isSubString(string str, string substr)
 }
 vector<double> getFirstVectorFromString(string s)
 {
-    // s : " 'k' : [ a0, a1, a2, ..., an ], ... " ---> vec = map['k'] = [ a0, a1, a2, ..., an ]
     vector<double> vec;
     size_t found = s.find("[");
     s.replace(0, found+1, "");
@@ -180,9 +163,8 @@ vector<double> convertStringToVector(string s)
     s.pop_back();
     s.pop_back();
     s.erase(0,2);
-    s = TuckerApproximation::replace_str(s, "   ", " ");
-    s = TuckerApproximation::replace_str(s, "  ", " ");
-    s = TuckerApproximation::replace_str(s, " ", ",");
+    s = Utils::eraseExtraSpaces(s);
+    s = Utils::replace(s, " ", ",");
     vector<double> dic;
     stringstream ss(s);
     string subs;
@@ -343,16 +325,6 @@ vector<vector<int>> TuckerApproximation::convert_str_dic_coef_index(string strs,
   else cerr << "Warning : strs_split is not in strs!" << endl;
   return dic;
 }
-string TuckerApproximation::replace_str(string strs, string str_old, string str_new)
-{
-  size_t found = strs.find(str_old);
-  while (found!=string::npos)
-  {
-    strs.replace(found, str_old.length(), str_new);
-    found = strs.find(str_old);
-  }
-  return strs;
-}
 double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, double x)
 {
   int n = fct.size();
@@ -479,9 +451,8 @@ map<string,vector<vector<double>>> TuckerApproximation::getFinalOrthNormalizedEi
     {
         string lines = list_check_string[i];
         string converted_line = convert_multiLines_oneLine(lines);
-        converted_line = replace_str(converted_line, "   ", " ");
-        converted_line = replace_str(converted_line, "  ", " ");
-        converted_line = replace_str(converted_line, " ", ",");
+        converted_line = Utils::eraseExtraSpaces(converted_line);
+        converted_line = Utils::replace(converted_line, " ", ",");
         string strs_split = "self.finalOrthNormalizedEigVects_Axis_k:,";
         orthNormalizedEigVects.insert(pair<string,vector<vector<double>>>(to_string(i), \
                                                   convert_str_dic_eigVects(converted_line, strs_split)));

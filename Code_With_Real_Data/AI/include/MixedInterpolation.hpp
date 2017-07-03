@@ -25,7 +25,7 @@ class MixedInterpolation : public Interpolation<string>
       vector<BinaryTreePtr> m_trees;
 
     public:
-      MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods);
+      MixedInterpolation(int d, string core, vector<string> cs, int nIter, MultiVariatePoint<int> methods);
       ~MixedInterpolation() {};
       void clearAllTrees();
 

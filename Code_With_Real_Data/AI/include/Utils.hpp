@@ -42,6 +42,8 @@ class Utils
         static double adaptCoordsToFunctionDomain(double a, double b, double x);
         static double convertToFunctionDomain(double a, double b, double x);
         static MultiVariatePoint<double> getCoordsFromString(string s);
+        static string replace(string strs, string str_old, string str_new);
+        static string eraseExtraSpaces(string strs);
 
         // Intermediate function for Leja points computation
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);

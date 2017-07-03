@@ -23,7 +23,7 @@ class PiecewiseInterpolation : public Interpolation<string>
         vector<BinaryTreePtr> m_trees;
 
     public:
-        PiecewiseInterpolation(int d, int n, int nIter, int method);
+        PiecewiseInterpolation(int d, string core, vector<string> cs, int nIter, int method);
         ~PiecewiseInterpolation() {};
         void clearAllTrees();
 

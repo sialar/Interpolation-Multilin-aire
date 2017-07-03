@@ -1,7 +1,7 @@
 #include "../include/MixedInterpolation.hpp"
 
-MixedInterpolation::MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods) :
-    Interpolation(d,n,nIter)
+MixedInterpolation::MixedInterpolation(int d, string core, vector<string> cs, int nIter, MultiVariatePoint<int> methods) :
+    Interpolation(d, core, cs, nIter)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
     m_trees.resize(m_d);

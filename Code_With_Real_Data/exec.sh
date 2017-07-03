@@ -10,7 +10,7 @@ help()
   echo " Arguments required:"
   echo "   - arg 1  : Number of iteration in AI algorithm [$1]"
   echo "   - arg 2  : Core type [$2]"
-  echo "   - arg >2 : reaction types (between 1 and 12) [$2]"
+  echo "   - arg >2 : Reaction types (between 1 and 12) [$2]"
   echo ""
 }
 

@@ -11,10 +11,10 @@ void Utils::separateur()
 
 void Utils::displayValues(vector<double> values)
 {
-    cout << "[ ";
-    for (size_t i=0; i<values.size()-1; ++i)
-        cout << values[i] << " ; ";
-    cout << values[values.size()-1] << " ]" << endl;
+    cout << "[ " << values[0];
+    for (size_t i=1; i<values.size()-1; ++i)
+        cout << " ; " << values[i];
+    cout << " ]" << endl;
 }
 
 void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
@@ -319,4 +319,21 @@ bool Utils::displayResults()
       cin >> display;
   }
   return (display=='y');
+}
+
+string Utils::replace(string strs, string str_old, string str_new)
+{
+  size_t found = strs.find(str_old);
+  while (found!=string::npos)
+  {
+    strs.replace(found, str_old.length(), str_new);
+    found = strs.find(str_old);
+  }
+  return strs;
+}
+
+string Utils::eraseExtraSpaces(string strs)
+{
+    string s = replace(strs, "\t", " ");
+    return replace(s, "  ", " ");
 }
