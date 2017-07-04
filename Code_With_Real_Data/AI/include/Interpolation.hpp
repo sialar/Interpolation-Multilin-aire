@@ -256,7 +256,7 @@ void Interpolation<T>::computeAIResults()
         {
             val = interpolation(m_testPoints[j])[i];
             ai_res.push_back(val);
-            ai_err.push_back(pow(10,5) * abs(val-m_tuckerResult[csName][j]) / denom);
+            ai_err.push_back(pow(10,5) * (val-m_tuckerResult[csName][j]) / denom);
         }
         m_aiResult.insert(pair<string,vector<double>>(csName,ai_res));
         m_aiError.insert(pair<string,vector<double>>(csName,ai_err));
