@@ -116,7 +116,6 @@ int main( int argc, char* argv[] )
 
     //MultiVariatePoint<int> methods = chooseMethods(dimD);
     //MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
-
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 
     interp->readTuckerDataFromFile();
@@ -127,14 +126,13 @@ int main( int argc, char* argv[] )
     // Path creation
     double threshold = 1e-9;
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = " \
-         << threshold << endl;
     interp->buildPathWithAIAlgo(threshold, false);
     interp->computeAIResults();
     interp->displayResults();
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
     cout << " - Total Time = " << interp->totalTime() << endl;
     cout << " - AI Run Time = " << interp->runTime() << endl;
+    interp->saveFinalResultsInFile();
 
     return 0;
 }

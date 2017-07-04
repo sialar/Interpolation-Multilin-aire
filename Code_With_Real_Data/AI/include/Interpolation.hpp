@@ -104,6 +104,7 @@ class Interpolation
         void clearAllAlpha();
         void displayResults();
         void displayRealDomain();
+        void saveFinalResultsInFile();
         void readTuckerDataFromFile();
         void displayCurentNeighbours();
         void displayCrossSectionNames();
@@ -249,12 +250,13 @@ void Interpolation<T>::computeAIResults()
     {
         string csName = m_function->getCrossSections()[i];
         vector<double> ai_res, ai_err;
-        double val;
+        double val, denom;
+        denom = 1;//Utils::maxAbsValue(m_tuckerResult[csName]);
         for (int j=0; j<m_nbTestPoints; j++)
         {
             val = interpolation(m_testPoints[j])[i];
             ai_res.push_back(val);
-            ai_err.push_back(pow(10,5) * abs(val-m_tuckerResult[csName][j]));
+            ai_err.push_back(pow(10,5) * abs(val-m_tuckerResult[csName][j]) / denom);
         }
         m_aiResult.insert(pair<string,vector<double>>(csName,ai_res));
         m_aiError.insert(pair<string,vector<double>>(csName,ai_err));
@@ -295,7 +297,7 @@ void Interpolation<T>::displayPath()
     int n = m_path.size();
     for (int i=0; i<n; i++)
     {
-        if (i>0) cout << "\t";
+        if (i>0) cout << "\t ";
         cout << " " << i << " :";
         cout << " [" << *m_path[i] << ":" << setprecision(numeric_limits<double>::digits10+1) << getPoint(m_path[i]);
         cout << ":" << m_path[i] << "] --> alpha" << *m_path[i] << " = " << Utils::vector2str(m_path[i]->getAlpha()) << endl;
@@ -357,8 +359,10 @@ void Interpolation<T>::displayResults()
 template <typename T>
 void Interpolation<T>::readTuckerDataFromFile()
 {
-    for (string csName : m_function->getCrossSections())
+
+    for (int k=0; k<m_n; k++)
     {
+        string csName = m_function->getCrossSections()[k];
         string s = Utils::replace(csName,"*","_");
         ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/" + s, ios::in);
         if(file)
@@ -376,15 +380,18 @@ void Interpolation<T>::readTuckerDataFromFile()
                 string word;
                 while (getline(ss, word, ' '))
                     data.push_back(stod(word));
-                for (int i=0; i<5; i++)
-                    p(i) = data[i+1];
-                m_testPoints.push_back(p);
-                for (int i=0; i<m_d; i++)
+                if (!k)
                 {
-                    if (p(i) > max[i])
-                        max[i] = p(i);
-                    if (p(i) < min[i])
-                        min[i] = p(i);
+                    for (int i=0; i<5; i++)
+                        p(i) = data[i+1];
+                    m_testPoints.push_back(p);
+                    for (int i=0; i<m_d; i++)
+                    {
+                        if (p(i) > max[i])
+                            max[i] = p(i);
+                        if (p(i) < min[i])
+                            min[i] = p(i);
+                    }
                 }
                 ap_res.push_back(data[6]);
                 co_res.push_back(data[7]);
@@ -392,16 +399,18 @@ void Interpolation<T>::readTuckerDataFromFile()
                 co_err.push_back(data[9]);
                 tu_err.push_back(data[10]);
             }
-
-            for (int i=0; i<m_d; i++)
+            if (!k)
             {
-                m_realDomain[i].push_back(min[i]);
-                m_realDomain[i].push_back(max[i]);
+                for (int i=0; i<m_d; i++)
+                {
+                    m_realDomain[i].push_back(min[i]);
+                    m_realDomain[i].push_back(max[i]);
+                }
+                m_nbTestPoints = m_testPoints.size();
+                for (int i=0; i<m_nbTestPoints; i++)
+                    for (int j=0; j<m_d; j++)
+                        m_testPoints[i](j) = Utils::adaptCoordsToFunctionDomain(min[j], max[j], m_testPoints[i](j));
             }
-            m_nbTestPoints = m_testPoints.size();
-            for (int i=0; i<m_nbTestPoints; i++)
-                for (int j=0; j<m_d; j++)
-                    m_testPoints[i](j) = Utils::adaptCoordsToFunctionDomain(min[j], max[j], m_testPoints[i](j));
             m_appoloResult.insert(pair<string,vector<double>>(csName,ap_res));
             m_cocagneResult.insert(pair<string,vector<double>>(csName,co_res));
             m_tuckerResult.insert(pair<string,vector<double>>(csName,tu_res));
@@ -413,6 +422,35 @@ void Interpolation<T>::readTuckerDataFromFile()
             cerr << "Error while opening " << csName << " file!" << endl;
     }
 }
+
+template <typename T>
+void Interpolation<T>::saveFinalResultsInFile()
+{
+    for (string csName : m_function->getCrossSections())
+    {
+        string s = Utils::replace(csName,"*","_");
+        ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/AI_results_" + s, ios::out);
+        if(file)
+        {
+            for (int i=0; i<m_nbTestPoints; i++)
+            {
+              MultiVariatePoint<double> x(m_testPoints[i]);
+              for (int j=0; j<m_d; j++)
+                  x(j) = Utils::convertToFunctionDomain(m_realDomain[j][0], m_realDomain[j][1], m_testPoints[i](j));
+
+              file << (i+1) << " ";
+              for (int j=0; j<m_d; j++)
+                  file << x(j) << " ";
+              file << m_appoloResult[csName][i] << " " << m_cocagneResult[csName][i] << " " << m_tuckerResult[csName][i] << " ";
+              file << m_aiResult[csName][i] << " " << m_cocagneError[csName][i] << " " << m_tuckerError[csName][i] << " " << m_aiError[csName][i] << endl;
+            }
+            file.close();
+        }
+        else
+            cerr << "Error while opening the file!" << endl;
+    }
+}
+
 /******************************************************************************/
 
 #endif

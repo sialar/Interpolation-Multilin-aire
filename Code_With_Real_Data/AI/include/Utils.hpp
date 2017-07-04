@@ -39,6 +39,7 @@ class Utils
         static double randomValue(double a, double b);
         static string vector2str(vector<double> x);
         static double norm(vector<double> x, int p);
+        static double maxAbsValue(vector<double> vec);
         static double adaptCoordsToFunctionDomain(double a, double b, double x);
         static double convertToFunctionDomain(double a, double b, double x);
         static MultiVariatePoint<double> getCoordsFromString(string s);

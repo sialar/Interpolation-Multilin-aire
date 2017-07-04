@@ -12,7 +12,7 @@ void Utils::separateur()
 void Utils::displayValues(vector<double> values)
 {
     cout << "[ " << values[0];
-    for (size_t i=1; i<values.size()-1; ++i)
+    for (size_t i=1; i<values.size(); ++i)
         cout << " ; " << values[i];
     cout << " ]" << endl;
 }
@@ -336,4 +336,14 @@ string Utils::eraseExtraSpaces(string strs)
 {
     string s = replace(strs, "\t", " ");
     return replace(s, "  ", " ");
+}
+
+bool absLess(double x, double y)
+{
+    return  abs(x) < abs(y);
+}
+
+double Utils::maxAbsValue(vector<double> vec)
+{
+    return *max_element(vec.begin(), vec.end(), absLess);
 }

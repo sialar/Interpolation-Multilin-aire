@@ -42,7 +42,7 @@ bool ageLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 }
 MultiVariatePointPtr<int> LagrangeInterpolation::maxElement(int iteration)
 {
-  if (iteration%4)
+  if (iteration%2)
       return *max_element(m_curentNeighbours.begin(),m_curentNeighbours.end(),alphaLess);
   else
   {
