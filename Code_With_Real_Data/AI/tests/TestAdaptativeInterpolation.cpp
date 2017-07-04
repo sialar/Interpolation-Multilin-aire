@@ -57,7 +57,7 @@ vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
             return Functions::allCrossSectionType;
         for (int i=argNum; i<argc; i++)
         {
-            if (!Functions::validReactionType(argv[i]))
+            if (!Functions::validCrossSections(argv[i]))
             {
                 cout << "Invalid reaction type!" << endl;
                 exit(1);
@@ -77,7 +77,7 @@ vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
     for (int i=0; i<nbReactions; i++)
     {
         reaction = "";
-        while (!Functions::validReactionType(reaction))
+        while (!Functions::validCrossSections(reaction))
         {
           cout << " - Choose the reaction type " << i+1 << " from { 'macro_totale0', 'macro_totale1', "
                << "'macro_absorption0', 'macro_absorption1', 'macro_scattering000', "
@@ -119,8 +119,7 @@ int main( int argc, char* argv[] )
 
     LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 
-    interp->readEDFTestPointsFromFile();
-    interp->readTuckerResultsFromFile();
+    interp->readTuckerDataFromFile();
     interp->displayRealDomain();
     interp->displayCrossSectionNames();
     Utils::separateur();
@@ -133,16 +132,6 @@ int main( int argc, char* argv[] )
     interp->buildPathWithAIAlgo(threshold, false);
     interp->computeAIResults();
     interp->displayResults();
-
-    vector<vector<double>> realValues, estimate;
-    for (int i=0; i<interp->nbTestPoints(); i++)
-    {
-        realValues.push_back(interp->func(interp->testPoints()[i]));
-        estimate.push_back(interp->interpolation(interp->testPoints()[i],interp->path().size()));
-    }
-    double relativeError = Utils::relativeInterpolationError(realValues,estimate);
-    cout << " - Relative Interpolation error (pcm) = " << relativeError << endl;
-
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
     cout << " - Total Time = " << interp->totalTime() << endl;
     cout << " - AI Run Time = " << interp->runTime() << endl;

@@ -67,7 +67,6 @@ void TuckerApproximation::setAll()
 
 double min_elt(vector<double> v)
 {
-    if (v.empty()) return -11;
     double m = v[0];
     for (double x : v)
         if (x<m)
@@ -76,7 +75,6 @@ double min_elt(vector<double> v)
 }
 double max_elt(vector<double> v)
 {
-    if (v.empty()) return -11;
     double m = v[0];
     for (double x : v)
         if (x>m)
@@ -257,7 +255,7 @@ vector<string> TuckerApproximation::get_list_check_string(string strs_begin, str
     }
     file.close();
   }
-  else cerr << "Error while opening the filegg!" << endl;
+  else cerr << "Error while opening the file!" << endl;
   return list_found_strs;
 }
 string TuckerApproximation::convert_multiLines_oneLine(string lines)

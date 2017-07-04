@@ -30,9 +30,6 @@ class Interpolation
         int m_nbEvals = 0;
         int m_nbMethods = 3;
 
-        string m_core;
-        vector<string> m_crossSections;
-
         double m_runTime = 0.0;
         double m_totalTime = 0.0;
         chrono::time_point<chrono::_V2::steady_clock,chrono::duration<double>> m_lastCheckPt;
@@ -107,10 +104,9 @@ class Interpolation
         void clearAllAlpha();
         void displayResults();
         void displayRealDomain();
+        void readTuckerDataFromFile();
         void displayCurentNeighbours();
         void displayCrossSectionNames();
-        void readEDFTestPointsFromFile();
-        void readTuckerResultsFromFile();
 };
 
 template <typename T>
@@ -120,9 +116,7 @@ template <typename T>
 Interpolation<T>::Interpolation(int d, string core, vector<string> cs, int nIter)
 {
     m_d = d;
-    m_core = core;
     m_n = cs.size();
-    m_crossSections = cs;
     m_realDomain.resize(d);
     m_maxIteration = nIter;
     m_interpolationPoints.resize(d);
@@ -150,9 +144,7 @@ void Interpolation<T>::clearAllAlpha()
 template <typename T>
 void Interpolation<T>::setFunc(string c, vector<string> vr)
 {
-    m_core = c;
     m_n = vr.size();
-    m_crossSections = vr;
     m_function->setCoreType(c);
     m_function->setCrossSectionType(vr);
     m_function->setTuckerProgram();
@@ -161,12 +153,10 @@ void Interpolation<T>::setFunc(string c, vector<string> vr)
 template <typename T>
 void Interpolation<T>::setFunc(string c)
 {
-    m_core = c;
     m_function->setCoreType(c);
     m_function->setAllCrossSectionType();
     m_function->setTuckerProgram();
-    m_crossSections = m_function->getReactionType();
-    m_n = m_crossSections.size();
+    m_n = m_function->getCrossSections().size();
 }
 
 template <typename T>
@@ -251,22 +241,20 @@ void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
     }
     nu->setAlpha(res);
 }
+
 template <typename T>
 void Interpolation<T>::computeAIResults()
 {
     for (int i=0; i<m_n; i++)
     {
-        string csName = m_crossSections[i];
+        string csName = m_function->getCrossSections()[i];
         vector<double> ai_res, ai_err;
-        double realValue;
+        double val;
         for (int j=0; j<m_nbTestPoints; j++)
         {
-            realValue = interpolation(m_testPoints[j])[i];
-            ai_res.push_back(realValue);
-            ai_err.push_back(pow(10,5) * abs(realValue-m_tuckerResult[csName][j])); 
-            //cout << func(m_testPoints[j])[0] << " " << m_tuckerResult[csName][j] << endl;
-            //cout << realValue << " " << m_tuckerResult[csName][j] << " ";
-            //cout << pow(10,5) * abs(realValue-m_tuckerResult[csName][j]) << endl;
+            val = interpolation(m_testPoints[j])[i];
+            ai_res.push_back(val);
+            ai_err.push_back(pow(10,5) * abs(val-m_tuckerResult[csName][j]));
         }
         m_aiResult.insert(pair<string,vector<double>>(csName,ai_res));
         m_aiError.insert(pair<string,vector<double>>(csName,ai_err));
@@ -336,13 +324,24 @@ void Interpolation<T>::displayRealDomain()
     cout << "[" << m_realDomain[m_d-1][0] << "," << m_realDomain[m_d-1][1] << "]" << endl;
 }
 
+
+
+template <typename T>
+void Interpolation<T>::displayCrossSectionNames()
+{
+    cout << " - Cross section types : [ " << m_function->getCrossSections()[0];
+    for (int i=1; i<m_n; i++)
+        cout  << " ; " << m_function->getCrossSections()[i];
+    cout << " ]" << endl;
+}
+
 template <typename T>
 void Interpolation<T>::displayResults()
 {
     vector<double> co_err, tu_err, ai_err;
     for (int i=0; i<m_n; i++)
     {
-        string csName = m_crossSections[i];
+        string csName = m_function->getCrossSections()[i];
         co_err.push_back(*max_element(m_cocagneError[csName].begin(),m_cocagneError[csName].end()));
         tu_err.push_back(*max_element(m_tuckerError[csName].begin(),m_tuckerError[csName].end()));
         ai_err.push_back(*max_element(m_aiError[csName].begin(),m_aiError[csName].end()));
@@ -356,65 +355,19 @@ void Interpolation<T>::displayResults()
 }
 
 template <typename T>
-void Interpolation<T>::displayCrossSectionNames()
+void Interpolation<T>::readTuckerDataFromFile()
 {
-    cout << " - Cross section types : [ " << m_crossSections[0];
-    for (int i=1; i<m_n; i++)
-        cout  << " ; " << m_crossSections[i];
-    cout << " ]" << endl;
-}
-
-
-template <typename T>
-void Interpolation<T>::readEDFTestPointsFromFile()
-{
-    ifstream file(Utils::projectPath + "AI/data/reference_points.dat", ios::in);
-    if(file)
-    {
-        string line;
-        vector<double> max(m_d,-numeric_limits<double>::max());
-        vector<double> min(m_d,numeric_limits<double>::max());
-        MultiVariatePoint<double> p;
-        while (getline(file, line))
-        {
-            p = Utils::getCoordsFromString(line);
-            m_testPoints.push_back(p);
-            for (int i=0; i<m_d; i++)
-            {
-                if (p(i) > max[i])
-                    max[i] = p(i);
-                if (p(i) < min[i])
-                    min[i] = p(i);
-            }
-        }
-
-        for (int i=0; i<m_d; i++)
-        {
-            m_realDomain[i].push_back(min[i]);
-            m_realDomain[i].push_back(max[i]);
-        }
-
-        m_nbTestPoints = m_testPoints.size();
-        for (int i=0; i<m_nbTestPoints; i++)
-            for (int j=0; j<m_d; j++)
-                m_testPoints[i](j) = Utils::adaptCoordsToFunctionDomain(min[j], max[j], m_testPoints[i](j));
-        file.close();
-    }
-    else
-        cerr << "Error while opening the file!" << endl;
-}
-
-template <typename T>
-void Interpolation<T>::readTuckerResultsFromFile()
-{
-    for (string csName : m_crossSections)
+    for (string csName : m_function->getCrossSections())
     {
         string s = Utils::replace(csName,"*","_");
-        ifstream file(Utils::projectPath + "AI/data/" + m_core + "/FinalResults/" + s, ios::in);
+        ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/" + s, ios::in);
         if(file)
         {
             string line;
             vector<double> data, ap_res, co_res, tu_res, co_err, tu_err;
+            vector<double> max(m_d,-numeric_limits<double>::max());
+            vector<double> min(m_d,numeric_limits<double>::max());
+            MultiVariatePoint<double> p(5,0,0);
             while (getline(file, line))
             {
                 line = Utils::eraseExtraSpaces(line);
@@ -423,12 +376,32 @@ void Interpolation<T>::readTuckerResultsFromFile()
                 string word;
                 while (getline(ss, word, ' '))
                     data.push_back(stod(word));
+                for (int i=0; i<5; i++)
+                    p(i) = data[i+1];
+                m_testPoints.push_back(p);
+                for (int i=0; i<m_d; i++)
+                {
+                    if (p(i) > max[i])
+                        max[i] = p(i);
+                    if (p(i) < min[i])
+                        min[i] = p(i);
+                }
                 ap_res.push_back(data[6]);
                 co_res.push_back(data[7]);
                 tu_res.push_back(data[8]);
                 co_err.push_back(data[9]);
                 tu_err.push_back(data[10]);
             }
+
+            for (int i=0; i<m_d; i++)
+            {
+                m_realDomain[i].push_back(min[i]);
+                m_realDomain[i].push_back(max[i]);
+            }
+            m_nbTestPoints = m_testPoints.size();
+            for (int i=0; i<m_nbTestPoints; i++)
+                for (int j=0; j<m_d; j++)
+                    m_testPoints[i](j) = Utils::adaptCoordsToFunctionDomain(min[j], max[j], m_testPoints[i](j));
             m_appoloResult.insert(pair<string,vector<double>>(csName,ap_res));
             m_cocagneResult.insert(pair<string,vector<double>>(csName,co_res));
             m_tuckerResult.insert(pair<string,vector<double>>(csName,tu_res));

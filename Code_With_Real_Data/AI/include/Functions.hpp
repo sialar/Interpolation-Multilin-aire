@@ -42,7 +42,7 @@ class Functions
       string getCoreType() { return m_coreType; };
       void setCoreType(string c);
 
-      vector<string> getReactionType() { return m_crossSections; };
+      vector<string> getCrossSections() { return m_crossSections; };
       void setCrossSectionType(vector<string> cs);
       void setAllCrossSectionType();
 
@@ -50,7 +50,7 @@ class Functions
 
       static void createFunctionsDataBase();
       static bool validCoreType(string c);
-      static bool validReactionType(string r);
+      static bool validCrossSections(string r);
 };
 
 typedef std::shared_ptr<Functions> FunctionsPtr;

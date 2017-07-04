@@ -145,7 +145,7 @@ bool Functions::validCoreType(string c)
     return false;
 }
 
-bool Functions::validReactionType(string r)
+bool Functions::validCrossSections(string r)
 {
   for (string s : allCrossSectionType)
       if (s.compare(r)==0)
