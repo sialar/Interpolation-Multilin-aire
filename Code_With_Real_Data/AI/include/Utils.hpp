@@ -45,6 +45,7 @@ class Utils
         static MultiVariatePoint<double> getCoordsFromString(string s);
         static string replace(string strs, string str_old, string str_new);
         static string eraseExtraSpaces(string strs);
+        static int indexChanged(MultiVariatePoint<string> nu1,MultiVariatePoint<string> nu2);
 
         // Intermediate function for Leja points computation
         static bool isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold);

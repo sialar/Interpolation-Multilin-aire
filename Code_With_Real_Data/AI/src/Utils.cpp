@@ -347,3 +347,10 @@ double Utils::maxAbsValue(vector<double> vec)
 {
     return *max_element(vec.begin(), vec.end(), absLess);
 }
+
+int Utils::indexChanged(MultiVariatePoint<string> nu1,MultiVariatePoint<string> nu2)
+{
+    for (int i=0; i<nu1.getD(); i++)
+        if (nu1(i) != nu2(i)) return i;
+    return -1;
+}

@@ -114,9 +114,10 @@ int main( int argc, char* argv[] )
     string core = chooseCoreType(argc,argv,2);
     vector<string> reactions = chooseReactionsType(argc,argv,3);
 
-    //MultiVariatePoint<int> methods = chooseMethods(dimD);
-    //MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
-    LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
+    MultiVariatePoint<int> methods(5,0,0);// = chooseMethods(dimD);
+    methods(0) = 2;
+    MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
+    //LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 
     interp->readTuckerDataFromFile();
     interp->displayRealDomain();
@@ -128,6 +129,8 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     interp->buildPathWithAIAlgo(threshold, false);
     interp->computeAIResults();
+    interp->displayInterpolationPoints();
+    Utils::separateur();
     interp->displayResults();
     cout << " - Number of evaluation = " << interp->nbEvals() << endl;
     cout << " - Total Time = " << interp->totalTime() << endl;
