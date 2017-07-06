@@ -19,8 +19,6 @@ int main( int argc, char* argv[] )
     int f = Utils::chooseFunction(argc,argv,5);
     bool save = Utils::saveResults(argc,argv,6);
 
-    cout << f << endl;
-
     Function interpFunc;
     if (f==1) interpFunc = Functions::autoPolynomialFunction;
     if (f==2) interpFunc = Functions::functionToPlot;

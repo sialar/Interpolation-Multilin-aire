@@ -6,6 +6,108 @@ int Functions::m_nbPerturbations;
 vector<double> Functions::m_perturbations;
 vector<double> Functions::m_perturbationsWidth;
 
+string replace(string strs, string str_old, string str_new)
+{
+  size_t found = strs.find(str_old);
+  while (found!=string::npos)
+  {
+    strs.replace(found, str_old.length(), str_new);
+    found = strs.find(str_old);
+  }
+  return strs;
+}
+vector<double> convert_str_to_vec(string s)
+{
+    s = replace(s, "(", "");
+    s = replace(s, ")", "");
+    s = replace(s, "[", "");
+    s = replace(s, "]", "");
+    s = replace(s, " ", "");
+    vector<double> res;
+    stringstream ss(s);
+    string subs;
+    size_t found;
+    while (getline(ss, subs, ','))
+    {
+        found = subs.find("+");
+        if (found!=string::npos)
+            subs = subs.substr(0,found-1);
+        res.push_back(stod(subs));
+    }
+    return res;
+}
+
+vector<double> parse_output(char* cmd)
+{
+    vector<double> res;
+    char buf[BUFSIZE];
+    FILE *fp;
+    if ((fp = popen(cmd, "r")) == NULL)
+        cerr << "Error opening pipe!" << endl;
+
+    while (fgets(buf, BUFSIZE, fp) != NULL)
+    {
+        string buf_str(buf);
+        res = convert_str_to_vec(buf_str);
+    }
+    if (pclose(fp))
+        cerr << "Command not found or exited with error status" << endl;
+    return res;
+}
+
+double convertToFunctionDomain(double a, double b, double x)
+{
+  return x*(b-a)/2 + (a+b)/2;
+}
+
+vector<double> Functions::evaluate(MultiVariatePoint<double> x, int n)
+{
+    vector<vector<double>> dom(5);
+    vector<double> interval(2);
+    interval[0] = 0;
+    interval[1] = 80000;
+    dom[0] = interval;
+    interval[0] = 20;
+    interval[1] = 1800;
+    dom[1] = interval;
+    interval[0] = 0.4;
+    interval[1] = 1;
+    dom[2] = interval;
+    interval[0] = 0;
+    interval[1] = 1.74835e-05;
+    dom[3] = interval;
+    interval[0] = 1e-06;
+    interval[1] = 2;
+    dom[4] = interval;
+
+    string xstr = "";
+    for (int i=0; i<x.getD(); i++)
+        xstr += to_string(convertToFunctionDomain(dom[i][0],dom[i][1],x(i))) + " ";
+    string cmd_s = "cd /home/sialar/Stage/LaboJ_LLions/Code/Code_With_Analytic_Function/MOX\npython eval.py macro_nu*fission0 ";
+    cmd_s += xstr;
+    char *cmd = new char[cmd_s.length() + 1];
+    strcpy(cmd, cmd_s.c_str());
+    vector<double> res = parse_output(cmd);
+    //for (int i=0; i<x.getD(); i++)
+    //    cout << x(i) << " " << to_string(convertToFunctionDomain(dom[i][0],dom[i][1],x(i))) << " " << convertToFunctionDomain(0,80000,-1) << endl;
+
+
+    //std::chrono::duration<double> delta1 = t1 - t0;
+    //std::chrono::duration<double> delta2 = t2 - t1;
+    /*
+    cout << x << endl;
+    cout << "[ ";
+    for (size_t i=0; i<res.size()-1; ++i)
+        cout << res[i] << " ; ";
+    cout << res[res.size()-1] << " ]" << endl;
+    cout << "[ ";
+    for (size_t i=0; i<result.size()-1; ++i)
+        cout << result[i] << " ; ";
+    cout << result[result.size()-1] << " ]" << endl << endl;
+    */
+    return res;
+}
+
 double Functions::getPointInPerturbationNeighborhood()
 {
     if (!m_perturbations.size()) return 0;

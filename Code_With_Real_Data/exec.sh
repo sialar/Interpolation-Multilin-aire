@@ -38,5 +38,7 @@ do
     python plot_results.py $core $arg
 done
 
+python plot_reactivity.py $core
+
 
 exit

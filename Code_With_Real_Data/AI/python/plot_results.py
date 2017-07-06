@@ -9,9 +9,10 @@ fig = plt.figure(figsize=taille)
 
 core = sys.argv[1]
 csName = sys.argv[2]
+csName = string.replace(csName,"*","_")
 
 figureTitle = "Comparaison of relative errors (pcm) for the cross-section " + core + "_" + csName
-fileName = "../data/" + core + "/FinalResults/" + csName
+fileName = "../data/" + core + "/" + csName
 figureName = "../images/" + core + "/" + core + "_" + csName
 results_file = open(fileName,"r")
 lines = results_file.readlines()
@@ -20,12 +21,11 @@ results_file.close()
 point = []
 co_err, tu_err, ai_err = [], [], []
 ap_res, co_res, tu_res, ai_res = [], [], [], []
-reactivity = []
 
 for i in range(len(lines)):
     point.append(int(lines[i].split(" ")[0]))
-    co_err.append(float(lines[i].split(" ")[10]))
-    tu_err.append(float(lines[i].split(" ")[11]))
+    co_err.append(float(lines[i].split(" ")[9]))
+    tu_err.append(float(lines[i].split(" ")[10]))
     ai_err.append(float(lines[i].split(" ")[12]))
 
 s = 10

@@ -8,9 +8,8 @@ Functions::Functions(string c, vector<string> cs)
     m_coreType = c;
     m_n = cs.size();
     m_crossSections = cs;
-    m_tuckerProgram = make_shared<TuckerApproximation>(m_coreType,m_crossSections);
     m_directory = Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_" + c + "_test";
-    //cout << " - Directory of Tucker code : " << m_directory << endl;
+    cout << " - Directory of Tucker code : " << m_directory << endl;
 }
 
 void Functions::createFunctionsDataBase()
@@ -52,11 +51,6 @@ void Functions::setAllCrossSectionType()
     m_n = m_crossSections.size();
 }
 
-void Functions::setTuckerProgram()
-{
-    m_tuckerProgram = make_shared<TuckerApproximation>(m_coreType,m_crossSections);
-}
-
 vector<double> convert_str_to_vec(string s)
 {
     s = Utils::replace(s, "(", "");
@@ -89,7 +83,6 @@ vector<double> parse_output(char* cmd)
     while (fgets(buf, BUFSIZE, fp) != NULL)
     {
         string buf_str(buf);
-        cout << buf << endl;
         res = convert_str_to_vec(buf_str);
     }
     if (pclose(fp))
@@ -99,9 +92,6 @@ vector<double> parse_output(char* cmd)
 
 vector<double> Functions::evaluate(MultiVariatePoint<double> x)
 {
-
-    //auto t0 = chrono::steady_clock::now();
-    /*
     string xstr = "";
     for (int i=0; i<x.getD(); i++)
         xstr += to_string(x(i)) + " ";
@@ -112,29 +102,7 @@ vector<double> Functions::evaluate(MultiVariatePoint<double> x)
     char *cmd = new char[cmd_s.length() + 1];
     strcpy(cmd, cmd_s.c_str());
     vector<double> res = parse_output(cmd);
-    */
-    //auto t1 = chrono::steady_clock::now();
-
-    vector<double> result;
-    for (string csName : m_crossSections)
-        result.push_back(m_tuckerProgram->evaluate(x,csName));
-
-    //auto t2 = chrono::steady_clock::now();
-
-    //std::chrono::duration<double> delta1 = t1 - t0;
-    //std::chrono::duration<double> delta2 = t2 - t1;
-    /*
-    cout << x << endl;
-    cout << "[ ";
-    for (size_t i=0; i<res.size()-1; ++i)
-        cout << res[i] << " ; ";
-    cout << res[res.size()-1] << " ]" << endl;
-    cout << "[ ";
-    for (size_t i=0; i<result.size()-1; ++i)
-        cout << result[i] << " ; ";
-    cout << result[result.size()-1] << " ]" << endl << endl;
-    */
-    return result;
+    return res;
 }
 
 bool Functions::validCoreType(string c)

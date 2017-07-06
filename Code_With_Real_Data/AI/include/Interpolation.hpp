@@ -161,7 +161,6 @@ void Interpolation<T>::setFunc(string c, vector<string> vr)
     m_n = vr.size();
     m_function->setCoreType(c);
     m_function->setCrossSectionType(vr);
-    m_function->setTuckerProgram();
 }
 
 template <typename T>
@@ -169,7 +168,6 @@ void Interpolation<T>::setFunc(string c)
 {
     m_function->setCoreType(c);
     m_function->setAllCrossSectionType();
-    m_function->setTuckerProgram();
     m_n = m_function->getCrossSections().size();
 }
 
@@ -295,9 +293,30 @@ void Interpolation<T>::computeReactivity()
         t2 = m_aiResult["macro_totale1"][i];
         double num = nu_f1 * (t2 - s022) + nu_f2 * s012;
         double denom = (t1 - s011) * (t2 - s022) - s012 * s021;
-        m_aiReactivity[i] = num / denom;
-        m_aiReactivityError[i] = (1/m_tuckerReactivity[i] - 1/m_aiReactivity[i]) * pow(10,5);
+        double k_eff = num / denom;
+        m_aiReactivity[i] = 1 - 1/k_eff;
+        m_aiReactivityError[i] = (m_aiReactivity[i]-m_tuckerReactivity[i]) * pow(10,5);
     }
+    /*
+    for (int i=0; i<m_nbTestPoints; i++)
+    {
+        nu_f1 = m_tuckerResult["macro_nu*fission0"][i];
+        nu_f2 = m_tuckerResult["macro_nu*fission1"][i];
+        s011 = m_tuckerResult["macro_scattering000"][i];
+        s012 = m_tuckerResult["macro_scattering001"][i];
+        s021 = m_tuckerResult["macro_scattering010"][i];
+        s022 = m_tuckerResult["macro_scattering011"][i];
+        t1 = m_tuckerResult["macro_totale0"][i];
+        t2 = m_tuckerResult["macro_totale1"][i];
+        double num = (nu_f1 * (t2 - s022)) + (nu_f2 * s012);
+        double denom = ((t1 - s011) * (t2 - s022)) - (s012 * s021);
+        double k_eff = num / denom;
+        cout <<  (1-1/k_eff) << " " << m_tuckerReactivity[i] << endl;
+        denom = Utils::maxAbsValue(m_appoloResult["macro_totale0"]);
+        double e = pow(10,5) * (m_tuckerResult["macro_totale0"][i]-m_appoloResult["macro_totale0"][i]) / denom;
+        cout << e << " " << m_tuckerError["macro_totale0"][i] << endl;
+    }
+    */
 }
 /******************************************************************************/
 
@@ -375,8 +394,6 @@ void Interpolation<T>::displayRealDomain()
     cout << "[" << m_realDomain[m_d-1][0] << "," << m_realDomain[m_d-1][1] << "]" << endl;
 }
 
-
-
 template <typename T>
 void Interpolation<T>::displayCrossSectionNames()
 {
@@ -393,16 +410,27 @@ void Interpolation<T>::displayResults()
     for (int i=0; i<m_n; i++)
     {
         string csName = m_function->getCrossSections()[i];
-        co_err.push_back(*max_element(m_cocagneError[csName].begin(),m_cocagneError[csName].end()));
-        tu_err.push_back(*max_element(m_tuckerError[csName].begin(),m_tuckerError[csName].end()));
-        ai_err.push_back(*max_element(m_aiError[csName].begin(),m_aiError[csName].end()));
+        co_err.push_back(Utils::maxAbsValue(m_cocagneError[csName]));
+        tu_err.push_back(Utils::maxAbsValue(m_tuckerError[csName]));
+        ai_err.push_back(Utils::maxAbsValue(m_aiError[csName]));
     }
+
     cout << " - Interpolation error using Cocagne (pcm) = ";
     Utils::displayValues(co_err);
     cout << " - Interpolation error using Tucker (pcm) = ";
     Utils::displayValues(tu_err);
     cout << " - Interpolation error using AI (pcm) = ";
     Utils::displayValues(ai_err);
+    double co_rea_err, tu_rea_err, ai_rea_err;
+    if (m_n==12)
+    {
+        co_rea_err = Utils::maxAbsValue(m_cocagneReactivityError);
+        tu_rea_err = Utils::maxAbsValue(m_tuckerReactivityError);
+        ai_rea_err = Utils::maxAbsValue(m_aiReactivityError);
+        cout << " - Reactivity error using Cocagne (pcm) = " << co_rea_err << endl;
+        cout << " - Reactivity error using Tucker (pcm) = " << tu_rea_err << endl;
+        cout << " - Reactivity error using AI (pcm) = " << ai_rea_err << endl;
+    }
 }
 
 template <typename T>
@@ -412,7 +440,7 @@ void Interpolation<T>::readTuckerDataFromFile()
     {
         string csName = m_function->getCrossSections()[k];
         string s = Utils::replace(csName,"*","_");
-        ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/" + s, ios::in);
+        ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/" + s, ios::in);
         if(file)
         {
             string line;
@@ -478,7 +506,7 @@ void Interpolation<T>::saveFinalResultsInFile()
     for (string csName : m_function->getCrossSections())
     {
         string s = Utils::replace(csName,"*","_");
-        ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/" + s, ios::out);
+        ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/" + s, ios::out);
         if(file)
         {
             for (int i=0; i<m_nbTestPoints; i++)
@@ -504,7 +532,7 @@ void Interpolation<T>::saveFinalResultsInFile()
 template <typename T>
 void Interpolation<T>::readReactivityFromFile()
 {
-    ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/ReactivityError", ios::in );
+    ifstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/ReactivityError", ios::in );
     if(file)
     {
         string line;
@@ -532,7 +560,7 @@ void Interpolation<T>::readReactivityFromFile()
 template <typename T>
 void Interpolation<T>::saveReactivityInFile()
 {
-    ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/FinalResults/ReactivityError", ios::out );
+    ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/ReactivityError", ios::out );
     if(file)
     {
         for (int i=0; i<m_nbTestPoints; i++)
