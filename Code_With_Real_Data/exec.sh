@@ -19,6 +19,11 @@ help
 
 core=$2
 
+if [ $# -le 2 ]
+then
+    exit
+fi
+
 shift
 shift
 
