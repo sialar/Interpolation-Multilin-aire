@@ -169,24 +169,6 @@ bool MixedInterpolation::indiceInPath(MultiVariatePoint<string> index)
 /******************************************************************************/
 
 /*********************** Interpolation ****************************************/
-vector<double> MixedInterpolation::tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold)
-{
-    clearAll();
-    clearAllTrees();
-    cout << "   - Interpolation using methods " << methods;
-    vector<double> errors;
-    setMethods(methods);
-    buildPathWithAIAlgo(threshold, m_maxIteration<21);
-    vector<vector<double>> realValues, estimate;
-    for (MultiVariatePoint<double> p : m_testPoints)
-    {
-        realValues.push_back(func(p));
-        estimate.push_back(interpolation(p,m_path.size()));
-    }
-    errors.push_back(Utils::relativeInterpolationError(realValues,estimate));
-    errors.push_back(Utils::mseInterpolationError(realValues,estimate));
-    return errors;
-}
 bool customLess(vector<double> e1, vector<double> e2)
 {
     return Utils::norm(e1,2) < Utils::norm(e2,2);
@@ -198,45 +180,6 @@ bool relativeErrorLess(vector<double> e1, vector<double> e2)
 bool mseErrorLess(vector<double> e1, vector<double> e2)
 {
     return e1[1] < e2[1];
-}
-MultiVariatePoint<int> MixedInterpolation::tryAllCases(double threshold)
-{
-    MultiVariatePoint<int> methods(m_d, 0, 0);
-    vector<vector<double>> errors(3);
-    for (int i=0; i<3; i++) errors[i].resize(2,0.0);
-    vector<double> temp(2,0.0);
-    for (int i=0; i<m_d; i++)
-    {
-        Utils::separateur();
-        cout << " - Comparing methods in direction " << i << ": " << endl;
-        for (int j=0; j<m_nbMethods; j++)
-        {
-            methods(i) = j;
-            map<MultiVariatePoint<int>,vector<double>>::iterator it = m_methods_errors.find(methods);
-            if (it == m_methods_errors.end())
-            {
-                temp = tryWithDifferentMethods(methods, threshold);
-                errors[j][0] = temp[0];
-                errors[j][1] = temp[1];
-                m_methods_errors.insert(pair<MultiVariatePoint<int>,vector<double>>(methods,errors[j]));
-            }
-            else errors[j] = get<1>(*it);
-            cout << "   ---> Relative Interpolation error when using " << methods << " = " << errors[j][0] << endl;
-            cout << "   ---> MSE Interpolation error when using " << methods << " = " << errors[j][1] << endl;
-        }
-        methods(i) = distance(errors.begin(),min_element(errors.begin(), errors.end(),customLess));
-        cout << endl << " ---> Chosen method in direction " << i << ": " <<  methods(i) << endl;
-    }
-    Utils::separateur();
-    cout << " - The optimal choice of methods is " << methods << endl;
-    cout << " - Relative Interpolation error (pcm) = " << (*min_element(errors.begin(), errors.end(), relativeErrorLess))[0] << endl;
-    cout << " - MSE Interpolation error (pcm) = " << (*min_element(errors.begin(), errors.end(), mseErrorLess))[1] << endl;
-    if (Utils::norm(*min_element(errors.begin(), errors.end(), customLess),2) > 1)
-    {
-        cout << " - The interpolation error is higher than 1 pcm, ";
-        cout << "you should increase the maximum number of iterations" << endl;
-    }
-    return methods;
 }
 double MixedInterpolation::basisFunction_1D(string code, double t, int axis)
 {

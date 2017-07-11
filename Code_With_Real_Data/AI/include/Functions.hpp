@@ -25,7 +25,6 @@ class Functions
       string m_coreType;
       vector<string> m_crossSections;
 
-
     public:
       ~Functions() {};
       Functions() {};
@@ -33,6 +32,10 @@ class Functions
 
       static vector<string> allCoreTypes;
       static vector<string> allCrossSectionType;
+      static vector<string> allCrossSectionTypeForReactivity;
+
+      string realDataDirPath() { return m_directory; };
+      bool reactivityIsComputable();
 
       string getCoreType() { return m_coreType; };
       void setCoreType(string c);

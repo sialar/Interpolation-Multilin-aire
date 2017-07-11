@@ -22,7 +22,7 @@ for i in range(len(lines)):
     point.append(int(lines[i].split(" ")[0]))
     co_err.append(float(lines[i].split(" ")[9]))
     tu_err.append(float(lines[i].split(" ")[10]))
-    ai_err.append(float(lines[i].split(" ")[12]))
+    ai_err.append(0.0)#float(lines[i].split(" ")[11]))
 
 s = 10
 cocagne = plt.scatter(point,co_err,color='b',s=s,marker='o',alpha=0.1)

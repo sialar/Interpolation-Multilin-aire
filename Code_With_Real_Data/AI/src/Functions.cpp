@@ -2,6 +2,7 @@
 
 vector<string> Functions::allCoreTypes;
 vector<string> Functions::allCrossSectionType;
+vector<string> Functions::allCrossSectionTypeForReactivity;
 
 Functions::Functions(string c, vector<string> cs)
 {
@@ -9,7 +10,7 @@ Functions::Functions(string c, vector<string> cs)
     m_n = cs.size();
     m_crossSections = cs;
     m_directory = Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_" + c + "_test";
-    cout << " - Directory of Tucker code : " << m_directory << endl;
+    //cout << " - Directory of Tucker code : " << m_directory << endl;
 }
 
 void Functions::createFunctionsDataBase()
@@ -30,6 +31,23 @@ void Functions::createFunctionsDataBase()
     allCrossSectionType.push_back("macro_scattering011");
     allCrossSectionType.push_back("macro_totale0");
     allCrossSectionType.push_back("macro_totale1");
+
+    allCrossSectionTypeForReactivity.push_back("macro_nu*fission0");
+    allCrossSectionTypeForReactivity.push_back("macro_nu*fission1");
+    allCrossSectionTypeForReactivity.push_back("macro_scattering000");
+    allCrossSectionTypeForReactivity.push_back("macro_scattering001");
+    allCrossSectionTypeForReactivity.push_back("macro_scattering010");
+    allCrossSectionTypeForReactivity.push_back("macro_scattering011");
+    allCrossSectionTypeForReactivity.push_back("macro_totale0");
+    allCrossSectionTypeForReactivity.push_back("macro_totale1");
+}
+
+bool Functions::reactivityIsComputable()
+{
+    bool reactivity = true;
+    for (string required : allCrossSectionTypeForReactivity)
+        reactivity = reactivity && Utils::strInVector(required,m_crossSections);
+    return reactivity;
 }
 
 void Functions::setCoreType(string c)

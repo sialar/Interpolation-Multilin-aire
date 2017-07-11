@@ -6,6 +6,7 @@ BIN = AI/bin
 CXX = g++
 CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
 
+OUTPUT_FILES = AI/data/MOX/* AI/data/UOX/* AI/data/UOX-Gd/* AI/images/MOX/* AI/images/UOX/* AI/images/UOX-Gd/*
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o $(BIN)/Functions.o
 OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
@@ -26,4 +27,4 @@ $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 
 # Nettoyage du projet
 clean:
-	@rm -rf $(BIN)/*.o $(BIN)/Tucker/* $(BIN)/Test*
+	@rm -rf $(BIN)/*.o $(BIN)/Tucker/* $(BIN)/Test* $(OUTPUT_FILES)

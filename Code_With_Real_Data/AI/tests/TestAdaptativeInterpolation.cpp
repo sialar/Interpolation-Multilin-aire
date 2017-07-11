@@ -119,23 +119,10 @@ int main( int argc, char* argv[] )
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
     //LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 
-    interp->readTuckerDataFromFile();
-    interp->displayRealDomain();
-    interp->displayCrossSectionNames();
-    Utils::separateur();
-
-    // Path creation
-    double threshold = 1e-9;
-    cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
-    interp->buildPathWithAIAlgo(threshold, false);
-    interp->computeAIResults();
-    interp->displayInterpolationPoints();
-    Utils::separateur();
-    interp->displayResults();
-    cout << " - Number of evaluation = " << interp->nbEvals() << endl;
-    cout << " - Total Time = " << interp->totalTime() << endl;
-    cout << " - AI Run Time = " << interp->runTime() << endl;
-    interp->saveFinalResultsInFile();
+    interp->readDataAndResults();
+    interp->launchAIAlgo(false);
+    interp->saveResults();
+    interp->displayAll();
 
     return 0;
 }

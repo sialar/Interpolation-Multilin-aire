@@ -44,8 +44,6 @@ class MixedInterpolation : public Interpolation<string>
 
       /*********************** Interpolation ********************************/
       double basisFunction_1D(string code, double t, int axis);
-      vector<double> tryWithDifferentMethods(MultiVariatePoint<int> methods, double threshold);
-      MultiVariatePoint<int> tryAllCases(double threshold);
 };
 
 typedef std::unique_ptr<MixedInterpolation> MixedInterpolationPtr;

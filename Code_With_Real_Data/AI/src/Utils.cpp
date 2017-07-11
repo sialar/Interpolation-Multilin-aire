@@ -17,33 +17,6 @@ void Utils::displayValues(vector<double> values)
     cout << " ]" << endl;
 }
 
-void Utils::displayPoints(vector<MultiVariatePoint<double>> points)
-{
-    cout << "{ ";
-    for (size_t i=0; i<points.size()-1; ++i)
-        cout << points[i] << " ; ";
-    cout << points[points.size()-1] << " }" << endl;
-}
-
-void Utils::displayPoints(vector<vector<double>> points)
-{
-    int n = points[0].size();
-    cout << "{ ";
-    for (size_t i=0; i<points.size()-1; ++i)
-    {
-        cout << "(";
-        for (int j=0; j<n-1; ++j)
-            cout << points[i][j] << ",";
-        cout << points[i][n-1] << ")";
-        cout << " ; ";
-    }
-    cout << "(";
-    for (size_t i=0; i<points[points.size()-1].size()-1; ++i)
-        cout << points[points.size()-1][i] << ",";
-    cout << points[points.size()-1][n-1] << ")";
-    cout << " }" << endl;
-}
-
 double Utils::adaptCoordsToFunctionDomain(double a, double b, double x)
 {
     return (2*x)/(b-a) + 1 - (2*b)/(b-a);
@@ -52,22 +25,6 @@ double Utils::adaptCoordsToFunctionDomain(double a, double b, double x)
 double Utils::convertToFunctionDomain(double a, double b, double x)
 {
     return x*(b-a)/2 + (a+b)/2;
-}
-
-MultiVariatePoint<double> Utils::getCoordsFromString(string s)
-{
-    MultiVariatePoint<double> coords(5,0,0.0);
-    s.pop_back();
-    s.erase(0,1);
-    stringstream ss(s);
-    string subs;
-    int axis = 0;
-    while (getline(ss, subs, ','))
-    {
-        coords(axis) = double(stod(subs));
-        axis++;
-    }
-    return coords;
 }
 
 double Utils::randomValue(double a, double b)
@@ -83,34 +40,11 @@ MultiVariatePoint<double> Utils::createRandomMultiVariatePoint(int d)
     return point;
 }
 
-double Utils::relativeInterpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate)
-{
-    vector<double> e, f;
-    int n = min(int(realValue.size()),int(estimate.size()));
-    for (int k=0; k<n; k++)
-    {
-        e.push_back(norm(diff(estimate[k],realValue[k]),0));
-        f.push_back(norm(realValue[k],0));
-    }
-    return pow(10,5) * (*max_element(e.begin(), e.end()) / *max_element(f.begin(), f.end()));
-}
-
-double Utils::mseInterpolationError(vector<vector<double>> realValue, vector<vector<double>> estimate)
-{
-    double e = 0.0, f = 0.0;
-    int n = min(int(realValue.size()),int(estimate.size()));
-    for (int k=0; k<n; k++)
-    {
-        e += pow(norm(diff(estimate[k],realValue[k]),0),2);
-        f += pow(norm(realValue[k],0),2);
-    }
-    return pow(10,5) * (sqrt(e) / sqrt(f));
-}
-
 bool normLess(double x, double y)
 {
     return abs(x) < abs(y);
 }
+
 double Utils::norm(vector<double> x, int p)
 {
     if (!p) return abs(*max_element(x.begin(), x.end(), normLess));
@@ -129,6 +63,14 @@ vector<double> Utils::diff(vector<double> x,vector<double> y)
     for (int i=0; i<int(x.size()); i++)
         res.push_back(x[i]-y[i]);
     return res;
+}
+
+bool Utils::strInVector(string required, vector<string> vec)
+{
+    for (string s : vec)
+        if (required.compare(s)==0)
+            return true;
+    return false;
 }
 
 bool Utils::isTooCloseToOneLejaPoint(double y, vector<double> seq, double threshold)
@@ -251,6 +193,26 @@ string Utils::vector2str(vector<double> x)
     return s;
 }
 
+vector<double> Utils::str2vector(string line)
+{
+    string str = Utils::eraseExtraSpaces(line);
+    stringstream ss(str);
+    vector<double> data;
+    string word;
+    while (getline(ss, word, ' '))
+        data.push_back(stod(word));
+    return data;
+}
+
+double Utils::computeMseError(vector<double> f,vector<double> f_tilde)
+{
+    double e = 0.0;
+    int n = min(int(f.size()),int(f_tilde.size()));
+    for (int k=0; k<n; k++)
+        e += pow((f_tilde[k] - f[k]) * pow(10,5),2);
+    return sqrt(e/n);
+}
+
 vector<double> Utils::createUniformSequence(int nbPoints)
 {
     double sum = 0;
@@ -310,17 +272,6 @@ bool Utils::equals(MultiVariatePoint<string> nu1, MultiVariatePoint<string> nu2)
     return true;
 }
 
-bool Utils::displayResults()
-{
-  char display = 'x';
-  while (display!='y' && display!='n')
-  {
-      cout << " - Display path and interpolation points: (y/n) " ;
-      cin >> display;
-  }
-  return (display=='y');
-}
-
 string Utils::replace(string strs, string str_old, string str_new)
 {
   size_t found = strs.find(str_old);
@@ -346,11 +297,4 @@ bool absLess(double x, double y)
 double Utils::maxAbsValue(vector<double> vec)
 {
     return *max_element(vec.begin(), vec.end(), absLess);
-}
-
-int Utils::indexChanged(MultiVariatePoint<string> nu1,MultiVariatePoint<string> nu2)
-{
-    for (int i=0; i<nu1.getD(); i++)
-        if (nu1(i) != nu2(i)) return i;
-    return -1;
 }
