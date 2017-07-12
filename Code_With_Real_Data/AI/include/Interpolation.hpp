@@ -414,24 +414,39 @@ template <typename T>
 void Interpolation<T>::computeReactivity()
 {
     double nu_f1, nu_f2, t1, t2, s011, s012, s021, s022;
+    double num, denom, k_eff, k_eff_tilde;
     vector<double> reactivity(m_nbTestPoints);
     vector<double> reactivityError(m_nbTestPoints);
     for (int i=0; i<m_nbTestPoints; i++)
     {
-        nu_f1 = m_approxResults["macro_nu*fission0"][AI][i];
-        nu_f2 = m_approxResults["macro_nu*fission1"][AI][i];
-        s011 = m_approxResults["macro_scattering000"][AI][i];
-        s012 = m_approxResults["macro_scattering001"][AI][i];
-        s021 = m_approxResults["macro_scattering010"][AI][i];
-        s022 = m_approxResults["macro_scattering011"][AI][i];
-        t1 = m_approxResults["macro_totale0"][AI][i];
-        t2 = m_approxResults["macro_totale1"][AI][i];
-        double num = (nu_f1 * (t2 - s022)) + (nu_f2 * s012);
-        double denom = (t1 - s011) * (t2 - s022) - s012 * s021;
-        double k_eff = num / denom;
-        reactivity[i] = 1 - 1/k_eff;
-        reactivityError[i] = (reactivity[i]-m_approxResults["reactivity"][Tucker][i]) * pow(10,5);
-        //cout << k_eff << " " << reactivity[i] << " " << m_approxResults["reactivity"][Tucker][i] << endl;
+        nu_f1 = m_approxResults["macro_nu*fission0"][Apollo][i];
+        nu_f2 = m_approxResults["macro_nu*fission1"][Apollo][i];
+        s011 = m_approxResults["macro_scattering000"][Apollo][i];
+        s012 = m_approxResults["macro_scattering001"][Apollo][i];
+        s021 = m_approxResults["macro_scattering010"][Apollo][i];
+        s022 = m_approxResults["macro_scattering011"][Apollo][i];
+        t1 = m_approxResults["macro_totale0"][Apollo][i];
+        t2 = m_approxResults["macro_totale1"][Apollo][i];
+        num = (nu_f1 * (t2 - s022)) + (nu_f2 * s012);
+        denom = (t1 - s011) * (t2 - s022) - s012 * s021;
+        k_eff = num / denom;
+
+        nu_f1 = m_approxResults["macro_nu*fission0"][Tucker][i];
+        nu_f2 = m_approxResults["macro_nu*fission1"][Tucker][i];
+        s011 = m_approxResults["macro_scattering000"][Tucker][i];
+        s012 = m_approxResults["macro_scattering001"][Tucker][i];
+        s021 = m_approxResults["macro_scattering010"][Tucker][i];
+        s022 = m_approxResults["macro_scattering011"][Tucker][i];
+        t1 = m_approxResults["macro_totale0"][Tucker][i];
+        t2 = m_approxResults["macro_totale1"][Tucker][i];
+        num = (nu_f1 * (t2 - s022)) + (nu_f2 * s012);
+        denom = (t1 - s011) * (t2 - s022) - s012 * s021;
+        k_eff_tilde = num / denom;
+
+        reactivity[i] = (1 - 1/k_eff_tilde);
+        reactivityError[i] = (1/k_eff - 1/k_eff_tilde) * pow(10,5);
+
+        //cout << reactivity[i] << " " << m_approxResults["reactivity"][Tucker][i] << " " << m_approxErrors["reactivity"][Tucker][i] << endl;
     }
     m_approxResults["reactivity"].insert(pair<method,vector<double>>(AI,reactivity));
     m_approxErrors["reactivity"].insert(pair<method,vector<double>>(AI,reactivityError));

@@ -147,7 +147,6 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 template <typename T>
 int Interpolation<T>::buildPathWithAIAlgo(auto start_time, double threshold, bool debug)
 {
-    debug = false;
     m_curentNeighbours.clear();
     m_path.clear();
     MultiVariatePointPtr<T> argmax = getFirstMultivariatePoint();
