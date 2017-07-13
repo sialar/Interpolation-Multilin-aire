@@ -1,0 +1,302 @@
+\section{Introduction}\label{sec:1}
+\vspace{0.5 cm}
+\hspace{0.5 cm} This report is a short description of my two month internship carried out as compulsory component of the engineering diploma at Ensimag. The internship was carried out within the organization In\&motion in Annecy. \\
+
+This report will cover some background information on the project I was involved in,
+as well as details on how the project was developed. It contains also my activities that have contributed to achieve nearly all of my intern-ship goals.\\
+
+In the following section a description of the organization and the activities at In\&motion will be given. In addition to that, there will be a description of the state of the art as well as the objectives of the internship. Then, a detailed explanation of the project progress will be given followed by a reflection on my tasks, the unexpected circumstances and the learning goals achieved
+during the internship.\\
+
+ Finally , I give a conclusion on the internship experience.
+
+\pagebreak
+\section{Context} \label{sec:2}
+\subsection{Presentation}\label{sec:2.1}
+\hspace{0.5 cm} Created in 2014, In\&motion develops wearable systems of intelligent protection that minimize injuries in case of fall. The company’s ambition is to extend these ergonomic and innovative systems to daily use or applications: sports, transportation, health, …\\
+
+Having already succeeded in promoting its product for ski cross competitions, The company tries now to widen its customer base by suggesting new vests for motorcycle races.\\
+
+The first airbag ski vest, launched in 2015, had already received several awards (CES Innovation Award, ISPO Gold Award, Red Dot) and was marketed in the world cup by 7 major countries among which 2 won world titles. The company is trying nowadays to reach similar accomplishment in motorcycle GP races. The two sports have different characteristics. therefore, the company needs to find a new algorithm for fall detection using all the data in hand. \\
+
+Vests are equipped with an electronic device containing accelerometers, gyroscope, GPS flea and a micro-processor.\\
+
+These elements allow the company to get all data including time, GPS position, acceleration, and rotation of the driver according to 3 axes X, Y and Z. All these data are used to detect the moment of the fall. The detection of this moment requires a sharp accuracy of the algorithm. It is crucial to detect the fall before the sportsman hits the ground to give the vest the time required to swell. It is also necessary to avoid the unjustified outbursts of the vest, since the latter can be inflated only one time.\\
+
+\subsection{Objectives and motivation}\label{sec:2.2}
+\hspace{0.5 cm} The company has developed inflatable vest for the racers to wear under the rider's suit. Thanks to racers' cooperation, it has managed to collect a large data base of motorcycle races. In this summer internship, I have been assigned  to accomplish two major tasks:
+\begin{itemize}
+  \item[$\bullet$] Explore the data and analyze them.\\
+  \item[$\bullet$] Define a real time data processing algorithm for fall detection.\\
+\end{itemize}
+
+This internship is a part of a long\-term project to define the final algorithm that will be used by In\&motion for motorcycle vests. I had to collaborate with Sylvain Meignen to achieve my goals and give him all data and programs to continue the tasks asked by in\&motion.
+
+Since I was interested in statistics and data analysis, this internship seemed to be perfect for me. Besides, I was also interested in integrating a start\-up which has been really successful over the past two years, thanks to its innovating ideas and methods.
+
+\section{State of art}\label{sec:3}
+\subsection{Data description}\label{sec:3.1}
+\hspace{0.5 cm} The data is composed of  csv files. This data is acquired thanks to sensors placed in the driver's suit. This allows to collect information about the racers as well as the race itself. 
+the files are divided into two types:\\
+
+\begin{itemize}
+  \item[$\bullet$] Large files ( some MB) which describe the whole race.\\
+  \item[$\bullet$] Small files (some kB) that contain the 8 second length data in which the fall occurred.\\
+\end{itemize}
+
+The data is formed of many fields (column). Each 2 milliseconds, the value of those fields is acquired by the sensors. Our tasks involve the analysis of the following Fields : time, rotation around 3 axes X, Y and Z ($degré/sec$), acceleration following 3 axes X, Y and Z ($m/s^{-2}$). 
+
+When a fall occurs, at least one of the 3 rotation axes will be disturbed. The choice of the axes will depend on the fall's characteristics (left/right turn, crash, flip..). Besides, the 3 acceleration axes may also give us further information. As a matter of fact, a fall is always accompanied with a rapid increase then decrease of the acceleration.
+
+\subsection{Company's approach}\label{sec:3.2}
+\hspace{0.5 cm}The company already has an algorithm that detects the fall. The algorithm is mainly based on two parameters fixed empirically:\\
+
+\begin{itemize}
+  \item[$\bullet$] A recursive low pass filter applied to all of the six fields (rotation following 3 axes X,Y and Z , acceleration following 3 axes X, Y and Z) with the same $\alpha$ coefficient. the filtered signal is calculated with the following formula:\\
+  \[ U_{n} = \alpha V_{n} + (1 - \alpha) U{n-1} \]
+	
+	$V_{n}$ : the directly detected value by the sensors 
+
+	$U_{n} $ : The filtered value \\
+	
+  \item[$\bullet$] Amplitude's thresholds of the filtered signal is fixed for each one of the fields.\\
+\end{itemize}
+
+To summarize, the algorithm allows to instantly filter the data over the 6 fields. Each 2 milliseconds, one compares the filtered value of every field with the corresponding threshold. If we detect that 3 out of 6 field exceed the corresponding thresholds the vest inflates. This method is called \textbf{ 3 axes algorithm}. The diagram below details a further algorithm.
+
+
+
+\begin{center}
+\includegraphics[height= 6 cm,width = \linewidth]{images/Untitled_presentation(1).jpg}
+\captionof{figure}{3 axes Algorithm}
+\end{center}
+
+\subsection{Flaws}\label{sec:3.3}
+\hspace{0.5 cm} The current algorithm has many flaws. To start with, the filter coefficient $\alpha$ as well as the 12 thresholds (a positive and a negative one for each of 6 field) are determined in a empirical way. Therefore, there is no clear analysis of the data. We do not know what really represents the thresholds for the data distribution. There is no mathematical definition for those thresholds. Thus, we can't know the amount of error being made.\\ 
+
+As a result, the three-axe-algorithm appears to be only 60\% efficient. This implies, the need to improve efficiency by editing this algorithm or amend it when needed. Either way, the algorithm must be fast and easy to implement on the microprocessor.\\
+
+\pagebreak
+\section{Implementation}\label{sec:4}
+
+\subsection{Data gathering}\label{sec:4.1}
+\hspace{0.5 cm} We start by saving the collected data in each of the 6 fields (rotation following 3 axes X,Y and Z ; acceleration following 3 axes X, Y and Z) in a 6*(length of the file) matrix. The time is saved in a vector whose length equals the columns length. The amplitude scale (DPS for rotation and G\_scale for acceleration) mays vary. Thus, testing these values before saving becomes a crucial task. The csv files used have the following format:
+
+\begin{center}
+\includegraphics[height= 6 cm,width = \linewidth]{images/datas.png}
+\captionof{figure}{Example of a csv file}
+\end{center}
+
+\subsection{frequency analysis}\label{sec:4.2}
+\subsubsection{Initial filter analyst}\label{sec:4.2.1}
+\hspace{0.5 cm} The purpose of this analysis is to try to find out whether it is better or not to use a filtered signal. As it was used by the company, the filtered signal had some good results (60\% detection of the falls). The undetected falls may be the result of the empirically filtered information which can be related to a certain loss of information. In fact, the recursive $\alpha$ filter has the following effect on the signal's fft.\\
+
+\pagebreak
+\begin{figure}[h]
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/fft_0.jpg}}
+\centerline{Normal signal}
+\end{minipage}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/fft_1.jpg}}
+\centerline{Filtered signal}
+\end{minipage}
+\caption{FFT applied to normal and filtered signal }
+\label{figFFT}
+\end{figure}
+
+This low pass filter is characterized by $25 (Hz)$ Cut-off frequency. To see the importance of the deleted frequency on the signal, we used the \textbf{Empirical Mode Decomposition} (EMD).
+
+\subsubsection{Empirical Mode Decomposition }\label{sec:4.2.2}
+\hspace{0.5 cm} The EMD method is an interesting tool to decompose a non stationary into a collection of intrinsic mode functions (IMF). 
+
+an IMF is an oscillatory mode however more complicated then a simple harmonic function: instead of constant amplitude and frequency as in a simple harmonic component, an IMF can have variable amplitude and frequency along the time axis.
+The first IMF contains the  highest frequency of the signal through time, while the following one contains the information relative to lower frequency. \\
+
+EMD postulates that any real signal decomposes into a local average $m$ and a strongly oscillating component $h_1$. thus we have :
+\[ s = h_1 + m \]
+After this one can calculate the second IMF $h_2$ the same way, and repeat the operation until one finds a non- oscillating component, r. To summarize the initial signal can be decomposed into:
+\[ s = \sum_{i} h_i + r \]
+
+\subsubsection{Tests and observations}\label{sec:4.2.3}
+\hspace{0.5 cm} The approach presented here consists of applying EMD to the 6 channel mentioned above which will allow to obtain a decomposition of each channel into hight frequency, low frequency component frequency. On the figure below we can see the first 3 modes of 2 rotation around X signal (A signal with a fall and a signal without any falls). The graphics represents the evolution of the signal modes amplitude in time (milliseconds):\\
+
+
+\begin{figure}[h] 
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/Rotx_Three_modes.pdf}}
+\centerline{signal without any fall}
+\end{minipage}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/Rotx_lowside.pdf}}
+\centerline{signal containing a fall}
+\end{minipage}
+\caption{EMD applied	 to a normal portion race signal and a portion containing a fall }
+\label{figFFT}
+\end{figure}
+
+
+As we can see, a fall has an impact on high frequency modes. The decomposition of a channel containing a fall is different from one signal to another. Therefore, filtering out the channel results in removing relevant information, so we propose not to filter the channels before studying them
+
+ In the next step, we are going to try to analyze and characterize the amplitude of the signal without using pre-filtering . If we find a good description of the signal, we may be able to find an algorithm detecting falls without filtering.
+
+\subsection{Data distribution}\label{sec:4.3}  
+\hspace{0.5 cm} Knowing the data distribution will enable us to have a good description of the 6 fields during the races. Thus, it will be easier to locate the characteristic of the fall and its importance on every field.
+The company assumed that the distribution is Gaussian. So our plan was to confirm or infirm this hypothesis and then gather all the channels together by means of $\chi_2$ law. That way, we would have an easy way to find the thresholds for all signals. 
+\subsubsection{General Gaussian distribution}\label{sec:4.3.1}
+\hspace{0.5 cm} With the big error engendered by the Gaussian modelization, I tried to find another approach. The best description of the distribution is provided by the generalized Gaussian law. It allows to adapt itself better to the data distribution, which varies according to the field and according to the signal. However, we lose the possibility of using the $\chi_2$ law, which allow allows to gather the data of the different channels together.\\
+
+The density of generalized Gaussian distribution has the following form:\\
+\[ f(x) = \frac{\beta}{2 \alpha \Gamma (\frac{1}{\beta})} e^{-(\frac{\left | x-m \right |}{\alpha})^\beta} \]\\
+
+ $m$ is the mean of the distribution,
+  
+ $\alpha \in \left ] 0 \ +\infty\right ] $ and $\beta \in \left ] 0 \ +\infty\right ]$ are two parameter to estimate. \\
+ 
+ $\alpha$ and $\beta$ can be calculated by using the of \textbf{Maximum likelihood estimation }. We find the following expression:\\ 
+ 
+ \[ y = 1 + \frac{\psi(1/beta)}{beta} - \frac{\sum_{i = 1}^{N} \left | x_i \right |^\beta log(\left | x_i \right |)}{\sum_{i=1}^{N} \left | x_i \right |^\beta}+log(\frac{\beta}{N})  \sum_{i=1}^{N} \frac{\left | x_i \right |^\beta}{\beta}  \]
+
+$ X = (x_1, x_2 , ... , x_N)$\\
+\hspace{0.5 cm } $ N = length(X) $\\
+ 
+$\hat{\beta}$ is the solution of $y = 0$.
+after having found out the $\hat{\beta}$ value, one calculates $\hat{\alpha}$ using : \\
+ 
+ \[ \hat{\alpha} = \frac{\beta}{N}   (\sum_{i = 1}^{N}  \left | x_i \right |^\beta)^\frac{1}{\beta} \]
+
+ 
+ The advantage of this method is that it is more accurate and should allow to have, after finding $\alpha$ and $\beta$, the closest law to the distribution. The distribution tend to be picky which can't be modelled by a Gaussian density distribution. As an example, we represent on this figure the histogram as well as the function of the generalized Gaussian density (RED) corresponding to the $X $ rotation field of the signal:\\ {\small Moto\_FSBK\_16\-04\-10\_24h\_Mans\_FRA\_G.Leblanc\_04\_09\_132508CHUTE.csv \".}
+ 
+ \begin{center}
+ \includegraphics[height= 8 cm,width = \linewidth]{images/fig1.jpg} 
+\captionof{figure}{data distribution}
+\end{center}
+
+The following step consists in calculating the Cumulative distribution function corresponding to this density. Then one defines the error and calculate the corresponding quantiles to find both thresholds, one positive and the other negative on a field associated with a given signal. The following figure displays the cumulative distribution function and the quantiles for the acceleration along the x axis of the file just mentioned.\\
+
+\begin{center}
+\includegraphics[height= 8 cm,width = \linewidth]{images/Fonction_de_repartition.jpg}
+\captionof{figure}{Cumulative distribution function with 99\% quantile}
+\end{center}
+
+\subsubsection{Tests and results}\label{sec:4.3.2}
+\hspace{0.5 cm} having found the thresholds thanks to the method described below, we can run tests on the signal without using any filter. For each of the files we run the following algorithms:\\
+
+\begin{center}
+\includegraphics[height= 8 cm,width = \linewidth]{images/Untitled_presentation(2).jpg}
+\captionof{figure}{The new method used}
+\end{center}
+
+
+As a first step, we can use this method on the truncated files (33 files containing 8 seconds data where the fall is easier to find). To verify, the efficiency of my algorithms, I used a kml Generator created by the company. To execute the kml file, I used $google chrome$. This enable to see the trajectory of the racer before and after the fall on the map . The color of the trajectory changes according to the speed of the	 motorcycle. When there is a fall, the speed falls down rapidly.  The location of the detected fall is also set on the map (yellow trigger) . We can verify the accuracy of this location by seeing if it corresponds to a big speed gap and an exit of the normal motorcycle trajectory. 
+
+In this figure an example of the verification method:
+
+\begin{center}
+\includegraphics[height= 8 cm,width = \linewidth]{images/gps1.jpg}
+\captionof{figure}{kml execution on a portion of race}
+\end{center}
+
+In this example we can see the portion of circuit where my algorithm detects a fall. the portion begins with a purple line (high speed) . It also ends with a blue part (very low speed) which is out of the road. The yellow marker shows the moment where my algorithm detects a fall and swells the vest. In this example, the algorithm detected the fall successfully just before the big loss in speed and the exit of the road.\\ 
+
+Using this method enabled me to have a 100\% efficiency. I detected all the falls at the right time. However, In this method, the thresholds are depending of the file. Which means that the distribution depends on the circuit, the weather .. etc. The first solution that then comes in mind is to calculate the mean of the thresholds on each field. Doing so we have a set of 12 thresholds which we use on all the signals to find the falls. The following figure describes the thresholds of the 33 test files. the mean is represented by a green line.\\
+
+\begin{landscape}
+\begin{figure}[h]
+%%%%%%%%%%%%%%%
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ1.jpg}}
+\centerline{RotX}
+\end{minipage}
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ2.jpg}}
+\centerline{RotY}
+\end{minipage}
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ3.jpg}}
+\centerline{RotZ}
+\end{minipage}
+\newline
+%%%%%%%%%%%%%%%%%
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ4.jpg}}
+\centerline{accX}
+\end{minipage}
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ5.jpg}}
+\centerline{accY}
+\end{minipage}
+\begin{minipage}[b]{0.3\linewidth}
+\centering
+\centerline{
+\includegraphics[height= 6 cm,width = \linewidth]{images/seuils_champ6.jpg}}
+\centerline{accZ}
+\end{minipage}
+%%%%%%%%%%%%%%%%
+\caption{Thresholds point cloud of every file following the 6 fields}
+\label{figsans}
+\end{figure}
+\end{landscape}
+
+\pagebreak
+As we can see there is some times a large gap between the threshold corresponding to the same channel computed on different signal. So using the mean will reduce the efficiency of the algorithm.
+
+The second solution is to calculate,as a first step, the thresholds of each race. Then use it in a real time comparison algorithm. This assumes that on the first race lap, the microprocessor is used to calculate those parameter and can't be used to detect the fall. After that we can use the comparison algorithm as before to find the falls.
+
+\pagebreak
+
+\section{Personal record}\label{sec:5}
+\hspace{0.5 cm} This chapter is about internship, more specifically, a short discussion about my experience as well as a list of the goals I wanted to achieve during my stay in this organization and whether I achieved them or not. Also, i would like to emphasize difficulties I encountered and the qualities I believe I have to work on to improve myself.
+
+\begin{itemize}
+  \item[$\bullet$] \textbf{Integrity}\\
+\hspace{0.5 cm} Before this internship, I did not have any experience of working within an organization. This internship gave me the opportunity to acquire a better understanding of what it meant; functioning, structuring and project managing. 
+    
+   \hspace{0.5 cm} By operating within a competitive organization, I learned saw the importance of work management as well as the importance of working on improving one’s skills. In fact, being part of this organization helped me strengthen my already acquired skills and interpersonal relationships within professional settings.
+    
+    \hspace{0.5 cm} As a whole, the experience I acquired here allowed me to have a close working relationship with professionals which helped me increase my confidence by experiencing the software industry with involvement in implementing, evaluating and sometimes planning of assigned tasks.\\
+
+\item[$\bullet$] \textbf{communication skills}\\     
+\hspace{0.5 cm} This internship also helped me improve my communication skills.  Indeed, at first, it was a big challenge to explain the logic behind the algorithm I used without going through mathematical details.
+
+\hspace{0.5 cm} Besides, to achieve my goals I needed to understand the physics behind the falls. A direct mathematical approach may lead to a correct solution but having no real meaning. This was a first opportunity to apply what I learned at Ensimag into a field which is not 100\% depending on mathematics and informatics. Therefore, communication was a key to success for my internship.\\
+
+\item[$\bullet$] \textbf{use of skills and knowledge learned in university}
+
+\hspace{0.5 cm} It is certain that the skills and knowledge gained in my study came in handy during my internship mentioning, as an example, my courses in both statistics and mathematical modeling which proved very useful.
+
+\hspace{0.5 cm} In my second year as an MMIS (Modélisation Mathématique, images, simulation) Ensimag student, I learned many approaches in both mathematics and statistics. But, the gap is big between doing an exercise at school where we know that a solution exists and trying to find a solution with no clue about its existence or not. This was a big challenge, mostly, when I tried to find the best fitting law for signal distribution. I was lucky enough to try many functions. The general Gaussian distribution is a statistic law that wasn't taught at school.
+ 
+\hspace{0.5 cm} Besides, this internship allowed me to practice and gain experience in coding with languages like matlab and R.\\
+
+\end{itemize}
+
+\pagebreak
+\section{Conclusion}\label{sec:6}
+
+\vspace{0.5 cm}
+\hspace{0.5 cm} In this internship, I started with studying the methods used at in\&motion. Doing this allowed me to understand more the problem I wanted to solve and see what was to improve in the company's approach. For example, the filter was a cause of a big loss of information. That’s why I started my algorithms without filtering to see what i could find out.\\
+
+Finding out the appropriate distribution, fixing the thresholds and testing allowed me to confirm the efficiency of my method. However, this algorithm needs data on the specific race before running it. This a little problematic for the user because he needs to set the race before using the vest or do a lap at least so that the program calculate the specific thresholds of a race. \\
+
+If I was given more time I would have been able to improve my algorithm and make it independent of the race. I propose to do so by using a different filter than the one used before by the company.
+This filter can be found thanks to the EMD (Empirical Mode Decomposition) method. By finding the most appropriate mode in this decomposition, using EMD algorithm of the first part, it is possible to set a new value of $\alpha$ . Then using the same method as in my previous algorithm, it is possible to find a set of thresholds that can work for all the races with almost 100\% efficiency.
