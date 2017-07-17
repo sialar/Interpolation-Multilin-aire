@@ -116,6 +116,7 @@ int main( int argc, char* argv[] )
 
     MultiVariatePoint<int> methods(5,0,0);// = chooseMethods(dimD);
     methods(0) = 2;
+    methods(3) = 2;
     MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
     //LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
 

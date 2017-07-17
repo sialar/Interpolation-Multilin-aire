@@ -177,7 +177,7 @@ Les $u_{\Lambda}$ sont choisis dans l'espace $V_{\Lambda}$, défini par $V_{\Lam
 Afin d'approximer $f$ en tout point, on va procéder par interpolation multivariée. Dans cette partie, on va revoir le principe de
 l'interpolation de Lagrange en $1D$, puis en dimension quelconque. Par la suite, on évaluera le coût d'une telle opération et son évolution en fonction
 du nombre de points d'interpolation et de la dimension de l'espace de phase des paramètres.
-Ensuite, on présentera une meilleure méthode d'interpolation adaptative en grande dimension (moins couteuse) basée sur une construction hiérarchique de l'opérateur d'interpolation. \\
+Ensuite, on présentera une méthode d'interpolation adaptative en grande dimension (moins couteuse) basée sur une construction hiérarchique de l'opérateur d'interpolation. \\
 
 \subsubsection{Interpolation monovariée et tensorisation:}\label{sec:4.1.1}
 \hspace{0.5cm}
@@ -205,7 +205,7 @@ On procède par tensorisation. \\
 C'est à dire, pour $\alpha_1,..,\alpha_d \in \left \{0,.., k-1 \right \}$ \\
 \begin{align}
    \tilde{f} (y_1,..,y_d)& = \bigotimes_{i=1}^d I_k (f)(y_1,..,y_d) \in \mathbb{Q}_{k-1} = vect \left \{ y \rightarrow y_1^{\alpha_1}..y_d^{\alpha_d} \right \} \\
-	 & = \sum_{k_1=1}^k..\sum_{k_d=1}^k (f(y_{k_1},..,y_{k_d}) l_{k_1}(y_1)..l_{k_d}(y_d))
+	 & = \sum_{k_1=1}^k..\sum_{k_d=1}^k (f(y_{k_1},..,y_{k_d}) l_{k_1}(y_1)..l_{k_d}(y_d)) \nonumber
 \end{align}
 \hspace{0.5cm}
 Pour avoir une bonne précision, il est préférable de choisir un nombre relativement grand de points d'interpolation.
@@ -270,13 +270,13 @@ Pour la suite, on définit :
 \vspace{0.5cm}
 Dans cette configuration, $\Lambda_n$ peut être vu comme une section $\left \{ \nu^1, .. , \nu^n \right \}$ d'une séquence
 $(\nu^k)_{k \geq 1} \in \Lambda^{\mathbb{N}}$. Cette observation mène à un algorithme efficace pour le calcul de
-$I_{\Lambda_n}f$ à partir de $I_{\Lambda_{n-1}}f$ et de la valeur de $f$ en le nouveau point $\textbf{y}_{\nu^n}$. En effet,
+$I_{\Lambda_n}f$ à partir de $I_{\Lambda_{n-1}}f$ et de la valeur de $f$ au nouveau point $\textbf{y}_{\nu^n}$. En effet,
 on remarque que $\Delta_{\nu^n}$ est multiple de la fonction hiérarchique tensorisée $\textbf{H}_{\nu^n}$ défini précedement.\\
 Puisque $\textbf{H}_{\nu^n}(\textbf{y}_{\nu^n}) = 1$, alors \\
 \begin{align}
 	 \Delta_{\nu^n}f &= \Delta_{\nu^n} f(\textbf{y}_{\nu^n}) \textbf{H}_{\nu^n} \\
-	 &= (I_{\Lambda_n}f(\textbf{y}_{\nu^n}) - I_{\Lambda_{n-1}}f(\textbf{y}_{\nu^n})) \textbf{H}_{\nu^n} \\
-	 &= (f(\textbf{y}_{\nu^n}) - I_{\Lambda_{n-1}}f(\textbf{y}_{\nu^n})) \textbf{H}_{\nu^n}
+	 &= (I_{\Lambda_n}f(\textbf{y}_{\nu^n}) - I_{\Lambda_{n-1}}f(\textbf{y}_{\nu^n})) \textbf{H}_{\nu^n}  \nonumber \\
+	 &= (f(\textbf{y}_{\nu^n}) - I_{\Lambda_{n-1}}f(\textbf{y}_{\nu^n})) \textbf{H}_{\nu^n} \nonumber
 \end{align}
 Donc
 \begin{align}
@@ -338,8 +338,7 @@ Une telle séquence peut être construite en fixant $y_0 \in P$ et en définissa
 		y_k & = argmax_{y \in P} \prod_{j=0}^{k-1} \left | y - y_j \right |
 \end{align}
 Cette séquence $(y_k)_{k \geq 0}$ est appellée séquence de Leja \cite{Leja} sur P. Elle modère la croissance des constantes de Lebesgue
-et a une implication intéressante sur le choix adaptatif des $\Lambda_n$.\\
-Voici les $10$ premiers points de la séquence de Leja construite dans l'intervalle $\left [ -1, 1 \right ]$ :
+et a une implication intéressante sur le choix adaptatif des $\Lambda_n$. Voici les $10$ premiers points de la séquence de Leja construite dans l'intervalle $\left [ -1, 1 \right ]$ :
 \begin{align}
 \left \{\ 1,\ -1,\ 0,\ -0.577316,\ 0.658716,\ -0.83924,\ 0.870029,\ 0.305729,\ -0.321539,\ -0.942991\ \right \} \nonumber
 \end{align}
@@ -424,18 +423,11 @@ Cette solution a été implémenté en C++. Le code est constitué principalemen
 
 \begin{itemize}
 \item \textbf{Classe Interpolation<T>:} Il s'agit d'une classe générique abstraite. Elle implémente les structures de données contenants les différentes quantités qui entrent
-en jeu dans la construction de l'opérateur d'interpolation, notamment les points d'interpolations, les points de test,
-la liste des voisins courants dans l'algorithme AI, et le chemin d'indices vu dans la section précédente. De plus, l'algorithme AI ainsi que certaines fonctions intermédiaires,
+en jeu dans la construction de l'opérateur d'interpolation, notamment les points d'interpolations, les points de test et
+la liste des voisins courants dans l'algorithme AI... De plus, l'algorithme AI ainsi que certaines fonctions intermédiaires,
 (notamment celle responsable de la recherche des voisins dans une grille) sont implémentés dans la classe $Interpolation<T>$.
-Ici, $T$ fait référence au type données utilisé pour représenter l'ordre des points d'interpolation. Vu qu'il est différent pour les deux méthodes, on a choisi de procéder par généricité.\\
+Ici, $T$ fait référence au type de données utilisé pour représenter l'ordre des points d'interpolation. Vu qu'il est différent pour les deux méthodes, on a choisi de procéder par généricité.\\
 Cependant, il y a plusieurs similarité entre les deux méthodes, d'où le choix d'implémenter une classe abstraite, ensuite de faire deux classes filles qui héritent des fonctionnalitées communes.
-
-\item \textbf{Classe LagrangeInterpolation:} Cette classe hèrite de Interpolation<int> et elle implémente la méthode utilisant les polynômes de Lagrange.
-
-\item \textbf{Classe PiecewiseInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente la méthode utilisant les polynômes de Lagrange.
-
-\item \textbf{Classe MixedInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente une combinaison des 2 méthode. Ici, on utilise des chaînes de caractère
-car, avec ce type de donnée, on peut à la fois représenter les codes de Huffman ainsi que de simples entiers.
 
 \item \textbf{Classe BinaryTree:} Cette classe implémente un arbre binaire qui permet de coder les points cartésiens et les ordonner.
 Cette classe est utile dans la version de l'algorithme AI qui utilise des fonctions de bases quadratiques par morceaux.
@@ -470,7 +462,7 @@ Ainsi le code de $-0.375$ dans l'arbre ci-dessous est $"0110"$.\\
 \includegraphics[height= 11cm,width = 11cm]{images/huffman.png}
 \captionof{figure}{Codage de huffman de chaque nœud de l'arbre}
 \end{center}
-Avec ce codage, on est capable de retrouver facilement, à partir de d'un nœud $n$ le code de son parent ou encore des nœuds ayant les valeurs les plus proches.\\
+Avec ce codage, on est capable de retrouver facilement, à partir d'un nœud $n$ le code de son parent ou encore les codes des nœuds ayant les valeurs les plus proches.\\
 
 \item \textbf{Classe MultivariatePoint<T>:} Il s'agit d'une classe générique qui modélise à la fois les multi-indices, ainsi que les points réels multivariés.
 C'est à dire qu'une instance de cette classe peut renfermer soit des valeurs réelles, soit des entiers, soit des chaînes de caractères qui correspondent aux codes de Huffman
@@ -481,12 +473,19 @@ En effet, $1.0$ (resp $-1.0$) étant le point d'indice $0$ (resp $1$) dans la s�
 Par contre, quand il s'agit d'utiliser une séquence de points construits par dichotomie, on utilisera des chaînes de caractères. Par exemple : en 2D,
 le vecteur $("","01")$ correspond au point $(0,-0.5) \in \mathcal{P}$.\\
 
+\item \textbf{Classe LagrangeInterpolation:} Cette classe hèrite de Interpolation<int> et elle implémente la méthode utilisant les polynômes de Lagrange et les points de Leja.
+
+\item \textbf{Classe PiecewiseInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente la méthode utilisant les polynômes de Lagrange.
+
+\item \textbf{Classe MixedInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente une combinaison des 2 méthode. Ici, on utilise des chaînes de caractère
+car, avec ce type de donnée, on peut à la fois représenter les codes de Huffman ainsi que de simples entiers.
+
 \item \textbf{Classe Utils:} Il s'agit d'une classe statique renfermant certaines fonctions utiles notamment les fonctions d'affichages,
 les fonctions qui gèrent la création des séquences d'interpolations (notamment la séquence uniforme, les zéros de Tchebychev ainsi que la séquence de Leja).
 De plus, cette classe permet de lire des donnée et d'écrire les résultats dans des fichiers externes.
 
 \item \textbf{Classe Functions:}
-Cette classe implémente certaines fonctions analytiques qui permettront de tester l'algorithme d'Interpolation Adaptative. De plus, elle permet de lire et d'organiser
+Cette classe implémente certaines fonctions analytiques qui permettront de tester l'algorithme d'Interpolation Adaptative. De plus, elle permet de lire, d'organiser
 et d'intégrer les données réelles fournies par le département R\&D d'EDF.
 \end{itemize}
 
@@ -499,14 +498,14 @@ On obtient alors une suite de polynômes qui interpole $f$ en de plus en plus de
 uniformément vers $f$ lorsque le nombre de points d'interpolation augmente.\\
 Malheureusement, ce n'est pas le cas, ce phénomène est connu sous le nom de phénomène de Runge. \\
 Une solution est, étonnamment, de ne pas choisir les points uniformément répartis. Une raison pour cela est l'inégalité suivante :
-si $f$ est de classe $C^N$ sur l'intervalle $U$ et si $L$ est le polynôme d'interpolation de Lagrange en les points $a_1,..,a_N$, alors on a
+si $f$ est de classe $C^N$ sur l'intervalle $U$ et si $L$ est le polynôme d'interpolation de Lagrange aux points $a_1,..,a_N$, alors on a
 \begin{align}
 		& \forall x \in U, \left |f(x)-L(x)\right | \leq sup_{x \in U}  (\prod_{i=1}^n \left | x-a_i \right |) \frac{\left \|f^{(n)} \right \|_{\infty}}{n!}
 \end{align}
 \hspace{0.5cm}
 L'idée est donc de choisir les $a_i$ de sorte que $sup_{x \in U}  \prod_{i=1}^n \left | x-a_i \right |$ soit le plus petit possible. On démontre que
 ceci est réalisé lorsque les $a_i$ sont les zéros du polynôme de Tchebychev de degré $n$, à savoir $a_i = cos(\frac{(2i-1) \pi}{n}), i =1,..,n$.\\
-La figure 6 montre une grille 2D formés par des points de Leja construits dans le segment $\left [-1,1 \right ]$.\\
+La figure 6 montre une grille 2D formés par des points de Leja construits dans le rectangle  $\left [-1,1 \right ] \times \left [-1,1 \right ]$.\\
 \begin{center}
 \includegraphics[height= 9 cm,width = \linewidth]{images/leja_sequence.png}
 \captionof{figure}{Grille 2D des points de Leja}
@@ -523,12 +522,15 @@ L'étape suivante a été de tester les deux méthodes sur des données réelles
 \subsubsection{Fonctions analytiques prédéfinies}
 \subsubsection{Données réelles}
 Le cœur d'un réacteur nucléaire posséde une structure multi-échelle. Il contient entre 150-200 assemblages combustibles disposés en treillis carré
-et entourés d'eau de bore. Un assemblage typique est souvent constitué de $17x17=289$ tiges, dont 264 tiges de carburant et 25 tiges vides.
+et entourés d'eau de bore. Un assemblage typique est souvent constitué de $17 \times 17=289$ tiges, dont 264 tiges de carburant et 25 tiges vides.
 Il existe plusieurs types d'assemblages selon la position et la composition des tiges de carburant.
 \begin{itemize}
 \item \textbf{Assemblage UOX (Uranium Oxide: $UO_2$):}
+
 \item \textbf{Assemblage MOX (Mixed Oxide: $UO_2-PuO_2$):}
+
 \item \textbf{Assemblage UOX-Gd (UOX-Gadolinium: $UO_2-Gd_2O_3$):}
+
 \end{itemize}
 
 \subsection{Conclusion et remarques}

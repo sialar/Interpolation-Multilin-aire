@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  13 JUL 2017 18:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  17 JUL 2017 11:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1539,33 +1539,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 310--312
  []
 
 
-Overfull \hbox (16.33882pt too wide) in paragraph at lines 345--345
+Overfull \hbox (16.33882pt too wide) in paragraph at lines 344--344
 [] 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 351--353
+Underfull \hbox (badness 10000) in paragraph at lines 350--352
 
  []
 
 <images/lag_glob.png, id=76, 702.625pt x 702.625pt>
 File: images/lag_glob.png Graphic file (type png)
  <use images/lag_glob.png>
-Package pdftex.def Info: images/lag_glob.png used on input line 363.
+Package pdftex.def Info: images/lag_glob.png used on input line 362.
 (pdftex.def)             Requested size: 312.98341pt x 312.98341pt.
 
 [12 <./images/lag_glob.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 367--369
+Underfull \hbox (badness 10000) in paragraph at lines 366--368
 
  []
 
 <images/tree.png, id=82, 903.375pt x 501.875pt>
 File: images/tree.png Graphic file (type png)
  <use images/tree.png>
-Package pdftex.def Info: images/tree.png used on input line 390.
+Package pdftex.def Info: images/tree.png used on input line 389.
 (pdftex.def)             Requested size: 256.07233pt x 170.71947pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--398
+Underfull \hbox (badness 10000) in paragraph at lines 392--397
 
  []
 
@@ -1573,52 +1573,52 @@ Underfull \hbox (badness 10000) in paragraph at lines 393--398
 File: images/interp_pm.png Graphic file (type png)
 
 <use images/interp_pm.png>
-Package pdftex.def Info: images/interp_pm.png used on input line 399.
+Package pdftex.def Info: images/interp_pm.png used on input line 398.
 (pdftex.def)             Requested size: 312.98495pt x 312.98495pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 405--406
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
 
  []
 
 
-Overfull \hbox (1.48676pt too wide) in paragraph at lines 410--413
+Overfull \hbox (1.48676pt too wide) in paragraph at lines 409--412
 \T1/cmr/m/n/12 prox-i-ma-tion avec les deux méth-odes. Sauf qu'avec la méth-ode
  util-isant les polynômes
  []
 
 [14 <./images/interp_pm.png (PNG copy)>]
-Overfull \hbox (24.95937pt too wide) in paragraph at lines 426--432
+Overfull \hbox (24.95937pt too wide) in paragraph at lines 425--431
 \T1/cmr/m/n/12 Cependant, il y a plusieurs sim-i-lar-ité en-tre les deux méth-o
 des, d'où le choix d'implémenter
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 440--443
+Underfull \hbox (badness 10000) in paragraph at lines 432--435
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 466--469
+Underfull \hbox (badness 10000) in paragraph at lines 458--461
 
  []
 
 <images/huffman.png, id=94, 501.875pt x 501.875pt>
 File: images/huffman.png Graphic file (type png)
  <use images/huffman.png>
-Package pdftex.def Info: images/huffman.png used on input line 470.
+Package pdftex.def Info: images/huffman.png used on input line 462.
 (pdftex.def)             Requested size: 312.9972pt x 312.9972pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--474
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 467--475
 
  []
 
 [16 <./images/huffman.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 475--483
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 505--510
+Underfull \hbox (badness 10000) in paragraph at lines 504--509
 
  []
 
@@ -1626,15 +1626,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 505--510
 File: images/leja_sequence.png Graphic file (type png)
 
 <use images/leja_sequence.png>
-Package pdftex.def Info: images/leja_sequence.png used on input line 511.
+Package pdftex.def Info: images/leja_sequence.png used on input line 510.
 (pdftex.def)             Requested size: 455.24165pt x 256.085pt.
  [18 <./images/leja_sequence.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 538--545
+Underfull \hbox (badness 10000) in paragraph at lines 537--544
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 555--559
+Underfull \hbox (badness 10000) in paragraph at lines 554--558
 
  []
 
@@ -1672,7 +1672,7 @@ lic/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm100
 xmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/publ
 ic/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200
 .pfb>
-Output written on main.pdf (22 pages, 1326828 bytes).
+Output written on main.pdf (22 pages, 1327022 bytes).
 PDF statistics:
  183 PDF objects out of 1000 (max. 8388607)
  115 compressed objects within 2 object streams
