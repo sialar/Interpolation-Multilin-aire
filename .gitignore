@@ -1,8 +1,24 @@
 Code_With_Analytic_Function/Tucker
 Code_With_Real_Data/Tucker
+Code_With_Real_Data_N1/Tucker
 
 Code_With_Analytic_Function/AI/bin/*
 Code_With_Real_Data/AI/bin/*
+Code_With_Real_Data_N1/AI/bin/*
 
 Code_With_Analytic_Function/AI/gui/gui.pro.user
 Code_With_Analytic_Function/AI/build-gui-Desktop_Qt_5_7_0_GCC_64bit-Debug
+
+Code_With_Real_Data/AI/data/MOX/*
+Code_With_Real_Data_N1/AI/data/MOX/*
+Code_With_Real_Data/AI/data/UOX/*
+Code_With_Real_Data_N1/AI/data/UOX/*
+Code_With_Real_Data/AI/data/UOX-Gd/*
+Code_With_Real_Data_N1/AI/data/UOX-Gd/*
+
+Code_With_Real_Data/AI/images/MOX/*
+Code_With_Real_Data_N1/AI/images/MOX/*
+Code_With_Real_Data/AI/images/UOX/*
+Code_With_Real_Data_N1/AI/images/UOX/*
+Code_With_Real_Data/AI/images/UOX-Gd/*
+Code_With_Real_Data_N1/AI/images/UOX-Gd/*
