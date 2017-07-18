@@ -523,15 +523,165 @@ L'étape suivante a été de tester les deux méthodes sur des données réelles
 \subsubsection{Données réelles}
 Le cœur d'un réacteur nucléaire posséde une structure multi-échelle. Il contient entre 150-200 assemblages combustibles disposés en treillis carré
 et entourés d'eau de bore. Un assemblage typique est souvent constitué de $17 \times 17=289$ tiges, dont 264 tiges de carburant et 25 tiges vides.
-Il existe plusieurs types d'assemblages selon la position et la composition des tiges de carburant.
+Il existe plusieurs types d'assemblages selon la position et la composition des barres de combustible.
 \begin{itemize}
 \item \textbf{Assemblage UOX (Uranium Oxide: $UO_2$):}
+La plupart des réacteurs utilisent l'uranium enrichi dans l'isotrope 235 (avec un enrichissement entre 3\%-5\%) car l'uranium naturel contient seulement 0.7\% d'uranuim-235.
+L'assemblage constitué par le carburant d'UOX sera appelée l'assemblage UOX.
 
-\item \textbf{Assemblage MOX (Mixed Oxide: $UO_2-PuO_2$):}
+\item \textbf{Assemblage MOX (Mixed Oxide: $UO_2-PuO_3$):}
+A l'instar de l'uranium naturel, le plutonium ($P_u$) est aussi une source fissile de réacteurs nucléaires.
+Le plutonium peut être extrait de combustibles usés. Ceci nous permet de recycler les carburants utilisés.
+De plus, MOX, un melange de combustible uranium et plutonium, est aussi utilisé pour les réacteurs nucléaires.
+L'assemblage constitué par quelques carburants de MOX sera appelée l'assemblage de MOX
 
 \item \textbf{Assemblage UOX-Gd (UOX-Gadolinium: $UO_2-Gd_2O_3$):}
-
+Un assemblage UOX-Gd est un assemblage UOX dans lequel certaines positions des barres de combustible UOX sont remplacées par des barres $UO_2-PuO_3$.
+Etant donné que la gadolinie $Gd_2O_3$ est un poison neutronique (absorbe les neutrons), les barres $UO_2-PuO_3$ sont utilisées comme des barres anti-poison
+pouvant limiter l'excès de fissions, afin d'atténuer les pics de puissance localisés.
 \end{itemize}
+
+\vspace{0.5cm}
+\hspace{0.5cm}
+Afin de quantifier les taux des réactions des neutrons, on introduit une notation qui représente la probabilité d'interaction entre un neutron incident et un (des) noyau(x) cible(s).
+Il s'agit de la notion de sections efficaces en physique des particules.\\
+Les différents types de sections efficaces se distinguent par leur réaction corréspondante qu'on note $r$.
+Chaque section les valeurs que prennent les sections efficaces déppendent de la nature du combustible utilisé (du type d'assemblage)
+Une section efficace est notée $\Sigma_r^g$, ($g$ faisant référence au groupe d'énergie).\\
+
+Dans notre cas, on peut avoir la $macro\ totale-\Sigma_t^g$, la $macro\ fission-\Sigma_f^g$, la $macro\ nu*fission-\nu\Sigma_f^g$, la $macro\ absorption-\nu\Sigma_a^g$,
+la $macro\ scattering-\Sigma_{so}^{g\rightarrow g'}$ (où $g,g' \in \left \{1,2\right\}$, et $o$ est l'ordre d'anisotropie).\\
+Ces sections efficaces dépendent de $5$ paramètres physique: $burnup$, $température du combustible$, $densité du modérateur$, $concentration en bore$ et $niveau de xénon$.
+Ces paramètres varient dans les intervalles présentés dans le tableau ci-dessous.\\
+
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+	\hline
+	Paramètre 											& Valeur minimale & Valeur maximale \\
+	\hline
+	Burnup MWd/t 										& 0.0 						& 80000.0 \\
+	Température du combustible, C		& 286.0 					& 1100.0	\\
+	Densité du modérateur, g/cm3 		& 0.602 					& 0.753.0 \\
+	Concentration en Bore, ppm 			& 0.0 						& 1800.0 	\\
+	Niveau de xénon, \% 						& 0.0 						& 1.0 		\\
+	\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+Les données réelles fournies par le département R\&D d'EDF sont regroupés dans des fichiers texte (un fichier par type de section efficace).
+On a donc $12$ fichiers pour un seul type d'assemblage, soit $36$ fichiers en tout.\\
+Ces données comportent les points formant une grille de référence, les vrais valeurs des sections efficaces en ces points (valeurs obtenus par le code APOLLO2 développé chez EDF),
+les approximations obtenues par la méthode COCAGNE (qui n'est autre que la méthode d'interpolation multilinéaire), les résultats obtenus avec la méthdode de décomposition de Tucker et
+les erreurs de précision obtenues avec ces deux méthodes.\\
+Les données sont organisées en $10$ colonnes correspondant aux valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T err\_C err\_T}
+\begin{itemize}
+\item \textbf{count:} l'indice des points que l'on parcourt sur la grille de référence (e.x : la grille contient 14000 points, chaque point a les coordonnées suivants: (bu, tc, density, cb, xe).
+\item \textbf{(bu, tc, density, cb, xe):} les valeurs des points de la grille de référence. La colonne $i$ contient le paramètre $i$
+\item \textbf{value\_A:} valeurs de section efficace calculées par APOLLO2 sur les points dans la grille de référence. On les considère comme les valeurs exactes.
+\item \textbf{value\_C:} valeurs de section efficace évaluées par le code Cocagne, il s'agit la méthode multilinéaire.
+\item \textbf{value\_T:} valeurs de section efficace évaluées par la méthode de Tucker.
+\item \textbf{err\_C:} erreurs relatives commises par la méthode Cocagne.
+\item \textbf{err\_T:} erreurs relatives commises par la méthode de Tucker.
+\end{itemize}
+
+On a vu que l'algorithme d'interpolation adaptative choisit les points d'interpolation au fur et à mesure qu'il construit l'opérateur d'interpolation.
+Les points d'interpolations utilisés ainsi que leurs ordres dépendent de la fonction interpolée et du type des fonctions de base.
+Etant donné qu'on ne peut pas prévoir à l'avance les points où on veut avoir la valeur exacte des sections efficaces.
+Il nous faut un moyen d'appeler le code APOLLO2 à chaque fois qu'on veut avoir la valeur d'une section efficace en un point.\\
+\hspace{0.5cm}
+Cela est bien évidemment trop couteûx, surtout que le code APOLLO2 ne peut être appellé que sur une grille entière et non pas sur un seul point.
+On pourrait penser à sauvegarder les points d'interpolations et les évaluer tous en même temps, mais cela n'est pas possible car pour avoir le nouveau point d'interpolation, l'algorithme AI
+a besoin de la valeur des sections efficaces au point précedent.\\
+
+Pour certaines raisons, on n'a pas en notre possession le code APPOLO2. On ne peut avoir que le résultat de l'éxecution du code sur une grille de point de notre choix.
+Ainsi, il n'est pas possible possible d'avoir les "vrais valeurs" des sections efficaces à n'importe quel point sans avoir ni le code APPOLO2, ni la liste des points d'evaluation.
+Par contre, on peut avoir le résultat de l'approximation par la méthode de Tucker à n'importe quel point en un temps suffisamment petit.
+Donc, une bonne altérnative serait de supposer que les valeurs obtenus par la méthode de Tucker correspondent aux vrais valeurs des sections efficaces.\\
+
+Des tests ont été faits pour chaque type de section éfficace. Les résultats obtenus ont été ensuite stocké dans des fichiers et organisées en $12$ colonnes correspondants aux
+valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T value\_AI err\_C err\_T err\_AI} où
+\begin{itemize}
+\item \textbf{value\_AI:} valeurs de section efficace évaluées par la méthode d'Interpolation Adaptative.
+\item \textbf{err\_AI:} erreurs relatives commises par la méthode d'Interpolation Adaptative.
+\end{itemize}
+
+Afin de pouvoir bien visualiser les résultats numériques obtenus, ces derniers ont été représenté par des graphes (un graphe par section efficace).
+Chaque graphe montre $3$ nuages de points en $2D$ (l'abscisse de chaque point correspond à l'indice du point de la grille de référence,
+quant à l'ordonné, il correspond à l'erreur relative obtenu en ce point).
+\begin{itemize}
+\item Le nuage des point bleus correspond aux erreurs obtenus avec la méthode Cocagne.
+\item Le nuage des point verts correspond aux erreurs obtenus avec la méthode de Tucker.
+\item Le nuage des point rouges correspond aux erreurs obtenus avec la méthode AI.
+\end{itemize}
+
+\begin{center}
+\begin{figure}[h]
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_absorption1.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_fission0.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_nu_fission1.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering000.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering001.png}
+	 \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_totale1.png}
+	 \end{minipage}
+	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces MOX}
+\end{figure}
+
+\begin{figure}[h]
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_absorption1.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_fission0.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_nu_fission1.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_scattering000.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_scattering001.png}
+	 \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_totale1.png}
+	 \end{minipage}
+	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces UOX}
+\end{figure}
+
+\begin{figure}[h] 
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_absorption1.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_fission0.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_nu_fission1.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_scattering000.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_scattering001.png}
+	 \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+			\centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_totale1.png}
+	 \end{minipage}
+	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces UOX-Gd}
+\end{figure}
+\end{center}
 
 \subsection{Conclusion et remarques}
 

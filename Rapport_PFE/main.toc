@@ -17,8 +17,8 @@
 \contentsline {subsection}{\numberline {5.2}Tests et comparaisons}{18}
 \contentsline {subsubsection}{\numberline {5.2.1}Fonctions analytiques pr\IeC {\'e}d\IeC {\'e}finies}{18}
 \contentsline {subsubsection}{\numberline {5.2.2}Donn\IeC {\'e}es r\IeC {\'e}elles}{18}
-\contentsline {subsection}{\numberline {5.3}Conclusion et remarques}{19}
-\contentsline {section}{\numberline {6}Impressions personnelles}{19}
-\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{19}
-\contentsline {section}{\numberline {8}Conclusion}{20}
-\contentsline {section}{References}{21}
+\contentsline {subsection}{\numberline {5.3}Conclusion et remarques}{21}
+\contentsline {section}{\numberline {6}Impressions personnelles}{21}
+\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{21}
+\contentsline {section}{\numberline {8}Conclusion}{22}
+\contentsline {section}{References}{23}

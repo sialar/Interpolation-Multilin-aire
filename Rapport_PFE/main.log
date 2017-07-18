@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  17 JUL 2017 11:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  18 JUL 2017 17:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -652,7 +652,7 @@ Package: glossary-tree 2016/01/24 v4.21 (NLCT)
 \glo@main@file=\write4
 \openout4 = `main.glo'.
 
-Package glossaries Info: Writing glossary file main.glo on input line 9.
+Package glossaries Info: Writing glossary file main.glo on input line 11.
 
 (/usr/share/texlive/texmf-dist/tex/latex/tocbibind/tocbibind.sty
 Package: tocbibind 2010/10/13 v1.5k extra ToC listings
@@ -1225,18 +1225,18 @@ Package: subfiles 2012/05/23 Federico Garcia
 (./ressources/body.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
@@ -1629,16 +1629,264 @@ File: images/leja_sequence.png Graphic file (type png)
 Package pdftex.def Info: images/leja_sequence.png used on input line 510.
 (pdftex.def)             Requested size: 455.24165pt x 256.085pt.
  [18 <./images/leja_sequence.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 537--544
+Underfull \hbox (badness 10000) in paragraph at lines 545--551
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 554--558
+LaTeX Warning: Command \' invalid in math mode on input line 554.
+
+Missing character: There is no é in font cmr12!
+
+LaTeX Warning: Command \' invalid in math mode on input line 554.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 554.
+
+Missing character: There is no é in font cmr12!
+Missing character: There is no é in font cmr12!
+
+LaTeX Warning: Command \' invalid in math mode on input line 554.
+
+Missing character: There is no é in font cmr12!
+
+Overfull \hbox (21.81879pt too wide) in paragraph at lines 552--556
+\T1/cmr/m/n/12 Ces sec-tions ef-fi-caces dépen-dent de $\OT1/cmr/m/n/12 5$ \T1/
+cmr/m/n/12 paramètres physique: $\OML/cmm/m/it/12 burnup$\T1/cmr/m/n/12 , $\OML
+/cmm/m/it/12 tempratureducombustible$\T1/cmr/m/n/12 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 552--556
 
  []
 
-[19] [20] (./main.bbl)) [21]
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 588--596
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--601
+
+ []
+
+[20] <images/MOX/MOX_macro_absorption1.png, id=114, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_absorption1.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_absorption1.png>
+Package pdftex.def Info: images/MOX/MOX_macro_absorption1.png used on input lin
+e 621.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/MOX/MOX_macro_fission0.png, id=115, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_fission0.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_fission0.png>
+Package pdftex.def Info: images/MOX/MOX_macro_fission0.png used on input line 6
+24.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/MOX/MOX_macro_nu_fission1.png, id=116, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_nu_fission1.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_nu_fission1.png>
+Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1.png used on input lin
+e 627.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/MOX/MOX_macro_scattering000.png, id=117, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_scattering000.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_scattering000.png>
+Package pdftex.def Info: images/MOX/MOX_macro_scattering000.png used on input l
+ine 630.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/MOX/MOX_macro_scattering001.png, id=118, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_scattering001.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_scattering001.png>
+Package pdftex.def Info: images/MOX/MOX_macro_scattering001.png used on input l
+ine 633.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/MOX/MOX_macro_totale1.png, id=119, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_totale1.png Graphic file (type png)
+
+<use images/MOX/MOX_macro_totale1.png>
+Package pdftex.def Info: images/MOX/MOX_macro_totale1.png used on input line 63
+6.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+[][] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+[] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+[] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/UOX/UOX_macro_absorption1.png, id=120, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_absorption1.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_absorption1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_absorption1.png used on input lin
+e 643.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX/UOX_macro_fission0.png, id=121, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_fission0.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_fission0.png>
+Package pdftex.def Info: images/UOX/UOX_macro_fission0.png used on input line 6
+46.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX/UOX_macro_nu_fission1.png, id=122, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_nu_fission1.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_nu_fission1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_nu_fission1.png used on input lin
+e 649.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX/UOX_macro_scattering000.png, id=123, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_scattering000.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_scattering000.png>
+Package pdftex.def Info: images/UOX/UOX_macro_scattering000.png used on input l
+ine 652.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX/UOX_macro_scattering001.png, id=124, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_scattering001.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_scattering001.png>
+Package pdftex.def Info: images/UOX/UOX_macro_scattering001.png used on input l
+ine 655.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX/UOX_macro_totale1.png, id=125, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_totale1.png Graphic file (type png)
+
+<use images/UOX/UOX_macro_totale1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_totale1.png used on input line 65
+8.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+[][] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+[] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+[] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/UOX-Gd/UOX-Gd_macro_absorption1.png, id=126, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_absorption1.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_absorption1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_absorption1.png used on inp
+ut line 665.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_fission0.png, id=127, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_fission0.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_fission0.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_fission0.png used on input 
+line 668.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_nu_fission1.png, id=128, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_nu_fission1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png used on inp
+ut line 671.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_scattering000.png, id=129, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_scattering000.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_scattering000.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering000.png used on i
+nput line 674.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_scattering001.png, id=130, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_scattering001.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_scattering001.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering001.png used on i
+nput line 677.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_totale1.png, id=131, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_totale1.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_totale1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_totale1.png used on input l
+ine 680.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+[][] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+[] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+[] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 690--697
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 707--711
+
+ []
+
+[21] [22] (./main.bbl)) [23] [24 <./images/MOX/MOX_macro_absorption1.png> <./im
+ages/MOX/MOX_macro_fission0.png> <./images/MOX/MOX_macro_nu_fission1.png> <./im
+ages/MOX/MOX_macro_scattering000.png> <./images/MOX/MOX_macro_scattering001.png
+> <./images/MOX/MOX_macro_totale1.png>] [25 <./images/UOX/UOX_macro_absorption1
+.png> <./images/UOX/UOX_macro_fission0.png> <./images/UOX/UOX_macro_nu_fission1
+.png> <./images/UOX/UOX_macro_scattering000.png> <./images/UOX/UOX_macro_scatte
+ring001.png> <./images/UOX/UOX_macro_totale1.png>] [26 <./images/UOX-Gd/UOX-Gd_
+macro_absorption1.png> <./images/UOX-Gd/UOX-Gd_macro_fission0.png> <./images/UO
+X-Gd/UOX-Gd_macro_nu_fission1.png> <./images/UOX-Gd/UOX-Gd_macro_scattering000.
+png> <./images/UOX-Gd/UOX-Gd_macro_scattering001.png> <./images/UOX-Gd/UOX-Gd_m
+acro_totale1.png>]
 
 Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.)
@@ -1646,13 +1894,13 @@ This document will not have a glossary.
 
 (./main.aux (./ressources/body.aux)) ) 
 Here is how much of TeX's memory you used:
- 31304 strings out of 493029
- 617250 string characters out of 6136234
- 724502 words of memory out of 5000000
- 34278 multiletter control sequences out of 15000+600000
+ 31399 strings out of 493029
+ 620800 string characters out of 6136234
+ 724497 words of memory out of 5000000
+ 34352 multiletter control sequences out of 15000+600000
  19765 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 63i,16n,101p,10484b,370s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 63i,16n,101p,10484b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-supe
 r/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
@@ -1672,10 +1920,10 @@ lic/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm100
 xmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/publ
 ic/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200
 .pfb>
-Output written on main.pdf (22 pages, 1327022 bytes).
+Output written on main.pdf (27 pages, 5737434 bytes).
 PDF statistics:
- 183 PDF objects out of 1000 (max. 8388607)
- 115 compressed objects within 2 object streams
+ 235 PDF objects out of 1000 (max. 8388607)
+ 126 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

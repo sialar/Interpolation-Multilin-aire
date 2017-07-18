@@ -11,7 +11,7 @@ core = sys.argv[1]
 csName = sys.argv[2]
 csName = string.replace(csName,"*","_")
 
-figureTitle = "Comparaison of relative errors (pcm) for the cross-section " + core + "_" + csName
+figureTitle = core + "_" + csName
 fileName = "../data/" + core + "/" + csName
 figureName = "../images/" + core + "/" + core + "_" + csName
 results_file = open(fileName,"r")
