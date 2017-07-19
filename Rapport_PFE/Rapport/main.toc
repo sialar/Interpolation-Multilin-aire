@@ -1,4 +1,0 @@
-\select@language {english}
-\contentsline {section}{\numberline {1}Introduction}{2}
-\contentsline {paragraph}{Mots cl\IeC {\'e}s:}{2}
-\contentsline {section}{\numberline {2}Pr\IeC {\'e}sentation de la structure d\IeC {\textquoteright }accueil}{3}

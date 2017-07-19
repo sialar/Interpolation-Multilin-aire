@@ -115,6 +115,7 @@ class Interpolation
         void readReferencePointsFromFile();
         void saveApproximationResultsInFile();
         void readApproximationResultsFromFile();
+        void displayInterpolationMultiVariatePoints();
 };
 
 template <typename T>
@@ -288,6 +289,15 @@ void Interpolation<T>::displayInterpolationPoints()
             cout << /*setprecision(m_precision) <<*/ *it << " ";
         cout << "}" << endl;
     }
+}
+
+template <typename T>
+void Interpolation<T>::displayInterpolationMultiVariatePoints()
+{
+    cout << " - " << m_interpolationNodes.size() << "Interpolation nodes: { ";
+    for (MultiVariatePoint<double> x : m_interpolationNodes)
+        cout << setprecision(numeric_limits<double>::digits10+1) << x << " ";
+    cout << "}" << endl;
 }
 
 template <typename T>

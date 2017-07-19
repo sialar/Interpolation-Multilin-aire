@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  18 JUL 2017 17:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  19 JUL 2017 16:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -648,11 +648,28 @@ Package: supertabular 2004/02/20 v4.1e the supertabular environment
 Package: glossary-tree 2016/01/24 v4.21 (NLCT)
 \glstreeindent=\skip58
 ))
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen132
+\extrarowheight=\dimen133
+\NC@list=\toks34
+\extratabsurround=\skip59
+\backup@length=\skip60
+)
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen134
+)
+(/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen135
+\c@nlinenum=\count130
+\TeXr@lab=\toks35
+)
 \glswrite=\write3
 \glo@main@file=\write4
 \openout4 = `main.glo'.
 
-Package glossaries Info: Writing glossary file main.glo on input line 11.
+Package glossaries Info: Writing glossary file main.glo on input line 15.
 
 (/usr/share/texlive/texmf-dist/tex/latex/tocbibind/tocbibind.sty
 Package: tocbibind 2010/10/13 v1.5k extra ToC listings
@@ -663,8 +680,8 @@ Package tocbibind Note: Using section or other style headings.
 
 ) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-\Gin@req@height=\dimen132
-\Gin@req@width=\dimen133
+\Gin@req@height=\dimen136
+\Gin@req@width=\dimen137
 )
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
@@ -680,18 +697,18 @@ Package ifvtex Info: VTeX not detected.
 (/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-\Gm@cnth=\count130
-\Gm@cntv=\count131
-\c@Gm@tempcnt=\count132
-\Gm@bindingoffset=\dimen134
-\Gm@wd@mp=\dimen135
-\Gm@odd@mp=\dimen136
-\Gm@even@mp=\dimen137
-\Gm@layoutwidth=\dimen138
-\Gm@layoutheight=\dimen139
-\Gm@layouthoffset=\dimen140
-\Gm@layoutvoffset=\dimen141
-\Gm@dimlist=\toks34
+\Gm@cnth=\count131
+\Gm@cntv=\count132
+\c@Gm@tempcnt=\count133
+\Gm@bindingoffset=\dimen138
+\Gm@wd@mp=\dimen139
+\Gm@odd@mp=\dimen140
+\Gm@even@mp=\dimen141
+\Gm@layoutwidth=\dimen142
+\Gm@layoutheight=\dimen143
+\Gm@layouthoffset=\dimen144
+\Gm@layoutvoffset=\dimen145
+\Gm@dimlist=\toks36
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
 Package: tcolorbox 2016/02/29 version 3.90 text color boxes
@@ -699,9 +716,9 @@ Package: tcolorbox 2016/02/29 version 3.90 text color boxes
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks35
-\pgfutil@tempdima=\dimen142
-\pgfutil@tempdimb=\dimen143
+\pgfutil@everybye=\toks37
+\pgfutil@tempdima=\dimen146
+\pgfutil@tempdimb=\dimen147
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
 ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -720,30 +737,30 @@ Package: pgf 2015/08/07 v3.0.1a (rcs-revision 1.15)
 Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks36
-\pgfkeys@temptoks=\toks37
+\pgfkeys@pathtoks=\toks38
+\pgfkeys@temptoks=\toks39
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
 ex
-\pgfkeys@tmptoks=\toks38
+\pgfkeys@tmptoks=\toks40
 ))
-\pgf@x=\dimen144
-\pgf@y=\dimen145
-\pgf@xa=\dimen146
-\pgf@ya=\dimen147
-\pgf@xb=\dimen148
-\pgf@yb=\dimen149
-\pgf@xc=\dimen150
-\pgf@yc=\dimen151
+\pgf@x=\dimen148
+\pgf@y=\dimen149
+\pgf@xa=\dimen150
+\pgf@ya=\dimen151
+\pgf@xb=\dimen152
+\pgf@yb=\dimen153
+\pgf@xc=\dimen154
+\pgf@yc=\dimen155
 \w@pgf@writea=\write5
 \r@pgf@reada=\read1
-\c@pgf@counta=\count133
-\c@pgf@countb=\count134
-\c@pgf@countc=\count135
-\c@pgf@countd=\count136
-\t@pgf@toka=\toks39
-\t@pgf@tokb=\toks40
-\t@pgf@tokc=\toks41
+\c@pgf@counta=\count134
+\c@pgf@countb=\count135
+\c@pgf@countc=\count136
+\c@pgf@countd=\count137
+\t@pgf@toka=\toks41
+\t@pgf@tokb=\toks42
+\t@pgf@tokc=\toks43
  (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
 )
@@ -759,8 +776,8 @@ File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
 tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count137
-\pgfsyssoftpath@bigbuffer@items=\count138
+\pgfsyssoftpath@smallbuffer@items=\count138
+\pgfsyssoftpath@bigbuffer@items=\count139
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
 tex
@@ -789,12 +806,12 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen152
-\pgfmath@count=\count139
+\pgfmath@dimen=\dimen156
+\pgfmath@count=\count140
 \pgfmath@box=\box34
-\pgfmath@toks=\toks42
-\pgfmath@stack@operand=\toks43
-\pgfmath@stack@operation=\toks44
+\pgfmath@toks=\toks44
+\pgfmath@stack@operand=\toks45
+\pgfmath@stack@operation=\toks46
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
@@ -814,37 +831,37 @@ tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
 thmetics.code.tex)))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count140
+\c@pgfmathroundto@lastzeros=\count141
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
 x
 File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
-\pgf@picminx=\dimen153
-\pgf@picmaxx=\dimen154
-\pgf@picminy=\dimen155
-\pgf@picmaxy=\dimen156
-\pgf@pathminx=\dimen157
-\pgf@pathmaxx=\dimen158
-\pgf@pathminy=\dimen159
-\pgf@pathmaxy=\dimen160
-\pgf@xx=\dimen161
-\pgf@xy=\dimen162
-\pgf@yx=\dimen163
-\pgf@yy=\dimen164
-\pgf@zx=\dimen165
-\pgf@zy=\dimen166
+\pgf@picminx=\dimen157
+\pgf@picmaxx=\dimen158
+\pgf@picminy=\dimen159
+\pgf@picmaxy=\dimen160
+\pgf@pathminx=\dimen161
+\pgf@pathmaxx=\dimen162
+\pgf@pathminy=\dimen163
+\pgf@pathmaxy=\dimen164
+\pgf@xx=\dimen165
+\pgf@xy=\dimen166
+\pgf@yx=\dimen167
+\pgf@yy=\dimen168
+\pgf@zx=\dimen169
+\pgf@zy=\dimen170
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
 code.tex
 File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
-\pgf@path@lastx=\dimen167
-\pgf@path@lasty=\dimen168
+\pgf@path@lastx=\dimen171
+\pgf@path@lasty=\dimen172
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
 .tex
 File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
-\pgf@shorten@end@additional=\dimen169
-\pgf@shorten@start@additional=\dimen170
+\pgf@shorten@end@additional=\dimen173
+\pgf@shorten@start@additional=\dimen174
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
 x
@@ -852,19 +869,19 @@ File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box35
 \pgf@hbox=\box36
 \pgf@layerbox@main=\box37
-\pgf@picture@serial@count=\count141
+\pgf@picture@serial@count=\count142
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
 ode.tex
 File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
-\pgflinewidth=\dimen171
+\pgflinewidth=\dimen175
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
 s.code.tex
 File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
-\pgf@pt@x=\dimen172
-\pgf@pt@y=\dimen173
-\pgf@pt@temp=\dimen174
+\pgf@pt@x=\dimen176
+\pgf@pt@y=\dimen177
+\pgf@pt@temp=\dimen178
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
@@ -880,12 +897,12 @@ File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
 x
 File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
-\pgfarrowsep=\dimen175
+\pgfarrowsep=\dimen179
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
-\pgf@max=\dimen176
-\pgf@sys@shading@range@num=\count142
+\pgf@max=\dimen180
+\pgf@sys@shading@range@num=\count143
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
@@ -916,16 +933,16 @@ File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
 .sty
 Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
-\pgf@nodesepstart=\dimen177
-\pgf@nodesepend=\dimen178
+\pgf@nodesepstart=\dimen181
+\pgf@nodesepend=\dimen182
 )
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
 .sty
 Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
 )) (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks45
-\verbatim@line=\toks46
+\every@verbatim=\toks47
+\verbatim@line=\toks48
 \verbatim@in@stream=\read2
 )
 (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
@@ -938,9 +955,9 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \tcb@upperbox=\box41
 \tcb@lowerbox=\box42
 \tcb@phantombox=\box43
-\c@tcbbreakpart=\count143
-\c@tcblayer=\count144
-\tcolorbox@number=\count145
+\c@tcbbreakpart=\count144
+\c@tcblayer=\count145
+\tcolorbox@number=\count146
 \tcb@temp=\box44
 \tcb@temp=\box45
 \tcb@temp=\box46
@@ -950,9 +967,9 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 
 (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbraster.code.tex
 Library (tcolorbox): 'tcbraster.code.tex' version '3.90'
-\c@tcbrastercolumn=\count146
-\c@tcbrasterrow=\count147
-\c@tcbraster=\count148
+\c@tcbrastercolumn=\count147
+\c@tcbrasterrow=\count148
+\c@tcbraster=\count149
 ) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
 Library (tcolorbox): 'tcbskins.code.tex' version '3.90'
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
@@ -965,10 +982,10 @@ Library (tcolorbox): 'tcbskins.code.tex' version '3.90'
 Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen179
-\pgffor@skip=\dimen180
-\pgffor@stack=\toks47
-\pgffor@toks=\toks48
+\pgffor@iter=\dimen183
+\pgffor@skip=\dimen184
+\pgffor@stack=\toks49
+\pgffor@toks=\toks50
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
@@ -976,31 +993,31 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
 .code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count149
-\pgfplotmarksize=\dimen181
+\pgf@plot@mark@count=\count150
+\pgfplotmarksize=\dimen185
 )
-\tikz@lastx=\dimen182
-\tikz@lasty=\dimen183
-\tikz@lastxsaved=\dimen184
-\tikz@lastysaved=\dimen185
-\tikzleveldistance=\dimen186
-\tikzsiblingdistance=\dimen187
+\tikz@lastx=\dimen186
+\tikz@lasty=\dimen187
+\tikz@lastxsaved=\dimen188
+\tikz@lastysaved=\dimen189
+\tikzleveldistance=\dimen190
+\tikzsiblingdistance=\dimen191
 \tikz@figbox=\box48
 \tikz@figbox@bg=\box49
 \tikz@tempbox=\box50
 \tikz@tempbox@bg=\box51
-\tikztreelevel=\count150
-\tikznumberofchildren=\count151
-\tikznumberofcurrentchild=\count152
-\tikz@fig@count=\count153
+\tikztreelevel=\count151
+\tikznumberofchildren=\count152
+\tikznumberofcurrentchild=\count153
+\tikz@fig@count=\count154
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count154
-\pgfmatrixcurrentcolumn=\count155
-\pgf@matrix@numberofcolumns=\count156
+\pgfmatrixcurrentrow=\count155
+\pgfmatrixcurrentcolumn=\count156
+\pgf@matrix@numberofcolumns=\count157
 )
-\tikz@expandcount=\count157
+\tikz@expandcount=\count158
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarytopaths.code.tex
@@ -1021,10 +1038,10 @@ Library (tcolorbox): 'tcbhooks.code.tex' version '3.90'
 Library (tcolorbox): 'tcbtheorems.code.tex' version '3.90'
 ) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbfitting.code.tex
 Library (tcolorbox): 'tcbfitting.code.tex' version '3.90'
-\tcbfitdim=\dimen188
-\tcb@lowerfitdim=\dimen189
-\tcb@upperfitdim=\dimen190
-\tcb@cur@hbadness=\count158
+\tcbfitdim=\dimen192
+\tcb@lowerfitdim=\dimen193
+\tcb@upperfitdim=\dimen194
+\tcb@cur@hbadness=\count159
 ) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbxparse.code.tex
 Library (tcolorbox): 'tcbxparse.code.tex' version '3.90'
 (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
@@ -1041,37 +1058,37 @@ L3 Module: l3tl 2015/09/29 v6121 L3 Token lists
 L3 Module: l3str 2016/01/03 v6357 L3 Strings
 L3 Module: l3seq 2015/08/05 v5777 L3 Sequences and stacks
 L3 Module: l3int 2016/01/05 v6366 L3 Integers
-\c_max_int=\count159
-\l_tmpa_int=\count160
-\l_tmpb_int=\count161
-\g_tmpa_int=\count162
-\g_tmpb_int=\count163
+\c_max_int=\count160
+\l_tmpa_int=\count161
+\l_tmpb_int=\count162
+\g_tmpa_int=\count163
+\g_tmpb_int=\count164
 L3 Module: l3quark 2015/08/17 v5855 L3 Quarks
 L3 Module: l3prg 2015/11/01 v6216 L3 Control structures
-\g__prg_map_int=\count164
+\g__prg_map_int=\count165
 L3 Module: l3clist 2015/09/02 v5901 L3 Comma separated lists
 L3 Module: l3token 2015/11/11 v6249 L3 Experimental token manipulation
 L3 Module: l3prop 2016/01/05 v6366 L3 Property lists
 L3 Module: l3msg 2015/09/28 v6113 L3 Messages
 L3 Module: l3file 2015/12/03 v6317 L3 File and I/O operations
-\l_iow_line_count_int=\count165
-\l__iow_target_count_int=\count166
-\l__iow_current_line_int=\count167
-\l__iow_current_word_int=\count168
-\l__iow_current_indentation_int=\count169
+\l_iow_line_count_int=\count166
+\l__iow_target_count_int=\count167
+\l__iow_current_line_int=\count168
+\l__iow_current_word_int=\count169
+\l__iow_current_indentation_int=\count170
 L3 Module: l3skip 2016/01/05 v6366 L3 Dimensions and skips
-\c_zero_dim=\dimen191
-\c_max_dim=\dimen192
-\l_tmpa_dim=\dimen193
-\l_tmpb_dim=\dimen194
-\g_tmpa_dim=\dimen195
-\g_tmpb_dim=\dimen196
-\c_zero_skip=\skip59
-\c_max_skip=\skip60
-\l_tmpa_skip=\skip61
-\l_tmpb_skip=\skip62
-\g_tmpa_skip=\skip63
-\g_tmpb_skip=\skip64
+\c_zero_dim=\dimen195
+\c_max_dim=\dimen196
+\l_tmpa_dim=\dimen197
+\l_tmpb_dim=\dimen198
+\g_tmpa_dim=\dimen199
+\g_tmpb_dim=\dimen256
+\c_zero_skip=\skip61
+\c_max_skip=\skip62
+\l_tmpa_skip=\skip63
+\l_tmpb_skip=\skip64
+\g_tmpa_skip=\skip65
+\g_tmpb_skip=\skip66
 \c_zero_muskip=\muskip11
 \c_max_muskip=\muskip12
 \l_tmpa_muskip=\muskip13
@@ -1079,18 +1096,18 @@ L3 Module: l3skip 2016/01/05 v6366 L3 Dimensions and skips
 \g_tmpa_muskip=\muskip15
 \g_tmpb_muskip=\muskip16
 L3 Module: l3keys 2015/11/17 v6284 L3 Key-value interfaces
-\g__keyval_level_int=\count170
-\l_keys_choice_int=\count171
+\g__keyval_level_int=\count171
+\l_keys_choice_int=\count172
 L3 Module: l3fp 2015/08/25 v5890 L3 Floating points
-\c__fp_leading_shift_int=\count172
-\c__fp_middle_shift_int=\count173
-\c__fp_trailing_shift_int=\count174
-\c__fp_big_leading_shift_int=\count175
-\c__fp_big_middle_shift_int=\count176
-\c__fp_big_trailing_shift_int=\count177
-\c__fp_Bigg_leading_shift_int=\count178
-\c__fp_Bigg_middle_shift_int=\count179
-\c__fp_Bigg_trailing_shift_int=\count180
+\c__fp_leading_shift_int=\count173
+\c__fp_middle_shift_int=\count174
+\c__fp_trailing_shift_int=\count175
+\c__fp_big_leading_shift_int=\count176
+\c__fp_big_middle_shift_int=\count177
+\c__fp_big_trailing_shift_int=\count178
+\c__fp_Bigg_leading_shift_int=\count179
+\c__fp_Bigg_middle_shift_int=\count180
+\c__fp_Bigg_trailing_shift_int=\count181
 L3 Module: l3box 2015/08/09 v5822 L3 Experimental boxes
 \c_empty_box=\box56
 \l_tmpa_box=\box57
@@ -1099,13 +1116,13 @@ L3 Module: l3box 2015/08/09 v5822 L3 Experimental boxes
 \g_tmpb_box=\box60
 L3 Module: l3coffins 2015/08/06 v5789 L3 Coffin code layer
 \l__coffin_internal_box=\box61
-\l__coffin_internal_dim=\dimen197
-\l__coffin_offset_x_dim=\dimen198
-\l__coffin_offset_y_dim=\dimen199
-\l__coffin_x_dim=\dimen256
-\l__coffin_y_dim=\dimen257
-\l__coffin_x_prime_dim=\dimen258
-\l__coffin_y_prime_dim=\dimen259
+\l__coffin_internal_dim=\dimen257
+\l__coffin_offset_x_dim=\dimen258
+\l__coffin_offset_y_dim=\dimen259
+\l__coffin_x_dim=\dimen260
+\l__coffin_y_dim=\dimen261
+\l__coffin_x_prime_dim=\dimen262
+\l__coffin_y_prime_dim=\dimen263
 \c_empty_coffin=\box62
 \l__coffin_aligned_coffin=\box63
 \l__coffin_aligned_internal_coffin=\box64
@@ -1114,40 +1131,40 @@ L3 Module: l3coffins 2015/08/06 v5789 L3 Coffin code layer
 \l__coffin_display_coffin=\box67
 \l__coffin_display_coord_coffin=\box68
 \l__coffin_display_pole_coffin=\box69
-\l__coffin_display_offset_dim=\dimen260
-\l__coffin_display_x_dim=\dimen261
-\l__coffin_display_y_dim=\dimen262
+\l__coffin_display_offset_dim=\dimen264
+\l__coffin_display_x_dim=\dimen265
+\l__coffin_display_y_dim=\dimen266
 L3 Module: l3color 2014/08/23 v5354 L3 Experimental color support
 L3 Module: l3sys 2015/09/25 v6087 L3 Experimental system/runtime functions
 L3 Module: l3candidates 2016/01/14 v6376 L3 Experimental additions to l3kernel
-\l__box_top_dim=\dimen263
-\l__box_bottom_dim=\dimen264
-\l__box_left_dim=\dimen265
-\l__box_right_dim=\dimen266
-\l__box_top_new_dim=\dimen267
-\l__box_bottom_new_dim=\dimen268
-\l__box_left_new_dim=\dimen269
-\l__box_right_new_dim=\dimen270
+\l__box_top_dim=\dimen267
+\l__box_bottom_dim=\dimen268
+\l__box_left_dim=\dimen269
+\l__box_right_dim=\dimen270
+\l__box_top_new_dim=\dimen271
+\l__box_bottom_new_dim=\dimen272
+\l__box_left_new_dim=\dimen273
+\l__box_right_new_dim=\dimen274
 \l__box_internal_box=\box70
-\l__coffin_bounding_shift_dim=\dimen271
-\l__coffin_left_corner_dim=\dimen272
-\l__coffin_right_corner_dim=\dimen273
-\l__coffin_bottom_corner_dim=\dimen274
-\l__coffin_top_corner_dim=\dimen275
-\l__coffin_scaled_total_height_dim=\dimen276
-\l__coffin_scaled_width_dim=\dimen277
+\l__coffin_bounding_shift_dim=\dimen275
+\l__coffin_left_corner_dim=\dimen276
+\l__coffin_right_corner_dim=\dimen277
+\l__coffin_bottom_corner_dim=\dimen278
+\l__coffin_top_corner_dim=\dimen279
+\l__coffin_scaled_total_height_dim=\dimen280
+\l__coffin_scaled_width_dim=\dimen281
 L3 Module: l3luatex 2015/11/11 v6250 L3 Experimental LuaTeX-specific functions
 )
 (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
 File: l3pdfmode.def 2015/11/11 v6250 L3 Experimental driver: PDF mode
-\l__driver_color_stack_int=\count181
+\l__driver_color_stack_int=\count182
 ))
 Package: xparse 2016/01/19 v6377 L3 Experimental document command parser
-\l__xparse_current_arg_int=\count182
-\l__xparse_m_args_int=\count183
-\l__xparse_mandatory_args_int=\count184
-\l__xparse_processor_int=\count185
-\l__xparse_v_nesting_int=\count186
+\l__xparse_current_arg_int=\count183
+\l__xparse_m_args_int=\count184
+\l__xparse_mandatory_args_int=\count185
+\l__xparse_processor_int=\count186
+\l__xparse_v_nesting_int=\count187
 )
 .................................................
 . LaTeX info: "xparse/define-command"
@@ -1166,23 +1183,23 @@ Library (tcolorbox): 'tcblistingsutf8.code.tex' version '3.90'
 Package: listingsutf8 2011/11/10 v1.2 Allow UTF-8 in listings input (HO)
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count187
+\lst@mode=\count188
 \lst@gtempboxa=\box71
-\lst@token=\toks49
-\lst@length=\count188
-\lst@currlwidth=\dimen278
-\lst@column=\count189
-\lst@pos=\count190
-\lst@lostspace=\dimen279
-\lst@width=\dimen280
-\lst@newlines=\count191
-\lst@lineno=\count192
-\lst@maxwidth=\dimen281
+\lst@token=\toks51
+\lst@length=\count189
+\lst@currlwidth=\dimen282
+\lst@column=\count190
+\lst@pos=\count191
+\lst@lostspace=\dimen283
+\lst@width=\dimen284
+\lst@newlines=\count192
+\lst@lineno=\count193
+\lst@maxwidth=\dimen285
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count193
-\lst@skipnumbers=\count194
+\c@lstnumber=\count194
+\lst@skipnumbers=\count195
 \lst@framebox=\box72
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -1214,7 +1231,7 @@ Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
 Library (tcolorbox): 'tcblistings.code.tex' version '3.90'
 (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcblistingscore.code.tex
 Library (tcolorbox): 'tcblistingscore.code.tex' version '3.90'
-\c@tcblisting=\count195
+\c@tcblisting=\count196
 ))) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbexternal.code.tex
 Library (tcolorbox): 'tcbexternal.code.tex' version '3.90'
 ) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbmagazine.code.tex
@@ -1225,18 +1242,18 @@ Package: subfiles 2012/05/23 Federico Garcia
 (./ressources/body.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
@@ -1249,17 +1266,17 @@ Package caption Info: End \AtBeginDocument code.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count196
-\scratchdimen=\dimen282
+\scratchcounter=\count197
+\scratchdimen=\dimen286
 \scratchbox=\box73
-\nofMPsegments=\count197
-\nofMParguments=\count198
-\everyMPshowfont=\toks50
-\MPscratchCnt=\count199
-\MPscratchDim=\dimen283
-\MPnumerator=\count266
-\makeMPintoPDFobject=\count267
-\everyMPtoPDFconversion=\toks51
+\nofMPsegments=\count198
+\nofMParguments=\count199
+\everyMPshowfont=\toks52
+\MPscratchCnt=\count266
+\MPscratchDim=\dimen287
+\MPnumerator=\count267
+\makeMPintoPDFobject=\count268
+\everyMPtoPDFconversion=\toks53
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -1327,7 +1344,7 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EveryShipout initializing macros
-\c@lstlisting=\count268
+\c@lstlisting=\count269
  (./ressources/titlePage.tex
 <images/logo.png, id=4, 312.2064pt x 305.7021pt>
 File: images/logo.png Graphic file (type png)
@@ -1628,261 +1645,299 @@ File: images/leja_sequence.png Graphic file (type png)
 <use images/leja_sequence.png>
 Package pdftex.def Info: images/leja_sequence.png used on input line 510.
 (pdftex.def)             Requested size: 455.24165pt x 256.085pt.
+
+<images/algo_ai_recherch_voisin.png, id=103, 1204.5pt x 501.875pt>
+File: images/algo_ai_recherch_voisin.png Graphic file (type png)
+
+<use images/algo_ai_recherch_voisin.png>
+Package pdftex.def Info: images/algo_ai_recherch_voisin.png used on input line 
+524.
+(pdftex.def)             Requested size: 455.25195pt x 256.08304pt.
  [18 <./images/leja_sequence.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 545--551
+[19 <./images/algo_ai_recherch_voisin.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 568--574
 
  []
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 554.
-
-Missing character: There is no é in font cmr12!
-
-LaTeX Warning: Command \' invalid in math mode on input line 554.
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 554.
-
-Missing character: There is no é in font cmr12!
-Missing character: There is no é in font cmr12!
-
-LaTeX Warning: Command \' invalid in math mode on input line 554.
-
-Missing character: There is no é in font cmr12!
-
-Overfull \hbox (21.81879pt too wide) in paragraph at lines 552--556
-\T1/cmr/m/n/12 Ces sec-tions ef-fi-caces dépen-dent de $\OT1/cmr/m/n/12 5$ \T1/
-cmr/m/n/12 paramètres physique: $\OML/cmm/m/it/12 burnup$\T1/cmr/m/n/12 , $\OML
-/cmm/m/it/12 tempratureducombustible$\T1/cmr/m/n/12 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 552--556
+Underfull \hbox (badness 10000) in paragraph at lines 575--579
 
  []
 
-[19]
-Underfull \hbox (badness 10000) in paragraph at lines 588--596
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 615--623
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 597--601
+Underfull \hbox (badness 10000) in paragraph at lines 624--628
 
  []
 
-[20] <images/MOX/MOX_macro_absorption1.png, id=114, 722.7pt x 722.7pt>
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 644--645
+
+ []
+
+
+Overfull \hbox (4.14484pt too wide) in paragraph at lines 647--656
+ \T1/cmr/bx/n/12 Dis-créti-sa-tion de l'espace de phase des paramètres:[] \T1/c
+mr/m/n/12 La grille mul-ti-l-inéaire posssède
+ []
+
+
+Overfull \hbox (5.26787pt too wide) in paragraph at lines 657--674
+ [] 
+ []
+
+[22] <images/nb_discretisation.png, id=123, 602.25pt x 401.5pt>
+File: images/nb_discretisation.png Graphic file (type png)
+
+<use images/nb_discretisation.png>
+Package pdftex.def Info: images/nb_discretisation.png used on input line 680.
+(pdftex.def)             Requested size: 318.67636pt x 199.17502pt.
+ [23 <./images/nb_discretisation.png>]
+<images/MOX/ReactivityError.png, id=129, 722.7pt x 722.7pt>
+File: images/MOX/ReactivityError.png Graphic file (type png)
+
+<use images/MOX/ReactivityError.png>
+Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 729.
+
+(pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
+
+<images/UOX/ReactivityError.png, id=130, 722.7pt x 722.7pt>
+File: images/UOX/ReactivityError.png Graphic file (type png)
+
+<use images/UOX/ReactivityError.png>
+Package pdftex.def Info: images/UOX/ReactivityError.png used on input line 732.
+
+(pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
+
+<images/UOX-Gd/ReactivityError.png, id=131, 722.7pt x 722.7pt>
+File: images/UOX-Gd/ReactivityError.png Graphic file (type png)
+
+<use images/UOX-Gd/ReactivityError.png>
+Package pdftex.def Info: images/UOX-Gd/ReactivityError.png used on input line 7
+35.
+(pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
+
+Overfull \hbox (49.36035pt too wide) in paragraph at lines 742--749
+ [] 
+ []
+
+<images/MOX/MOX_macro_absorption1.png, id=132, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_absorption1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_absorption1.png>
 Package pdftex.def Info: images/MOX/MOX_macro_absorption1.png used on input lin
-e 621.
+e 760.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_fission0.png, id=115, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_fission0.png, id=133, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_fission0.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_fission0.png>
-Package pdftex.def Info: images/MOX/MOX_macro_fission0.png used on input line 6
-24.
+Package pdftex.def Info: images/MOX/MOX_macro_fission0.png used on input line 7
+63.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_nu_fission1.png, id=116, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_nu_fission1.png, id=134, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_nu_fission1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_nu_fission1.png>
 Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1.png used on input lin
-e 627.
+e 766.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_scattering000.png, id=117, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering000.png, id=135, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering000.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering000.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering000.png used on input l
-ine 630.
+ine 769.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_scattering001.png, id=118, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering001.png, id=136, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering001.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering001.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering001.png used on input l
-ine 633.
+ine 772.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_totale1.png, id=119, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_totale1.png, id=137, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_totale1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_totale1.png>
-Package pdftex.def Info: images/MOX/MOX_macro_totale1.png used on input line 63
-6.
+Package pdftex.def Info: images/MOX/MOX_macro_totale1.png used on input line 77
+5.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 759--777
 [][] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 759--777
 [] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 620--638
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 759--777
 [] [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/UOX/UOX_macro_absorption1.png, id=120, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_absorption1.png, id=138, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_absorption1.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_absorption1.png>
 Package pdftex.def Info: images/UOX/UOX_macro_absorption1.png used on input lin
-e 643.
+e 782.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_fission0.png, id=121, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_fission0.png, id=139, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_fission0.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_fission0.png>
-Package pdftex.def Info: images/UOX/UOX_macro_fission0.png used on input line 6
-46.
+Package pdftex.def Info: images/UOX/UOX_macro_fission0.png used on input line 7
+85.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_nu_fission1.png, id=122, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_nu_fission1.png, id=140, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_nu_fission1.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_nu_fission1.png>
 Package pdftex.def Info: images/UOX/UOX_macro_nu_fission1.png used on input lin
-e 649.
+e 788.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_scattering000.png, id=123, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_scattering000.png, id=141, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_scattering000.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_scattering000.png>
 Package pdftex.def Info: images/UOX/UOX_macro_scattering000.png used on input l
-ine 652.
+ine 791.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_scattering001.png, id=124, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_scattering001.png, id=142, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_scattering001.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_scattering001.png>
 Package pdftex.def Info: images/UOX/UOX_macro_scattering001.png used on input l
-ine 655.
+ine 794.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_totale1.png, id=125, 722.7pt x 722.7pt>
+<images/UOX/UOX_macro_totale1.png, id=143, 722.7pt x 722.7pt>
 File: images/UOX/UOX_macro_totale1.png Graphic file (type png)
 
 <use images/UOX/UOX_macro_totale1.png>
-Package pdftex.def Info: images/UOX/UOX_macro_totale1.png used on input line 65
-8.
+Package pdftex.def Info: images/UOX/UOX_macro_totale1.png used on input line 79
+7.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 781--799
 [][] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 781--799
 [] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 642--660
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 781--799
 [] [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/UOX-Gd/UOX-Gd_macro_absorption1.png, id=126, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_absorption1.png, id=144, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_absorption1.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_absorption1.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_absorption1.png used on inp
-ut line 665.
+ut line 804.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_fission0.png, id=127, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_fission0.png, id=145, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_fission0.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_fission0.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_fission0.png used on input 
-line 668.
+line 807.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_nu_fission1.png, id=128, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_nu_fission1.png, id=146, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_nu_fission1.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png used on inp
-ut line 671.
+ut line 810.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_scattering000.png, id=129, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_scattering000.png, id=147, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_scattering000.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_scattering000.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering000.png used on i
-nput line 674.
+nput line 813.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_scattering001.png, id=130, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_scattering001.png, id=148, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_scattering001.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_scattering001.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering001.png used on i
-nput line 677.
+nput line 816.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_totale1.png, id=131, 722.7pt x 722.7pt>
+<images/UOX-Gd/UOX-Gd_macro_totale1.png, id=149, 722.7pt x 722.7pt>
 File: images/UOX-Gd/UOX-Gd_macro_totale1.png Graphic file (type png)
 
 <use images/UOX-Gd/UOX-Gd_macro_totale1.png>
 Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_totale1.png used on input l
-ine 680.
+ine 819.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 803--821
 [][] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 803--821
 [] []
  []
 
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 664--682
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 803--821
 [] [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 690--697
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 707--711
+[24 <./images/MOX/ReactivityError.png> <./images/UOX/ReactivityError.png> <./im
+ages/UOX-Gd/ReactivityError.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 829--836
 
  []
 
-[21] [22] (./main.bbl)) [23] [24 <./images/MOX/MOX_macro_absorption1.png> <./im
+
+Underfull \hbox (badness 10000) in paragraph at lines 846--850
+
+ []
+
+[25] [26] (./main.bbl)) [27] [28 <./images/MOX/MOX_macro_absorption1.png> <./im
 ages/MOX/MOX_macro_fission0.png> <./images/MOX/MOX_macro_nu_fission1.png> <./im
 ages/MOX/MOX_macro_scattering000.png> <./images/MOX/MOX_macro_scattering001.png
-> <./images/MOX/MOX_macro_totale1.png>] [25 <./images/UOX/UOX_macro_absorption1
+> <./images/MOX/MOX_macro_totale1.png>] [29 <./images/UOX/UOX_macro_absorption1
 .png> <./images/UOX/UOX_macro_fission0.png> <./images/UOX/UOX_macro_nu_fission1
 .png> <./images/UOX/UOX_macro_scattering000.png> <./images/UOX/UOX_macro_scatte
-ring001.png> <./images/UOX/UOX_macro_totale1.png>] [26 <./images/UOX-Gd/UOX-Gd_
+ring001.png> <./images/UOX/UOX_macro_totale1.png>] [30 <./images/UOX-Gd/UOX-Gd_
 macro_absorption1.png> <./images/UOX-Gd/UOX-Gd_macro_fission0.png> <./images/UO
 X-Gd/UOX-Gd_macro_nu_fission1.png> <./images/UOX-Gd/UOX-Gd_macro_scattering000.
 png> <./images/UOX-Gd/UOX-Gd_macro_scattering001.png> <./images/UOX-Gd/UOX-Gd_m
@@ -1894,13 +1949,13 @@ This document will not have a glossary.
 
 (./main.aux (./ressources/body.aux)) ) 
 Here is how much of TeX's memory you used:
- 31399 strings out of 493029
- 620800 string characters out of 6136234
- 724497 words of memory out of 5000000
- 34352 multiletter control sequences out of 15000+600000
+ 31625 strings out of 493029
+ 623953 string characters out of 6136234
+ 730345 words of memory out of 5000000
+ 34565 multiletter control sequences out of 15000+600000
  19765 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 63i,16n,101p,10484b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 63i,21n,101p,10484b,422s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-supe
 r/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
@@ -1912,18 +1967,18 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx12
-00.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/t
-exmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/pub
-lic/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm100
-0.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/te
-xmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/publ
-ic/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200
-.pfb>
-Output written on main.pdf (27 pages, 5737434 bytes).
+msfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx08
+00.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/t
+exmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/pub
+lic/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx248
+8.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/te
+xmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/publ
+ic/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074
+.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
+Output written on main.pdf (31 pages, 6960445 bytes).
 PDF statistics:
- 235 PDF objects out of 1000 (max. 8388607)
- 126 compressed objects within 2 object streams
+ 262 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 163 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 188 words of extra memory for PDF output out of 10000 (max. 10000000)
 

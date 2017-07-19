@@ -27,4 +27,4 @@ $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 
 # Nettoyage du projet
 clean:
-	@rm -rf $(BIN)/*.o $(BIN)/Tucker/* $(BIN)/Test* $(OUTPUT_FILES)
+	@rm -rf $(BIN)/*.o $(BIN)/Tucker/* $(BIN)/Test* #$(OUTPUT_FILES)

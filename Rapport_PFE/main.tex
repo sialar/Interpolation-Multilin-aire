@@ -6,8 +6,12 @@
 \usepackage{caption}
 \usepackage{lscape}
 \usepackage{glossaries}
-\DeclareTextSymbol{\deg}{T1}{6}
-\DeclareTextSymbol{\deg}{OT1}{23}
+\usepackage{array,multirow,makecell}
+\setcellgapes{1pt}
+\makegapedcells
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
 \makeglossaries
 \usepackage[nottoc, notlof, notlot]{tocbibind}
 

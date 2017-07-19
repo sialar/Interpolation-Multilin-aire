@@ -15,7 +15,7 @@ help()
 }
 
 help
-"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
+#"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
 
 core=$2
 
@@ -43,7 +43,9 @@ do
     python plot_results.py $core $arg
 done
 
-python plot_reactivity.py $core
-
+if [ $1 = "ALL" ]
+then
+  python plot_reactivity.py $core
+fi
 
 exit

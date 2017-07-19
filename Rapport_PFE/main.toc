@@ -12,13 +12,21 @@
 \contentsline {subsubsection}{\numberline {4.1.3}Interpolation adaptative et s\IeC {\'e}quence de points d'interpolation:}{11}
 \contentsline {subsection}{\numberline {4.2}Impl\IeC {\`e}mentation de la solution}{15}
 \contentsline {paragraph}{Construction de la s\IeC {\'e}quence de Leja:}{17}
-\contentsline {section}{\numberline {5}\IeC {\'E}valuation de l\IeC {\textquoteright }efficacit\IeC {\'e} de la m\IeC {\'e}thode}{18}
-\contentsline {subsection}{\numberline {5.1}Pr\IeC {\'e}sentation du mod\IeC {\`e}le de d\IeC {\'e}composition de Tucker}{18}
-\contentsline {subsection}{\numberline {5.2}Tests et comparaisons}{18}
-\contentsline {subsubsection}{\numberline {5.2.1}Fonctions analytiques pr\IeC {\'e}d\IeC {\'e}finies}{18}
-\contentsline {subsubsection}{\numberline {5.2.2}Donn\IeC {\'e}es r\IeC {\'e}elles}{18}
-\contentsline {subsection}{\numberline {5.3}Conclusion et remarques}{21}
-\contentsline {section}{\numberline {6}Impressions personnelles}{21}
-\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{21}
-\contentsline {section}{\numberline {8}Conclusion}{22}
-\contentsline {section}{References}{23}
+\contentsline {paragraph}{Recherche du voisin courant:}{18}
+\contentsline {paragraph}{Calcul des $\alpha _{\nu }$ (ou $f_{\nu }$):}{19}
+\contentsline {section}{\numberline {5}\IeC {\'E}valuation de l\IeC {\textquoteright }efficacit\IeC {\'e} de la m\IeC {\'e}thode}{19}
+\contentsline {subsection}{\numberline {5.1}Pr\IeC {\'e}sentation du mod\IeC {\`e}le de d\IeC {\'e}composition de Tucker}{20}
+\contentsline {subsection}{\numberline {5.2}Tests et comparaisons}{20}
+\contentsline {subsubsection}{\numberline {5.2.1}Fonctions analytiques pr\IeC {\'e}d\IeC {\'e}finies}{20}
+\contentsline {subsubsection}{\numberline {5.2.2}Donn\IeC {\'e}es r\IeC {\'e}elles}{20}
+\contentsline {paragraph}{Discr\IeC {\'e}tisation de l'espace de phase des param\IeC {\`e}tres:}{22}
+\contentsline {paragraph}{Erreurs d'approximation des sections efficaces:}{23}
+\contentsline {paragraph}{Erreurs d'approximation de la r\IeC {\'e}activit\IeC {\'e}:}{23}
+\contentsline {paragraph}{Comparaison du nombre de points d'\IeC {\'e}valuation:}{24}
+\contentsline {paragraph}{Comparaison du stockage:}{25}
+\contentsline {paragraph}{Comparaison de la pr\IeC {\'e}cision:}{25}
+\contentsline {subsection}{\numberline {5.3}Conclusion et remarques}{25}
+\contentsline {section}{\numberline {6}Impressions personnelles}{25}
+\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{25}
+\contentsline {section}{\numberline {8}Conclusion}{26}
+\contentsline {section}{References}{27}

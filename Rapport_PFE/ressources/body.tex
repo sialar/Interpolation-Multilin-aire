@@ -511,6 +511,29 @@ La figure 6 montre une grille 2D formés par des points de Leja construits dans 
 \captionof{figure}{Grille 2D des points de Leja}
 \end{center}
 
+\paragraph{Recherche du voisin courant:}
+Une première méthode a été de rechercher le nouveau voisin parmi tous les points de la grille.
+Ce n'est pas évidemment la meilleure idée car la grille contient non seulement les voisins potentiels mais aussi les points déjà sélectionnés et traités.
+Donc, il est inutile de la parcourir en totalité à chaque étape car ça devient très couteûx. \\
+Une meilleure stratégie a été adopté. En effet, on ne cherche plus le nouveau meilleur voisin parmi tous les points de la grille
+($~100$ si on est en dimension 2 et qu'on a choisi 10 points de discrétisation sur chaque direction), mais plutôt parmi un petit ensemble de points
+correspondant aux points voisins. (voir figure 7: à gauche la version première version et à droite, la seconde. La recherche du nouveau voisin s'effectue dans l'ensemble
+délimité par un contour bleu).
+
+\begin{center}
+\includegraphics[height= 9 cm,width = \linewidth]{images/algo_ai_recherch_voisin.png}
+\captionof{figure}{Recherche du voisin courant}
+\end{center}
+
+\paragraph{Calcul des $\alpha_{\nu}$ (ou $f_{\nu}$):}
+A chaque étape de l'algorithme AI, on construit un sous-ensemble de points qui correspondent à tous les voisins courants.
+Ensuite on calcule tous les $f_{\nu}$ ($\nu$ étant les multi-indices correspondants aux voisins courants)
+et on choisi le voisin ayant le plus grand $f_{\nu}$. Il est possible qu'au cours d'une certaine itération (voir toutes les itérations)
+de recalculer un $f_{\nu}$ déja calculé aux itérations précédentes. Ceci est, bien évidemment, couteûx. \\
+Il est possible de procèder d'une manière plus astucieuse. En effet, on peut éviter cette redondance, tout simplement, en initialisant tous
+les $f_{\nu}$ avec une même valeur qu'on note $f_{init}$. Ensuite, à chaque fois qu'on a besoin de calculer un $f_{\nu}$, on le compare d'abord
+à $f_{init}$; si ils sont égaux alors on calcule $f_{\nu}$ (en utilisant (12)), sinon, on ne fait rien.
+
 \section{Évaluation de l’efficacité de la méthode}\label{sec:6}
 L'algorithme d'Interpolation Adaptative a été tésté avec des fonctions analytiques définies à l'avance en des points choisis d'une manière aléatoire.\\
 Les résultat obtenus ont été ensuite comparé à ceux obtenus avec une autre méthode d'approximation de fonctions multivariées basée sur
@@ -546,12 +569,12 @@ pouvant limiter l'excès de fissions, afin d'atténuer les pics de puissance loc
 Afin de quantifier les taux des réactions des neutrons, on introduit une notation qui représente la probabilité d'interaction entre un neutron incident et un (des) noyau(x) cible(s).
 Il s'agit de la notion de sections efficaces en physique des particules.\\
 Les différents types de sections efficaces se distinguent par leur réaction corréspondante qu'on note $r$.
-Chaque section les valeurs que prennent les sections efficaces déppendent de la nature du combustible utilisé (du type d'assemblage)
+Les valeurs que prennent les sections efficaces dépendent de la nature du combustible utilisé (du type d'assemblage).\\
 Une section efficace est notée $\Sigma_r^g$, ($g$ faisant référence au groupe d'énergie).\\
 
 Dans notre cas, on peut avoir la $macro\ totale-\Sigma_t^g$, la $macro\ fission-\Sigma_f^g$, la $macro\ nu*fission-\nu\Sigma_f^g$, la $macro\ absorption-\nu\Sigma_a^g$,
 la $macro\ scattering-\Sigma_{so}^{g\rightarrow g'}$ (où $g,g' \in \left \{1,2\right\}$, et $o$ est l'ordre d'anisotropie).\\
-Ces sections efficaces dépendent de $5$ paramètres physique: $burnup$, $température du combustible$, $densité du modérateur$, $concentration en bore$ et $niveau de xénon$.
+Ces sections efficaces dépendent de $5$ paramètres physique: \textit{burnup, température du combustible, densité du modérateur, concentration en bore et niveau de xénon}.
 Ces paramètres varient dans les intervalles présentés dans le tableau ci-dessous.\\
 
 \begin{center}
@@ -560,9 +583,13 @@ Ces paramètres varient dans les intervalles présentés dans le tableau ci-dess
 	Paramètre 											& Valeur minimale & Valeur maximale \\
 	\hline
 	Burnup MWd/t 										& 0.0 						& 80000.0 \\
+	\hline
 	Température du combustible, C		& 286.0 					& 1100.0	\\
+	\hline
 	Densité du modérateur, g/cm3 		& 0.602 					& 0.753.0 \\
+	\hline
 	Concentration en Bore, ppm 			& 0.0 						& 1800.0 	\\
+	\hline
 	Niveau de xénon, \% 						& 0.0 						& 1.0 		\\
 	\hline
 \end{tabular}
@@ -607,13 +634,125 @@ valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T 
 \end{itemize}
 
 Afin de pouvoir bien visualiser les résultats numériques obtenus, ces derniers ont été représenté par des graphes (un graphe par section efficace).
-Chaque graphe montre $3$ nuages de points en $2D$ (l'abscisse de chaque point correspond à l'indice du point de la grille de référence,
+Chaque graphe montre $3$ nuages de points en $2D$ (l'abscisse de chaque point correspond à l'indice du point de la grille de référence (\textbf{count}),
 quant à l'ordonné, il correspond à l'erreur relative obtenu en ce point).
 \begin{itemize}
 \item Le nuage des point bleus correspond aux erreurs obtenus avec la méthode Cocagne.
 \item Le nuage des point verts correspond aux erreurs obtenus avec la méthode de Tucker.
 \item Le nuage des point rouges correspond aux erreurs obtenus avec la méthode AI.
 \end{itemize}
+Les différents graphes sont présentés en annexe.\\
+
+\paragraph{Discrétisation de l'espace de phase des paramètres:}
+La grille multilinéaire posssède un grand nombre de points dans la direction burnup (33 points), et 2 (ou 3) points
+dans les autres directions. La grille de Tucker contient, quant à elle, 5 grilles correspondant à 5 directions.
+Chaqu'une comporte 5 points de Clenshaw-Curtis dans la direction étudiée et 2 points dans toutes les autres directions, sauf
+pour la grille de burnup qui possède 25 points dans la direction burnup.
+L'algorithme AI, n'exige pas une grille initiale comme pour les deux autres méthodes. En effet, il construit
+un nouveau nœud à chaque itération. Ainsi, on obtient la grille finale en sortie de l'algorithme. Cette grille dépend
+donc du type de fonctions de base utilisé et de la fonction interpolée.\\
+Tout ce qui précéde est décrit dans le tableau ci-dessous. Les informations sur la grille AI concerne la section efficace $\Sigma_totale_t^0$
+de type MOX.
+\begin{center}
+\begin{tabular}{|*{4}{c|}}
+	\hline
+	Direction 											& Grille Cocagne  			& Grille Tucker 					 & Grille AI \\
+	\hline
+	Burnup 			 										& 33 										& 25 ($25*2^4 = 400$) 		 & 	35				\\
+	\hline
+	Température du combustible			& 3 										& 25 ($25*2^4 = 400$)			 & 	5				 	\\
+	\hline
+	Densité du modérateur				 		& 3											& 25 ($25*2^4 = 400$) 		 & 	13				\\
+	\hline
+	Concentration en Bore						& 3 										& 25 ($25*2^4 = 400$)			 & 	156				\\
+	\hline
+	Niveau de xénon									& 2 										& 25 ($25*2^4 = 400$)			 & 	5				 	\\
+	\hline
+	Total														& $1782 = 33 * 3^3 * 2$	& $720 = 25*2^4 + 4*5*2^4$ & 	1				 	\\
+	\hline
+\end{tabular}
+\end{center}
+Le nombre total de point d'interpolation dans la méthode AI ne correspond pas au produit des nombre de points sur chaque direction.
+En effet, en sortie de l'algorithme, on n'obtient pas forcement une grille tensorille mais plutôt un ensemble monotone de multi-indices (qui correspond à un ensemble de point 2D).
+Un exemple en 2D est présenté dans la figure ci-dessous. On a 20 point suivant la direction x et 15 points suivant la direction y.
+On a en total $176$ points au lieu de $300$.
+\begin{center}
+\includegraphics[height= 7 cm,width = 0.7\linewidth]{images/nb_discretisation.png}
+\captionof{figure}{Exemple de points d'interpolation obtenu par l'algorithme AI}
+\end{center}
+
+
+\paragraph{Erreurs d'approximation des sections efficaces:}
+On compare la précision des différentes méthodes sur chaque nœud $\textbf{x}_i$ de la grille de référence.
+L'erreur d'approximation sur la grille de référence est définie soit par la norme infinie de l'eeruer relative,
+soit par la moyenne quadratique de l'erreur absolue (\textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror):
+\begin{align}
+		e^{(inf)} & = max_{\textbf{x}_i \in reference\ grid} \underbrace{ \left | \frac{\tilde{f}(\textbf{x}_i) - f(\textbf{x}_i)}{ max \left | \left \{ f(\textbf{x}_i) \right \} \right |} * 10^5 \right | }_{relative\ error} \\
+		e^{(RMSE)} & = \sqrt{ \sum_{i=1}^N \frac{((f(\textbf{x}_i) - \tilde{f}(\textbf{x}_i)) * 10^5)^2}{N} }\ with\ N = \sharp(reference\ grid)
+\end{align}
+où $f(\textbf{x}_i)$ et $\tilde{f}(\textbf{x}_i)$ sont respectivement la valeur exacte (calculée par APOLLO) et la valeur approximative
+(obtenue par chaque méthode) de la section efficace au point $\textbf{x}_i \in\ reference\ grid$. Le facteur $10^5$
+est ajouté afin d'exprimer les résultats en pcm ($1pcm = 10^{-5}$)
+
+\paragraph{Erreurs d'approximation de la réactivité:}
+La réaction de fission est un processus dans lequel un noyau fissile (typiquement Uranium $U_{92}^{235}$, Plutonium $Pu_{94}^239$) absorbe
+des neutron et se divise en noyaux plus légers en produisant de nouveaux neutrons libres et en libérant de l'énérgie sous forme de chaleur.
+Ces nouveaux neutrons entrent ensuite en collision avec d'autres noyaux fissiles ce qui produit une réaction en chaîne.\\
+\hspace{0.5cm}
+Le comportement global de la chaîne de fission nucléaire est relié à un facteur appellé facteur de multiplication efficace $k_{eff}$.
+Ce facteur est utilisé pour décrire le nombre moyen de neutrons d'une réaction de fission qui causent d'autres fissions.\\
+La valeur de $k_{eff}$ est classée de la façon suivante:
+\begin{itemize}
+\item $k_{eff} > 1$ \textit{(super-criticité)}): le nombre de fission croit exponentiellement et la
+réaction est explosive.
+\item $k_{eff} = 1$ \textit{(criticité)}): le nombre de fission est stable (constant) dans le temps.
+\item $k_{eff} < 1$ \textit{(sous-criticité)}): le nombre de fission décroit exponentiellement et la
+réaction finit par s'arrêter.
+\end{itemize}
+Dans certains cas simplifiés, on peut calculer la réactivité en utilisant la formule suivante (voir pages 1172, 1173, 1221 du livre \cite{Marguet})
+\begin{align}
+		reactivity & = 1-\frac{1}{k_{eff}},\ avec\ k_{eff} = k_{\infty}=\frac{\nu\Sigma_f^1 * (\Sigma_t^2-\Sigma_{s0}^{2\rightarrow2}) + \nu\Sigma_f^2*\Sigma_{s0}^{1\rightarrow2}}{(\Sigma_t^1-\Sigma_{s0}^{1\rightarrow1})*(\Sigma_t^2-\Sigma_{s0}^{2\rightarrow2})-\Sigma_{s0}^{1\rightarrow2}*\Sigma_{s0}^{2\rightarrow1}}
+\end{align}
+On mesure l'erreur de la réactivité, en utilisant la formule suivante:
+\begin{align}
+		\textbf{e}_{reactivity}{(inf)} & = max_{\textbf{x}_i \in reference\ grid} \left | (\frac{1}{k_{\infty}(\textbf{x}_i)} - \frac{1}{\tilde{k}_{\infty}(\textbf{x}_i)})*10^5 \right |
+\end{align}
+Les figurent ci-dessous montrent les erreurs de réactivité obtenues avec chaque méthode et pour chaque type de réacteur (MOX, UOX, UOX-Gd):
+\begin{itemize}
+\item Le nuage des point bleus correspond aux erreurs obtenus avec la méthode Cocagne.
+\item Le nuage des point verts correspond aux erreurs obtenus avec la méthode de Tucker.
+\item Le nuage des point rouges correspond aux erreurs obtenus avec la méthode AI.
+\end{itemize}
+\begin{center}
+\begin{figure}[h]
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.2]{images/MOX/ReactivityError.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.2]{images/UOX/ReactivityError.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.2]{images/UOX-Gd/ReactivityError.png}
+   \end{minipage}
+\end{figure}
+\end{center}
+
+\paragraph{Comparaison du nombre de points d'évaluation:}
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+	\hline
+	Interpolation Multilinéaire    																																& Décomposition de Tucker 	& Interpolation Adaptative 	\\
+	\hline
+	$\underbrace{720}_{for\ 5\ Tucker\ grids} + \underbrace{378}_{for\ evaluated\ points} = 1098$	& $1782$										& $~780$ 								\\
+	\hline
+\end{tabular}
+\end{center}
+
+
+\paragraph{Comparaison du stockage:}
+\paragraph{Comparaison de la précision:}
+
+
 
 \begin{center}
 \begin{figure}[h]
@@ -660,7 +799,7 @@ quant à l'ordonné, il correspond à l'erreur relative obtenu en ce point).
 	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces UOX}
 \end{figure}
 
-\begin{figure}[h] 
+\begin{figure}[h]
    \begin{minipage}[b]{0.5\linewidth}
       \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_absorption1.png}
    \end{minipage}
