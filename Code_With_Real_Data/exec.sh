@@ -15,7 +15,7 @@ help()
 }
 
 help
-#"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
+"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
 
 core=$2
 
@@ -31,9 +31,9 @@ cd AI/python
 
 if [ $1 = "ALL" ]
 then
-    args="macro_totale0 macro_totale1 macro_fission0 macro_fission1 macro_nu_fission0 "
-    args="$args macro_nu_fission1 macro_scattering000 macro_scattering001 macro_scattering010 "
-    args="$args macro_scattering011 macro_absorption0 macro_absorption1"
+    args="macro_totale0 macro_totale1 macro_absorption0 macro_absorption1 "
+    args="$args macro_scattering000 macro_scattering001 macro_scattering010 macro_scattering011"
+    args="$args macro_nu_fission0 macro_nu_fission1 macro_fission0 macro_fission1"
 else
     args=$*
 fi

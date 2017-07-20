@@ -174,7 +174,18 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
     for (int i=0; i<m_d; i++)
         x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
-    return m_function->evaluate(x);
+    vector<double> res = m_function->evaluate(x);
+    //vector<double> fast_res = m_function->fast_evaluate(x);
+
+    //for (int i=0; i<m_n; i++)
+    //    if (abs(res[i]-fast_res[i])>1e-03)
+    //        cout << res[i] << " " << fast_res[i] << endl;
+
+    //cout << x << endl;
+    //Utils::displayValues(res);
+    //Utils::displayValues(fast_res);
+
+    return res;
 }
 
 /*************************** Data Points **************************************/
@@ -408,13 +419,24 @@ void Interpolation<T>::computeAIApproximationResults()
     for (int i=0; i<m_n; i++)
     {
         string csName = m_function->getCrossSections()[i];
-        vector<double> ai_res, ai_err;
-        double val, maxValue = Utils::maxAbsValue(m_approxResults[csName][Tucker]);
+        vector<double> ai_res, ai_err, tu_res;
+        /*
+        for (int j=0; j<m_nbTestPoints; j++)
+        {
+            MultiVariatePoint<double> x(m_testPoints[j]);
+            for (int k=0; k<m_d; k++)
+                x(k) = Utils::convertToFunctionDomain(m_realDomain[k][0], m_realDomain[k][1], m_testPoints[j](k));
+            tu_res.push_back(m_function->tuckerApprox()->evaluate(x,csName));
+        }
+        m_approxResults[csName].insert(pair<method,vector<double>>(Tucker_bis,tu_res));
+        */
+        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Tucker]);
         for (int j=0; j<m_nbTestPoints; j++)
         {
             val = interpolation(m_testPoints[j])[i];
+            realValue = m_approxResults[csName][Tucker][j];
             ai_res.push_back(val);
-            ai_err.push_back(pow(10,5)*(val-m_approxResults[csName][Tucker][j])/maxValue);
+            ai_err.push_back(pow(10,5)*(val-realValue)/maxValue);
         }
         m_approxResults[csName].insert(pair<method,vector<double>>(AI,ai_res));
         m_approxErrors[csName].insert(pair<method,vector<double>>(AI,ai_err));

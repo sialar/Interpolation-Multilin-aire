@@ -9,6 +9,7 @@ Functions::Functions(string c, vector<string> cs)
     m_coreType = c;
     m_n = cs.size();
     m_crossSections = cs;
+    m_tuckerApprox = make_shared<TuckerApproximation>(c,cs);
     m_directory = Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_" + c + "_test";
     //cout << " - Directory of Tucker code : " << m_directory << endl;
 }
@@ -19,18 +20,18 @@ void Functions::createFunctionsDataBase()
     allCoreTypes.push_back("UOX");
     allCoreTypes.push_back("UOX-Gd");
 
+    allCrossSectionType.push_back("macro_totale0");
+    allCrossSectionType.push_back("macro_totale1");
     allCrossSectionType.push_back("macro_absorption0");
     allCrossSectionType.push_back("macro_absorption1");
-    allCrossSectionType.push_back("macro_fission0");
-    allCrossSectionType.push_back("macro_fission1");
-    allCrossSectionType.push_back("macro_nu*fission0");
-    allCrossSectionType.push_back("macro_nu*fission1");
     allCrossSectionType.push_back("macro_scattering000");
     allCrossSectionType.push_back("macro_scattering001");
     allCrossSectionType.push_back("macro_scattering010");
     allCrossSectionType.push_back("macro_scattering011");
-    allCrossSectionType.push_back("macro_totale0");
-    allCrossSectionType.push_back("macro_totale1");
+    allCrossSectionType.push_back("macro_nu*fission0");
+    allCrossSectionType.push_back("macro_nu*fission1");
+    allCrossSectionType.push_back("macro_fission0");
+    allCrossSectionType.push_back("macro_fission1");
 
     allCrossSectionTypeForReactivity.push_back("macro_nu*fission0");
     allCrossSectionTypeForReactivity.push_back("macro_nu*fission1");
@@ -120,6 +121,14 @@ vector<double> Functions::evaluate(MultiVariatePoint<double> x)
     char *cmd = new char[cmd_s.length() + 1];
     strcpy(cmd, cmd_s.c_str());
     vector<double> res = parse_output(cmd);
+    return res;
+}
+
+vector<double> Functions::fast_evaluate(MultiVariatePoint<double> x)
+{
+    vector<double> res;
+    for (string csName : m_crossSections)
+        res.push_back(m_tuckerApprox->evaluate(x,csName));
     return res;
 }
 

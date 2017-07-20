@@ -24,7 +24,7 @@ ap_res, co_res, tu_res, ai_res = [], [], [], []
 
 for i in range(len(lines)):
     point.append(int(lines[i].split(" ")[0]))
-    co_err.append(0)
+    co_err.append(float(lines[i].split(" ")[10]))
     tu_err.append(float(lines[i].split(" ")[11]))
     ai_err.append(float(lines[i].split(" ")[12]))
 

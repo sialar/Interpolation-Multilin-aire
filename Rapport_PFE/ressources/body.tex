@@ -621,9 +621,8 @@ Cela est bien évidemment trop couteûx, surtout que le code APOLLO2 ne peut êt
 On pourrait penser à sauvegarder les points d'interpolations et les évaluer tous en même temps, mais cela n'est pas possible car pour avoir le nouveau point d'interpolation, l'algorithme AI
 a besoin de la valeur des sections efficaces au point précedent.\\
 
-Pour certaines raisons, on n'a pas en notre possession le code APPOLO2. On ne peut avoir que le résultat de l'éxecution du code sur une grille de point de notre choix.
-Ainsi, il n'est pas possible possible d'avoir les "vrais valeurs" des sections efficaces à n'importe quel point sans avoir ni le code APPOLO2, ni la liste des points d'evaluation.
-Par contre, on peut avoir le résultat de l'approximation par la méthode de Tucker à n'importe quel point en un temps suffisamment petit.
+Etant donné qu'on ne dispose pas du code APPOLO2 on n'a pas en notre possession le code APPOLO2, il n'est pas possible possible d'avoir les "vrais valeurs" des sections efficaces à n'importe quel point
+Par contre, on peut avoir le résultat de l'approximation par la méthode de décomposition de Tucker.
 Donc, une bonne altérnative serait de supposer que les valeurs obtenus par la méthode de Tucker correspondent aux vrais valeurs des sections efficaces.\\
 
 Des tests ont été faits pour chaque type de section éfficace. Les résultats obtenus ont été ensuite stocké dans des fichiers et organisées en $12$ colonnes correspondants aux

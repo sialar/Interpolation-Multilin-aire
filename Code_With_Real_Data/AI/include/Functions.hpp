@@ -10,6 +10,7 @@
 #include <limits>
 #include <stdio.h>
 
+#include "Tucker/TuckerApproximation.hpp"
 #include "MultiVariatePoint.hpp"
 #include "Utils.hpp"
 
@@ -24,6 +25,7 @@ class Functions
       string m_directory;
       string m_coreType;
       vector<string> m_crossSections;
+      TuckerApproximationPtr m_tuckerApprox;
 
     public:
       ~Functions() {};
@@ -37,6 +39,8 @@ class Functions
       string realDataDirPath() { return m_directory; };
       bool reactivityIsComputable();
 
+      TuckerApproximationPtr tuckerApprox() { return m_tuckerApprox; };
+
       string getCoreType() { return m_coreType; };
       void setCoreType(string c);
 
@@ -45,6 +49,7 @@ class Functions
       void setAllCrossSectionType();
 
       vector<double> evaluate(MultiVariatePoint<double> x);
+      vector<double> fast_evaluate(MultiVariatePoint<double> x);
 
       static void createFunctionsDataBase();
       static bool validCoreType(string c);

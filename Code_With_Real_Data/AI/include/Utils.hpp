@@ -13,7 +13,7 @@
 
 using namespace std;
 
-enum method { Apollo, Cocagne, Tucker, AI };
+enum method { Apollo, Cocagne, Tucker, Tucker_bis, AI };
 
 class Utils
 {
