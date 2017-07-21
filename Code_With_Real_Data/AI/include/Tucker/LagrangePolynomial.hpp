@@ -10,6 +10,7 @@
 #include <memory>
 #include <limits>
 
+#include "../Utils.hpp"
 using namespace std;
 
 class LagrangePolynomial

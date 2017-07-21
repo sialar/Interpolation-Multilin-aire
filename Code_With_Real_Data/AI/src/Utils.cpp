@@ -17,6 +17,50 @@ void Utils::displayValues(vector<double> values)
     cout << " ]" << endl;
 }
 
+string Utils::getRealPart(string val)
+{
+    size_t foundj = val.find("+");
+    if (foundj!=string::npos)
+        val = val.substr(0,foundj);
+    return val;
+}
+
+
+void Utils::printInFile(string fileName, vector<double> newContent)
+{
+  vector<double> data;
+  vector<vector<double>> fileContent;
+  ifstream file_in(projectPath + fileName, ios::in);
+  if(file_in)
+  {
+      string line;
+      getline(file_in, line);
+      fileContent.resize(stoi(line));
+      while (getline(file_in, line))
+      {
+          data = Utils::str2vector(line);
+          for (int i=0; i<int(data.size()); i++)
+              fileContent[i].push_back(data[i]);
+      }
+      file_in.close();
+  }
+  else cerr << "Error while opening the file!" << endl;
+
+  ofstream file_out(projectPath + fileName, ios::out);
+  if(file_out)
+  {
+      file_out << fileContent.size()+1 << endl;
+      for (int i=0; i<int(newContent.size()); i++)
+      {
+          for (int j=0; j<int(fileContent.size()); j++)
+              file_out << fileContent[j][i] << " ";
+          file_out << newContent[i] << endl;
+      }
+      file_out.close();
+  }
+  else cerr << "Error while opening the file!" << endl;
+}
+
 double Utils::adaptCoordsToFunctionDomain(double a, double b, double x)
 {
     return (2*x)/(b-a) + 1 - (2*b)/(b-a);

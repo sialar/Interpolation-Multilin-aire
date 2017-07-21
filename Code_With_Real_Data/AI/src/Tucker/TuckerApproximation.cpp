@@ -134,7 +134,7 @@ vector<vector<double>> str_to_vect_of_vect(string s)
     s.erase(0,1);
 
     string str_temp, strs = s;
-    size_t foundj, found2, found1 = strs.find("[");
+    size_t found2, found1 = strs.find("[");
 
     while (found1!=string::npos)
     {
@@ -151,9 +151,7 @@ vector<vector<double>> str_to_vect_of_vect(string s)
          {
               if (subs!="")
               {
-                  foundj = strs.find("+");
-                  if (foundj!=string::npos)
-                      subs = subs.substr(0,foundj-1);
+                  subs = Utils::getRealPart(subs);
                   vec.push_back(stod(subs));
                   i++;
               }
@@ -375,7 +373,6 @@ map<string,vector<vector<LagrangePolynomial>>> TuckerApproximation::getListOfBas
     return listOfBasicFctsUsingLagrangeInterpolation;
 }
 
-
 vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFcts(string Axis_k, string csName)
 {
     vector<vector<LagrangePolynomial>> listOfBasicFctsUsingLagrangeInterpolation_Axis_k;
@@ -392,14 +389,12 @@ vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFc
                 double value2 = find_nearest(listOfTuckerGridNodes[Axis_k], listOfDomainBorders[Axis_k][j+1]);
                 vector<double> j1Arr = getWhereEquals(listOfTuckerGridNodes[Axis_k],value1);
                 vector<double> j2Arr = getWhereEquals(listOfTuckerGridNodes[Axis_k],value2);
-
                 int j1 = j1Arr.back();
                 int j2 = j2Arr.front();
                 j2 = j2 + 1;
 
                 LagrangePolynomial interp_k_couplage(vectorSequence(listOfTuckerGridNodes[Axis_k],j1,j2),\
                                           vectorSequence(finalOrthNormalizedEigVects[csName][Axis_k][i],j1,j2));
-
                 polLagrange_ki.push_back(interp_k_couplage);
             }
         }
@@ -449,7 +444,6 @@ double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, dou
       if (_min <= x && x <= _max)
       {
         return fct[j].getInterpolation(x);
-        break;
       }
       else j++;
     }

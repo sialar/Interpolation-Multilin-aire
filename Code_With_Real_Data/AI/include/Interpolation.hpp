@@ -99,6 +99,7 @@ class Interpolation
         vector<double> interpolation(MultiVariatePoint<double>& x);
 
         /************************* Other functions ****************************/
+        void comp();
         void clearAll();
         void displayAll();
         void displayPath();
@@ -178,7 +179,7 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
     //vector<double> fast_res = m_function->fast_evaluate(x);
 
     //for (int i=0; i<m_n; i++)
-    //    if (abs(res[i]-fast_res[i])>1e-03)
+    //    if (abs(res[i]-fast_res[i])>1e-05)
     //        cout << res[i] << " " << fast_res[i] << endl;
 
     //cout << x << endl;
@@ -571,6 +572,7 @@ void Interpolation<T>::readApproximationResultsFromFile()
         }
         else cerr << "Error while opening " << csName << " file!" << endl;
     }
+
 }
 
 template <typename T>
@@ -604,6 +606,45 @@ void Interpolation<T>::saveApproximationResultsInFile()
         }
         else cerr << "Error while opening the file!" << endl;
     }
+}
+
+template <typename T>
+void Interpolation<T>::comp()
+{
+    vector<double> data, indices, saved_res, comp_py_res;
+    ifstream file_in(m_function->realDataDirPath() + "/FinalResults/comp", ios::in);
+    if(file_in)
+    {
+        string line;
+        while (getline(file_in, line))
+        {
+            data = Utils::str2vector(line);
+            indices.push_back(data[0]);
+            saved_res.push_back(data[1]);
+            comp_py_res.push_back(data[2]);
+        }
+        file_in.close();
+    }
+    else cerr << "Error while opening the file!" << endl;
+
+    string csName = m_function->getCrossSections()[0];
+    ofstream file(Utils::projectPath + "AI/data/MOX/comp", ios::out);
+    if(file)
+    {
+        for (int i=0; i<m_nbTestPoints; i++)
+        {
+            MultiVariatePoint<double> x(m_testPoints[i]);
+            for (int j=0; j<m_d; j++)
+                x(j) = Utils::convertToFunctionDomain(m_realDomain[j][0], m_realDomain[j][1], m_testPoints[i](j));
+
+            file << indices[i] << " ";
+            file << setprecision(m_precision) << saved_res[i] << " ";
+            file << setprecision(m_precision) << comp_py_res[i] << " ";
+            file << setprecision(m_precision) << m_approxResults[csName][Tucker_bis][i] << endl;
+        }
+        file.close();
+    }
+    else cerr << "Error while opening the file!" << endl;
 }
 
 template <typename T>

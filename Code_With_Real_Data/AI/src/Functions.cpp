@@ -80,14 +80,8 @@ vector<double> convert_str_to_vec(string s)
     vector<double> res;
     stringstream ss(s);
     string subs;
-    size_t found;
     while (getline(ss, subs, ','))
-    {
-        found = subs.find("+");
-        if (found!=string::npos)
-            subs = subs.substr(0,found-1);
-        res.push_back(stod(subs));
-    }
+        res.push_back(stod(Utils::getRealPart(subs)));
     return res;
 }
 
