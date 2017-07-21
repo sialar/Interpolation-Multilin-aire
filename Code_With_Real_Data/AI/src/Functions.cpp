@@ -81,7 +81,7 @@ vector<double> convert_str_to_vec(string s)
     stringstream ss(s);
     string subs;
     while (getline(ss, subs, ','))
-        res.push_back(stod(Utils::getRealPart(subs)));
+        res.push_back(stod(subs));
     return res;
 }
 

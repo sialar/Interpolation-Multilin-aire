@@ -175,18 +175,18 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
     for (int i=0; i<m_d; i++)
         x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
-    vector<double> res = m_function->evaluate(x);
-    //vector<double> fast_res = m_function->fast_evaluate(x);
+    //vector<double> res = m_function->evaluate(x);
+    vector<double> fast_res = m_function->fast_evaluate(x);
 
-    //for (int i=0; i<m_n; i++)
-    //    if (abs(res[i]-fast_res[i])>1e-05)
-    //        cout << res[i] << " " << fast_res[i] << endl;
+    for (int i=0; i<m_n; i++)
+        if (abs(res[i]-fast_res[i])>1e-05)
+            cout << res[i] << " " << fast_res[i] << endl;
 
     //cout << x << endl;
     //Utils::displayValues(res);
     //Utils::displayValues(fast_res);
 
-    return res;
+    return fast_res;
 }
 
 /*************************** Data Points **************************************/
