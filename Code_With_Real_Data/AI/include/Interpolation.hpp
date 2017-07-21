@@ -178,9 +178,9 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
     //vector<double> res = m_function->evaluate(x);
     vector<double> fast_res = m_function->fast_evaluate(x);
 
-    for (int i=0; i<m_n; i++)
-        if (abs(res[i]-fast_res[i])>1e-05)
-            cout << res[i] << " " << fast_res[i] << endl;
+    //for (int i=0; i<m_n; i++)
+    //    if (abs(res[i]-fast_res[i])>1e-05)
+    //        cout << res[i] << " " << fast_res[i] << endl;
 
     //cout << x << endl;
     //Utils::displayValues(res);
@@ -421,16 +421,6 @@ void Interpolation<T>::computeAIApproximationResults()
     {
         string csName = m_function->getCrossSections()[i];
         vector<double> ai_res, ai_err, tu_res;
-        /*
-        for (int j=0; j<m_nbTestPoints; j++)
-        {
-            MultiVariatePoint<double> x(m_testPoints[j]);
-            for (int k=0; k<m_d; k++)
-                x(k) = Utils::convertToFunctionDomain(m_realDomain[k][0], m_realDomain[k][1], m_testPoints[j](k));
-            tu_res.push_back(m_function->tuckerApprox()->evaluate(x,csName));
-        }
-        m_approxResults[csName].insert(pair<method,vector<double>>(Tucker_bis,tu_res));
-        */
         double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Tucker]);
         for (int j=0; j<m_nbTestPoints; j++)
         {
@@ -640,7 +630,7 @@ void Interpolation<T>::comp()
             file << indices[i] << " ";
             file << setprecision(m_precision) << saved_res[i] << " ";
             file << setprecision(m_precision) << comp_py_res[i] << " ";
-            file << setprecision(m_precision) << m_approxResults[csName][Tucker_bis][i] << endl;
+            file << setprecision(m_precision) << m_approxResults[csName][Tucker][i] << endl;
         }
         file.close();
     }
