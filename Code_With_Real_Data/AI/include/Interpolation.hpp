@@ -52,6 +52,9 @@ class Interpolation
         bool m_displayProgress = true;
         FunctionsPtr m_function;
 
+        vector<double> m_infErrors;
+        vector<double> m_mseErrors;
+
     public:
 
         Interpolation() {};
@@ -64,6 +67,7 @@ class Interpolation
         const double totalTime() { return m_totalTime; };
         const int maxIteration() { return m_maxIteration; };
         const int nbTestPoints() { return m_nbTestPoints; };
+        const vector<double> relativeErrors() { return m_infErrors; };
         void disableProgressDisplay() { m_displayProgress = false; };
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
@@ -110,12 +114,14 @@ class Interpolation
         void readDataAndResults();
         void saveReactivityInFile();
         void readReactivityFromFile();
+        void saveTuckerResultsInFile();
         void displayCurentNeighbours();
         void displayCrossSectionNames();
         void displayInterpolationPoints();
         void readReferencePointsFromFile();
         void saveApproximationResultsInFile();
         void readApproximationResultsFromFile();
+        void computeTuckerApproximationResults();
         void displayInterpolationMultiVariatePoints();
 };
 
@@ -173,18 +179,34 @@ void Interpolation<T>::setFunc(string c)
 template <typename T>
 vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
-    for (int i=0; i<m_d; i++)
-        x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
-    //vector<double> res = m_function->evaluate(x);
-    vector<double> fast_res = m_function->fast_evaluate(x);
+    vector<double> fast_res, res;
+    //ofstream file(Utils::projectPath + "values", ios::out);
+    //if(file)
+    //{
+        for (int i=0; i<m_d; i++)
+            x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
 
-    //for (int i=0; i<m_n; i++)
-    //    if (abs(res[i]-fast_res[i])>1e-05)
-    //        cout << res[i] << " " << fast_res[i] << endl;
+        //x(0) = 0;
+        //x(1) = 20;
+        //x(2) = 0.40000000596;
+        //x(3) = 0;
+        //x(4) = 9.999999974752427e-07;
+        res = m_function->evaluate(x);
+        fast_res = m_function->fast_evaluate(x);
 
-    //cout << x << endl;
-    //Utils::displayValues(res);
-    //Utils::displayValues(fast_res);
+        for (int i=0; i< m_n; i++)
+        if (abs(res[i]-fast_res[i])>1e-6)
+        {
+            cout << i << " ";
+            for (int j=0; j<5; j++)
+                cout << x(j) << " ";
+            Utils::displayValues(res);
+            Utils::displayValues(fast_res);
+        }
+
+    //    file.close();
+    //}
+    //else cerr << "Error while opening the file!" << endl;
 
     return fast_res;
 }
@@ -371,7 +393,7 @@ void Interpolation<T>::displayResults()
         ai_err_inf.push_back(Utils::maxAbsValue(m_approxErrors[csName][AI]));
         co_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][Cocagne]));
         tu_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][Tucker]));
-        ai_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Tucker],m_approxResults[csName][AI]));
+        ai_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][AI]));
     }
     cout << " - Interpolation error using Cocagne (pcm)" << endl;
     cout << " [e_inf] = ";
@@ -420,17 +442,43 @@ void Interpolation<T>::computeAIApproximationResults()
     for (int i=0; i<m_n; i++)
     {
         string csName = m_function->getCrossSections()[i];
-        vector<double> ai_res, ai_err, tu_res;
-        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Tucker]);
+        vector<double> ai_res, ai_err;
+        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Apollo]);
         for (int j=0; j<m_nbTestPoints; j++)
         {
             val = interpolation(m_testPoints[j])[i];
-            realValue = m_approxResults[csName][Tucker][j];
+            realValue = m_approxResults[csName][Apollo][j];
             ai_res.push_back(val);
             ai_err.push_back(pow(10,5)*(val-realValue)/maxValue);
         }
         m_approxResults[csName].insert(pair<method,vector<double>>(AI,ai_res));
         m_approxErrors[csName].insert(pair<method,vector<double>>(AI,ai_err));
+
+        m_infErrors.push_back(Utils::maxAbsValue(m_approxErrors[csName][AI]));
+        m_mseErrors.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][AI]));
+    }
+}
+
+template <typename T>
+void Interpolation<T>::computeTuckerApproximationResults()
+{
+    for (int i=0; i<m_n; i++)
+    {
+        string csName = m_function->getCrossSections()[i];
+        vector<double>  tu_err, tu_res;
+        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Apollo]);
+        for (int j=0; j<m_nbTestPoints; j++)
+        {
+            MultiVariatePoint<double> x(m_testPoints[j]);
+            for (int k=0; k<m_d; k++)
+                x(k) = Utils::convertToFunctionDomain(m_realDomain[k][0], m_realDomain[k][1], m_testPoints[j](k));
+            val = m_function->fast_evaluate(x)[i];
+            realValue = m_approxResults[csName][Apollo][j];
+            tu_res.push_back(val);
+            tu_err.push_back(pow(10,5)*(val-realValue)/maxValue);
+        }
+        m_approxResults[csName].insert(pair<method,vector<double>>(Tucker_bis,tu_res));
+        m_approxErrors[csName].insert(pair<method,vector<double>>(Tucker_bis,tu_err));
     }
 }
 
@@ -460,11 +508,11 @@ vector<double> Interpolation<T>::computeKinf(method m)
 template <typename T>
 void Interpolation<T>::computeReactivity()
 {
-    vector<double> kinfTucker = computeKinf(Tucker);
+    vector<double> kinfApollo = computeKinf(Apollo);
     vector<double> kinfAI = computeKinf(AI);
     vector<double> reactivityError(m_nbTestPoints);
     for (int i=0; i<m_nbTestPoints; i++)
-        reactivityError[i] = (1/kinfTucker[i] - 1/kinfAI[i]) * pow(10,5);
+        reactivityError[i] = (1/kinfApollo[i] - 1/kinfAI[i]) * pow(10,5);
     m_approxResults["reactivity"].insert(pair<method,vector<double>>(AI,kinfAI));
     m_approxErrors["reactivity"].insert(pair<method,vector<double>>(AI,reactivityError));
 }
@@ -599,42 +647,30 @@ void Interpolation<T>::saveApproximationResultsInFile()
 }
 
 template <typename T>
-void Interpolation<T>::comp()
+void Interpolation<T>::saveTuckerResultsInFile()
 {
-    vector<double> data, indices, saved_res, comp_py_res;
-    ifstream file_in(m_function->realDataDirPath() + "/FinalResults/comp", ios::in);
-    if(file_in)
+    computeTuckerApproximationResults();
+    for (int k=0; k<m_n; k++)
     {
-        string line;
-        while (getline(file_in, line))
+        string csName = m_function->getCrossSections()[k];
+        string s = Utils::replace(csName,"*","_");
+        ofstream file(Utils::projectPath + "AI/data/RegeneratedResults/" + m_function->getCoreType() + "/" + s, ios::out);
+        if(file)
         {
-            data = Utils::str2vector(line);
-            indices.push_back(data[0]);
-            saved_res.push_back(data[1]);
-            comp_py_res.push_back(data[2]);
-        }
-        file_in.close();
-    }
-    else cerr << "Error while opening the file!" << endl;
+            for (int i=0; i<m_nbTestPoints; i++)
+            {
+              MultiVariatePoint<double> x(m_testPoints[i]);
+              for (int j=0; j<m_d; j++)
+                  x(j) = Utils::convertToFunctionDomain(m_realDomain[j][0], m_realDomain[j][1], m_testPoints[i](j));
 
-    string csName = m_function->getCrossSections()[0];
-    ofstream file(Utils::projectPath + "AI/data/MOX/comp", ios::out);
-    if(file)
-    {
-        for (int i=0; i<m_nbTestPoints; i++)
-        {
-            MultiVariatePoint<double> x(m_testPoints[i]);
-            for (int j=0; j<m_d; j++)
-                x(j) = Utils::convertToFunctionDomain(m_realDomain[j][0], m_realDomain[j][1], m_testPoints[i](j));
-
-            file << indices[i] << " ";
-            file << setprecision(m_precision) << saved_res[i] << " ";
-            file << setprecision(m_precision) << comp_py_res[i] << " ";
-            file << setprecision(m_precision) << m_approxResults[csName][Tucker][i] << endl;
+              //file << (i+1) << " ";
+              file << setprecision(m_precision) << m_approxResults[csName][Tucker][i] << " ";
+              file << setprecision(m_precision) << m_approxResults[csName][Tucker_bis][i] << endl;
+            }
+            file.close();
         }
-        file.close();
+        else cerr << "Error while opening the file!" << endl;
     }
-    else cerr << "Error while opening the file!" << endl;
 }
 
 template <typename T>
@@ -698,4 +734,45 @@ void Interpolation<T>::saveReactivityInFile()
 }
 /******************************************************************************/
 
+template <typename T>
+void Interpolation<T>::comp()
+{
+    for (string csName : m_function->getCrossSections())
+    {
+        vector<double> data, indices, saved_res;
+        string s = Utils::replace(csName,"*","_");
+
+        ifstream file_in(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/" + s, ios::out);
+        if(file_in)
+        {
+            string line;
+            while (getline(file_in, line))
+            {
+                data = Utils::str2vector(line);
+                indices.push_back(data[0]);
+                saved_res.push_back(data[8]);
+            }
+            file_in.close();
+        }
+        else cerr << "Error while opening the file!" << endl;
+
+        ofstream file(Utils::projectPath + "AI/data/MOX/comp_" + s, ios::out);
+        if(file)
+        {
+            for (int i=0; i<m_nbTestPoints; i++)
+            {
+                MultiVariatePoint<double> x(m_testPoints[i]);
+                for (int j=0; j<m_d; j++)
+                    x(j) = Utils::convertToFunctionDomain(m_realDomain[j][0], m_realDomain[j][1], m_testPoints[i](j));
+
+                file << indices[i] << " ";
+                file << setprecision(m_precision) << saved_res[i] << " ";
+                file << setprecision(m_precision) << m_function->fast_evaluate(x)[0] << " ";
+                file << setprecision(m_precision) << m_function->evaluate(x)[0] << endl;
+            }
+            file.close();
+        }
+        else cerr << "Error while opening the file!" << endl;
+    }
+}
 #endif

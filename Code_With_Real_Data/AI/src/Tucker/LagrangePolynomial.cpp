@@ -17,19 +17,15 @@ LagrangePolynomial::LagrangePolynomial(vector<double> x, vector<double> fx)
 double LagrangePolynomial::getInterpolation(double x)
 {
     double f = 0.0;
-    int m = 0;
-    while (m < int(m_axisValues.size()))
+    for (int i=0; i<int(m_axisValues.size()); i++)
     {
         double l = 1;
-        int n = 0;
-        while (n < int(m_axisValues.size()))
+        for (int j=0; j<int(m_axisValues.size()); j++)
         {
-            if (n != m)
-                l *= (x - m_axisValues[n])/(m_axisValues[m] - m_axisValues[n]);
-            n++;
+            if (i != j)
+                l *= (x - m_axisValues[j])/(m_axisValues[i] - m_axisValues[j]);
         }
-        f += m_polynomialValues[m]*l;
-        m ++;
+        f += m_polynomialValues[i]*l;
     }
     return f;
 }

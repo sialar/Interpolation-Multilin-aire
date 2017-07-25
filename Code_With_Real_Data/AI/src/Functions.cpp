@@ -107,7 +107,11 @@ vector<double> Functions::evaluate(MultiVariatePoint<double> x)
 {
     string xstr = "";
     for (int i=0; i<x.getD(); i++)
-        xstr += to_string(x(i)) + " ";
+    {
+        stringstream ss;
+        ss << setprecision(numeric_limits<double>::digits10+1) << x(i);
+        xstr += ss.str() + " ";
+    }
     string cmd_s = "cd " + m_directory + "\npython eval.py ";
     for (int i=0; i<m_n; i++)
         cmd_s += m_crossSections[i] + " ";

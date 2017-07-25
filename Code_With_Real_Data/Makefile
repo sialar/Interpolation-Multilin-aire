@@ -12,7 +12,7 @@ OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
 OBJ_FILES += $(BIN)/Tucker/LagrangePolynomial.o $(BIN)/Tucker/TuckerApproximation.o
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
 INCLUDE_FILES += $(INCLUDE)/Tucker/LagrangePolynomial.hpp $(INCLUDE)/Tucker/TuckerApproximation.hpp
-TEST_FILES += $(BIN)/TestAdaptativeInterpolation $(BIN)/Tests
+TEST_FILES += $(BIN)/TestAdaptativeInterpolation $(BIN)/Tests $(BIN)/TestConvergence
 
 all: $(TEST_FILES)
 

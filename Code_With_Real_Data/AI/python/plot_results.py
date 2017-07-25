@@ -22,7 +22,7 @@ point = []
 co_err, tu_err, ai_err = [], [], []
 ap_res, co_res, tu_res, ai_res = [], [], [], []
 
-for i in range(len(lines)):
+for i in range(6000):
     point.append(int(lines[i].split(" ")[0]))
     co_err.append(float(lines[i].split(" ")[10]))
     tu_err.append(float(lines[i].split(" ")[11]))
@@ -33,12 +33,7 @@ cocagne = plt.scatter(point,co_err,color='b',s=s,marker='o',alpha=0.1)
 tucker = plt.scatter(point,tu_err,color='g',s=s,marker='o',alpha=0.1)
 ai = plt.scatter(point,ai_err,color='r',s=s,marker='o',alpha=0.1)
 
-plt.legend((cocagne, tucker, ai),
-           ('Cocagne', 'Tucker', 'AI'),
-           scatterpoints=1,
-           loc='lower left',
-           ncol=3,
-           fontsize=10)
+
 
 plt.title(figureTitle)
 plt.savefig(figureName)

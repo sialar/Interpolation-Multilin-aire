@@ -1,4 +1,3 @@
-#include <python3.5/Python.h>
 #include <iostream>
 #include <string>
 #include <array>
@@ -107,8 +106,8 @@ int chooseMaxIteration(int argc, char* argv[], int argNum)
 int main( int argc, char* argv[] )
 {
     srand (time(NULL));
-    Utils::separateur();
     Functions::createFunctionsDataBase();
+    Utils::separateur();
     int dimD = 5;
     int maxIteration = chooseMaxIteration(argc,argv,1);
     string core = chooseCoreType(argc,argv,2);
@@ -122,7 +121,8 @@ int main( int argc, char* argv[] )
     interp->readDataAndResults();
     interp->launchAIAlgo(false);
     interp->saveResults();
-    interp->displayAll();
+    interp->saveTuckerResultsInFile();
+    //interp->displayAll();
 
     return 0;
 }

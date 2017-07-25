@@ -410,7 +410,6 @@ vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFc
 double TuckerApproximation::evaluate(MultiVariatePoint<double> point, string csName)
 {
   double approxValue = 0.0;
-
   for (int i=0; i<int(listOfFinalCoefIndexes_arr[csName].size()); i++)
   {
     double d = 1.0;
@@ -430,7 +429,10 @@ double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, dou
   double min = min_elt(fct[0].axisValues());
   double max = max_elt(fct[n-1].axisValues());
 
-  if (n == 1)  return fct[0].getInterpolation(x);
+  if (n == 1)
+  {
+    return fct[0].getInterpolation(x);
+  }
   if (x < min) return fct[0].getInterpolation(x);
   if (x > max) return fct[n-1].getInterpolation(x);
 

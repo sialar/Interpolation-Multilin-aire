@@ -13,7 +13,7 @@ void Utils::displayValues(vector<double> values)
 {
     cout << "[ " << values[0];
     for (size_t i=1; i<values.size(); ++i)
-        cout << " ; " << values[i];
+        cout << " ; " << setprecision(numeric_limits<double>::digits10+1) << values[i];
     cout << " ]" << endl;
 }
 
