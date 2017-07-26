@@ -13,7 +13,7 @@ void Utils::displayValues(vector<double> values)
 {
     cout << "[ " << values[0];
     for (size_t i=1; i<values.size(); ++i)
-        cout << " ; " << setprecision(numeric_limits<double>::digits10+1) << values[i];
+        cout << " ; " /*<< setprecision(numeric_limits<double>::digits10+1)*/ << values[i];
     cout << " ]" << endl;
 }
 
@@ -333,6 +333,26 @@ string Utils::eraseExtraSpaces(string strs)
     return replace(s, "  ", " ");
 }
 
+double Utils::min_elt(vector<double> v)
+{
+    if (v.empty()) return -11;
+    double m = v[0];
+    for (double x : v)
+        if (x<m)
+            m = x;
+    return m;
+}
+
+double Utils::max_elt(vector<double> v)
+{
+    if (v.empty()) return -11;
+    double m = v[0];
+    for (double x : v)
+        if (x>m)
+            m = x;
+    return m;
+}
+
 bool absLess(double x, double y)
 {
     return  abs(x) < abs(y);
@@ -340,5 +360,8 @@ bool absLess(double x, double y)
 
 double Utils::maxAbsValue(vector<double> vec)
 {
-    return *max_element(vec.begin(), vec.end(), absLess);
+    vector<double> vec_copy;
+    for (int i=0; i<int(vec.size()); i++)
+        vec_copy.push_back(abs(vec[i]));
+    return max_elt(vec_copy);
 }

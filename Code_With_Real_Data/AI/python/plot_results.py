@@ -24,16 +24,22 @@ ap_res, co_res, tu_res, ai_res = [], [], [], []
 
 for i in range(6000):
     point.append(int(lines[i].split(" ")[0]))
-    co_err.append(float(lines[i].split(" ")[10]))
     tu_err.append(float(lines[i].split(" ")[11]))
     ai_err.append(float(lines[i].split(" ")[12]))
 
 s = 10
-cocagne = plt.scatter(point,co_err,color='b',s=s,marker='o',alpha=0.1)
 tucker = plt.scatter(point,tu_err,color='g',s=s,marker='o',alpha=0.1)
 ai = plt.scatter(point,ai_err,color='r',s=s,marker='o',alpha=0.1)
 
+plt.legend((tucker, ai),
+           ('Tucker', 'AI'),
+           scatterpoints=1,
+           loc='lower left',
+           ncol=2,
+           fontsize=10)
 
+plt.xlabel('Reference point index')
+plt.ylabel('Relative error')
 
 plt.title(figureTitle)
 plt.savefig(figureName)

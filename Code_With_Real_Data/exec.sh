@@ -15,37 +15,51 @@ help()
 }
 
 help
-"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
 
-core=$2
-
-if [ $# -le 2 ]
+if [ "$1" = "AI" ]
 then
-    exit
-fi
+    shift
+    "$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
+    core=$2
 
-shift
-shift
+    if [ $# -le 2 ]
+    then
+        exit
+    fi
 
-cd AI/python
+    shift
+    shift
 
-if [ $1 = "ALL" ]
+    cd AI/python
+
+    if [ "$1" = "ALL" ]
+    then
+        args="macro_totale0 macro_totale1 macro_absorption0 macro_absorption1 "
+        args="$args macro_scattering000 macro_scattering001 macro_scattering010 macro_scattering011"
+        args="$args macro_nu_fission0 macro_nu_fission1 macro_fission0 macro_fission1"
+    else
+        args=$*
+    fi
+
+    for arg in $args
+    do
+      python plot_results.py $core $arg
+      python plot_results_with_cocagne.py $core $arg
+    done
+
+    if [ "$1" = "ALL" ]
+    then
+      python plot_reactivity.py $core
+      python plot_reactivity_with_cocagne.py $core
+    fi
+
+elif [ "$1" = "Convergence" ]
 then
-    args="macro_totale0 macro_totale1 macro_absorption0 macro_absorption1 "
-    args="$args macro_scattering000 macro_scattering001 macro_scattering010 macro_scattering011"
-    args="$args macro_nu_fission0 macro_nu_fission1 macro_fission0 macro_fission1"
-else
-    args=$*
-fi
+    shift
+    "$PROJECT_PATH"/bin/TestConvergence $*
 
-for arg in $args
-do
-    python plot_results.py $core $arg
-done
-
-if [ $1 = "ALL" ]
-then
-  python plot_reactivity.py $core
+    cd AI/python
+    python plot_errors.py $*
 fi
 
 exit

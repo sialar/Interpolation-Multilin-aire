@@ -2,28 +2,14 @@
 #include <string>
 #include <array>
 #include <time.h>
-#include "../include/MixedInterpolation.hpp"
-#include "../include/LagrangeInterpolation.hpp"
+#include <limits>
+#include <stdio.h>
+
 #include "../include/Utils.hpp"
+#include "../include/Functions.hpp"
+#include "../include/MixedInterpolation.hpp"
 
 using namespace std;
-
-MultiVariatePoint<int> chooseMethods(int dim)
-{
-    MultiVariatePoint<int> methods(dim,0,-1);
-    for (int i=0; i<dim; i++)
-    {
-        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
-        {
-            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
-            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
-            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
-            cin >> methods(i);
-        }
-    }
-    return methods;
-}
 
 string chooseCoreType(int argc, char* argv[], int argNum)
 {
@@ -46,7 +32,6 @@ string chooseCoreType(int argc, char* argv[], int argNum)
     Utils::separateur();
     return core;
 }
-
 vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
 {
     vector<string> reactions;
@@ -90,38 +75,66 @@ vector<string> chooseReactionsType(int argc, char* argv[], int argNum)
     return reactions;
 }
 
-int chooseMaxIteration(int argc, char* argv[], int argNum)
+void saveErrorsInFile(vector<vector<double>> results, string core, vector<string> reactions, vector<int> iterations)
 {
-  if (argc > argNum) return stoi(argv[argNum]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
-  {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
-  }
-  Utils::separateur();
-  return maxIteration;
+    ofstream file(Utils::projectPath + "AI/data/" + core + "/RelativeErrors", ios::out );
+    if(file)
+    {
+        file << results.size() << endl;
+        for (int i=0; i<int(iterations.size()); i++)
+            file << iterations[i] << " ";
+        file << endl;
+        file << reactions.size() << endl;
+        for (int i=0; i<int(reactions.size()); i++)
+            file << reactions[i] << " ";
+        file << endl;
+        for (int i=0; i<int(results.size()); i++)
+        {
+            for (int j=0; j<int(reactions.size()); j++)
+                file << results[i][j] << " ";
+            file << endl;
+        }
+        file.close();
+    }
+    else cerr << "Error while opening the file!" << endl;
 }
 
-int main( int argc, char* argv[] )
+vector<double> interpolate(int dimD,string core, vector<string> reactions, int nIter, MultiVariatePoint<int> methods)
 {
-    srand (time(NULL));
-    Functions::createFunctionsDataBase();
-    Utils::separateur();
-    int dimD = 5;
-    int maxIteration = chooseMaxIteration(argc,argv,1);
-    string core = chooseCoreType(argc,argv,2);
-    vector<string> reactions = chooseReactionsType(argc,argv,3);
-
-    MultiVariatePoint<int> methods(5,0,0);// = chooseMethods(dimD);
-    methods(0) = 2;
-    MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,maxIteration,methods));
-    //LagrangeInterpolationPtr interp(new LagrangeInterpolation(dimD,core,reactions,maxIteration));
+    MixedInterpolationPtr interp(new MixedInterpolation(dimD,core,reactions,nIter,methods));
 
     interp->readDataAndResults();
     interp->launchAIAlgo(false);
     interp->saveResults();
-    interp->displayAll();
 
+    return interp->relativeErrors();
+}
+
+int main( int argc, char* argv[] )
+{
+    Functions::createFunctionsDataBase();
+    vector<vector<double>> nIter_errors;
+    int dimD = 5;
+    vector<int> iterations(7);
+    string core = chooseCoreType(argc,argv,1);
+    vector<string> reactions = chooseReactionsType(argc,argv,2);
+    MultiVariatePoint<int> methods(5,0,0);
+    methods(0) = 2;
+
+    iterations[0] = 50;
+    iterations[1] = 100;
+    iterations[2] = 200;
+    iterations[3] = 300;
+    iterations[4] = 450;
+    iterations[5] = 600;
+    iterations[6] = 800;
+
+    for (int i=0; i<int(iterations.size()); i++)
+    {
+        nIter_errors.push_back(interpolate(dimD,core,reactions,iterations[i],methods));
+        cout << "Computing relative errors with " << iterations[i] << " iterations done!" << endl;
+    }
+
+    saveErrorsInFile(nIter_errors, core, reactions, iterations);
     return 0;
 }

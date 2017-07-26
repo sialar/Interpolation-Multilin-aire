@@ -20,7 +20,7 @@ void compare(vector<double> u, vector<double> v, double threshold)
         if (abs(u[i]-v[i])>threshold)
         {
             nb++;
-            //cout << i << " " << u[i] << " " << v[i] << endl;
+            cout << (i+1) << " " << u[i] << " " << v[i] << endl;
         }
     cout << nb << " diffrences found!" << endl;
 }
@@ -45,13 +45,14 @@ vector<double> getFromFile(string fileName, int c)
 
 int main( int argc, char* argv[] )
 {
+    string csName = "macro_scattering001";
+    vector<double> u = getFromFile(Utils::projectPath + "fileName",0);
+    vector<double> v = getFromFile(Utils::projectPath + "fileName_cpp",0);
+    vector<double> w = getFromFile(Utils::projectPath + "fileName",0);
 
-    //vector<double> u = getFromFile(Utils::projectPath + "AI/data/RegeneratedResults/MOX/macro_nu_fission1",2);
-    vector<double> v = getFromFile(Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_MOX_test/kk",0);
-    vector<double> w = getFromFile(Utils::projectPath + "Tucker/LIVRAISON_THESE_Paris6_MOX_test/jj",0);
+    compare(u, v, 1e-7);
+    //compare(u, w, 1e-7);
+    //compare(v, w, 1e-7);
 
-    compare(w, v, 1e-7);
-    //compare(w, u, 1e-8);
-    //compare(v, u, 1e-8);
     return 0;
 }

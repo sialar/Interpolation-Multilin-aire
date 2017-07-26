@@ -180,34 +180,13 @@ template <typename T>
 vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
     vector<double> fast_res, res;
-    //ofstream file(Utils::projectPath + "values", ios::out);
-    //if(file)
-    //{
-        for (int i=0; i<m_d; i++)
-            x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
-
-        //x(0) = 0;
-        //x(1) = 20;
-        //x(2) = 0.40000000596;
-        //x(3) = 0;
-        //x(4) = 9.999999974752427e-07;
-        res = m_function->evaluate(x);
-        fast_res = m_function->fast_evaluate(x);
-
-        for (int i=0; i< m_n; i++)
-        if (abs(res[i]-fast_res[i])>1e-6)
-        {
-            cout << i << " ";
-            for (int j=0; j<5; j++)
-                cout << x(j) << " ";
-            Utils::displayValues(res);
-            Utils::displayValues(fast_res);
-        }
-
-    //    file.close();
-    //}
-    //else cerr << "Error while opening the file!" << endl;
-
+    for (int i=0; i<m_d; i++)
+        x(i) = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
+    //res = m_function->evaluate(x);
+    fast_res = m_function->fast_evaluate(x);
+    //for (int i=0; i<int(res.size()); i++)
+    //    if (abs(res[i]-fast_res[i])>1e-7)
+    //        cout << x << " " << res[i] << " " << fast_res[i] << endl;
     return fast_res;
 }
 
@@ -756,7 +735,7 @@ void Interpolation<T>::comp()
         }
         else cerr << "Error while opening the file!" << endl;
 
-        ofstream file(Utils::projectPath + "AI/data/MOX/comp_" + s, ios::out);
+        ofstream file(Utils::projectPath + "AI/data/" + m_function->getCoreType() + "/comp_" + s, ios::out);
         if(file)
         {
             for (int i=0; i<m_nbTestPoints; i++)

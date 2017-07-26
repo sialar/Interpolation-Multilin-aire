@@ -24,6 +24,8 @@ class Utils
         static string projectPath;
         static void separateur();
         static void displayValues(vector<double> v);
+        static double min_elt(vector<double> v);
+        static double max_elt(vector<double> v);
         static void printInFile(string fileName, vector<double> newContent);
         static string getRealPart(string val);
         static vector<double> diff(vector<double> x,vector<double> y);

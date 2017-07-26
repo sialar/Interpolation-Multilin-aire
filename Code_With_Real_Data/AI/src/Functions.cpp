@@ -96,6 +96,7 @@ vector<double> parse_output(char* cmd)
     while (fgets(buf, BUFSIZE, fp) != NULL)
     {
         string buf_str(buf);
+        //cout << buf_str;
         res = convert_str_to_vec(buf_str);
     }
     if (pclose(fp))

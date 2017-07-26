@@ -7,24 +7,7 @@ vector<string> TuckerApproximation::keys;
 /******************************  utile functions ********************************/
 /******************************************************************************/
 
-double min_elt(vector<double> v)
-{
-    if (v.empty()) return -11;
-    double m = v[0];
-    for (double x : v)
-        if (x<m)
-            m = x;
-    return m;
-}
-double max_elt(vector<double> v)
-{
-    if (v.empty()) return -11;
-    double m = v[0];
-    for (double x : v)
-        if (x>m)
-            m = x;
-    return m;
-}
+
 vector<double> getWhereEquals(vector<double> vec, double val)
 {
   vector<double> res;
@@ -164,7 +147,7 @@ vector<double> str_to_vect(string s)
 {
     s.pop_back();
     s.pop_back();
-    s.erase(0,2);
+    s.erase(0,1);
     vector<double> dic;
     stringstream ss(s);
     string subs;
@@ -410,24 +393,31 @@ vector<vector<LagrangePolynomial>> TuckerApproximation::getListOfInterpolationFc
 double TuckerApproximation::evaluate(MultiVariatePoint<double> point, string csName)
 {
   double approxValue = 0.0;
-  for (int i=0; i<int(listOfFinalCoefIndexes_arr[csName].size()); i++)
-  {
-    double d = 1.0;
-    vector<LagrangePolynomial> fct;
-    for (int Axis_k=0; Axis_k<dimension; Axis_k++)
-    {
-      fct = listOfBasicFctsUsingLagrangeInterpolation[csName][to_string(Axis_k)][listOfFinalCoefIndexes_arr[csName][i][Axis_k]];
-      d = d*getInterpolation(fct, point(Axis_k));
-    }
-    approxValue = approxValue +  FinalTuckerCoeffs[csName][i]*d;
-  }
+  //ofstream file(Utils::projectPath + "fileName_cpp", ios::out );
+  //if(file)
+  //{
+      for (int i=0; i<int(listOfFinalCoefIndexes_arr[csName].size()); i++)
+      {
+        double d = 1.0;
+        vector<LagrangePolynomial> fct;
+        for (int Axis_k=0; Axis_k<dimension; Axis_k++)
+        {
+          fct = listOfBasicFctsUsingLagrangeInterpolation[csName][to_string(Axis_k)][listOfFinalCoefIndexes_arr[csName][i][Axis_k]];
+          d = d*getInterpolation(fct, point(Axis_k));
+        }
+        approxValue = approxValue +  FinalTuckerCoeffs[csName][i]*d;
+        //file << setprecision(numeric_limits<double>::digits10+1) << FinalTuckerCoeffs[csName][i] << endl;
+      }
+      //file.close();
+  //}
+  //else cerr << "Error while opening the file!" << endl;
   return approxValue;
 }
 double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, double x)
 {
   int n = fct.size();
-  double min = min_elt(fct[0].axisValues());
-  double max = max_elt(fct[n-1].axisValues());
+  double min = Utils::min_elt(fct[0].axisValues());
+  double max = Utils::max_elt(fct[n-1].axisValues());
 
   if (n == 1)
   {
@@ -441,8 +431,8 @@ double TuckerApproximation::getInterpolation(vector<LagrangePolynomial> fct, dou
     int j = 0;
     while (j <= n-1)
     {
-      double _min = min_elt(fct[j].axisValues());
-      double _max = max_elt(fct[j].axisValues());
+      double _min = Utils::min_elt(fct[j].axisValues());
+      double _max = Utils::max_elt(fct[j].axisValues());
       if (_min <= x && x <= _max)
       {
         return fct[j].getInterpolation(x);
