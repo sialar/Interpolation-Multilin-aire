@@ -122,6 +122,7 @@ class Interpolation
         void saveApproximationResultsInFile();
         void readApproximationResultsFromFile();
         void computeTuckerApproximationResults();
+        void saveInterpolationMultiVariatePoints();
         void displayInterpolationMultiVariatePoints();
 };
 
@@ -514,6 +515,7 @@ void Interpolation<T>::saveResults()
         computeReactivity();
         saveReactivityInFile();
     }
+    saveInterpolationMultiVariatePoints();
 }
 
 template <typename T>
@@ -754,4 +756,31 @@ void Interpolation<T>::comp()
         else cerr << "Error while opening the file!" << endl;
     }
 }
+
+/******************************************************************************/
+
+template <typename T>
+void Interpolation<T>::saveInterpolationMultiVariatePoints()
+{
+
+  ofstream file(Utils::projectPath + "AI/data/interpolation_points.dat", ios::out);
+  if(file)
+  {
+      double t;
+      file << m_interpolationNodes.size() << endl;
+      for (MultiVariatePoint<double> x : m_interpolationNodes)
+      {
+          for (int i=0; i<m_d; i++)
+          {
+              t = Utils::convertToFunctionDomain(m_realDomain[i][0], m_realDomain[i][1], x(i));
+              file << setprecision(numeric_limits<double>::digits10+1) << t << " ";
+          }
+          file << endl;
+      }
+      file.close();
+  }
+  else cerr << "Error while opening the file!" << endl;
+
+}
+
 #endif

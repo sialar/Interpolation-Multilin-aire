@@ -19,7 +19,7 @@ help
 if [ "$1" = "AI" ]
 then
     shift
-    "$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
+    #"$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
     core=$2
 
     if [ $# -le 2 ]
@@ -41,17 +41,29 @@ then
         args=$*
     fi
 
-    for arg in $args
+    #for arg in $args
+    #do
+    #  python plot_results.py $core $arg
+    #  python plot_results_with_cocagne.py $core $arg
+    #done
+
+    #if [ "$1" = "ALL" ]
+    #then
+    #  python plot_reactivity.py $core
+    #  python plot_reactivity_with_cocagne.py $core
+    #fi
+
+    for i in `seq 0 4`;
     do
-      python plot_results.py $core $arg
-      python plot_results_with_cocagne.py $core $arg
+        for j in `seq 0 4`;
+        do
+            if [ $i -lt $j ]
+            then
+                python plot_interpolation_points.py $core $i $j
+            fi
+        done
     done
 
-    if [ "$1" = "ALL" ]
-    then
-      python plot_reactivity.py $core
-      python plot_reactivity_with_cocagne.py $core
-    fi
 
 elif [ "$1" = "Convergence" ]
 then
@@ -60,6 +72,11 @@ then
 
     cd AI/python
     python plot_errors.py $*
-fi
 
+elif [ "$1" = "Points" ]
+then
+    shift
+    cd AI/python
+    python plot_interpolation_points.py $*
+fi
 exit
