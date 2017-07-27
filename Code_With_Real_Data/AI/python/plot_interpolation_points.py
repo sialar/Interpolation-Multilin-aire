@@ -34,7 +34,7 @@ for i in range(npts):
     x.append(float(lines[i+1].split(" ")[direction_x]))
     y.append(float(lines[i+1].split(" ")[direction_y]))
 
-plt.scatter(x,y,color='k',s=80,marker='*',alpha=1)
+plt.scatter(x,y,color='k',s=50,marker='x',alpha=1)
 
 plt.xlabel(variables[direction_x])
 plt.ylabel(variables[direction_y])
