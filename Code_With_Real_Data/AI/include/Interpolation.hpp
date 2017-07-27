@@ -19,6 +19,13 @@
 
 using namespace std;
 
+/**
+ *  \file Interpolation.hpp
+ *  \brief Classe générique, implémente l'algorithme d'Interpolation Adaptative
+ *  \author SIALA Rafik
+ *  \date 08/16
+*/
+
 template <typename T>
 class Interpolation
 {
@@ -59,47 +66,188 @@ class Interpolation
 
         Interpolation() {};
         virtual ~Interpolation() {};
+        /**
+         *  Constructeur
+         *  \param d: dimension de l'éspace de phase des paramètres
+         *  \param core: Type de réacteur (MOX, UOX ou UOX-Gd)
+         *  \param cs: Ensemble des sections efficaces à approcher
+         *  \param nIter: Nombre d'itération dans l'algorithme AI (nombre de points d'interpolation)
+        */
         Interpolation(int d, string core, vector<string> cs, int nIter);
 
         /************************* Data points ********************************/
+        /**
+         *  Retourner le nombre de points de calcul de l'interpolé
+         *  \return Nombre d'évaluation
+        */
         const int nbEvals() { return m_nbEvals; };
+        /**
+         *  Retourner le temps d'éxecution de l'algorithme AI (sans compter le cout des évaluations de l'interpolé)
+         *  \return Temps d'exécution
+        */
         const double runTime() { return m_runTime; };
+        /**
+         *  Retourner le temps d'éxecution de l'algorithme AI
+         *  \return Temps d'exécution
+        */
         const double totalTime() { return m_totalTime; };
+        /**
+         *  Retourner le nombre d'itérations dans l'algorithme AI
+         *  \return Nombre d'itérations
+        */
         const int maxIteration() { return m_maxIteration; };
+        /**
+         *  Retourner le nombre de points de référence (de tests)
+         *  \return Nombre de points de référence
+        */
         const int nbTestPoints() { return m_nbTestPoints; };
+        /**
+         *  Retourner les erreurs relatives absolues correspondants à chaque sections efficace
+         *  \return Vecteur d'erreurs (l'élément i correspont à l'erreur commise lors de l'approximation de la section efficace d'indice i)
+        */
         const vector<double> relativeErrors() { return m_infErrors; };
+        /**
+         *  Afficher la progression de la séquence de points d'interpolation et de la liste de priorité des voisins
+        */
         void disableProgressDisplay() { m_displayProgress = false; };
+        /**
+        *  Retourner la séquence de multi-ordres des points d'interpolations
+        *  \return Ensemble de multi-indices ou de vecteur de codes
+        */
         const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
+        /**
+        *  Methode virtuelle pour ajouter un nouveau point d'interpolation
+        *  \param p Nouveau point choisi par AI
+        */
         virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
+        /**
+        *  Retourner l'ensemble des points l'interpolation de chaque direction (chaque point est en dimension 1)
+        *  \return Ensemble de points d'interpolation sur chaque variable
+        */
         const vector<vector<double>>& points() { return m_interpolationPoints; };
+        /**
+        *  Retourner le point correspondant au vecteur d'ordres nu
+        *  \return Point d'interpolation ayant nu comme vecteur d'ordre
+        */
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
+        /**
+        *  Retourner l'ensemble des points d'interpolation multivariés
+        *  \return Ensemble de points d'interpolation
+        */
         const vector<MultiVariatePoint<double>>& interpolationNodes() { return m_interpolationNodes; };
+        /**
+        *  Retourner l'ensemble des points l'interpolation sur la direction i
+        *  \return Ensemble de points discrétisation dans la variable i
+        */
         const vector<double>& interpolationPoints(int i) { return m_interpolationPoints[i]; };
 
+        /**
+        *  Créer un vecteur de points multivariés aléatoirement
+        *  \param nbTestPoints Nombre de points multivariés
+        */
         void setRandomTestPoints(int nbTestPoints);
+        /**
+        *  Retourner l'ensemble de points de référence
+        *  \return Ensemble de points de test
+        */
         vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
+        /**
+        *  Créer la grille de référence à partir vecteur entré en paramètre
+        *  \param points Ensemble de points de test
+        */
         void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
 
+        /**
+        *  Définir le type de réacteur
+        *  \param c Type de réacteur (MOX, UOX ou UOX-Gd)
+        */
         void setFunc(string c);
-        void setFunc(string c, vector<string> vr);
-        FunctionsPtr getFunc() { return m_function; };
+        /**
+        *  Définir le type de réacteur et les sections efficaces
+        *  \param c Type de réacteur (MOX, UOX ou UOX-Gd)
+        *  \param c Type de sections efficaces (macro_totale0, macro_fission0, macro_absorption0, ...)
+        */
+        void setFunc(string c, vector<string> cs);
+        /**
+        *  Retourner la valeur de l'interpolé au point x
+        *  \return x Point d'évaluation
+        */
         vector<double> func(MultiVariatePoint<double> x);
 
 
         /************************* AI algo ************************************/
+        /**
+        *  Calculer la réactivité obtenu avec l'algorithme AI
+        */
         void computeReactivity();
+        /**
+        *  Calculer les facteur de multiplication efficace K_eff (en chaque point de test) en utilsant la méthode m
+        *  \param m Méthode d'approximation utilisée (Cocagne, Tucker ou AI)
+        *  \return les facteurs de multiplication efficace en chaque point de référence
+        */
         vector<double> computeKinf(method m);
+        /**
+        *  Calculer les résultats d'approximations ainsi que les erreurs obtenues avec la méthode parcimonieuse.
+        *  Puis les stocker dans les attributs m_approxResults et m_approxErrors
+        */
         void computeAIApproximationResults();
+        /**
+        *  Calculer l'erreur d'interpolation au point multivarié courant (condidat ayant nu comme veteur d'ordres) dans l'exécution de l'algorithme AI.
+        *  \param nu Vecteur d'ordres du condidat courant
+        */
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
-        int launchAIAlgo(bool debug);
+        /**
+        *  Méthode qui implémente l'algorithme d'Interpolation Adaptative.
+        *  \param debug Boolean pour éxecuter avec (ou sans) affichage de la progression de l'algo
+        */
+        void launchAIAlgo(bool debug);
+        /**
+        *  Méthode implémentée dan les classes filles (dépend du type d'ordre).
+        *  Elle permet de choisir un point parmi les condidat courant (les points voisin à la séquence courante de points d'interpolation).
+        *  Le choix est fait d'une manière adaptative dans la plupart des fois.
+        *  Parfois (25% des cas), on choisit le condidat qui attendu le plus pour être sur de bien explorer tout l'éspace.
+        *  \return Le nouveau point d'interpolation
+        */
         virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
+        /**
+        *  Créer le vecteur d'ordres du premier point d'interpolation ( [0,0,0,0,0] ou ["","","","",""]).
+        *  \return Le premier point d'interpolation
+        */
         virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
+        /**
+        *  Mettre à jour la liste des condidats, une fois le point d'ordre nu ajouté à la séquence d'interpolation.
+        *  \return Dernier point d'interpolation ajouté
+        */
         virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
+        /**
+        *  Vérifier si le nouveau condidat est bien voisin à la séquence courante de points d'interpolation.
+        *  Cette vérification permet de s'assurer de la monotonie de la séquence
+        *  \param nu Nouveau condidat potentiel
+        *  \return true si nu correspont à un condidat valide, false sinon
+        */
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
 
         /************************* Interpolation ******************************/
+        /**
+        *  Calculer la valuer de la fonction de base (polynome de Lagrange ou fonction quadratique par morceaux) associée à "code" au point "t" sur la direction "axis"
+        *  \param code Ordre (1d) du point d'interpolation correspondant à la fonction de base en question
+        *  \param t Point d'évaluation (1d)
+        *  \param axis Direction
+        *  \return Valeur de la fonction de base
+        */
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
+        /**
+        *  Calculer l'approximation des sections efficaces au point de référence x en utilsant "end" itérations
+        *  \param x Point de référence
+        *  \param end Nombre d'itérations utilisé
+        *  \return Approximation des sections efficaces en x
+        */
         vector<double> interpolation(MultiVariatePoint<double>& x, int end);
+        /**
+        *  Calculer l'approximation des sections efficaces au point de référence x en utilsant le nombre maximal d'itérations
+        *  \param x Point de référence
+        *  \return Approximation des sections efficaces en x
+        */
         vector<double> interpolation(MultiVariatePoint<double>& x);
 
         /************************* Other functions ****************************/
@@ -205,7 +353,7 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 
 /***************************** AI algo ****************************************/
 template <typename T>
-int Interpolation<T>::launchAIAlgo(bool debug)
+void Interpolation<T>::launchAIAlgo(bool debug)
 {
     auto start_time = chrono::steady_clock::now();
     m_lastCheckPt = chrono::steady_clock::now();
@@ -241,7 +389,6 @@ int Interpolation<T>::launchAIAlgo(bool debug)
     auto end_time = chrono::steady_clock::now();
     std::chrono::duration<double> total_time = end_time - start_time;
     m_totalTime = total_time.count();
-    return iteration;
 }
 
 template <typename T>
