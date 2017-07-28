@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  27 JUL 2017 16:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  28 JUL 2017 17:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1582,7 +1582,7 @@ File: images/tree.png Graphic file (type png)
 Package pdftex.def Info: images/tree.png used on input line 389.
 (pdftex.def)             Requested size: 256.07233pt x 170.71947pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--397
+Underfull \hbox (badness 10000) in paragraph at lines 392--401
 
  []
 
@@ -1590,103 +1590,149 @@ Underfull \hbox (badness 10000) in paragraph at lines 392--397
 File: images/interp_pm.png Graphic file (type png)
 
 <use images/interp_pm.png>
-Package pdftex.def Info: images/interp_pm.png used on input line 398.
+Package pdftex.def Info: images/interp_pm.png used on input line 402.
 (pdftex.def)             Requested size: 312.98495pt x 312.98495pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 404--405
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
-
-Overfull \hbox (1.48676pt too wide) in paragraph at lines 409--412
+[14 <./images/interp_pm.png (PNG copy)>]
+Overfull \hbox (1.48676pt too wide) in paragraph at lines 413--416
 \T1/cmr/m/n/12 prox-i-ma-tion avec les deux méth-odes. Sauf qu'avec la méth-ode
  util-isant les polynômes
  []
 
-[14 <./images/interp_pm.png (PNG copy)>]
+
 Overfull \hbox (24.95937pt too wide) in paragraph at lines 425--431
 \T1/cmr/m/n/12 Cependant, il y a plusieurs sim-i-lar-ité en-tre les deux méth-o
 des, d'où le choix d'implémenter
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 432--435
-
- []
-
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 458--461
+Underfull \hbox (badness 10000) in paragraph at lines 457--460
 
  []
 
 <images/huffman.png, id=94, 501.875pt x 501.875pt>
 File: images/huffman.png Graphic file (type png)
  <use images/huffman.png>
-Package pdftex.def Info: images/huffman.png used on input line 462.
+Package pdftex.def Info: images/huffman.png used on input line 461.
 (pdftex.def)             Requested size: 312.9972pt x 312.9972pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 465--466
+Underfull \hbox (badness 10000) in paragraph at lines 464--465
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 467--475
+Underfull \hbox (badness 10000) in paragraph at lines 466--474
 
  []
 
-[16 <./images/huffman.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 504--509
+[16 <./images/huffman.png>] [17]
+Underfull \hbox (badness 10000) in paragraph at lines 503--508
 
  []
 
-[17] <images/leja_sequence.png, id=102, 578.16pt x 433.62pt>
+<images/leja_sequence.png, id=102, 578.16pt x 433.62pt>
 File: images/leja_sequence.png Graphic file (type png)
 
 <use images/leja_sequence.png>
-Package pdftex.def Info: images/leja_sequence.png used on input line 510.
+Package pdftex.def Info: images/leja_sequence.png used on input line 509.
 (pdftex.def)             Requested size: 455.24165pt x 256.085pt.
 
-<images/algo_ai_recherch_voisin.png, id=103, 1204.5pt x 501.875pt>
-File: images/algo_ai_recherch_voisin.png Graphic file (type png)
+<images/preuve.png, id=103, 501.875pt x 501.875pt>
+File: images/preuve.png Graphic file (type png)
+ <use images/preuve.png>
+Package pdftex.def Info: images/preuve.png used on input line 525.
+(pdftex.def)             Requested size: 227.62596pt x 199.16888pt.
 
-<use images/algo_ai_recherch_voisin.png>
-Package pdftex.def Info: images/algo_ai_recherch_voisin.png used on input line 
-524.
-(pdftex.def)             Requested size: 455.25195pt x 256.08304pt.
- [18 <./images/leja_sequence.png>]
-[19 <./images/algo_ai_recherch_voisin.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 568--574
+[18 <./images/leja_sequence.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 544--546
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 575--579
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+Missing character: There is no é in font cmr12!
+Missing character: There is no à in font cmr12!
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+Missing character: There is no à in font cmr12!
+Missing character: There is no é in font cmr12!
+Missing character: There is no é in font cmr12!
+Missing character: There is no à in font cmr12!
+
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+Missing character: There is no é in font cmr12!
+Missing character: There is no à in font cmr12!
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 552.
+
+
+LaTeX Warning: Command \` invalid in math mode on input line 552.
+
+Missing character: There is no à in font cmr12!
+Missing character: There is no é in font cmr12!
+Missing character: There is no é in font cmr12!
+Missing character: There is no à in font cmr12!
+[19 <./images/preuve.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 590--596
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--601
 
  []
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 615--623
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 624--627
+Underfull \hbox (badness 10000) in paragraph at lines 637--645
 
  []
 
 [21]
-Underfull \hbox (badness 10000) in paragraph at lines 643--644
+Underfull \hbox (badness 10000) in paragraph at lines 646--649
 
  []
 
 
-Overfull \hbox (4.14484pt too wide) in paragraph at lines 646--655
+Underfull \hbox (badness 10000) in paragraph at lines 665--666
+
+ []
+
+
+Overfull \hbox (4.14484pt too wide) in paragraph at lines 668--677
  \T1/cmr/bx/n/12 Dis-créti-sa-tion de l'espace de phase des paramètres:[] \T1/c
 mr/m/n/12 La grille mul-ti-l-inéaire posssède
  []
 
 
-Overfull \hbox (5.26787pt too wide) in paragraph at lines 656--673
+Overfull \hbox (5.26787pt too wide) in paragraph at lines 678--695
  [] 
  []
 
@@ -1694,14 +1740,14 @@ Overfull \hbox (5.26787pt too wide) in paragraph at lines 656--673
 File: images/nb_discretisation.png Graphic file (type png)
 
 <use images/nb_discretisation.png>
-Package pdftex.def Info: images/nb_discretisation.png used on input line 679.
+Package pdftex.def Info: images/nb_discretisation.png used on input line 701.
 (pdftex.def)             Requested size: 318.67636pt x 199.17502pt.
  [23 <./images/nb_discretisation.png>]
 <images/MOX/ReactivityError.png, id=129, 722.7pt x 722.7pt>
 File: images/MOX/ReactivityError.png Graphic file (type png)
 
 <use images/MOX/ReactivityError.png>
-Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 728.
+Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 750.
 
 (pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
 
@@ -1709,7 +1755,7 @@ Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 728.
 File: images/UOX/ReactivityError.png Graphic file (type png)
 
 <use images/UOX/ReactivityError.png>
-Package pdftex.def Info: images/UOX/ReactivityError.png used on input line 731.
+Package pdftex.def Info: images/UOX/ReactivityError.png used on input line 753.
 
 (pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
 
@@ -1718,123 +1764,60 @@ File: images/UOX-Gd/ReactivityError.png Graphic file (type png)
 
 <use images/UOX-Gd/ReactivityError.png>
 Package pdftex.def Info: images/UOX-Gd/ReactivityError.png used on input line 7
-34.
+56.
 (pdftex.def)             Requested size: 144.53743pt x 144.53743pt.
 
-Overfull \hbox (49.36035pt too wide) in paragraph at lines 741--748
+Overfull \hbox (49.36035pt too wide) in paragraph at lines 763--770
  [] 
  []
 
-<images/MOX/MOX_macro_absorption1.png, id=132, 722.7pt x 722.7pt>
+[24 <./images/MOX/ReactivityError.png> <./images/UOX/ReactivityError.png> <./im
+ages/UOX-Gd/ReactivityError.png>]
+<images/MOX/MOX_macro_absorption1.png, id=139, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_absorption1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_absorption1.png>
 Package pdftex.def Info: images/MOX/MOX_macro_absorption1.png used on input lin
-e 759.
+e 781.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_fission0.png, id=133, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_fission0.png, id=140, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_fission0.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_fission0.png>
 Package pdftex.def Info: images/MOX/MOX_macro_fission0.png used on input line 7
-62.
+84.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_nu_fission1.png, id=134, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_nu_fission1.png, id=141, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_nu_fission1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_nu_fission1.png>
 Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1.png used on input lin
-e 765.
+e 787.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_scattering000.png, id=135, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering000.png, id=142, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering000.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering000.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering000.png used on input l
-ine 768.
+ine 790.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/MOX/MOX_macro_scattering001.png, id=136, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering001.png, id=143, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering001.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering001.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering001.png used on input l
-ine 771.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-<images/MOX/MOX_macro_totale1.png, id=137, 722.7pt x 722.7pt>
-File: images/MOX/MOX_macro_totale1.png Graphic file (type png)
-
-<use images/MOX/MOX_macro_totale1.png>
-Package pdftex.def Info: images/MOX/MOX_macro_totale1.png used on input line 77
-4.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 758--776
-[][] []
- []
-
-
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 758--776
-[] []
- []
-
-
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 758--776
-[] [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/UOX/UOX_macro_absorption1.png, id=138, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_absorption1.png Graphic file (type png)
-
-<use images/UOX/UOX_macro_absorption1.png>
-Package pdftex.def Info: images/UOX/UOX_macro_absorption1.png used on input lin
-e 781.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-<images/UOX/UOX_macro_fission0.png, id=139, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_fission0.png Graphic file (type png)
-
-<use images/UOX/UOX_macro_fission0.png>
-Package pdftex.def Info: images/UOX/UOX_macro_fission0.png used on input line 7
-84.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-<images/UOX/UOX_macro_nu_fission1.png, id=140, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_nu_fission1.png Graphic file (type png)
-
-<use images/UOX/UOX_macro_nu_fission1.png>
-Package pdftex.def Info: images/UOX/UOX_macro_nu_fission1.png used on input lin
-e 787.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-<images/UOX/UOX_macro_scattering000.png, id=141, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_scattering000.png Graphic file (type png)
-
-<use images/UOX/UOX_macro_scattering000.png>
-Package pdftex.def Info: images/UOX/UOX_macro_scattering000.png used on input l
-ine 790.
-(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
-
-<images/UOX/UOX_macro_scattering001.png, id=142, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_scattering001.png Graphic file (type png)
-
-<use images/UOX/UOX_macro_scattering001.png>
-Package pdftex.def Info: images/UOX/UOX_macro_scattering001.png used on input l
 ine 793.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX/UOX_macro_totale1.png, id=143, 722.7pt x 722.7pt>
-File: images/UOX/UOX_macro_totale1.png Graphic file (type png)
+<images/MOX/MOX_macro_totale1.png, id=144, 722.7pt x 722.7pt>
+File: images/MOX/MOX_macro_totale1.png Graphic file (type png)
 
-<use images/UOX/UOX_macro_totale1.png>
-Package pdftex.def Info: images/UOX/UOX_macro_totale1.png used on input line 79
+<use images/MOX/MOX_macro_totale1.png>
+Package pdftex.def Info: images/MOX/MOX_macro_totale1.png used on input line 79
 6.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
@@ -1855,52 +1838,52 @@ Overfull \hbox (2.61049pt too wide) in paragraph at lines 780--798
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/UOX-Gd/UOX-Gd_macro_absorption1.png, id=144, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_absorption1.png Graphic file (type png)
+<images/UOX/UOX_macro_absorption1.png, id=145, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_absorption1.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_absorption1.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_absorption1.png used on inp
-ut line 803.
+<use images/UOX/UOX_macro_absorption1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_absorption1.png used on input lin
+e 803.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_fission0.png, id=145, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_fission0.png Graphic file (type png)
+<images/UOX/UOX_macro_fission0.png, id=146, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_fission0.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_fission0.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_fission0.png used on input 
-line 806.
+<use images/UOX/UOX_macro_fission0.png>
+Package pdftex.def Info: images/UOX/UOX_macro_fission0.png used on input line 8
+06.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_nu_fission1.png, id=146, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png Graphic file (type png)
+<images/UOX/UOX_macro_nu_fission1.png, id=147, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_nu_fission1.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_nu_fission1.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png used on inp
-ut line 809.
+<use images/UOX/UOX_macro_nu_fission1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_nu_fission1.png used on input lin
+e 809.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_scattering000.png, id=147, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_scattering000.png Graphic file (type png)
+<images/UOX/UOX_macro_scattering000.png, id=148, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_scattering000.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_scattering000.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering000.png used on i
-nput line 812.
+<use images/UOX/UOX_macro_scattering000.png>
+Package pdftex.def Info: images/UOX/UOX_macro_scattering000.png used on input l
+ine 812.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_scattering001.png, id=148, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_scattering001.png Graphic file (type png)
+<images/UOX/UOX_macro_scattering001.png, id=149, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_scattering001.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_scattering001.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering001.png used on i
-nput line 815.
+<use images/UOX/UOX_macro_scattering001.png>
+Package pdftex.def Info: images/UOX/UOX_macro_scattering001.png used on input l
+ine 815.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
-<images/UOX-Gd/UOX-Gd_macro_totale1.png, id=149, 722.7pt x 722.7pt>
-File: images/UOX-Gd/UOX-Gd_macro_totale1.png Graphic file (type png)
+<images/UOX/UOX_macro_totale1.png, id=150, 722.7pt x 722.7pt>
+File: images/UOX/UOX_macro_totale1.png Graphic file (type png)
 
-<use images/UOX-Gd/UOX-Gd_macro_totale1.png>
-Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_totale1.png used on input l
-ine 818.
+<use images/UOX/UOX_macro_totale1.png>
+Package pdftex.def Info: images/UOX/UOX_macro_totale1.png used on input line 81
+8.
 (pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
 
 Overfull \hbox (2.61049pt too wide) in paragraph at lines 802--820
@@ -1920,14 +1903,78 @@ Overfull \hbox (2.61049pt too wide) in paragraph at lines 802--820
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+<images/UOX-Gd/UOX-Gd_macro_absorption1.png, id=151, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_absorption1.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 828--835
+<use images/UOX-Gd/UOX-Gd_macro_absorption1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_absorption1.png used on inp
+ut line 825.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_fission0.png, id=152, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_fission0.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_fission0.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_fission0.png used on input 
+line 828.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_nu_fission1.png, id=153, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_nu_fission1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_nu_fission1.png used on inp
+ut line 831.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_scattering000.png, id=154, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_scattering000.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_scattering000.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering000.png used on i
+nput line 834.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_scattering001.png, id=155, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_scattering001.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_scattering001.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_scattering001.png used on i
+nput line 837.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+<images/UOX-Gd/UOX-Gd_macro_totale1.png, id=156, 722.7pt x 722.7pt>
+File: images/UOX-Gd/UOX-Gd_macro_totale1.png Graphic file (type png)
+
+<use images/UOX-Gd/UOX-Gd_macro_totale1.png>
+Package pdftex.def Info: images/UOX-Gd/UOX-Gd_macro_totale1.png used on input l
+ine 840.
+(pdftex.def)             Requested size: 216.81166pt x 216.81166pt.
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 824--842
+[][] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 824--842
+[] []
+ []
+
+
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 824--842
+[] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 850--857
 
  []
 
-[24 <./images/MOX/ReactivityError.png> <./images/UOX/ReactivityError.png> <./im
-ages/UOX-Gd/ReactivityError.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 845--849
+
+Underfull \hbox (badness 10000) in paragraph at lines 867--871
 
  []
 
@@ -1950,8 +1997,8 @@ This document will not have a glossary.
 (./main.aux (./ressources/body.aux)) ) 
 Here is how much of TeX's memory you used:
  31625 strings out of 493029
- 623953 string characters out of 6136234
- 730345 words of memory out of 5000000
+ 623868 string characters out of 6136234
+ 729345 words of memory out of 5000000
  34565 multiletter control sequences out of 15000+600000
  19765 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1975,7 +2022,7 @@ lic/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx248
 xmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/publ
 ic/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074
 .pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on main.pdf (31 pages, 6960205 bytes).
+Output written on main.pdf (31 pages, 6934818 bytes).
 PDF statistics:
  262 PDF objects out of 1000 (max. 8388607)
  138 compressed objects within 2 object streams

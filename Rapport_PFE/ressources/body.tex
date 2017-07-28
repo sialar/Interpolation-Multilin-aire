@@ -95,11 +95,11 @@ du noyau du réacteur: noyau contenant des assemblages, assemblages contenant de
 \newpage
 Par conséquent, 2 étapes sont effectuées séparément par deux codes:
 \begin{itemize}
-		\item \textbf{Code réseau:} permet de précalculer les sections efficaces sur des points
+		\item \textbf{Code réseau (APOLLO2):} permet de précalculer les sections efficaces sur des points
 		présélectionnés dans l'espace de phase des paramètres (sur chaque assemblage). L'équation du transport neutronique est
 		résolue de manière précise grâce à des discrétisations spatiales et énergétique (calcul hors ligne).
 		L'information obtenue sur les sections efficaces est stockée dans des fichiers (appelés les \textbf{bibliothèques neutroniques}).
-		\item \textbf{Code de cœur:} permet d'évaluer les sections efficaces en n'importe quel point du cœur par interpolation multivariée.
+		\item \textbf{Code de cœur (COCAGNE):} permet d'évaluer les sections efficaces en n'importe quel point du cœur par interpolation multivariée.
 		Les informations stockées dans les biblothèques neutroniques sont utilisées comme données (points d'interpolations)
 		pour résoudre l'équation du transport neutronique au niveau du cœur du réacteur.
 \end{itemize}
@@ -368,7 +368,7 @@ Ce qui provoque une augmentation concidérable de l'erreur. Ceci est dû au cara
 
 \hspace{0.5cm}Dans de telles situations il est plus judicieux d'utiliser des fonctions polynômiales par morceaux comme fonctions hiérarchiques de base.\\
 De cette façon, chaque nouveau point d'interpolation ajouté, ne provoque que des perturbations locales, ce qui ne dégrade pas trop l'interpolation obtenu jusque là.\\
-Dans ce cas de figure, on choisit un nouveau type de points d'interpolation qui est mieux adéquat. La séquence sera formée par un ensemble de points obtenu en discrétisant pogréssivement
+Dans ce cas de figure, on choisit un nouveau type de points d'interpolation qui est mieux adapté. La séquence sera formée par un ensemble de points obtenu en divisant pogréssivement
 le domaine par dichotomie.\\
 Voici, un exemple en 1D pour mieux comprendre cela.\\
 Supposons que $P = \left [ -1, 1 \right ]$ et que le premier point d'interpolation est $0$. Alors, la séquence de points d'interpolation évoluera
@@ -377,7 +377,7 @@ On suppose que $S$ est la séquence de points d'interpolation, et $V$ la liste c
 \begin{itemize}
 \item \textbf{Iteration 0:} $S = \left \{ 0 \right \}$ et $V = \left \{ -1,1 \right \}$
 \item \textbf{Iteration 1:} ($S = \left \{ 0, -1 \right \}$ et $V = \left \{ 1, -0.5 \right \}$) ou \\
-($S = \left \{ 0, 1 \right \}$ et $V = \left \{ 1, 0.5 \right \}$)
+($S = \left \{ 0, 1 \right \}$ et $V = \left \{ -1, 0.5 \right \}$)
 \item \textbf{Iteration 2:} ($S = \left \{ 0, -1, 1\right \}$ et $V = \left \{ -0.5, 0.5 \right \}$) ou \\
 ($S = \left \{ 0, -1, -0.5 \right \}$ et $V = \left \{ 1, -0.25, -0.75\right \}$) ou \\
 ($S = \left \{ 0, 1, -1 \right \}$ et $V = \left \{ -0.5, 0.5\right \}$) ou \\
@@ -391,7 +391,11 @@ Ce point appartient forcement à l'ensemble des nœuds descendant directement de
 \end{center}
 Dans la figure précedante, l'ensemble jaune correspond à la séquence d'interpolation, et celui en vert correspond à l'ensemble courant des points voisins.\\
 Etant donné qu'on a besoin d'une notion d'ordre entre les points d'interpolation, on introduit la relation suivante: un nœud $n$ est d'ordre plus élevé qu'un nœud $m$ si et seulement si $m$ est un ancêtre de $n$.\\
-Ainsi, en grande dimension, et avec ce type de séquence, on est capable de définir un ensemble monotone vu qu'on a une relation d'ordre entre les nœuds.
+Ainsi, en grande dimension, et avec ce type de séquence, on est capable de définir un ensemble monotone vu qu'on a une relation d'ordre entre les nœuds.\\
+Exemple: soit la séquende monotone de points 3D suivante:\\
+ $S = \left \{ (0,0,0); (0,1,0); (1,0,0); (0.5,0,0); (0.5,1,0) \right \}$. Le point $p = (0.25,0,0)$ est un voisin de cette séquence car tous les points d'ordre inférieur à celui
+de p (ancêtres de p) appartiennent à cette séquence. En effet, l'ensemble de tous points d'ordre infèrieur à celui de $p$ est $E = \left \{(0,0,0); (1,0,0); (0.5,0,0)\right \}$. $E$ est un sous-ensemble de $S$ donc $p$ est bien un voisin de $S$.
+Ainsi, $\left \{p \right \} \cup S$ reste un ensemble monotone.\\
 La figure ci-dessous, montre le résultat de l'interpolation d'une fonction de même type que précedement, cette fois, en utilisant des fonctions quadratique par morceaux comme fonctions de base.\\
 On remarque que dès que l'algorithme détecte un point dans la zone critique, il corrige l'interpolant courant sans pour autant provoquer des erreurs ailleurs.\\
 \begin{center}
@@ -409,12 +413,8 @@ Par contre, avec l'autre méthode, on en a plus car il y a toujours 2 voisins po
 \item La méthode d'interpolation par fonctions quadratiques (ou affines) par morceaux n'est pas toujours meilleure que celle par polynômes de Lagrange.
 Le cas le plus évident est quand l'interpolé est un polynome. Dans ce cas, on obtient une bonne approximation avec les deux méthodes.
 Sauf qu'avec la méthode utilisant les polynômes de Lagrange, l'algorithme est beaucoup plus précis et rapide (car il y a toujours moins de voisins à évaluer).
-\item En dimension quelconque on peut avoir des fonctions ayant une nature différente suivant chaque variable. Dans ce cas, il est possible de combiner les deux méthodes.
-En effet, considérons la fonction $f : (x,y) \rightarrow \sqrt{1-x^2}\exp(y)$.
-La meilleure façon d'interpoler $f$ est d'utiliser des fonctions quadratiques par morceaux selon la direction x et des polynômes de Lagrange suivant la direction y.
+\item En dimension quelconque on peut avoir des fonctions ayant une nature différente suivant chaque variable. Dans ce cas, il est possible de combiner les deux méthodes en en choisissant une sur chaque direction.
 \end{itemize}
-
-
 
 \subsection{Implèmentation de la solution}\label{sec:5}
 Dans cette partie, on va mettre en pratique cette méthode et on va présenter certains détails
@@ -432,14 +432,13 @@ Cependant, il y a plusieurs similarité entre les deux méthodes, d'où le choix
 \item \textbf{Classe BinaryTree:} Cette classe implémente un arbre binaire qui permet de coder les points cartésiens et les ordonner.
 Cette classe est utile dans la version de l'algorithme AI qui utilise des fonctions de bases quadratiques par morceaux.
 En effet, on ne peut pas ordonner les points d'interpolation par des indices comme dans l'autre méthode (chaque indice correspond à l'ordre du réel dans la séquence de Leja).\\
-
 Cependant, on a besoin de fonctionnalitées qui nous permettent de situer un point d'interpolation parmi d'autres ou de retrouver les deux points les plus proches pour pouvoir construire la fonction
 de base correspondante. L'idée ici est de coder chaque point, non par un indice mais par une chaîne de caractère qui n'est autre que le code de Huffman correspondant dans l'arbre.
 Ainsi, on est capable de définir une méthode pour comparer l'ordre des points. Chaque arbre est construit de la façon suivante:
 \begin{itemize}
 \item Le point $0.0$ est la racine.
 \item Chaque nœud possède au maximum 2 fils.
-\item Les points $-1.0$ et $1.0$ (extrémités du $P$) possédent chacun exactement un fils.
+\item Les points $-1.0$ et $1.0$ (extrémités de $P$) possédent chacun exactement un fils.
 \item Soit $n$ un noeud intermédiare, on note $p$ son père, $g$ son fils gauche, et $d$ son fils droite, on a alors:
 \begin{align}
 g =
@@ -450,7 +449,7 @@ g =
 \\
 d =
 \begin{cases}
- -1 & \text{ si } n=0 \\
+ 1 & \text{ si } n=0 \\
  n+\left | p-n \right |/2 & \text{ si } n\neq0
 \end{cases}
 \end{align}
@@ -475,7 +474,7 @@ le vecteur $("","01")$ correspond au point $(0,-0.5) \in \mathcal{P}$.\\
 
 \item \textbf{Classe LagrangeInterpolation:} Cette classe hèrite de Interpolation<int> et elle implémente la méthode utilisant les polynômes de Lagrange et les points de Leja.
 
-\item \textbf{Classe PiecewiseInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente la méthode utilisant les polynômes de Lagrange.
+\item \textbf{Classe PiecewiseInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente la méthode utilisant les fonctions quadratiques par morceaux.
 
 \item \textbf{Classe MixedInterpolation:} Cette classe hèrite de Interpolation<string> et elle implémente une combinaison des 2 méthode. Ici, on utilise des chaînes de caractère
 car, avec ce type de donnée, on peut à la fois représenter les codes de Huffman ainsi que de simples entiers.
@@ -511,28 +510,50 @@ La figure 6 montre une grille 2D formés par des points de Leja construits dans 
 \captionof{figure}{Grille 2D des points de Leja}
 \end{center}
 
-\paragraph{Recherche du voisin courant:}
-Une première méthode a été de rechercher le nouveau voisin parmi tous les points de la grille.
-Ce n'est pas évidemment la meilleure idée car la grille contient non seulement les voisins potentiels mais aussi les points déjà sélectionnés et traités.
-Donc, il est inutile de la parcourir en totalité à chaque étape car ça devient très couteûx. \\
-Une meilleure stratégie a été adopté. En effet, on ne cherche plus le nouveau meilleur voisin parmi tous les points de la grille
-($~100$ si on est en dimension 2 et qu'on a choisi 10 points de discrétisation sur chaque direction), mais plutôt parmi un petit ensemble de points
-correspondant aux points voisins. (voir figure 7: à gauche la version première version et à droite, la seconde. La recherche du nouveau voisin s'effectue dans l'ensemble
-délimité par un contour bleu).
-
-\begin{center}
-\includegraphics[height= 9 cm,width = \linewidth]{images/algo_ai_recherch_voisin.png}
-\captionof{figure}{Recherche du voisin courant}
-\end{center}
-
 \paragraph{Calcul des $\alpha_{\nu}$ (ou $f_{\nu}$):}
 A chaque étape de l'algorithme AI, on construit un sous-ensemble de points qui correspondent à tous les voisins courants.
-Ensuite on calcule tous les $f_{\nu}$ ($\nu$ étant les multi-indices correspondants aux voisins courants)
+Ensuite on calcule tous les $f_{\nu}$ ($\nu$ étant les vecteurs d'ordre correspondants aux voisins courants)
 et on choisi le voisin ayant le plus grand $f_{\nu}$. Il est possible qu'au cours d'une certaine itération (voir toutes les itérations)
 de recalculer un $f_{\nu}$ déja calculé aux itérations précédentes. Ceci est, bien évidemment, couteûx. \\
-Il est possible de procèder d'une manière plus astucieuse. En effet, on peut éviter cette redondance, tout simplement, en initialisant tous
-les $f_{\nu}$ avec une même valeur qu'on note $f_{init}$. Ensuite, à chaque fois qu'on a besoin de calculer un $f_{\nu}$, on le compare d'abord
-à $f_{init}$; si ils sont égaux alors on calcule $f_{\nu}$ (en utilisant (12)), sinon, on ne fait rien.
+Il est possible de procèder d'une manière plus astucieuse. En effet, étant donné que $f_{\nu}$ est constant et ne dépend que de $\nu$ (voir justification ci-dessous),
+on n'a besoin de le calculer qu'une seule fois.
+
+\textbf{Preuve:} L'erreur d'interpolation au point d'ordre $\nu$ peut être exprimée de plusieurs manières en fonction de l'ensemble de points d'interpolation $\Lambda$ courant.
+Dans la figure ci-dessous, on concidère deux ensemble différents $\Lambda_1$ (bleu + vert) et $\Lambda_2$ (jaune + vert). \\
+Ces deux ensembles sont choisis de sorte que leur intersection forme l'ensemble (vert) $E$ qui n'est autre que $R_{\nu} - \left \{ \nu \right \}$.
+\begin{center}
+\includegraphics[height= 7 cm,width = 0.5\linewidth]{images/preuve.png}
+\end{center}
+\begin{align}
+		f_{\nu} &= f(\textbf{y}_{\nu}) - I_{\Lambda_1} f(\textbf{y}_{\nu})\\ \nonumber
+		f_{\nu} &= f(\textbf{y}_{\nu}) - I_{\Lambda_2} f(\textbf{y}_{\nu}) \nonumber
+\end{align}
+Montrons que $I_{\Lambda} f(\textbf{y}_{\nu})$ ne dépend que de $\nu$.
+De manière générale,
+\begin{align}
+	  I_{\Lambda} f(\textbf{y}_{\nu}) &= \sum_{\tilde{\nu}\in \Lambda} \Delta_{\tilde{\nu}} f \\ \nonumber
+		\Delta_{\tilde{\nu}} &= \bigotimes_{i=1}^d \Delta_{\tilde{\nu}_i} \nonumber
+\end{align}
+or $\Lambda_i, i \in \left \{ 1,2 \right \}$, peut s'écrire de cette façon:
+\begin{align}
+		\Lambda_i &= (R_{\nu} - \left \{ \nu \right \}) \cup (\Lambda_i - R_{\nu}) \nonumber
+\end{align}
+Ainsi
+\begin{align}
+		I_{\Lambda_i} &= I_{R_{\nu}} - \Delta_{\nu} + \sum_{\tilde{\nu}\in \Lambda_i-R_{\nu}} \Delta_{\tilde{\nu}} \nonumber
+\end{align}
+Or $\Delta_{\tilde{\nu}} f(\textbf{y}_{\nu}) = 0$ si $\tilde{\nu}$ est non inférieur à $\nu$\\
+\begin{align}
+		\tilde{\nu}\ est\ non\ inférieur\ à\ \nu 		&	\Leftrightarrow \tilde{\nu} \notin R_{\nu} \\ \nonumber
+																								&	\Leftrightarrow \exists j<d\ tel\ que\ \tilde{\nu}_j > \nu_j \\ \nonumber
+																								&	\Leftrightarrow \exists j<d\ tel\ que\ \Delta_{\tilde{\nu}_j} f(\textbf{y}_{\nu_j}) = (I_{\tilde{\nu}_j} - I_{\tilde{\nu}_j-1}) f(\textbf{y}_{\nu_j}) = 0\\ \nonumber
+																								&	\Rightarrow \Delta_{\tilde{\nu}} f(\textbf{y}_{\nu}) = 0 \nonumber
+\end{align}
+Donc, on en déduit que
+\begin{align}
+		f_{\nu} &= f(\textbf{y}_{\nu}) - I_{R_{\nu}}f(\textbf{y}_{\nu}) + \Delta_{\nu}f(\textbf{y}_{\nu}) \nonumber
+\end{align}
+Ainsi, $f_{\nu}$ ne dépend que de $\nu$.
 
 \section{Évaluation de l’efficacité de la méthode}\label{sec:6}
 L'algorithme d'Interpolation Adaptative a été tésté avec des fonctions analytiques définies à l'avance en des points choisis d'une manière aléatoire.\\
