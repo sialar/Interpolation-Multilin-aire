@@ -562,8 +562,129 @@ le modèle de décomposition de Tucker.\\
 L'étape suivante a été de tester les deux méthodes sur des données réelles fournies par le département R\&D d'EDF et de les comparer.
 
 \subsection{Présentation du modèle de décomposition de Tucker}
+\newpage
 \subsection{Tests et comparaisons}
 \subsubsection{Fonctions analytiques prédéfinies}
+Les tests de comparaisons ont été faits sur quatre fonctions différentes et en plusieurs dimensions.
+Les fonctions prises en compte sont:
+\begin{itemize}
+	\item $f1$ : Polynôme de degré $7$ dont les coéficients sont choisis de manière aléatoire.
+	\item $f2\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sqrt{1-x_0^2}\ \exp(\sum_{i=1}^dx_i)$
+	\item $f3\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sin(\left \| x \right \|)$
+	\item $f4\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sin(\sum_{i=1}^dx_i)$
+\end{itemize}
+
+Les figures ci-dessous montre l'évolution de la précision de chaque méthode en fonction du nombre de point d'évaluation.
+
+\begin{figure}[h]
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f1_5d.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f3_2d.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f2_3d.png}
+   \end{minipage}
+\end{figure}
+\begin{figure}[h]  \ContinuedFloat
+	 \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f2_5d.png}
+   \end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+				\centering \includegraphics[scale=0.3]{images/f4_2d.png}
+		\end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+				\centering \includegraphics[scale=0.3]{images/f4_5d.png}
+		\end{minipage}
+\caption{Comparaison des erreurs relatives (pcm) pour les fonctions f1, f2, f3, et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe en rouge correspond à la méthode AI).}
+\end{figure}
+
+\begin{figure}[h]
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f1_5d_s.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f3_2d_s.png}
+   \end{minipage}
+   \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f2_3d_s.png}
+   \end{minipage}
+\end{figure}
+\begin{figure}[h]  \ContinuedFloat
+	 \begin{minipage}[b]{0.32\linewidth}
+      \centering \includegraphics[scale=0.3]{images/f2_5d_s.png}
+   \end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+				\centering \includegraphics[scale=0.3]{images/f4_2d_s.png}
+		\end{minipage}
+		\begin{minipage}[b]{0.32\linewidth}
+				\centering \includegraphics[scale=0.3]{images/f4_5d_s.png}
+		\end{minipage}
+\caption{Comparaison des temps d'exécution (s) des deux méthodes pour les fonctions f1 et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe en rouge correspond à la méthode AI).}
+\end{figure}
+\newpage
+\paragraph{Commentaires:}
+\begin{itemize}
+	\item \textbf{$f_1$ :} La méthode d'interpolation adaptative est toujours mieux que celle utilisant la décompostion de Tucker en terme vitesse de convergence. Ce résultat reste valable quelque soit la dimension de l'éspace de départ.
+
+	\item \textbf{$f_2$ :} Si $d=2\ ou\ 3$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI est plus rapide. Cependant, quand $d>3$ cette dernière converge très lentement et demande un grand nombre de calculs ($>7000$).
+
+	\item \textbf{$f_3$ :} La méthode de décomposition de Tucker ne converge pas (couteûse en nombre de points de calcul et en temps d'éxecusion). Par contre, la méthode AI converge d'une rapidement mais demande un grand nombre d’evaluations ($>3000$ en $3D$)
+
+	\item \textbf{$f_3$ :} Si $d=2\ ou\ 3$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI reste toujours plus rapide. Si $d>3$, cette dernière demande un grand nombre d’evaluations, mais le temps de calcul reste relativement proche de celui obtenu avec la méthode de Tucker
+\end{itemize}
+
+\paragraph{Importance du choix de la séquence de points d'interpolation}
+Le choix de la séquence de points d'interpolation ainsi que les fonctions de base joue un rôle très important dans la stabilité et la précision de l'opérateur d'interpolation.
+On a interpoler la fonction $f_2$, en utilisant à chaque des types différents de fonctions de bases et de points d'interpolation (voir section précedante).
+Les résultat sont résumés dans le tableau ci-dessous (Les tests ont été faits en utilisant 200 itérations dans l'algorithme AI):
+
+\begin{center}
+\begin{tabular}{|*{5}{c|}}
+	\hline
+	Fonctions de bases 		& Points 			 									& Erreur relative	& Erreur quadratique 	& Nombre de points		\\
+												&	d'interpolations							&	 (pcm)					& moyenne (pcm)			 	& de calcul 					\\
+	\hline
+	Polynômes  						&&&&\\
+	hiérarchiques					& Points de Leja 		 						& 99.8828					& 58.9808 						& 210									\\
+	de Lagrange						&&&&\\
+	\hline
+	Fonctions 						&	Points construits 						&&&\\
+	quadratiques 					&	par dichotomie								&	230.349 				& 243.573							& 329 								\\
+	par morceaux  				&   					   								&&&\\
+	\hline
+	Fonctions     				& Points de Leja 								&&&\\
+	quadratiques					& sur la direction 0 						&&&\\
+	par morceaux					& 															&&&\\
+	sur la direction 0		&																&	44.3749 				& 41.9915							& 310 								\\
+	Polynômes     				& Points construits 						&&&\\
+	hiérarchiques					& par dichotomie								&&&\\
+	de Lagrange						& sur la direction 1						&&&\\
+	sur la direction 1		&																&&&\\
+	\hline
+\end{tabular}
+\end{center}
+
+Les figures ci-dessous montrent les séquences finales de points d'interpolation construites par l'algorithme d'interpolation adaptative.
+Chaque figure correspond à une ligne du tableau précédant.
+\begin{figure}[h]
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/0.png}
+			\caption{Ligne 1}
+   \end{minipage}
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.3]{images/2.png}
+			\caption{Ligne 2}
+   \end{minipage}
+\end{figure}
+
+\begin{center}
+\includegraphics[scale=0.3]{images/mixed.png}
+\captionof{figure}{Ligne 3}
+\end{center}
+
+
 \subsubsection{Données réelles}
 Le cœur d'un réacteur nucléaire posséde une structure multi-échelle. Il contient entre 150-200 assemblages combustibles disposés en treillis carré
 et entourés d'eau de bore. Un assemblage typique est souvent constitué de $17 \times 17=289$ tiges, dont 264 tiges de carburant et 25 tiges vides.
@@ -774,73 +895,30 @@ Les figurent ci-dessous montrent les erreurs de réactivité obtenues avec chaqu
 
 
 
-\begin{center}
-\begin{figure}[h]
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_absorption1.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_fission0.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_nu_fission1.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering000.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering001.png}
-	 \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_totale1.png}
-	 \end{minipage}
-	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces MOX}
-\end{figure}
+%\begin{center}
+%\begin{figure}[h]
+%   \begin{minipage}[b]{0.5\linewidth}
+%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_absorption1.png}
+%   \end{minipage}
+%   \begin{minipage}[b]{0.5\linewidth}
+%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_fission0.png}
+%   \end{minipage}
+%   \begin{minipage}[b]{0.5\linewidth}
+%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_nu_fission1.png}
+%   \end{minipage}
+%	 \begin{minipage}[b]{0.5\linewidth}
+%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering000.png}
+%   \end{minipage}
+%	 \begin{minipage}[b]{0.5\linewidth}
+%			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering001.png}
+%	 \end{minipage}
+%	 \begin{minipage}[b]{0.5\linewidth}
+%			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_totale1.png}
+%	 \end{minipage}
+%	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces MOX}
+%\end{figure}
 
-\begin{figure}[h]
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_absorption1.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_fission0.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_nu_fission1.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_scattering000.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_scattering001.png}
-	 \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/UOX/UOX_macro_totale1.png}
-	 \end{minipage}
-	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces UOX}
-\end{figure}
 
-\begin{figure}[h]
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_absorption1.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_fission0.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_nu_fission1.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_scattering000.png}
-   \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_scattering001.png}
-	 \end{minipage}
-	 \begin{minipage}[b]{0.5\linewidth}
-			\centering \includegraphics[scale=0.3]{images/UOX-Gd/UOX-Gd_macro_totale1.png}
-	 \end{minipage}
-	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces UOX-Gd}
-\end{figure}
-\end{center}
 
 \subsection{Conclusion et remarques}
 

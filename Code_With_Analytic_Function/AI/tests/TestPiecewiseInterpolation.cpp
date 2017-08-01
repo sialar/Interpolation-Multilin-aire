@@ -38,7 +38,7 @@ int main( int argc, char* argv[] )
     cout << " - The maximum number of iterations in AI algo: " << maxIteration << endl;
     cout << " - The algorithm will stop when the interpolation error becomes lower than a threshold = "
          << threshold;
-    double execTime = interp->testPathBuilt(threshold, true);
+    double execTime = interp->testPathBuilt(threshold, false);
 
     // Computing real values, and approximation of function g at test points
     Utils::separateur();

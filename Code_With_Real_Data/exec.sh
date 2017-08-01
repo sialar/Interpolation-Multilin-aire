@@ -4,7 +4,7 @@
 PROJECT_PATH="/home/sialar/Stage/LaboJ_LLions/Code/Code_With_Real_Data/AI"
 make -j8
 
-help()
+helpAI()
 {
   echo ""
   echo " Arguments required:"
@@ -14,10 +14,27 @@ help()
   echo ""
 }
 
-help
+helpConvergence()
+{
+  echo ""
+  echo " Arguments required:"
+  echo "   - arg 1  : Core type [$2]"
+  echo "   - arg >1 : Reaction types (between 1 and 12) [$2]"
+  echo ""
+}
+
+help()
+{
+  echo ""
+  echo " Arguments required:"
+  echo "   - arg 1 : --> AI to launch Adaptative Interpolation algorithm"
+  echo "             --> Convergence to get the convergence speed graph"
+  echo ""
+}
 
 if [ "$1" = "AI" ]
 then
+    helpAI
     shift
     "$PROJECT_PATH"/bin/TestAdaptativeInterpolation $*
     core=$2
@@ -41,35 +58,40 @@ then
         args=$*
     fi
 
-    for arg in $args
-    do
-      python plot_results.py $core $arg
-      python plot_results_with_cocagne.py $core $arg
-    done
+    #for arg in $args
+    #do
+      #python plot_results.py $core $arg
+      #python plot_results_with_cocagne.py $core $arg
+    #done
 
-    if [ "$1" = "ALL" ]
-    then
-      python plot_reactivity.py $core
-      python plot_reactivity_with_cocagne.py $core
-    fi
+    #if [ "$1" = "ALL" ]
+    #then
+      #python plot_reactivity.py $core
+      #python plot_reactivity_with_cocagne.py $core
+    #fi
 
-    for i in `seq 0 4`;
-    do
-        for j in `seq 0 4`;
-        do
-            if [ $i -lt $j ]
-            then
-                python plot_interpolation_points.py $core $i $j
-            fi
-        done
-    done
+    #for i in `seq 0 4`;
+    #do
+    #    for j in `seq 0 4`;
+    #    do
+    #        if [ $i -lt $j ]
+    #        then
+    #            python plot_interpolation_points.py $core $i $j
+    #        fi
+    #    done
+    #done
 
 
 elif [ "$1" = "Convergence" ]
 then
+    helpConvergence
     shift
     "$PROJECT_PATH"/bin/TestConvergence $*
 
     cd AI/python
     python plot_errors.py $*
+
+else
+    help
+    exit
 fi
