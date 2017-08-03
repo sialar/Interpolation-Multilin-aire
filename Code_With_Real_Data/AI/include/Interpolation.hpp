@@ -516,7 +516,7 @@ void Interpolation<T>::displayResults()
         ai_err_inf.push_back(Utils::maxAbsValue(m_approxErrors[csName][AI]));
         co_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][Cocagne]));
         tu_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][Tucker]));
-        ai_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Tucker],m_approxResults[csName][AI]));
+        ai_err_mse.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][AI]));
     }
     cout << " - Interpolation error using Cocagne (pcm)" << endl;
     cout << " [e_inf] = ";
@@ -566,11 +566,11 @@ void Interpolation<T>::computeAIApproximationResults()
     {
         string csName = m_function->getCrossSections()[i];
         vector<double> ai_res, ai_err;
-        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Tucker]);
+        double val, realValue, maxValue = Utils::maxAbsValue(m_approxResults[csName][Apollo]);
         for (int j=0; j<m_nbTestPoints; j++)
         {
             val = interpolation(m_testPoints[j])[i];
-            realValue = m_approxResults[csName][Tucker][j];
+            realValue = m_approxResults[csName][Apollo][j];
             ai_res.push_back(val);
             ai_err.push_back(pow(10,5)*(val-realValue)/maxValue);
         }
@@ -578,7 +578,7 @@ void Interpolation<T>::computeAIApproximationResults()
         m_approxErrors[csName].insert(pair<method,vector<double>>(AI,ai_err));
 
         m_infErrors.push_back(Utils::maxAbsValue(m_approxErrors[csName][AI]));
-        m_mseErrors.push_back(Utils::computeMseError(m_approxResults[csName][Tucker],m_approxResults[csName][AI]));
+        m_mseErrors.push_back(Utils::computeMseError(m_approxResults[csName][Apollo],m_approxResults[csName][AI]));
     }
 }
 
@@ -631,7 +631,7 @@ vector<double> Interpolation<T>::computeKinf(method m)
 template <typename T>
 void Interpolation<T>::computeReactivity()
 {
-    vector<double> kinfApollo = computeKinf(Tucker);
+    vector<double> kinfApollo = computeKinf(Apollo);
     vector<double> kinfAI = computeKinf(AI);
     vector<double> reactivityError(m_nbTestPoints);
     for (int i=0; i<m_nbTestPoints; i++)
@@ -850,7 +850,7 @@ void Interpolation<T>::saveReactivityInFile()
           file << setprecision(m_precision) << m_approxResults["reactivity"][AI][i] << " ";
           file << setprecision(m_precision) << m_approxErrors["reactivity"][Cocagne][i] << " ";
           file << setprecision(m_precision) << m_approxErrors["reactivity"][Tucker][i] << " ";
-          file << setprecision(m_precision) << m_approxErrors["reactivity"][AI][i] << endl;
+          file << setprecision(m_precision) << -m_approxErrors["reactivity"][AI][i] << endl;
         }
         file.close();
     }

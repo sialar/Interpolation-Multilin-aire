@@ -211,7 +211,8 @@ C'est à dire, pour $\alpha_1,..,\alpha_d \in \left \{0,.., k-1 \right \}$ \\
 Pour avoir une bonne précision, il est préférable de choisir un nombre relativement grand de points d'interpolation.
 Si par exemple, on prend $k_j$ points suivant la direction $j$, on obtient un nombre total de points égal à $\prod_{i=1}^d k_j$.
 Ceci pose problème, bien évidemment, lorsque $d$ est grand. En effet, non seulement le calcul de $\tilde{f}$ sera couteux, mais aussi,
-si on souhaite ajouter $1$ points suivant la variable $i$ ça revient à ajouter $\prod_{j=1,\\ j \neq i}^d k_j$ nœuds dans la grille (voir figure 5).\\
+si on souhaite ajouter $1$ points suivant la variable $i$ ça revient à ajouter $\prod_{j=1,\\ j \neq i}^d k_j$ nœuds dans la grille (voir figure 5).
+
 \begin{center}
 \includegraphics[height=9cm,width=12cm]{images/grille.png}
 \captionof{figure}{Influence de l'ajout d'un point d'interpolation sur une seule direction}
@@ -488,8 +489,8 @@ Cette classe implémente certaines fonctions analytiques qui permettront de test
 et d'intégrer les données réelles fournies par le département R\&D d'EDF.
 \end{itemize}
 
-\paragraph{Construction de la séquence de Leja:}
-L'idée est de discrétiser l'intervalle de définition $U$ de la fonction $f$ en un grand nombre de points $(a_i)_{i=1..n(=100000)}$.
+\paragraph{Construction de la séquence de Leja:\\}
+\hspace{0.5cm} L'idée est de discrétiser l'intervalle de définition $U$ de la fonction $f$ en un grand nombre de points $(a_i)_{i=1..n(=100000)}$.
 Supposons qu'on a construit à l'étape $i$ la séquence $\left \{ y_0,..,y_i \right \}$, alors pour avoir le point $y_{i+1}$,
 on compare le produit des distances de chaque point de discrétisation aux points de Leja déja calculés, puis on choisit le max.\\
 La façon la plus naturelle de choisir les points $a_i$ est de les choisir uniformément répartis dans l'intervalle de définition de $f$.\\
@@ -510,8 +511,8 @@ La figure 6 montre une grille 2D formés par des points de Leja construits dans 
 \captionof{figure}{Grille 2D des points de Leja}
 \end{center}
 
-\paragraph{Calcul des $\alpha_{\nu}$ (ou $f_{\nu}$):}
-A chaque étape de l'algorithme AI, on construit un sous-ensemble de points qui correspondent à tous les voisins courants.
+\paragraph{Calcul des $f_{\nu}$ (ou $\alpha_{\nu}$):\\}
+\hspace{0.5cm} A chaque étape de l'algorithme AI, on construit un sous-ensemble de points qui correspondent à tous les voisins courants.
 Ensuite on calcule tous les $f_{\nu}$ ($\nu$ étant les vecteurs d'ordre correspondants aux voisins courants)
 et on choisi le voisin ayant le plus grand $f_{\nu}$. Il est possible qu'au cours d'une certaine itération (voir toutes les itérations)
 de recalculer un $f_{\nu}$ déja calculé aux itérations précédentes. Ceci est, bien évidemment, couteûx. \\
@@ -555,22 +556,31 @@ Donc, on en déduit que
 \end{align}
 Ainsi, $f_{\nu}$ ne dépend que de $\nu$.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Évaluation de l’efficacité de la méthode}\label{sec:6}
-L'algorithme d'Interpolation Adaptative a été tésté avec des fonctions analytiques définies à l'avance en des points choisis d'une manière aléatoire.\\
+L'algorithme d'Interpolation Adaptative a été tésté sur des fonctions analytiques définies à l'avance, en une grille de référence construite d'une manière aléatoire.\\
 Les résultat obtenus ont été ensuite comparé à ceux obtenus avec une autre méthode d'approximation de fonctions multivariées basée sur
 le modèle de décomposition de Tucker.\\
-L'étape suivante a été de tester les deux méthodes sur des données réelles fournies par le département R\&D d'EDF et de les comparer.
+L'étape suivante a été de tester puis de comparer les deux méthodes ainsi que la méthode d'interpolation multilinéaire sur des données réelles fournies par le département R\&D d'EDF.
 
 \subsection{Présentation du modèle de décomposition de Tucker}
 \newpage
-\subsection{Tests et comparaisons}
-\subsubsection{Fonctions analytiques prédéfinies}
-Les tests de comparaisons ont été faits sur quatre fonctions différentes et en plusieurs dimensions.
-Les fonctions prises en compte sont:
+
+
+
+
+
+\subsection{Résultats des approximations de fonctions analytiques}
+Les tests de comparaisons ont été faits sur quatre fonctions différentes définies sur le carré $\left [ -1,1 \right ] ^d$, $d$ étant la dimension de l'espace de départ.
+Les fonctions prises en compte sont les suivantes:
 \begin{itemize}
 	\item $f1$ : Polynôme de degré $7$ dont les coéficients sont choisis de manière aléatoire.
 	\item $f2\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sqrt{1-x_0^2}\ \exp(\sum_{i=1}^dx_i)$
-	\item $f3\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sin(\left \| x \right \|)$
+	\item $f3\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sin(\left \| x \right \|_2)$
 	\item $f4\ :\ x=(x_1,..,x_d)\ \rightarrow \ \sin(\sum_{i=1}^dx_i)$
 \end{itemize}
 
@@ -597,7 +607,7 @@ Les figures ci-dessous montre l'évolution de la précision de chaque méthode e
 		\begin{minipage}[b]{0.32\linewidth}
 				\centering \includegraphics[scale=0.3]{images/f4_5d.png}
 		\end{minipage}
-\caption{Comparaison des erreurs relatives (pcm) pour les fonctions f1, f2, f3, et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe en rouge correspond à la méthode AI).}
+\captionof{figure}{Comparaison des erreurs relatives (pcm) pour les fonctions f1, f2, f3, et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe rouge correspond à la méthode AI).}
 \end{figure}
 
 \begin{figure}[h]
@@ -621,71 +631,95 @@ Les figures ci-dessous montre l'évolution de la précision de chaque méthode e
 		\begin{minipage}[b]{0.32\linewidth}
 				\centering \includegraphics[scale=0.3]{images/f4_5d_s.png}
 		\end{minipage}
-\caption{Comparaison des temps d'exécution (s) des deux méthodes pour les fonctions f1 et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe en rouge correspond à la méthode AI).}
+\captionof{figure}{Comparaison des temps d'exécutions des deux méthodes pour les fonctions f1, f2, f3 et f4 en plusieurs dimensions (La courbe verte correspond à la méthode de Tucker, la courbe en rouge correspond à la méthode AI).}
 \end{figure}
 \newpage
 \paragraph{Commentaires:}
 \begin{itemize}
-	\item \textbf{$f_1$ :} La méthode d'interpolation adaptative est toujours mieux que celle utilisant la décompostion de Tucker en terme vitesse de convergence. Ce résultat reste valable quelque soit la dimension de l'éspace de départ.
+	\item \textbf{$f_1$ :} La méthode d'interpolation adaptative donne de meilleurs résultats que celle utilisant la décompostion de Tucker, en terme de vitesse de convergence. Ce résultat reste valable quelque soit la dimension de l'éspace de départ.
 
-	\item \textbf{$f_2$ :} Si $d=2\ ou\ 3$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI est plus rapide. Cependant, quand $d>3$ cette dernière converge très lentement et demande un grand nombre de calculs ($>7000$).
+	\item \textbf{$f_2$ :} Si $d=2$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI est plus rapide. Cependant, quand $d>3$ cette dernière converge très lentement et demande un grand nombre de points de calcul ($>7000$).
 
-	\item \textbf{$f_3$ :} La méthode de décomposition de Tucker ne converge pas (couteûse en nombre de points de calcul et en temps d'éxecusion). Par contre, la méthode AI converge d'une rapidement mais demande un grand nombre d’evaluations ($>3000$ en $3D$)
+	\item \textbf{$f_3$ :} La méthode de décomposition de Tucker ne converge pas (très couteûse en nombre de points d'évalluation et en temps de calcul). Par contre, la méthode AI converge rapidement mais demande aussi un grand nombre d’evaluations ($>3000$ en $3D$)
 
-	\item \textbf{$f_3$ :} Si $d=2\ ou\ 3$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI reste toujours plus rapide. Si $d>3$, cette dernière demande un grand nombre d’evaluations, mais le temps de calcul reste relativement proche de celui obtenu avec la méthode de Tucker
+	\item \textbf{$f_3$ :} Si $d=2$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI reste toujours plus rapide. Si $d>3$, cette dernière demande un grand nombre d’evaluations, mais le temps de calcul reste relativement proche de celui obtenu avec la méthode de Tucker
 \end{itemize}
 
-\paragraph{Importance du choix de la séquence de points d'interpolation}
-Le choix de la séquence de points d'interpolation ainsi que les fonctions de base joue un rôle très important dans la stabilité et la précision de l'opérateur d'interpolation.
-On a interpoler la fonction $f_2$, en utilisant à chaque des types différents de fonctions de bases et de points d'interpolation (voir section précedante).
+\paragraph{Importance du choix de la séquence de points d'interpolation:\\}
+\hspace{0.5cm} Le choix de la séquence de points d'interpolation ainsi que les fonctions de base joue un rôle très important dans la stabilité et la précision de l'opérateur d'interpolation.
+L'opérateur d'interpolation assoscié à la fonction $f_2$ (en dimension 2D) a été construit en utilisant à chaque fois des types différents de fonctions de bases et de points d'interpolation.
 Les résultat sont résumés dans le tableau ci-dessous (Les tests ont été faits en utilisant 200 itérations dans l'algorithme AI):
 
 \begin{center}
+\begin{table}
 \begin{tabular}{|*{5}{c|}}
 	\hline
-	Fonctions de bases 		& Points 			 									& Erreur relative	& Erreur quadratique 	& Nombre de points		\\
-												&	d'interpolations							&	 (pcm)					& moyenne (pcm)			 	& de calcul 					\\
+	Fonctions de bases 		& Points 			 									& Erreur relative	& Erreur quadratique 	& Nombre 		\\
+												&	d'interpolations							&	 (pcm)					& moyenne (pcm)			 	& d'évaluations			\\
 	\hline
 	Polynômes  						&&&&\\
 	hiérarchiques					& Points de Leja 		 						& 99.8828					& 58.9808 						& 210									\\
 	de Lagrange						&&&&\\
 	\hline
-	Fonctions 						&	Points construits 						&&&\\
+	Fonctions 						&	Construction			 						&&&\\
 	quadratiques 					&	par dichotomie								&	230.349 				& 243.573							& 329 								\\
 	par morceaux  				&   					   								&&&\\
 	\hline
-	Fonctions     				& Points de Leja 								&&&\\
-	quadratiques					& sur la direction 0 						&&&\\
-	par morceaux					& 															&&&\\
+	Fonctions     				& Construction									&&&\\
+	quadratiques					& par dichotomie sur 						&&&\\
+	par morceaux					& la direction 0								&&&\\
 	sur la direction 0		&																&	44.3749 				& 41.9915							& 310 								\\
-	Polynômes     				& Points construits 						&&&\\
-	hiérarchiques					& par dichotomie								&&&\\
+	Polynômes     				&  															&&&\\
+	hiérarchiques					& Points de Leja								&&&\\
 	de Lagrange						& sur la direction 1						&&&\\
 	sur la direction 1		&																&&&\\
 	\hline
 \end{tabular}
+\captionof{table}{Comparaison des résultat de l'interpolation de la fonction $f_2$ en 2D en utilisant différents types de fonctions de bases et différents types de points d'interpolation}
+\label{table:analytics}
+\end{table}
 \end{center}
-
+On a vu que l'algorithme AI construit un nouveau point d'interpolation à chaque itération. Cependant on remarque que le nombre de points de calcul des vrais valeurs de la fonction interpolée différre du nombre d'itérations.
+Ceci s'explique par le fait qu'il arrive parfois que l'algorithme ait besoin de la valeur de l'interpolé en un point $x$ sans pour autant l'inclure par la suite dans la séquence de points d'interpolation.
+En effet, ceci se déroule lors du calcul de l'erreur courante $f_{\nu}$ sur une liste de condidâts, parmi lesquels on ne choisira qu'un seul. \\
+L'utilisation des fonctions quadratique par morceaux sur la direction 0 permet de mieux corriger l'interpolation aux points voisins des extrémités, là où la variation est la plus grande.
 Les figures ci-dessous montrent les séquences finales de points d'interpolation construites par l'algorithme d'interpolation adaptative.
 Chaque figure correspond à une ligne du tableau précédant.
-\begin{figure}[h]
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/0.png}
-			\caption{Ligne 1}
-   \end{minipage}
-   \begin{minipage}[b]{0.5\linewidth}
-      \centering \includegraphics[scale=0.3]{images/2.png}
-			\caption{Ligne 2}
-   \end{minipage}
-\end{figure}
 
 \begin{center}
-\includegraphics[scale=0.3]{images/mixed.png}
-\captionof{figure}{Ligne 3}
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/0.png}
+				\captionof{figure}{Modèle de la ligne 1 de la table \ref{table:analytics}}
+    \end{subfigure}
+		~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth,height=5cm]{images/2.png}
+				\captionof{figure}{Modèle de la ligne 2 de la table \ref{table:analytics}}
+    \end{subfigure}
+
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/mixed.png}
+				\captionof{figure}{Modèle de la ligne 3 de la table \ref{table:analytics}}
+		\end{subfigure}
+\end{figure}
 \end{center}
 
+\paragraph{Conclusion:\\}
+\hspace{0.5cm} On peut donc conclure que l'algorithme AI donne de très bons résultats en terme de vitesse de convergence, quand il s'agit d'interpoler des fonctions polynomiales quelque soit la dimension.
+Quand il s'agit de fonctions plus complexes (moins regulières), l'algorithme réusssit généralement à approximer cette fonction avec une bonne précision, cependant dès que la dimension de l'espace de départ devient relativement
+grande, il devient nécessaire d'utiliser un plus grand nombre de points d'interpolation. Ceci est bien évidement couteûx dans le cas réel où l'obtention de la valeur d'une fonction en un point quelconque devient couteùse comme
+par exemple ce qu'on verra dans la paragraphe suivant.
+\newpage
 
-\subsubsection{Données réelles}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DESCRIPTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Résultats des approximations de données réelles}
+\subsubsection{Déscription}
+\hspace{0.5cm}
+Comme on vu précedement, les fonctions qui nous intéressent sont les sections efficaces. Ces fonctions dépendent du type du combustible utilisé dans le réacteur nucléaire.
 Le cœur d'un réacteur nucléaire posséde une structure multi-échelle. Il contient entre 150-200 assemblages combustibles disposés en treillis carré
 et entourés d'eau de bore. Un assemblage typique est souvent constitué de $17 \times 17=289$ tiges, dont 264 tiges de carburant et 25 tiges vides.
 Il existe plusieurs types d'assemblages selon la position et la composition des barres de combustible.
@@ -693,33 +727,29 @@ Il existe plusieurs types d'assemblages selon la position et la composition des 
 \item \textbf{Assemblage UOX (Uranium Oxide: $UO_2$):}
 La plupart des réacteurs utilisent l'uranium enrichi dans l'isotrope 235 (avec un enrichissement entre 3\%-5\%) car l'uranium naturel contient seulement 0.7\% d'uranuim-235.
 L'assemblage constitué par le carburant d'UOX sera appelée l'assemblage UOX.
-
 \item \textbf{Assemblage MOX (Mixed Oxide: $UO_2-PuO_3$):}
 A l'instar de l'uranium naturel, le plutonium ($P_u$) est aussi une source fissile de réacteurs nucléaires.
 Le plutonium peut être extrait de combustibles usés. Ceci nous permet de recycler les carburants utilisés.
 De plus, MOX, un melange de combustible uranium et plutonium, est aussi utilisé pour les réacteurs nucléaires.
 L'assemblage constitué par quelques carburants de MOX sera appelée l'assemblage de MOX
-
 \item \textbf{Assemblage UOX-Gd (UOX-Gadolinium: $UO_2-Gd_2O_3$):}
 Un assemblage UOX-Gd est un assemblage UOX dans lequel certaines positions des barres de combustible UOX sont remplacées par des barres $UO_2-PuO_3$.
 Etant donné que la gadolinie $Gd_2O_3$ est un poison neutronique (absorbe les neutrons), les barres $UO_2-PuO_3$ sont utilisées comme des barres anti-poison
 pouvant limiter l'excès de fissions, afin d'atténuer les pics de puissance localisés.
 \end{itemize}
-
 \vspace{0.5cm}
 \hspace{0.5cm}
-Afin de quantifier les taux des réactions des neutrons, on introduit une notation qui représente la probabilité d'interaction entre un neutron incident et un (des) noyau(x) cible(s).
-Il s'agit de la notion de sections efficaces en physique des particules.\\
+La notion de section efficace en physique des particules permet de quantifier les taux des réactions des neutrons. Elle représente la probabilité d'interaction entre un neutron incident et un (des) noyau(x) cible(s).
 Les différents types de sections efficaces se distinguent par leur réaction corréspondante qu'on note $r$.
 Les valeurs que prennent les sections efficaces dépendent de la nature du combustible utilisé (du type d'assemblage).\\
 Une section efficace est notée $\Sigma_r^g$, ($g$ faisant référence au groupe d'énergie).\\
-
+\hspace{0.5cm}
 Dans notre cas, on peut avoir la $macro\ totale-\Sigma_t^g$, la $macro\ fission-\Sigma_f^g$, la $macro\ nu*fission-\nu\Sigma_f^g$, la $macro\ absorption-\nu\Sigma_a^g$,
 la $macro\ scattering-\Sigma_{so}^{g\rightarrow g'}$ (où $g,g' \in \left \{1,2\right\}$, et $o$ est l'ordre d'anisotropie).\\
 Ces sections efficaces dépendent de $5$ paramètres physique: \textit{burnup, température du combustible, densité du modérateur, concentration en bore et niveau de xénon}.
 Ces paramètres varient dans les intervalles présentés dans le tableau ci-dessous.\\
-
 \begin{center}
+\begin{table}
 \begin{tabular}{|*{3}{c|}}
 	\hline
 	Paramètre 											& Valeur minimale & Valeur maximale \\
@@ -735,12 +765,15 @@ Ces paramètres varient dans les intervalles présentés dans le tableau ci-dess
 	Niveau de xénon, \% 						& 0.0 						& 1.0 		\\
 	\hline
 \end{tabular}
+\captionof{table}{Intervalles des paramètres}
+\label{table:parametres}
+\end{table}
 \end{center}
-
 \vspace{0.5cm}
+\hspace{0.5cm}
 Les données réelles fournies par le département R\&D d'EDF sont regroupés dans des fichiers texte (un fichier par type de section efficace).
 On a donc $12$ fichiers pour un seul type d'assemblage, soit $36$ fichiers en tout.\\
-Ces données comportent les points formant une grille de référence, les vrais valeurs des sections efficaces en ces points (valeurs obtenus par le code APOLLO2 développé chez EDF),
+Ces données comportent les points formant une grille de référence (qui permettra d'évaluer les différentes méthodes), les vrais valeurs des sections efficaces en ces points (valeurs obtenus par un code appelé APOLLO2 développé chez EDF),
 les approximations obtenues par la méthode COCAGNE (qui n'est autre que la méthode d'interpolation multilinéaire), les résultats obtenus avec la méthdode de décomposition de Tucker et
 les erreurs de précision obtenues avec ces deux méthodes.\\
 Les données sont organisées en $10$ colonnes correspondant aux valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T err\_C err\_T}
@@ -753,94 +786,110 @@ Les données sont organisées en $10$ colonnes correspondant aux valeurs suivant
 \item \textbf{err\_C:} erreurs relatives commises par la méthode Cocagne.
 \item \textbf{err\_T:} erreurs relatives commises par la méthode de Tucker.
 \end{itemize}
-
+\hspace{0.5cm}
 On a vu que l'algorithme d'interpolation adaptative choisit les points d'interpolation au fur et à mesure qu'il construit l'opérateur d'interpolation.
 Les points d'interpolations utilisés ainsi que leurs ordres dépendent de la fonction interpolée et du type des fonctions de base.
-Etant donné qu'on ne peut pas prévoir à l'avance les points où on veut avoir la valeur exacte des sections efficaces.
+On ne peut donc pas prévoir à l'avance les points où on a besoin d'avoir la valeur exacte des sections efficaces.
 Il nous faut un moyen d'appeler le code APOLLO2 à chaque fois qu'on veut avoir la valeur d'une section efficace en un point.\\
 \hspace{0.5cm}
-Cela est bien évidemment trop couteûx, surtout que le code APOLLO2 ne peut être appellé que sur une grille entière et non pas sur un seul point.
+Cela n'est évidemment pas intéressant car le code APOLLO2 est très couteûx et ne peut être appellé que sur une grille tensorielle.
 On pourrait penser à sauvegarder les points d'interpolations et les évaluer tous en même temps, mais cela n'est pas possible car pour avoir le nouveau point d'interpolation, l'algorithme AI
-a besoin de la valeur des sections efficaces au point précedent.\\
-
-Etant donné qu'on ne dispose pas du code APPOLO2 on n'a pas en notre possession le code APPOLO2, il n'est pas possible possible d'avoir les "vrais valeurs" des sections efficaces à n'importe quel point
-Par contre, on peut avoir le résultat de l'approximation par la méthode de décomposition de Tucker.
-Donc, une bonne altérnative serait de supposer que les valeurs obtenus par la méthode de Tucker correspondent aux vrais valeurs des sections efficaces.\\
-
+a besoin de la valeur des sections efficaces au point précedent, \\
+\hspace{0.5cm} Etant donné qu'on ne dispose pas du code APPOLO2, il n'est pas possible possible d'avoir les "vrais valeurs" des sections efficaces en n'importe quel point.
+Par contre, on peut avoir le résultat de l'approximation obtenu par la méthode de décomposition de Tucker.
+Donc l'altérnative qu'on a adopté et de supposer que les valeurs obtenus par la méthode de Tucker correspondent aux vrais valeurs des sections efficaces.\\
+\hspace{0.5cm}
 Des tests ont été faits pour chaque type de section éfficace. Les résultats obtenus ont été ensuite stocké dans des fichiers et organisées en $12$ colonnes correspondants aux
-valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T value\_AI err\_C err\_T err\_AI} où
+valeurs suivantes: \textbf{count bu tc density cb xe value\_A value\_C value\_T value\_AI err\_C err\_T err\_AI\_Tucker err\_AI\_Apollo} où
 \begin{itemize}
 \item \textbf{value\_AI:} valeurs de section efficace évaluées par la méthode d'Interpolation Adaptative.
-\item \textbf{err\_AI:} erreurs relatives commises par la méthode d'Interpolation Adaptative.
+\item \textbf{err\_AI\_Tucker:} erreurs relatives commises par la méthode d'Interpolation Adaptative par rapport à la méthode Tucker.
+\item \textbf{err\_AI\_Apollo:} erreurs relatives commises par la méthode d'Interpolation Adaptative par rapport à aux données APOLLO2.
 \end{itemize}
-
-Afin de pouvoir bien visualiser les résultats numériques obtenus, ces derniers ont été représenté par des graphes (un graphe par section efficace).
-Chaque graphe montre $3$ nuages de points en $2D$ (l'abscisse de chaque point correspond à l'indice du point de la grille de référence (\textbf{count}),
-quant à l'ordonné, il correspond à l'erreur relative obtenu en ce point).
-\begin{itemize}
-\item Le nuage des point bleus correspond aux erreurs obtenus avec la méthode Cocagne.
-\item Le nuage des point verts correspond aux erreurs obtenus avec la méthode de Tucker.
-\item Le nuage des point rouges correspond aux erreurs obtenus avec la méthode AI.
-\end{itemize}
-Les différents graphes sont présentés en annexe.\\
-
-\paragraph{Discrétisation de l'espace de phase des paramètres:}
-La grille multilinéaire posssède un grand nombre de points dans la direction burnup (33 points), et 2 (ou 3) points
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DISCRETISATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Discrétisation de l'espace de phase des paramètres:\\}
+\hspace{0.5cm} La grille multilinéaire posssède un grand nombre de points dans la direction burnup (33 points), et 2 (ou 3) points
 dans les autres directions. La grille de Tucker contient, quant à elle, 5 grilles correspondant à 5 directions.
 Chaqu'une comporte 5 points de Clenshaw-Curtis dans la direction étudiée et 2 points dans toutes les autres directions, sauf
 pour la grille de burnup qui possède 25 points dans la direction burnup.
 L'algorithme AI, n'exige pas une grille initiale comme pour les deux autres méthodes. En effet, il construit
-un nouveau nœud à chaque itération. Ainsi, on obtient la grille finale en sortie de l'algorithme. Cette grille dépend
+un nouveau point à chaque itération. Ainsi, on obtient la grille finale en sortie de l'algorithme. Cette grille dépend
 donc du type de fonctions de base utilisé et de la fonction interpolée.\\
-Tout ce qui précéde est décrit dans le tableau ci-dessous. Les informations sur la grille AI concerne la section efficace $\Sigma_totale_t^0$
-de type MOX.
+\hspace{0.5cm} Dans tous les tests éffectués, les fonctions de bases utilisées sont des fonctions quadratiques par morceaux suivant la direction burnup et des polynômes de Lagrange suivant les autres directions.
+Tout ce qui précéde est décrit dans le tableau ci-dessous. Ici, les informations sur la grille AI concernent la section efficace $\Sigma_t^1$ de type MOX.
 \begin{center}
+\begin{table}
 \begin{tabular}{|*{4}{c|}}
 	\hline
 	Direction 											& Grille Cocagne  			& Grille Tucker 					 & Grille AI \\
 	\hline
-	Burnup 			 										& 33 										& 25 ($25*2^4 = 400$) 		 & 	35				\\
+	Burnup 			 										& 33 										& 25 ($25*2^4 = 400$) 		 & 	54				\\
 	\hline
-	Température du combustible			& 3 										& 25 ($25*2^4 = 400$)			 & 	5				 	\\
+	Température du combustible			& 3 										& 25 ($25*2^4 = 400$)			 & 	6				 	\\
 	\hline
-	Densité du modérateur				 		& 3											& 25 ($25*2^4 = 400$) 		 & 	13				\\
+	Densité du modérateur				 		& 3											& 25 ($25*2^4 = 400$) 		 & 	9				\\
 	\hline
-	Concentration en Bore						& 3 										& 25 ($25*2^4 = 400$)			 & 	156				\\
+	Concentration en Bore						& 3 										& 25 ($25*2^4 = 400$)			 & 	5				\\
 	\hline
 	Niveau de xénon									& 2 										& 25 ($25*2^4 = 400$)			 & 	5				 	\\
 	\hline
-	Total														& $1782 = 33 * 3^3 * 2$	& $720 = 25*2^4 + 4*5*2^4$ & 	1				 	\\
+	Total														& $1782 = 33 * 3^3 * 2$	& $720 = 25*2^4 + 4*5*2^4$ & 	832				 	\\
 	\hline
 \end{tabular}
+\captionof{table}{Discrétisation de la grille multilinéaire, de la grille de Tucker et de la grille construite par l'algorithme AI}
+\label{table:discretisation}
+\end{table}
 \end{center}
-Le nombre total de point d'interpolation dans la méthode AI ne correspond pas au produit des nombre de points sur chaque direction.
-En effet, en sortie de l'algorithme, on n'obtient pas forcement une grille tensorille mais plutôt un ensemble monotone de multi-indices (qui correspond à une ).
-Un exemple en 2D est présenté dans la figure ci-dessous. On a 20 point suivant la direction x et 15 points suivant la direction y.
-On a en total $176$ points au lieu de $300$.
+\hspace{0.5cm} Le nombre total de point d'interpolation dans la méthode AI ne correspond pas au produit des nombre de points sur chaque direction.
+En effet, en sortie de l'algorithme, on n'obtient pas forcement une grille tensorielle mais plutôt un ensemble monotone de multi-indices.
+Un exemple en 2D est présenté dans la figure ci-dessous. On a $20$ indices (ordres) suivant la direction $x$ et $15$ indices suivant la direction $y$.
+On a en total $176$ couple d'indices utilisés, au lieu de $300$.
 \begin{center}
 \includegraphics[height= 7 cm,width = 0.7\linewidth]{images/nb_discretisation.png}
 \captionof{figure}{Exemple de points d'interpolation obtenu par l'algorithme AI}
 \end{center}
-
-
-\paragraph{Erreurs d'approximation des sections efficaces:}
-On compare la précision des différentes méthodes sur chaque nœud $\textbf{x}_i$ de la grille de référence.
-L'erreur d'approximation sur la grille de référence est définie soit par la norme infinie de l'eeruer relative,
-soit par la moyenne quadratique de l'erreur absolue (\textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror):
+\hspace{0.5cm} L'interpolation de la section efficace $\Sigma_t^1$ de type MOX, donne en sortie la séquence de points d'interpolations construits.
+Ces points en 5 dimensions sont projetés sur chaque directions dans les figures ci-dessous. On remarque l'importance et l'éfficacité du caractère adaptatif de l'algorithme AI.
+En effet, on voit que la majorité des points ont été choisi dans la direction burnup, ce qui est conforme à nos attentes et aux discrétisations faites pour les deux autres méthodes (soit toujours un plus grand nombre de points suivant la variable burnup).\\
+\begin{figure}[h]
+   \begin{minipage}[b]{0.3\linewidth}
+      \centering \includegraphics[scale=0.25]{images/MOX/interpolation_points_0_macro_totale0.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.3\linewidth}
+      \centering \includegraphics[scale=0.25]{images/MOX/interpolation_points_1_macro_totale0.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.3\linewidth}
+			\centering \includegraphics[scale=0.25]{images/MOX/interpolation_points_2_macro_totale0.png}
+	 \end{minipage}
+\end{figure}
+\begin{figure}[h]
+   \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.25]{images/MOX/interpolation_points_3_macro_totale0.png}
+   \end{minipage}
+	 \begin{minipage}[b]{0.5\linewidth}
+      \centering \includegraphics[scale=0.25]{images/MOX/interpolation_points_4_macro_totale0.png}
+   \end{minipage}
+	 \captionof{figure}{Projection des points d'interpolation, obtenus en interpolant $\Sigma_t^1$ de type MOX, sur chaque direction.}
+\end{figure}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ERREUR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Erreurs d'approximation des sections efficaces:\\}
+\hspace{0.5cm} On compare la précision des différentes méthodes sur chaque nœud $\textbf{x}_i$ de la grille de référence.
+L'erreur d'approximation sur la grille de référence est définie soit par l'erreur relative $e^{(inf)}$,
+soit par l'erreur quadratique moyenne (\textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror):
 \begin{align}
 		e^{(inf)} & = max_{\textbf{x}_i \in reference\ grid} \underbrace{ \left | \frac{\tilde{f}(\textbf{x}_i) - f(\textbf{x}_i)}{ max \left | \left \{ f(\textbf{x}_i) \right \} \right |} * 10^5 \right | }_{relative\ error} \\
 		e^{(RMSE)} & = \sqrt{ \sum_{i=1}^N \frac{((f(\textbf{x}_i) - \tilde{f}(\textbf{x}_i)) * 10^5)^2}{N} }\ with\ N = \sharp(reference\ grid)
 \end{align}
-où $f(\textbf{x}_i)$ et $\tilde{f}(\textbf{x}_i)$ sont respectivement la valeur exacte (calculée par APOLLO) et la valeur approximative
+où $f(\textbf{x}_i)$ et $\tilde{f}(\textbf{x}_i)$ sont respectivement la valeur exacte et la valeur approximative
 (obtenue par chaque méthode) de la section efficace au point $\textbf{x}_i \in\ reference\ grid$. Le facteur $10^5$
 est ajouté afin d'exprimer les résultats en pcm ($1pcm = 10^{-5}$)
-
-\paragraph{Erreurs d'approximation de la réactivité:}
-La réaction de fission est un processus dans lequel un noyau fissile (typiquement Uranium $U_{92}^{235}$, Plutonium $Pu_{94}^239$) absorbe
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% REACTIVITY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Erreurs d'approximation de la réactivité:\\}
+\hspace{0.5cm} La réaction de fission est un processus dans lequel un noyau fissile (typiquement Uranium $U_{92}^{235}$, Plutonium $Pu_{94}^239$) absorbe
 des neutron et se divise en noyaux plus légers en produisant de nouveaux neutrons libres et en libérant de l'énérgie sous forme de chaleur.
 Ces nouveaux neutrons entrent ensuite en collision avec d'autres noyaux fissiles ce qui produit une réaction en chaîne.\\
-\hspace{0.5cm}
-Le comportement global de la chaîne de fission nucléaire est relié à un facteur appellé facteur de multiplication efficace $k_{eff}$.
+\hspace{0.5cm} Le comportement global de la chaîne de fission nucléaire est relié à un facteur appellé facteur de multiplication efficace $k_{eff}$.
 Ce facteur est utilisé pour décrire le nombre moyen de neutrons d'une réaction de fission qui causent d'autres fissions.\\
 La valeur de $k_{eff}$ est classée de la façon suivante:
 \begin{itemize}
@@ -858,70 +907,205 @@ On mesure l'erreur de la réactivité, en utilisant la formule suivante:
 \begin{align}
 		\textbf{e}_{reactivity}{(inf)} & = max_{\textbf{x}_i \in reference\ grid} \left | (\frac{1}{k_{\infty}(\textbf{x}_i)} - \frac{1}{\tilde{k}_{\infty}(\textbf{x}_i)})*10^5 \right |
 \end{align}
-Les figurent ci-dessous montrent les erreurs de réactivité obtenues avec chaque méthode et pour chaque type de réacteur (MOX, UOX, UOX-Gd):
-\begin{itemize}
-\item Le nuage des point bleus correspond aux erreurs obtenus avec la méthode Cocagne.
-\item Le nuage des point verts correspond aux erreurs obtenus avec la méthode de Tucker.
-\item Le nuage des point rouges correspond aux erreurs obtenus avec la méthode AI.
-\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRECISION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Résultats}
+\paragraph{Comparaison de la précision:\\}
+\hspace{0.5cm}
+On présente ici les résultats de l'approximation des sections efficaces de type MOX avec chacune des méthodes.
+Les précisions obtenus avec la méthode d'interpolation adaptative sont comparées au résultats de la décomposition de Tucker ainsi que ceux obtenu par intpolation multilinéaire (Cocagne) sur une grille de référence
+contenant $6000$ points.\\
+Les résultats sont présentés dans le tableau ci-dessous. Pour chaque méthode, on donne l'erreur relative absolue ainsi que l'erreur quadratique moyenne obtenu pour chaque type de section efficace et pour la réactivité.\\
 \begin{center}
-\begin{figure}[h]
-   \begin{minipage}[b]{0.32\linewidth}
-      \centering \includegraphics[scale=0.2]{images/MOX/ReactivityError.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.32\linewidth}
-      \centering \includegraphics[scale=0.2]{images/UOX/ReactivityError.png}
-   \end{minipage}
-   \begin{minipage}[b]{0.32\linewidth}
-      \centering \includegraphics[scale=0.2]{images/UOX-Gd/ReactivityError.png}
-   \end{minipage}
+\begin{table}
+\begin{tabular}{|c||c|c|c||c|c|c|}
+		\hline
+		Section 													& $e_{Cocagne}^{(inf)}$			& $e_{Tucker}^{(inf)}$			&	$e_{AI}^{(inf)}$			&	$e_{Cocagne}^{(RMSE)}$			& $e_{Tucker}^{(RMSE)}$			&	$e_{AI}^{(RMSE)}$			\\
+		efficace													&	&	&	&	&	&	\\
+		\hline
+		$\Sigma_t^1$											&	36.197&	15.0578&	1.48278&	8.56588&	2.72007&	0.22795 \\
+		\hline
+		$\Sigma_t^2$											&	839.957&	58.1971&	6.94451&	618.742&	52.0822&	4.91745 \\
+		\hline
+		$\Sigma_a^1$											& 751.201&	20.2378&	10.0386&	4.82434&	0.114286&	0.044465 \\
+		\hline
+		$\Sigma_a^2$											& 401.499&	28.6188&	7.90148&	39.195&	3.07643&	0.498357 \\
+		\hline
+		$\nu\Sigma_f^1$										& 538.307&	11.9292&	11.0837&	2.24702&	0.0472871&	0.0336646 \\
+		\hline
+		$\nu\Sigma_f^2$										& 288.344&	24.8048&	3.77013&	51.6756&	4.33486&	0.413668 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow1}$			& 28.5216&	12.4517&	1.45791&	6.37984&	2.31958&	0.209587 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow2}$			& 1835.02&	482.944&	27.9257&	3.91736&	1.25474&	0.0440527 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow1}$			& 409.717&	11.4509&	7.13451&	2.67437&	0.0718079&	0.0327384 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow2}$			& 917.836&	62.0243&	7.28612&	596.271&	49.8085&	4.50027 \\
+		\hline
+		$\Sigma_f^1$											& 538.507&	11.2092&	11.3262&	0.773387&	0.0154022&	0.0118336 \\
+		\hline
+		$\Sigma_f^2$											& 287.846&	25.1117&	3.38409&	17.8697&	1.49996&	0.137742 \\
+		\hline
+		\textbf{Reactivity}								& \textbf{785.077}&	\textbf{93.0013}&	\textbf{11.1861}&	\textbf{164.879}&	\textbf{31.879}&	\textbf{3.48791} \\
+		\hline
+\end{tabular}
+\captionof{table}{Comparaison de la précision des 3 méthodes sur une grille de référence de 6000 points}
+\label{table:precision}
+\end{table}
+\end{center}
+
+Afin de pouvoir visualiser les résultats numériques obtenus, ces derniers ont été représenté par des graphes (un graphe par section efficace).
+Chaque graphe montre des nuages de points en $2D$ (l'abscisse de chaque point correspond à l'indice du point de la grille de référence (\textbf{count}),
+et l'ordonné correspond à l'erreur relative obtenu en ce point avec une des trois méthodes).
+\begin{itemize}
+\item Le nuage des point bleus correspond aux erreurs relatives obtenus avec la méthode Cocagne.
+\item Le nuage des point verts correspond aux erreurs relatives obtenus avec la méthode de Tucker.
+\item Le nuage des point rouges correspond aux erreurs relatives obtenus avec la méthode AI.
+\end{itemize}
+\hspace{0.5cm} Les figures ci-dessous montrent les résultats obtenus avec 2 exemples de sections efficaces (MOX\_$\nu\Sigma_f^2$, UOX\_$\Sigma_{s0}^{2\rightarrow1}$.\\
+Dans les figures de gauche, on voit les erreurs relatives commises avec chacune des 3 méthodes par rapport aux résultats de APOLLO2.
+Afin de pouvoir mieux voir les résultats des 2 méthodes Tucker et AI, les nuages de points correspondant à la méthode Cocagne ont été supprimés dans les figures du milieu.
+Finalement les figures de droite montrent les erreurs relatives commises par la méthodes AI par rapport aux résultats de la méthode de Tucker (concidérés comme vrais valeurs lors de l'interpolation).
+\begin{center}
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_nu_fission1_with_cocagne.png}
+    \end{subfigure}
+		~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_nu_fission1.png}
+    \end{subfigure}
+
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_nu_fission1_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\nu\Sigma_f^2$}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010_with_cocagne.png}
+		\end{subfigure}
+		~
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_{s0}^{2\rightarrow1}$}
+\end{figure}
+\end{center}
+\hspace{0.5cm} Maintenant, on s'interesse aux résultats de l'approximation de la réactivité, obtenues avec chaque méthode et pour chaque type de réacteur (MOX, UOX, UOX-Gd).
+Dans les figures ci-dessous, on garde les même conventions, vus dans le paragraphe précédent, pour les couleur des nuages de points ainsi que pour la disposition des figures.
+\begin{center}
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/ReactivityError_with_cocagne.png}
+		\end{subfigure}
+		~
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/ReactivityError.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/ReactivityError_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs d'approximation (pcm) de la réactivité pour le type d'assemblage MOX}
 \end{figure}
 \end{center}
 
-\paragraph{Comparaison du nombre de points d'évaluation:}
+\hspace{0.5cm} On remarque que l'algorithme AI accomplit l'approximation avec une bonne précision, vu que dans la plupart des cas le nuage des points correspondant se confond presque avec celui obtenu par la méthode de Tucker.
+Cela veut dire que les erreurs obtenus avec la méthode AI sont très proches de ceux obtenus avec la méthode de Tucker. En effet, cela s'explique par le fait que les erreurs relatives obtenus par rapport aux résultats de Tucker (concidérés comme vrais valeurs) sont relativement faibles.
+On peut confirmer cela grâce aux figures de droites où l'erreur relative absolue est assez faible dans la plupart des cas.
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% VITESSE DE CONVERGENCE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Vitesse de convergence de la méthode AI:\\}
+\hspace{0.5cm}
+Les courbes ci-dessous tracent l'erreur relative absolue en fonction du nombre d'itérations nécessaire pour approximer toutes les sections efficaces de type MOX.
 \begin{center}
+\includegraphics[height= 9 cm,width = \linewidth]{images/MOX/Convergence_speed.png}
+\captionof{figure}{Courbes de convergence pour chaque section efficace de type MOX}
+\end{center}
+\hspace{0.5cm} On remarque que dans tous les cas, au bout d'un certain nombre d'itérations ($\sim$ 500), l'erreur relative absolue se stabilise et atteint un seuil minimal assez faible dépendant de la section efficace.
+Ce seuil ne dépasse pas les 10 pcm ce qui correspond à une erreur assez faible et une précision assez importante. Donc, on peut concidérer qu ce nombre d'itération est un bon choix pour réaliser
+les tests de comparaison avec les deux autres méthodes d'approximation en grande dimension.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NB POINTS DE CALCUL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Comparaison du nombre de points d'évaluation:\\}
+\hspace{0.5cm} Le nombre de points de calcul dans la méthode de Tucker inclue les évaluations sur tous les nœuds de la grille de Tucker (5 grilles pour 5 paramètres avec 720 nœuds au total) et les évaluations
+faites sur le point d'évaluation x sur le coté gauche de (3.15 A REVOIR). Le nombre de points de calcul pour la méthode Cocagne est égual au nombre de nœuds dans la grille multilinéaire. Par ailleurs le nombre de points
+de calcul pour la méthode AI inclue le nombre de points d'interpolation construits et le nombre de condidâts non séléctionnée lors de la construction de l'opérateur d'interpolation.\\
+\hspace{0.5cm} Dans le tableau ci-dessous, on voit le nombre total de point de calcul nécéssaire pour approximer une section éfficace avec chaque méthode.
+Ce nombre n'est pas fixé à l'avance dans la méthode AI, contrairement aux 2 autres méthodes. Il varie en fonction du types de fonctions de bases et de la nature des
+points d'interpolation utilisés. Dans la dernière colonne, on affiche le nombre total de points de calculs obtenu lors de l'interpolation des 3 fonction $\Sigma_t^1$, $\Sigma_f^1$  et $\Sigma_a^1$ de type MOX.
+\begin{center}
+\begin{table}
 \begin{tabular}{|*{3}{c|}}
 	\hline
-	Interpolation Multilinéaire    																																& Décomposition de Tucker 	& Interpolation Adaptative 	\\
+	Interpolation     																																						& Décomposition  	& Interpolation  			\\
+	Multilinéaire																																									& de Tucker				& Adaptative					\\
 	\hline
-	$\underbrace{720}_{for\ 5\ Tucker\ grids} + \underbrace{378}_{for\ evaluated\ points} = 1098$	& $1782$										& $~780$ 								\\
+	$\underbrace{720}_{5\ grilles\ de\ Tucker} + \underbrace{378}_{points\ d'evaluation} = 1098$	& $1782$					& 	(500 itérations)  \\
+																																																&									&	$832$, $881$, $836$	\\
 	\hline
 \end{tabular}
+\captionof{table}{Comparaison du nombre de points de calcul entre le modèle de décomposition de Tucker, le modèle multilinéaire et la méthode d'interpolation adaptative}
+\label{table:nbpointscalcul}
+\end{table}
 \end{center}
-
-
-\paragraph{Comparaison du stockage:}
-\paragraph{Comparaison de la précision:}
-
-
-
-%\begin{center}
-%\begin{figure}[h]
-%   \begin{minipage}[b]{0.5\linewidth}
-%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_absorption1.png}
-%   \end{minipage}
-%   \begin{minipage}[b]{0.5\linewidth}
-%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_fission0.png}
-%   \end{minipage}
-%   \begin{minipage}[b]{0.5\linewidth}
-%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_nu_fission1.png}
-%   \end{minipage}
-%	 \begin{minipage}[b]{0.5\linewidth}
-%      \centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering000.png}
-%   \end{minipage}
-%	 \begin{minipage}[b]{0.5\linewidth}
-%			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_scattering001.png}
-%	 \end{minipage}
-%	 \begin{minipage}[b]{0.5\linewidth}
-%			\centering \includegraphics[scale=0.3]{images/MOX/MOX_macro_totale1.png}
-%	 \end{minipage}
-%	 \caption{Comparaison des erreurs relatives (pcm) pour les sections efficaces MOX}
-%\end{figure}
-
-
-
+\hspace{0.5cm} Ces résultats montrent qu'en utilisant le modèle de décomposition de Tucker, le nombre de points de calcul diminue de 38\% par rapport à la méthode Cocagne.
+D'un autre coté, en utilisant l'algorithme d'interpolation adaptative, ce nombre diminue de 24\% par rapport à la méthode de Tucker, et de 53\% par rapport à la méthode Cocagne.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STOCKAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Comparaison du stockage:\\}
+\hspace{0.5cm} La quantité de stockage nécessaire à la décomposition de Tucker pour une section efficace inclue les valeurs de la discrétisation axiale, les vecteurs propres selectionnés et le coeficient $a$ (voir ...).
+La quantité de stockage pour le modèle multilinéaire les valeurs de la discrétisation axiale et les valeurs prise par la section efficace sur les nœuds de la grille de référence. Le nombre de valeurs de la discrétisation
+axiale ($25+4*5=45$ pour la méthode de Tucker et $33+3+3+3+2=44$ pour la grille multilinéaire) est le même pour toutes les sections efficaces.
+\hspace{0.5cm} Contrairement à la méthode de Tucker, pour laquelle la taille du stockage dépend de la section efficace concidéré, cette taille là reste constante et est égal au nombre de points d'interpolations choisi à l'avance, si on utilise la méthode AI (ou Cocagne).
+Pour la méthode AI, ce nombre est exactement égal au d'itérations.
+Finalement, nous obtenons les résultats résumés dans le tableau ci-dessous. Ce résultats montrent qu'on utilisant le modèle de décomposition de Tucker, la
+taille du stockage diminue d'un facteur allant de 4 à 9 (selon la section efficace) comparé au modèle Cocagne, et de 5 à 6 comparé au modèle AI.
+\begin{center}
+\begin{table}
+\begin{tabular}{|*{4}{c|}}
+	\hline
+	Section              						& \multicolumn{3}{|c|}{Taille du stockage} 		\\
+	\cline{2-4}
+	efficace				 								& Tucker  			& AI 					 	& Cocagne 		\\
+	\hline
+	$\Sigma_t^1$ 			 							& 244 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_t^2$ 			 							& 192 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_a^1$ 			 							& 355 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_a^2$ 			 							& 355 						& 500 		 		& 	1782			\\
+	\hline
+	$\nu \Sigma_f^1$ 			 					& 388 						& 500 		 		& 	1782			\\
+	\hline
+	$\nu \Sigma_f^2$ 			 					& 290 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_{s0}^{1\rightarrow1}$ 	& 244 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_{s0}^{1\rightarrow2}$		& 371 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_{s0}^{2\rightarrow1}$ 	& 416 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_{s0}^{2\rightarrow2}$		& 192 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_f^1$ 			 							& 327 						& 500 		 		& 	1782			\\
+	\hline
+	$\Sigma_f^2$ 			 							& 290 						& 500 		 		& 	1782			\\
+	\hline
+\end{tabular}
+\captionof{table}{Comparaison de la taille du stockage entre le modèle de décomposition de Tucker, le modèle multilinéaire et la méthode d'interpolation adaptative}
+\label{table:stockage}
+\end{table}
+\end{center}
 \subsection{Conclusion et remarques}
-
+\newpage
 %-------------------------------------------------------------------------------------------------------------%
 \section{Impressions personnelles}\label{sec:7}
 \hspace{0.5cm}
@@ -959,7 +1143,6 @@ Par exemple, l’éclairage s’éteint automatiquement en absence prolongée de
 \section{Conclusion}\label{sec:9}
 
 \newpage
-
 
 \bibliographystyle{plain}
 \bibliography{biblio}

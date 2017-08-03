@@ -60,15 +60,19 @@ then
 
     #for arg in $args
     #do
-      #python plot_results.py $core $arg
-      #python plot_results_with_cocagne.py $core $arg
+    #    python plot_results.py $core $arg
+    #    python plot_results_with_cocagne.py $core $arg
     #done
 
-    #if [ "$1" = "ALL" ]
-    #then
-      #python plot_reactivity.py $core
-      #python plot_reactivity_with_cocagne.py $core
-    #fi
+    if [ "$1" = "ALL" ]
+    then
+        python plot_reactivity.py $core
+        python plot_reactivity_with_cocagne.py $core
+    fi
+    #for i in `seq 0 4`;
+    #do
+    #    python plot_interpolation_points_1D.py $core $i
+    #done
 
     #for i in `seq 0 4`;
     #do
