@@ -1,0 +1,19 @@
+\select@language {english}
+\contentsline {figure}{\numberline {1}{\ignorespaces Localisation de la structure d'accueil\relax }}{5}{figure.1}
+\contentsline {figure}{\numberline {2}{\ignorespaces Sch\IeC {\'e}ma \IeC {\`a} 2 \IeC {\'e}tapes bas\IeC {\'e} sur la structure multi-\IeC {\'e}chelle du noyau du r\IeC {\'e}acteur\relax }}{6}{figure.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces Sch\IeC {\'e}ma \IeC {\`a} 2 \IeC {\'e}tapes pour la simulation du c\IeC {\oe }ur du r\IeC {\'e}acteur\relax }}{7}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Exemples de polyn\IeC {\^o}mes d'interpolation de Lagrange\relax }}{10}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Influence de l'ajout d'un point d'interpolation sur une seule direction\relax }}{11}{figure.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Interpolation utilisant des polynomes de Lagrange d\IeC {\'e}finis globalement\relax }}{14}{figure.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Arbre repr\IeC {\'e}sentatif des points d'interpolation en 1D\relax }}{15}{figure.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Interpolation utilisant des fonctions quadratiques par morceaux\relax }}{16}{figure.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Codage de huffman de chaque n\IeC {\oe }ud de l'arbre\relax }}{18}{figure.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Grille 2D des points de Leja\relax }}{20}{figure.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Comparaison des erreurs relatives (pcm) pour les fonctions f1, f2, f3, et f4 en plusieurs dimensions (La courbe verte correspond \IeC {\`a} la m\IeC {\'e}thode de Tucker, la courbe rouge correspond \IeC {\`a} la m\IeC {\'e}thode AI).\relax }}{23}{figure.caption.9}
+\contentsline {figure}{\numberline {12}{\ignorespaces Comparaison des temps d'ex\IeC {\'e}cutions des deux m\IeC {\'e}thodes pour les fonctions f1, f2, f3 et f4 en plusieurs dimensions (La courbe verte correspond \IeC {\`a} la m\IeC {\'e}thode de Tucker, la courbe en rouge correspond \IeC {\`a} la m\IeC {\'e}thode AI).\relax }}{24}{figure.caption.11}
+\contentsline {figure}{\numberline {14}{\ignorespaces Exemple de points d'interpolation obtenu par l'algorithme AI\relax }}{29}{figure.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Projection des points d'interpolation, obtenus en interpolant $\Sigma _t^1$ de type MOX, sur chaque direction.\relax }}{30}{figure.caption.21}
+\contentsline {figure}{\numberline {17}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\nu \Sigma _f^2$\relax }}{32}{figure.caption.26}
+\contentsline {figure}{\numberline {18}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _{s0}^{2\rightarrow 1}$\relax }}{33}{figure.caption.27}
+\contentsline {figure}{\numberline {19}{\ignorespaces Comparaison des erreurs d'approximation (pcm) de la r\IeC {\'e}activit\IeC {\'e} pour le type d'assemblage MOX\relax }}{34}{figure.caption.28}
+\contentsline {figure}{\numberline {20}{\ignorespaces Courbes de convergence pour chaque section efficace de type MOX\relax }}{34}{figure.20}
