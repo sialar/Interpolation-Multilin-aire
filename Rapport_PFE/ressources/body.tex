@@ -1,4 +1,3 @@
-
 \section{Introduction}\label{sec:1}
 \hspace{0.5cm}
 Un nouveau cadre pour les calculs neutroniques de base développé à EDF R\&D, dans
@@ -561,18 +560,118 @@ Ainsi, $f_{\nu}$ ne dépend que de $\nu$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Évaluation de l’efficacité de la méthode}\label{sec:6}
-L'algorithme d'Interpolation Adaptative a été tésté sur des fonctions analytiques définies à l'avance, en une grille de référence construite d'une manière aléatoire.\\
+\section{Évaluation de l'efficacité de la méthode}\label{sec:6}
+\space{0.5cm} L'algorithme d'Interpolation Adaptative a été tésté sur des fonctions analytiques définies à l'avance, en une grille de référence construite d'une manière aléatoire.\\
 Les résultat obtenus ont été ensuite comparé à ceux obtenus avec une autre méthode d'approximation de fonctions multivariées basée sur
 le modèle de décomposition de Tucker.\\
 L'étape suivante a été de tester puis de comparer les deux méthodes ainsi que la méthode d'interpolation multilinéaire sur des données réelles fournies par le département R\&D d'EDF.
 
 \subsection{Présentation du modèle de décomposition de Tucker}
+\hspace{0.5cm} D'un point de vue mathématique, le problème de reconstruction des sections efficaces se présente comme l'approximation de plusieurs fonctions multivariées $\left \{ f_k(\mathbf(x)) \right \}_k$,
+définies sur un domaine $\mathbf{\Omega}$, ici $\mathbf{x} = (x_1,..,x_d) \in \mathbf{\Omega} \subset \mathbb{R}^d$, $d$ est le nombre de paramètres et $\mathbf{\Omega} = \Omega_1 \times .. \times \Omega_d$.\\
+L'objectif est d'acquérir des informations, sauvegarder les données, et proposer une reconstruction de chaque $f_k$ avec un rapport (précision $/$ compléxité) élevé.
+\paragraph{Décomposition de Karhunen-Loève:\\}
+\hspace{0.5cm} L'intérêt de cette décomposition est qu'elle fournie une approximation optimale de rang $r$ de fonctions en 2D par rapport à la norme $L^2$\\
+Soit $f=f(x,y)$, une fonction de $L^2(\Omega_x \times \Omega_y)$. Par la décomposition de Karhunen-Loève, on peut écrire $f$ comme:
+\begin{align}
+		f(x,y) &= \sum_{n=1}^{+\infty} \sqrt{\lambda_n} \varphi_n(c)\psi_n(y),\ \forall(x,y) \in\Omega_x \times \Omega_y
+\end{align}
+Avec $\left \{ \varphi(x) \right \}_{n=1}^{+\infty} (resp. \left \{ \psi(y) \right \}_{n=1}^{+\infty})$ est la base orthonormée de $L^2(\Omega_x)$ (resp. la base orthonormée de $L^2(\Omega_y)$).
+En outre, chaque $(\lambda_n,\varphi_n(x))$ (resp. $(\lambda_n,\psi_n(y))$) est un couple de valeur propre - fonction propre de l'opérateur de Hilbert-Schmidt $K_f^{(x)}$ (resp. $K_f^{(y)}$)
+défini par:
+\begin{align}
+						K_f^{(x)} :	& L^2(\Omega_x) \rightarrow L^2(\Omega_x) \\
+												&	u \mapsto K_f^{(x)} u(x) = \int_{\Omega_{x'}} \int_{\Omega_{y}} f(x,y) f(x',y)dy\ u(x')dx' \\
+		(resp. K_f^{(x)} :	& L^2(\Omega_y) \rightarrow L^2(\Omega_y) \\
+												&	u \mapsto K_f^{(y)} u(y) = \int_{\Omega_{y'}} \int_{\Omega_{x}} f(x,y) f(x,y')dx\ u(y')dy' )
+\end{align}
+Les $\left \{\lambda_n \right \}_{n=1}^{+\infty}$ sont tous positives et triés dans un ordre décroissant: $\lambda_1 \geq \lambda_2 \geq .. > 0$.\\
+Pour un entier $r$ donnée ($r\in\mathbb{N}^{*}$), si on cherche une approximation de f par un produit tensoriel de rang $r$, alors la décomposition de Karhunen-Loève
+fournie la meilleure approximation au sens de la minimisation de l'erreur quadratique moyenne $e^{RMSE}$.
+\begin{align}
+		f_r^{best} & = \sum_{n=1}^r \sqrt{\lambda_n} \varphi_n(x) \psi_n(y)
+\end{align}
+Dans ce cas:
+\begin{align}
+		e^{RMSE} &= \sqrt{ \left \| f(x,y) - f_r^{best}(x,y) \right \|_{L^2(\Omega)}^2} = \sqrt{\sum_{n=r+1}^{\infty} \lambda_n}
+\end{align}
+La décomposition de Karhunen-Loève pour une fonction en 2D montre que l'information la plus importante qui permet de représenter une fonction bivariée peut être
+trouvée dans les premières fonctions propres (associées aux premières plus grandes valeurs propres). \\
+Cette décomposition est valable en 2 dimension, mais n'a pas d'implications directes en dimension plus grande.
+
+\paragraph{Décomposition de Tucker comme éxtension de la décomposition de Karhunen-Loève:\\}
+\hspace{0.5cm} Le modèle de Tucker propose de concidérer les fonctions multivariée comme des fonctions bivariées de x et $\mathbf{y}$ puis d'appliquer la
+décomposition de Karhunen-Loève à cette expression : la première direction correspond à une variable présente dans la configuration multidimensionnelle, i.e. $x=x_j$ pour $j=1,..,d$,
+l'autre direction correspond aux reste des variable condensés dans une vecteur $\mathbf{y}:=(x_1,..,x_{j-1}, x_{j+1}, .., x_d)$. Cette approche appellée matricialisation, éffectuée dans chaque direction, permet
+de construire des fonction de base tensorielles directionnelles appropriées.\\
+La décomposition de Karhunen-Loève est faite est utilisée itérativement pour tout $i$ et donne $d$ équations, chacune s'écrit de la façon suivante:
+\begin{align}
+		\int_{\Omega_{x}} \int_{\mathbf{\Omega_{y}}} f(x,\mathbf{y}) f(x',\mathbf{y})dx'd\mathbf{y} = \lambda \varphi(x),\ \forall x \in \Omega_x	 \\
+\end{align}
+\hspace{0.5cm} Résoudre ces équations permet de determiner les fonctions de base tensorielles directionnelles $\left \{ \varphi^{(j)}(x_j) \right \}$ pour tout
+$j\ (1 \leq j \leq d)$. De cette décomposition, on ne garde que la famille de vecteurs propres dans la variable $x_j$. Le processus d'extention est illustré dans la figure \ref{figure:tuckerprocess}.
+\begin{center}
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/tucker_x1.png}
+				\captionof{figure}{Construction des fonctions de base directionnelles pour la direction $x=x_1$}
+    \end{subfigure}
+		~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth,height=5cm]{images/tucker_xd.png}
+				\captionof{figure}{Construction des fonctions de base directionnelles pour la direction $x=x_d$}
+    \end{subfigure}
+\end{figure}
+\captionof{figure}{Construction des fonctions de base directionnelles pour toutes les directions en utilisant une extension du modèle de décomposition de Karhunen-Loève (KL)}
+\label{figure:tuckerprocess}
+\end{center}
+Afin de résoudre numériquement les équations décrites plus haut, il faut une méthode pour approximer les intégrales. En pratique , pour une fonction d-variée $f = f(x_1,..,x_d)$, on a besoin
+de $d$ formules de quadratures différentes basées sur $d$ grilles. Chacune est utilisé pour construire les fonctions de base tensorielles directionnelles pour seulement une direction $j$.
+Une bonne méthode est de discrétiser d'une manière adaptative chaque domaine afin de capturer les informations importantes associés à la direction concérnée mais en utilisant le moins de points que possible.
+Concrétement, la direction concérnée $j$ est finement discrétisée, alors que les autres sont discrétisés grossièrement ($2^{d-1}$ points). Une telle discrétisation est appellée \textbf{grille de Tucker}. \\
+Etant donné qu'on a $d$ grilles dans un espace de dimension $d$, alors dans chaque direction, $d$ discrétisations différentes sont réalisées mais seulement une est fine. Ces discrétisations sont présentées dans la figure
+\ref{figure:tuckergrid}.
+\begin{center}
+\begin{figure}[!h]
+    \centering
+		\includegraphics[width=\linewidth,height=8cm]{images/tuckergrid.jpg}
+\end{figure}
+\captionof{figure}{Discrétisation adaptative (grilles de Tucker) utilisées pour une extension de la décoposition de Karhunen-Loève afin de construire les fonctions de base tensorielles directionnelles direction par direction}
+\label{figure:tuckergrid}
+\end{center}
+
+Une fois le système d'équations, décrit plus haut, est résolu numériquement, on obtient une famille de vecteurs propres $\left \{ \overrightarrow{\varphi}^{(j)}(x_j) \right \}$.
+Cependant, le but est de proposer une approximation de la fonction écrite comme une décomposition de Tucker
+\begin{align}
+	f(x_1,..,x_d) \approx \tilde{f}(x_1,..,x_d) = \sum_{i_1=1}^{r_1}..\sum_{i_d=1}^{r_d}a_{i_1..i_d}\prod_{j=1}^d \varphi_{i_j}^{(j)}(x_j)
+\end{align}
+qui prend en compte des fonctions propres dans sa partie droite. Donc il faut une méthode qui transforme les vecteurs propres en fonctions propres,
+par exemple, le modèle d'interpolation de Lagrange. C'est à dire que, pour une direction j, les fonctions propres $\varphi^{j}$ sont représentées par des polynômes de Lagrange via les points de cette directions et les
+valeurs des vecteurs propres en ces points. Les points mentionnés ici sont les points de la discrétisation fine de la direction concernée $j$.
+
+\paragraph{Critère de sélection des fonctions de base tensorielles directionelles dans la décomposition de Tucker:\\}
+\hspace{0.5cm} L'idée est de sélectionner les fonctions de base les plus importantes. Cette sélection prend seulement les fonctions propres associées aux valeurs propres $\lambda_i$ qui satisfont $\frac{\lambda_i}{\lambda_1}>\epsilon$,
+avec $\lambda_1 \geq \lambda_2 \geq .. > 0$ et $\epsilon$, un paramètre choisi arbitrairement (ex $10^{10}$).
+
+\paragraph{Détermination des coéficients dans la décomposition de Tucker:\\}
+\hspace{0.5cm} Dans l'application de la décomposition de Tucker (voir équation (32)) pour $f = f(x_1,..,x_d)$, il faut déterminer $R = \prod_{j=1}^d r_j$ coéficients $\mathbf{a}_i$, où $r_j$ est le nombre de fonctions de base
+tensorielles directionnelles dans la direction $j:\ rj = \sharp\left \{ \varphi_{i_j}^{(j)} \right \}$.\\
+Il est possible de trouver les meilleurs $\mathbf{a}_i = a_{i_1..i_d} = <f,\prod_{j=1}^d \varphi_{i_j}^{(j)} >$.
+Cependant, cette méthode nécessite un coût de calcul élevé. Une approche plus simple est basée sur l'interpolation en R points bien sélectionné $\left \{ \mathbf{x}_t \right \}_{t=1}^R$.\\
+Si ces points sont donnés avec leurs coordonnées $\mathbf{x}_t = (x_{t_1}, .., x_{t_d}, .., x_{t_d})$, alors les $R$ coéficients $\left \{a_1,.., a_i,..,a_R  \right \}$ sont solution du systeme suivant:
+\begin{align}
+		\left\{\begin{matrix}
+		f(\mathbf{x}_1) & = \sum_{i=1}^R \mathbf{a}_i \prod_{j=1}^d \varphi_{i_j}^{(j)} (x_{1_j})\\
+		 ... \\
+		f(\mathbf{x}_t) & = \sum_{i=1}^R \mathbf{a}_i \prod_{j=1}^d \varphi_{i_j}^{(j)} (x_{t_j})\\
+		 ... \\
+		f(\mathbf{x}_R) & = \sum_{i=1}^R \mathbf{a}_i \prod_{j=1}^d \varphi_{i_j}^{(j)} (x_{R_j})
+		\end{matrix}\right.
+\end{align}
+Les points $\left \{ \mathbf{x}_t \right \}_{t=1}^R$ sont appellés des points d'évaluation de f. Les coordonnées $\left \{ x_{t_j} \right \}_{t=1}^R$ pour une diréction $j$ donnée sont appellés
+les points d'évaluation des fonctions de base tensorielles directionnelles sur $\left \{ \varphi_{i_j}^{(j)} \right \}_{i_j=1}^{r_j}$ la direction $j$.
 \newpage
-
-
-
-
 
 \subsection{Résultats des approximations de fonctions analytiques}
 Les tests de comparaisons ont été faits sur quatre fonctions différentes définies sur le carré $\left [ -1,1 \right ] ^d$, $d$ étant la dimension de l'espace de départ.

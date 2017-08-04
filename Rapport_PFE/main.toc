@@ -13,24 +13,28 @@
 \contentsline {subsection}{\numberline {4.2}Impl\IeC {\`e}mentation de la solution}{17}{subsection.4.2}
 \contentsline {paragraph}{Construction de la s\IeC {\'e}quence de Leja:\\}{19}{section*.6}
 \contentsline {paragraph}{Calcul des $f_{\nu }$ (ou $\alpha _{\nu }$):\\}{20}{section*.7}
-\contentsline {section}{\numberline {5}\IeC {\'E}valuation de l\IeC {\textquoteright }efficacit\IeC {\'e} de la m\IeC {\'e}thode}{22}{section.5}
+\contentsline {section}{\numberline {5}\IeC {\'E}valuation de l'efficacit\IeC {\'e} de la m\IeC {\'e}thode}{22}{section.5}
 \contentsline {subsection}{\numberline {5.1}Pr\IeC {\'e}sentation du mod\IeC {\`e}le de d\IeC {\'e}composition de Tucker}{22}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}R\IeC {\'e}sultats des approximations de fonctions analytiques}{23}{subsection.5.2}
-\contentsline {paragraph}{Commentaires:}{24}{section*.12}
-\contentsline {paragraph}{Importance du choix de la s\IeC {\'e}quence de points d'interpolation:\\}{24}{section*.13}
-\contentsline {paragraph}{Conclusion:\\}{25}{section*.16}
-\contentsline {subsection}{\numberline {5.3}R\IeC {\'e}sultats des approximations de donn\IeC {\'e}es r\IeC {\'e}elles}{26}{subsection.5.3}
-\contentsline {subsubsection}{\numberline {5.3.1}D\IeC {\'e}scription}{26}{subsubsection.5.3.1}
-\contentsline {paragraph}{Discr\IeC {\'e}tisation de l'espace de phase des param\IeC {\`e}tres:\\}{28}{section*.18}
-\contentsline {paragraph}{Erreurs d'approximation des sections efficaces:\\}{30}{section*.22}
-\contentsline {paragraph}{Erreurs d'approximation de la r\IeC {\'e}activit\IeC {\'e}:\\}{30}{section*.23}
-\contentsline {subsubsection}{\numberline {5.3.2}R\IeC {\'e}sultats}{31}{subsubsection.5.3.2}
-\contentsline {paragraph}{Comparaison de la pr\IeC {\'e}cision:\\}{31}{section*.24}
-\contentsline {paragraph}{Vitesse de convergence de la m\IeC {\'e}thode AI:\\}{34}{section*.29}
-\contentsline {paragraph}{Comparaison du nombre de points d'\IeC {\'e}valuation:\\}{35}{section*.30}
-\contentsline {paragraph}{Comparaison du stockage:\\}{35}{section*.32}
-\contentsline {subsection}{\numberline {5.4}Conclusion et remarques}{36}{subsection.5.4}
-\contentsline {section}{\numberline {6}Impressions personnelles}{37}{section.6}
-\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{37}{section.7}
-\contentsline {section}{\numberline {8}Conclusion}{37}{section.8}
-\contentsline {section}{References}{38}{section*.34}
+\contentsline {paragraph}{D\IeC {\'e}composition de Karhunen-Lo\IeC {\`e}ve:\\}{22}{section*.8}
+\contentsline {paragraph}{D\IeC {\'e}composition de Tucker comme \IeC {\'e}xtension de la d\IeC {\'e}composition de Karhunen-Lo\IeC {\`e}ve:\\}{23}{section*.9}
+\contentsline {paragraph}{Crit\IeC {\`e}re de s\IeC {\'e}lection des fonctions de base tensorielles directionelles dans la d\IeC {\'e}composition de Tucker:\\}{25}{section*.12}
+\contentsline {paragraph}{D\IeC {\'e}termination des co\IeC {\'e}ficients dans la d\IeC {\'e}composition de Tucker:\\}{25}{section*.13}
+\contentsline {subsection}{\numberline {5.2}R\IeC {\'e}sultats des approximations de fonctions analytiques}{26}{subsection.5.2}
+\contentsline {paragraph}{Commentaires:}{27}{section*.18}
+\contentsline {paragraph}{Importance du choix de la s\IeC {\'e}quence de points d'interpolation:\\}{27}{section*.19}
+\contentsline {paragraph}{Conclusion:\\}{28}{section*.22}
+\contentsline {subsection}{\numberline {5.3}R\IeC {\'e}sultats des approximations de donn\IeC {\'e}es r\IeC {\'e}elles}{29}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}D\IeC {\'e}scription}{29}{subsubsection.5.3.1}
+\contentsline {paragraph}{Discr\IeC {\'e}tisation de l'espace de phase des param\IeC {\`e}tres:\\}{31}{section*.24}
+\contentsline {paragraph}{Erreurs d'approximation des sections efficaces:\\}{33}{section*.28}
+\contentsline {paragraph}{Erreurs d'approximation de la r\IeC {\'e}activit\IeC {\'e}:\\}{33}{section*.29}
+\contentsline {subsubsection}{\numberline {5.3.2}R\IeC {\'e}sultats}{34}{subsubsection.5.3.2}
+\contentsline {paragraph}{Comparaison de la pr\IeC {\'e}cision:\\}{34}{section*.30}
+\contentsline {paragraph}{Vitesse de convergence de la m\IeC {\'e}thode AI:\\}{37}{section*.35}
+\contentsline {paragraph}{Comparaison du nombre de points d'\IeC {\'e}valuation:\\}{38}{section*.36}
+\contentsline {paragraph}{Comparaison du stockage:\\}{38}{section*.38}
+\contentsline {subsection}{\numberline {5.4}Conclusion et remarques}{39}{subsection.5.4}
+\contentsline {section}{\numberline {6}Impressions personnelles}{40}{section.6}
+\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{40}{section.7}
+\contentsline {section}{\numberline {8}Conclusion}{40}{section.8}
+\contentsline {section}{References}{41}{section*.40}

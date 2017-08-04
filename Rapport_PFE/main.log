@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  3 AUG 2017 17:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.12.2)  4 AUG 2017 16:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1499,582 +1499,613 @@ l.99 \newpage
 \openout2 = `ressources/body.aux'.
 
  (./ressources/body.tex
-Underfull \hbox (badness 10000) in paragraph at lines 3--11
+Underfull \hbox (badness 10000) in paragraph at lines 2--10
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 12--17
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 18--23
+Underfull \hbox (badness 10000) in paragraph at lines 17--22
 
  []
 
 [4
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 39--43
+Underfull \hbox (badness 10000) in paragraph at lines 38--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 44--46
+Underfull \hbox (badness 10000) in paragraph at lines 43--45
 
  []
 
-<images/Localisation.png, id=227, 883.3pt x 401.5pt>
+<images/Localisation.png, id=235, 883.3pt x 401.5pt>
 File: images/Localisation.png Graphic file (type png)
 
 <use images/Localisation.png>
-Package pdftex.def Info: images/Localisation.png used on input line 56.
+Package pdftex.def Info: images/Localisation.png used on input line 55.
 (pdftex.def)             Requested size: 409.7194pt x 227.62596pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 57.
+(caption)                particular \caption on input line 56.
 See the caption package documentation for explanation.
 
 [5 <./images/Localisation.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 65--75
+Underfull \hbox (badness 10000) in paragraph at lines 64--74
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 76--84
+Underfull \hbox (badness 10000) in paragraph at lines 75--83
 
  []
 
-<images/figure2.jpg, id=233, 722.7pt x 466.74374pt>
+<images/figure2.jpg, id=241, 722.7pt x 466.74374pt>
 File: images/figure2.jpg Graphic file (type jpg)
  <use images/figure2.jpg>
-Package pdftex.def Info: images/figure2.jpg used on input line 91.
+Package pdftex.def Info: images/figure2.jpg used on input line 90.
 (pdftex.def)             Requested size: 284.53154pt x 170.71259pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 92.
+(caption)                particular \caption on input line 91.
 See the caption package documentation for explanation.
 
 [6 <./images/figure2.jpg>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 98.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 97.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 98.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 97.
 
-<images/figure1.png, id=240, 1003.75pt x 301.125pt>
+<images/figure1.png, id=248, 1003.75pt x 301.125pt>
 File: images/figure1.png Graphic file (type png)
  <use images/figure1.png>
-Package pdftex.def Info: images/figure1.png used on input line 108.
+Package pdftex.def Info: images/figure1.png used on input line 107.
 (pdftex.def)             Requested size: 341.43896pt x 170.72406pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 109.
+(caption)                particular \caption on input line 108.
 See the caption package documentation for explanation.
 
 [7 <./images/figure1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 121--128
+Underfull \hbox (badness 10000) in paragraph at lines 120--127
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 148--152
+Underfull \hbox (badness 10000) in paragraph at lines 147--151
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--158
+Underfull \hbox (badness 10000) in paragraph at lines 152--157
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 159--164
+Underfull \hbox (badness 10000) in paragraph at lines 158--163
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--170
+Underfull \hbox (badness 10000) in paragraph at lines 164--169
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 176--181
+Underfull \hbox (badness 10000) in paragraph at lines 175--180
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 183--189
+Underfull \hbox (badness 10000) in paragraph at lines 182--188
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 193--196
+Underfull \hbox (badness 10000) in paragraph at lines 192--195
 
  []
 
-<images/lagrange_polynomials.png, id=258, 803.0pt x 602.25pt>
+<images/lagrange_polynomials.png, id=266, 803.0pt x 602.25pt>
 File: images/lagrange_polynomials.png Graphic file (type png)
 
 <use images/lagrange_polynomials.png>
-Package pdftex.def Info: images/lagrange_polynomials.png used on input line 197
+Package pdftex.def Info: images/lagrange_polynomials.png used on input line 196
 .
 (pdftex.def)             Requested size: 284.534pt x 170.71487pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 198.
+(caption)                particular \caption on input line 197.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 202--206
+Underfull \hbox (badness 10000) in paragraph at lines 201--205
 
  []
 
-<images/grille.png, id=259, 903.375pt x 702.625pt>
+<images/grille.png, id=267, 903.375pt x 702.625pt>
 File: images/grille.png Graphic file (type png)
  <use images/grille.png>
-Package pdftex.def Info: images/grille.png used on input line 217.
+Package pdftex.def Info: images/grille.png used on input line 216.
 (pdftex.def)             Requested size: 341.43896pt x 256.07538pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 218.
+(caption)                particular \caption on input line 217.
 See the caption package documentation for explanation.
 
 [10 <./images/lagrange_polynomials.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 249--252
+Underfull \hbox (badness 10000) in paragraph at lines 248--251
 
  []
 
 [11 <./images/grille.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 261--262
+Underfull \hbox (badness 10000) in paragraph at lines 260--261
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 269--269
+Underfull \hbox (badness 10000) in paragraph at lines 268--268
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--277
+Underfull \hbox (badness 10000) in paragraph at lines 271--276
 
  []
 
 [12]
-Overfull \hbox (2.71579pt too wide) in paragraph at lines 298--302
+Overfull \hbox (2.71579pt too wide) in paragraph at lines 297--301
 \T1/cmr/m/n/12 séquence im-briquée d'ensembles mono-tones. Ils peu-vent aussi ê
 tre con-stru-its d'une manière
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--302
+Underfull \hbox (badness 10000) in paragraph at lines 297--301
 
  []
 
 
-Overfull \hbox (20.18422pt too wide) in paragraph at lines 311--313
+Overfull \hbox (20.18422pt too wide) in paragraph at lines 310--312
 \T1/cmr/m/n/12 Ainsi, avec cette déf-i-ni-tion, l'algorithme ci-dessous mène à 
 une séquence im-briquée d'ensembles
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 311--313
+Underfull \hbox (badness 10000) in paragraph at lines 310--312
 
  []
 
 
-Overfull \hbox (16.33882pt too wide) in paragraph at lines 345--345
+Overfull \hbox (16.33882pt too wide) in paragraph at lines 344--344
 [] 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 351--353
+Underfull \hbox (badness 10000) in paragraph at lines 350--352
 
  []
 
-<images/lag_glob.png, id=299, 702.625pt x 702.625pt>
+<images/lag_glob.png, id=307, 702.625pt x 702.625pt>
 File: images/lag_glob.png Graphic file (type png)
  <use images/lag_glob.png>
-Package pdftex.def Info: images/lag_glob.png used on input line 363.
+Package pdftex.def Info: images/lag_glob.png used on input line 362.
 (pdftex.def)             Requested size: 312.98341pt x 312.98341pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 364.
+(caption)                particular \caption on input line 363.
 See the caption package documentation for explanation.
 
 [14 <./images/lag_glob.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 367--369
+Underfull \hbox (badness 10000) in paragraph at lines 366--368
 
  []
 
-<images/tree.png, id=305, 903.375pt x 501.875pt>
+<images/tree.png, id=313, 903.375pt x 501.875pt>
 File: images/tree.png Graphic file (type png)
  <use images/tree.png>
-Package pdftex.def Info: images/tree.png used on input line 390.
+Package pdftex.def Info: images/tree.png used on input line 389.
 (pdftex.def)             Requested size: 256.07233pt x 170.71947pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 391.
+(caption)                particular \caption on input line 390.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--402
+Underfull \hbox (badness 10000) in paragraph at lines 392--401
 
  []
 
-[15 <./images/tree.png>] <images/interp_pm.png, id=311, 1606.0pt x 1606.0pt>
+[15 <./images/tree.png>] <images/interp_pm.png, id=320, 1606.0pt x 1606.0pt>
 File: images/interp_pm.png Graphic file (type png)
 
 <use images/interp_pm.png>
-Package pdftex.def Info: images/interp_pm.png used on input line 403.
+Package pdftex.def Info: images/interp_pm.png used on input line 402.
 (pdftex.def)             Requested size: 312.98495pt x 312.98495pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 404.
+(caption)                particular \caption on input line 403.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--410
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
 [16 <./images/interp_pm.png (PNG copy)>]
-Overfull \hbox (1.48676pt too wide) in paragraph at lines 414--417
+Overfull \hbox (1.48676pt too wide) in paragraph at lines 413--416
 \T1/cmr/m/n/12 prox-i-ma-tion avec les deux méth-odes. Sauf qu'avec la méth-ode
  util-isant les polynômes
  []
 
 
-Overfull \hbox (24.95937pt too wide) in paragraph at lines 426--432
+Overfull \hbox (24.95937pt too wide) in paragraph at lines 425--431
 \T1/cmr/m/n/12 Cependant, il y a plusieurs sim-i-lar-ité en-tre les deux méth-o
 des, d'où le choix d'implémenter
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 458--461
+Underfull \hbox (badness 10000) in paragraph at lines 457--460
 
  []
 
-<images/huffman.png, id=321, 501.875pt x 501.875pt>
+<images/huffman.png, id=329, 501.875pt x 501.875pt>
 File: images/huffman.png Graphic file (type png)
  <use images/huffman.png>
-Package pdftex.def Info: images/huffman.png used on input line 462.
+Package pdftex.def Info: images/huffman.png used on input line 461.
 (pdftex.def)             Requested size: 312.9972pt x 312.9972pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 463.
+(caption)                particular \caption on input line 462.
 See the caption package documentation for explanation.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 465--466
+Underfull \hbox (badness 10000) in paragraph at lines 464--465
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 467--475
+Underfull \hbox (badness 10000) in paragraph at lines 466--474
 
  []
 
 [18 <./images/huffman.png>] [19]
-Underfull \hbox (badness 10000) in paragraph at lines 504--509
+Underfull \hbox (badness 10000) in paragraph at lines 503--508
 
  []
 
-<images/leja_sequence.png, id=335, 578.16pt x 433.62pt>
+<images/leja_sequence.png, id=343, 578.16pt x 433.62pt>
 File: images/leja_sequence.png Graphic file (type png)
 
 <use images/leja_sequence.png>
-Package pdftex.def Info: images/leja_sequence.png used on input line 510.
+Package pdftex.def Info: images/leja_sequence.png used on input line 509.
 (pdftex.def)             Requested size: 455.24165pt x 256.085pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 511.
+(caption)                particular \caption on input line 510.
 See the caption package documentation for explanation.
 
-<images/preuve.png, id=336, 501.875pt x 501.875pt>
+<images/preuve.png, id=344, 501.875pt x 501.875pt>
 File: images/preuve.png Graphic file (type png)
  <use images/preuve.png>
-Package pdftex.def Info: images/preuve.png used on input line 526.
+Package pdftex.def Info: images/preuve.png used on input line 525.
 (pdftex.def)             Requested size: 227.62596pt x 199.16888pt.
 
 [20 <./images/leja_sequence.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 545--547
+Underfull \hbox (badness 10000) in paragraph at lines 544--546
 
  []
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 552.
+LaTeX Warning: Command \' invalid in math mode on input line 551.
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 552.
+LaTeX Warning: Command \` invalid in math mode on input line 551.
 
 Missing character: There is no é in font cmr12!
 Missing character: There is no à in font cmr12!
 
-LaTeX Warning: Command \' invalid in math mode on input line 552.
+LaTeX Warning: Command \' invalid in math mode on input line 551.
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 552.
+LaTeX Warning: Command \` invalid in math mode on input line 551.
 
 Missing character: There is no é in font cmr12!
 Missing character: There is no à in font cmr12!
 [21 <./images/preuve.png>] [22]
-<images/f1_5d.png, id=356, 578.16pt x 433.62pt>
+<images/tucker_x1.png, id=373, 602.25pt x 602.25pt>
+File: images/tucker_x1.png Graphic file (type png)
+ <use images/tucker_x1.png>
+Package pdftex.def Info: images/tucker_x1.png used on input line 617.
+(pdftex.def)             Requested size: 204.85419pt x 142.26393pt.
+
+<images/tucker_xd.png, id=374, 602.25pt x 602.25pt>
+File: images/tucker_xd.png Graphic file (type png)
+ <use images/tucker_xd.png>
+Package pdftex.def Info: images/tucker_xd.png used on input line 622.
+(pdftex.def)             Requested size: 204.85419pt x 142.26393pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 626.
+See the caption package documentation for explanation.
+
+[23 <./images/tucker_x1.png> <./images/tucker_xd.png>]
+<images/tuckergrid.jpg, id=392, 2055.68pt x 1180.41pt>
+File: images/tuckergrid.jpg Graphic file (type jpg)
+
+<use images/tuckergrid.jpg>
+Package pdftex.def Info: images/tuckergrid.jpg used on input line 638.
+(pdftex.def)             Requested size: 455.23088pt x 227.61237pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 640.
+See the caption package documentation for explanation.
+
+[24 <./images/tuckergrid.jpg>] [25]
+<images/f1_5d.png, id=407, 578.16pt x 433.62pt>
 File: images/f1_5d.png Graphic file (type png)
  <use images/f1_5d.png>
-Package pdftex.def Info: images/f1_5d.png used on input line 591.
+Package pdftex.def Info: images/f1_5d.png used on input line 690.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 591--592
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 690--691
  [][] 
  []
 
-<images/f3_2d.png, id=357, 578.16pt x 433.62pt>
+<images/f3_2d.png, id=408, 578.16pt x 433.62pt>
 File: images/f3_2d.png Graphic file (type png)
  <use images/f3_2d.png>
-Package pdftex.def Info: images/f3_2d.png used on input line 594.
+Package pdftex.def Info: images/f3_2d.png used on input line 693.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 594--595
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 693--694
  [][] 
  []
 
-<images/f2_3d.png, id=358, 578.16pt x 433.62pt>
+<images/f2_3d.png, id=409, 578.16pt x 433.62pt>
 File: images/f2_3d.png Graphic file (type png)
  <use images/f2_3d.png>
-Package pdftex.def Info: images/f2_3d.png used on input line 597.
+Package pdftex.def Info: images/f2_3d.png used on input line 696.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 597--598
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 696--697
  [][] 
  []
 
-<images/f2_5d.png, id=359, 578.16pt x 433.62pt>
+<images/f2_5d.png, id=410, 578.16pt x 433.62pt>
 File: images/f2_5d.png Graphic file (type png)
  <use images/f2_5d.png>
-Package pdftex.def Info: images/f2_5d.png used on input line 602.
+Package pdftex.def Info: images/f2_5d.png used on input line 701.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 602--603
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 701--702
  [][] 
  []
 
-<images/f4_2d.png, id=360, 578.16pt x 433.62pt>
+<images/f4_2d.png, id=411, 578.16pt x 433.62pt>
 File: images/f4_2d.png Graphic file (type png)
  <use images/f4_2d.png>
-Package pdftex.def Info: images/f4_2d.png used on input line 605.
+Package pdftex.def Info: images/f4_2d.png used on input line 704.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 605--606
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 704--705
  [][] 
  []
 
-<images/f4_5d.png, id=361, 578.16pt x 433.62pt>
+<images/f4_5d.png, id=412, 578.16pt x 433.62pt>
 File: images/f4_5d.png Graphic file (type png)
  <use images/f4_5d.png>
-Package pdftex.def Info: images/f4_5d.png used on input line 608.
+Package pdftex.def Info: images/f4_5d.png used on input line 707.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 608--609
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 707--708
  [][] 
  []
 
-<images/f1_5d_s.png, id=362, 578.16pt x 433.62pt>
+<images/f1_5d_s.png, id=413, 578.16pt x 433.62pt>
 File: images/f1_5d_s.png Graphic file (type png)
  <use images/f1_5d_s.png>
-Package pdftex.def Info: images/f1_5d_s.png used on input line 615.
+Package pdftex.def Info: images/f1_5d_s.png used on input line 714.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 615--616
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 714--715
  [][] 
  []
 
-<images/f3_2d_s.png, id=363, 578.16pt x 433.62pt>
+<images/f3_2d_s.png, id=414, 578.16pt x 433.62pt>
 File: images/f3_2d_s.png Graphic file (type png)
  <use images/f3_2d_s.png>
-Package pdftex.def Info: images/f3_2d_s.png used on input line 618.
+Package pdftex.def Info: images/f3_2d_s.png used on input line 717.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 618--619
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 717--718
  [][] 
  []
 
-<images/f2_3d_s.png, id=364, 578.16pt x 433.62pt>
+<images/f2_3d_s.png, id=415, 578.16pt x 433.62pt>
 File: images/f2_3d_s.png Graphic file (type png)
  <use images/f2_3d_s.png>
-Package pdftex.def Info: images/f2_3d_s.png used on input line 621.
+Package pdftex.def Info: images/f2_3d_s.png used on input line 720.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 621--622
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 720--721
  [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/f2_5d_s.png, id=365, 578.16pt x 433.62pt>
+<images/f2_5d_s.png, id=416, 578.16pt x 433.62pt>
 File: images/f2_5d_s.png Graphic file (type png)
  <use images/f2_5d_s.png>
-Package pdftex.def Info: images/f2_5d_s.png used on input line 626.
+Package pdftex.def Info: images/f2_5d_s.png used on input line 725.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 626--627
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 725--726
  [][] 
  []
 
-<images/f4_2d_s.png, id=366, 578.16pt x 433.62pt>
+<images/f4_2d_s.png, id=417, 578.16pt x 433.62pt>
 File: images/f4_2d_s.png Graphic file (type png)
  <use images/f4_2d_s.png>
-Package pdftex.def Info: images/f4_2d_s.png used on input line 629.
+Package pdftex.def Info: images/f4_2d_s.png used on input line 728.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 629--630
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 728--729
  [][] 
  []
 
-<images/f4_5d_s.png, id=367, 578.16pt x 433.62pt>
+<images/f4_5d_s.png, id=418, 578.16pt x 433.62pt>
 File: images/f4_5d_s.png Graphic file (type png)
  <use images/f4_5d_s.png>
-Package pdftex.def Info: images/f4_5d_s.png used on input line 632.
+Package pdftex.def Info: images/f4_5d_s.png used on input line 731.
 (pdftex.def)             Requested size: 173.44933pt x 130.087pt.
 
-Overfull \hbox (27.76788pt too wide) in paragraph at lines 632--633
+Overfull \hbox (27.76788pt too wide) in paragraph at lines 731--732
  [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[23 <./images/f1_5d.png> <./images/f3_2d.png> <./images/f2_3d.png> <./images/f2
+[26 <./images/f1_5d.png> <./images/f3_2d.png> <./images/f2_3d.png> <./images/f2
 _5d.png> <./images/f4_2d.png> <./images/f4_5d.png>]
-Overfull \hbox (0.87085pt too wide) in paragraph at lines 649--652
+Overfull \hbox (0.87085pt too wide) in paragraph at lines 748--751
 \T1/cmr/m/n/12 util-isant à chaque fois des types dif-férents de fonc-tions de 
 bases et de points d'interpolation.
  []
 
-[24 <./images/f1_5d_s.png> <./images/f3_2d_s.png> <./images/f2_3d_s.png> <./ima
+[27 <./images/f1_5d_s.png> <./images/f3_2d_s.png> <./images/f2_3d_s.png> <./ima
 ges/f2_5d_s.png> <./images/f4_2d_s.png> <./images/f4_5d_s.png>]
-Overfull \hbox (39.99857pt too wide) in paragraph at lines 655--678
+Overfull \hbox (39.99857pt too wide) in paragraph at lines 754--777
 [][] 
  []
 
-<images/0.png, id=393, 602.25pt x 501.875pt>
+<images/0.png, id=443, 602.25pt x 501.875pt>
 File: images/0.png Graphic file (type png)
  <use images/0.png>
-Package pdftex.def Info: images/0.png used on input line 693.
+Package pdftex.def Info: images/0.png used on input line 792.
 (pdftex.def)             Requested size: 204.85419pt x 142.26239pt.
 
-<images/2.png, id=396, 602.25pt x 501.875pt>
+<images/2.png, id=446, 602.25pt x 501.875pt>
 File: images/2.png Graphic file (type png)
  <use images/2.png>
-Package pdftex.def Info: images/2.png used on input line 698.
+Package pdftex.def Info: images/2.png used on input line 797.
 (pdftex.def)             Requested size: 204.85419pt x 142.26239pt.
 
-<images/mixed.png, id=399, 602.25pt x 501.875pt>
+<images/mixed.png, id=449, 602.25pt x 501.875pt>
 File: images/mixed.png Graphic file (type png)
  <use images/mixed.png>
-Package pdftex.def Info: images/mixed.png used on input line 703.
+Package pdftex.def Info: images/mixed.png used on input line 802.
 (pdftex.def)             Requested size: 204.85419pt x 142.26239pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[25] [26 <./images/0.png> <./images/2.png> <./images/mixed.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 741--751
+[28] [29 <./images/0.png> <./images/2.png> <./images/mixed.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 840--850
 
  []
 
-[27] [28]
-Overfull \hbox (5.26787pt too wide) in paragraph at lines 822--839
+[30] [31]
+Overfull \hbox (5.26787pt too wide) in paragraph at lines 921--938
 [][] 
  []
 
-<images/nb_discretisation.png, id=426, 602.25pt x 401.5pt>
+<images/nb_discretisation.png, id=477, 602.25pt x 401.5pt>
 File: images/nb_discretisation.png Graphic file (type png)
 
 <use images/nb_discretisation.png>
-Package pdftex.def Info: images/nb_discretisation.png used on input line 848.
+Package pdftex.def Info: images/nb_discretisation.png used on input line 947.
 (pdftex.def)             Requested size: 318.67636pt x 199.17502pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 849.
+(caption)                particular \caption on input line 948.
 See the caption package documentation for explanation.
 
 
-<images/MOX/interpolation_points_0_macro_totale0.png, id=427, 578.16pt x 433.62
+<images/MOX/interpolation_points_0_macro_totale0.png, id=478, 578.16pt x 433.62
 pt>
 File: images/MOX/interpolation_points_0_macro_totale0.png Graphic file (type pn
 g)
  <use images/MOX/interpolation_points_0_macro_totale0.png>
 Package pdftex.def Info: images/MOX/interpolation_points_0_macro_totale0.png us
-ed on input line 856.
+ed on input line 955.
 (pdftex.def)             Requested size: 144.53964pt x 108.40472pt.
 
-Overfull \hbox (7.96503pt too wide) in paragraph at lines 856--857
+Overfull \hbox (7.96503pt too wide) in paragraph at lines 955--956
  [][] 
  []
 
 
-<images/MOX/interpolation_points_1_macro_totale0.png, id=428, 578.16pt x 433.62
+<images/MOX/interpolation_points_1_macro_totale0.png, id=479, 578.16pt x 433.62
 pt>
 File: images/MOX/interpolation_points_1_macro_totale0.png Graphic file (type pn
 g)
  <use images/MOX/interpolation_points_1_macro_totale0.png>
 Package pdftex.def Info: images/MOX/interpolation_points_1_macro_totale0.png us
-ed on input line 859.
+ed on input line 958.
 (pdftex.def)             Requested size: 144.53964pt x 108.40472pt.
 
-Overfull \hbox (7.96503pt too wide) in paragraph at lines 859--860
+Overfull \hbox (7.96503pt too wide) in paragraph at lines 958--959
  [][] 
  []
 
 
-<images/MOX/interpolation_points_2_macro_totale0.png, id=429, 578.16pt x 433.62
+<images/MOX/interpolation_points_2_macro_totale0.png, id=480, 578.16pt x 433.62
 pt>
 File: images/MOX/interpolation_points_2_macro_totale0.png Graphic file (type pn
 g)
  <use images/MOX/interpolation_points_2_macro_totale0.png>
 Package pdftex.def Info: images/MOX/interpolation_points_2_macro_totale0.png us
-ed on input line 862.
+ed on input line 961.
 (pdftex.def)             Requested size: 144.53964pt x 108.40472pt.
 
-Overfull \hbox (7.96503pt too wide) in paragraph at lines 862--863
+Overfull \hbox (7.96503pt too wide) in paragraph at lines 961--962
  [][] 
  []
 
 
-<images/MOX/interpolation_points_3_macro_totale0.png, id=430, 578.16pt x 433.62
+<images/MOX/interpolation_points_3_macro_totale0.png, id=481, 578.16pt x 433.62
 pt>
 File: images/MOX/interpolation_points_3_macro_totale0.png Graphic file (type pn
 g)
  <use images/MOX/interpolation_points_3_macro_totale0.png>
 Package pdftex.def Info: images/MOX/interpolation_points_3_macro_totale0.png us
-ed on input line 867.
+ed on input line 966.
 (pdftex.def)             Requested size: 144.53964pt x 108.40472pt.
 
-<images/MOX/interpolation_points_4_macro_totale0.png, id=431, 578.16pt x 433.62
+<images/MOX/interpolation_points_4_macro_totale0.png, id=482, 578.16pt x 433.62
 pt>
 File: images/MOX/interpolation_points_4_macro_totale0.png Graphic file (type pn
 g)
  <use images/MOX/interpolation_points_4_macro_totale0.png>
 Package pdftex.def Info: images/MOX/interpolation_points_4_macro_totale0.png us
-ed on input line 870.
+ed on input line 969.
 (pdftex.def)             Requested size: 144.53964pt x 108.40472pt.
 
-Overfull \hbox (2.61049pt too wide) in paragraph at lines 866--872
+Overfull \hbox (2.61049pt too wide) in paragraph at lines 965--971
 [][] [] 
  []
 
@@ -2084,132 +2115,132 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[29 <./images/nb_discretisation.png>] [30 <./images/MOX/interpolation_points_0_
+[32 <./images/nb_discretisation.png>] [33 <./images/MOX/interpolation_points_0_
 macro_totale0.png> <./images/MOX/interpolation_points_1_macro_totale0.png> <./i
 mages/MOX/interpolation_points_2_macro_totale0.png> <./images/MOX/interpolation
 _points_3_macro_totale0.png> <./images/MOX/interpolation_points_4_macro_totale0
 .png>]
-Underfull \hbox (badness 10000) in paragraph at lines 913--918
+Underfull \hbox (badness 10000) in paragraph at lines 1012--1017
 
  []
 
 
-Overfull \hbox (10.9865pt too wide) in paragraph at lines 957--960
+Overfull \hbox (10.9865pt too wide) in paragraph at lines 1056--1059
 []\T1/cmr/m/n/12 Afin de pou-voir vi-su-aliser les ré-sul-tats numériques obten
 us, ces derniers ont été représenté
  []
 
-[31]
-<images/MOX/MOX_macro_nu_fission1_with_cocagne.png, id=462, 722.7pt x 722.7pt>
+[34]
+<images/MOX/MOX_macro_nu_fission1_with_cocagne.png, id=512, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_nu_fission1_with_cocagne.png Graphic file (type png)
 
 
 <use images/MOX/MOX_macro_nu_fission1_with_cocagne.png>
 Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1_with_cocagne.png used
- on input line 973.
+ on input line 1072.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/MOX_macro_nu_fission1.png, id=463, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_nu_fission1.png, id=513, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_nu_fission1.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_nu_fission1.png>
 Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1.png used on input lin
-e 977.
+e 1076.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/MOX_macro_nu_fission1_alone.png, id=464, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_nu_fission1_alone.png, id=514, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_nu_fission1_alone.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_nu_fission1_alone.png>
 Package pdftex.def Info: images/MOX/MOX_macro_nu_fission1_alone.png used on inp
-ut line 981.
+ut line 1080.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/MOX_macro_scattering010_with_cocagne.png, id=465, 722.7pt x 722.7pt
+<images/MOX/MOX_macro_scattering010_with_cocagne.png, id=515, 722.7pt x 722.7pt
 >
 File: images/MOX/MOX_macro_scattering010_with_cocagne.png Graphic file (type pn
 g)
  <use images/MOX/MOX_macro_scattering010_with_cocagne.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering010_with_cocagne.png us
-ed on input line 990.
+ed on input line 1089.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/MOX_macro_scattering010.png, id=466, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering010.png, id=516, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering010.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering010.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering010.png used on input l
-ine 994.
+ine 1093.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/MOX_macro_scattering010_alone.png, id=467, 722.7pt x 722.7pt>
+<images/MOX/MOX_macro_scattering010_alone.png, id=517, 722.7pt x 722.7pt>
 File: images/MOX/MOX_macro_scattering010_alone.png Graphic file (type png)
 
 <use images/MOX/MOX_macro_scattering010_alone.png>
 Package pdftex.def Info: images/MOX/MOX_macro_scattering010_alone.png used on i
-nput line 997.
+nput line 1096.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[32 <./images/MOX/MOX_macro_nu_fission1_with_cocagne.png> <./images/MOX/MOX_mac
+[35 <./images/MOX/MOX_macro_nu_fission1_with_cocagne.png> <./images/MOX/MOX_mac
 ro_nu_fission1.png> <./images/MOX/MOX_macro_nu_fission1_alone.png>]
-<images/MOX/ReactivityError_with_cocagne.png, id=475, 722.7pt x 722.7pt>
+<images/MOX/ReactivityError_with_cocagne.png, id=525, 722.7pt x 722.7pt>
 File: images/MOX/ReactivityError_with_cocagne.png Graphic file (type png)
 
 <use images/MOX/ReactivityError_with_cocagne.png>
 Package pdftex.def Info: images/MOX/ReactivityError_with_cocagne.png used on in
-put line 1008.
+put line 1107.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/ReactivityError.png, id=476, 722.7pt x 722.7pt>
+<images/MOX/ReactivityError.png, id=526, 722.7pt x 722.7pt>
 File: images/MOX/ReactivityError.png Graphic file (type png)
 
 <use images/MOX/ReactivityError.png>
-Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 1012
+Package pdftex.def Info: images/MOX/ReactivityError.png used on input line 1111
 .
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
-<images/MOX/ReactivityError_alone.png, id=477, 722.7pt x 722.7pt>
+<images/MOX/ReactivityError_alone.png, id=527, 722.7pt x 722.7pt>
 File: images/MOX/ReactivityError_alone.png Graphic file (type png)
 
 <use images/MOX/ReactivityError_alone.png>
 Package pdftex.def Info: images/MOX/ReactivityError_alone.png used on input lin
-e 1015.
+e 1114.
 (pdftex.def)             Requested size: 204.85785pt x 142.26576pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[33 <./images/MOX/MOX_macro_scattering010_with_cocagne.png> <./images/MOX/MOX_m
+[36 <./images/MOX/MOX_macro_scattering010_with_cocagne.png> <./images/MOX/MOX_m
 acro_scattering010.png> <./images/MOX/MOX_macro_scattering010_alone.png>]
-<images/MOX/Convergence_speed.png, id=485, 1445.4pt x 928.6695pt>
+<images/MOX/Convergence_speed.png, id=536, 1445.4pt x 928.6695pt>
 File: images/MOX/Convergence_speed.png Graphic file (type png)
 
 <use images/MOX/Convergence_speed.png>
-Package pdftex.def Info: images/MOX/Convergence_speed.png used on input line 10
-30.
+Package pdftex.def Info: images/MOX/Convergence_speed.png used on input line 11
+29.
 (pdftex.def)             Requested size: 455.23724pt x 256.07216pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 1031.
+(caption)                particular \caption on input line 1130.
 See the caption package documentation for explanation.
 
-[34 <./images/MOX/ReactivityError_with_cocagne.png> <./images/MOX/ReactivityErr
+[37 <./images/MOX/ReactivityError_with_cocagne.png> <./images/MOX/ReactivityErr
 or.png> <./images/MOX/ReactivityError_alone.png> <./images/MOX/Convergence_spee
-d.png>] [35] [36]
-Underfull \hbox (badness 10000) in paragraph at lines 1111--1118
+d.png>] [38] [39]
+Underfull \hbox (badness 10000) in paragraph at lines 1210--1217
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1128--1132
+Underfull \hbox (badness 10000) in paragraph at lines 1227--1231
 
  []
 
-[37] (./main.bbl)) [38]
+[40] (./main.bbl)) [41]
 
 Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.)
@@ -2221,40 +2252,44 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 33.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 33.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 33.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 891FD1AE0E88F612D29A72C877A7FCB9;1852.
+(rerunfilecheck)             Checksum: F7C8DC225D611F52F2035EABB6FC2315;1849.
  ) 
 Here is how much of TeX's memory you used:
- 35234 strings out of 493029
- 678727 string characters out of 6136234
- 813938 words of memory out of 5000000
- 38005 multiletter control sequences out of 15000+600000
- 20534 words of font info for 48 fonts, out of 8000000 for 9000
+ 35287 strings out of 493029
+ 679553 string characters out of 6136234
+ 815354 words of memory out of 5000000
+ 38029 multiletter control sequences out of 15000+600000
+ 23318 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 63i,21n,101p,10484b,633s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 63i,21n,101p,10484b,651s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/sha
-re/texmf/fonts/type1/public/cm-super/sfbx0800.pfb></usr/share/texmf/fonts/type1
-/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfb
-x1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/shar
-e/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/
-public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm
-1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share
-/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/p
-ublic/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1
-200.pfb>
-Output written on main.pdf (39 pages, 4859197 bytes).
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-su
+per/sfbx0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></u
+sr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts
+/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-sup
+er/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/
+type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-supe
+r/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb></usr
+/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
+Output written on main.pdf (42 pages, 5233916 bytes).
 PDF statistics:
- 618 PDF objects out of 1000 (max. 8388607)
- 461 compressed objects within 5 object streams
- 137 named destinations out of 1000 (max. 500000)
- 409 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 688 PDF objects out of 1000 (max. 8388607)
+ 517 compressed objects within 6 object streams
+ 159 named destinations out of 1000 (max. 500000)
+ 424 words of extra memory for PDF output out of 10000 (max. 10000000)
 
