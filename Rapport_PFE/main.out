@@ -5,7 +5,7 @@
 \BOOKMARK [2][-]{subsection.3.2}{Objectifs attendus, probl\350me \340 r\351soudre}{section.3}% 5
 \BOOKMARK [1][-]{section.4}{Solution technique mise en \234uvre}{}% 6
 \BOOKMARK [2][-]{subsection.4.1}{Description de la solution envisag\351e}{section.4}% 7
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Interpolation monovari\351e et tensorisation:}{subsection.4.1}% 8
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Interpolation mono-vari\351e et tensorisation:}{subsection.4.1}% 8
 \BOOKMARK [3][-]{subsubsection.4.1.2}{Construction hi\351rarchique de l'op\351rateur d'interpolation:}{subsection.4.1}% 9
 \BOOKMARK [3][-]{subsubsection.4.1.3}{Interpolation adaptative et s\351quence de points d'interpolation:}{subsection.4.1}% 10
 \BOOKMARK [2][-]{subsection.4.2}{Impl\350mentation de la solution}{section.4}% 11
@@ -13,10 +13,9 @@
 \BOOKMARK [2][-]{subsection.5.1}{Pr\351sentation du mod\350le de d\351composition de Tucker}{section.5}% 13
 \BOOKMARK [2][-]{subsection.5.2}{R\351sultats des approximations de fonctions analytiques}{section.5}% 14
 \BOOKMARK [2][-]{subsection.5.3}{R\351sultats des approximations de donn\351es r\351elles}{section.5}% 15
-\BOOKMARK [3][-]{subsubsection.5.3.1}{D\351scription}{subsection.5.3}% 16
-\BOOKMARK [3][-]{subsubsection.5.3.2}{R\351sultats}{subsection.5.3}% 17
-\BOOKMARK [2][-]{subsection.5.4}{Conclusion et remarques}{section.5}% 18
-\BOOKMARK [1][-]{section.6}{Impressions personnelles}{}% 19
-\BOOKMARK [1][-]{section.7}{Prise en compte de l\220impact environnemental et soci\351tal}{}% 20
-\BOOKMARK [1][-]{section.8}{Conclusion}{}% 21
-\BOOKMARK [1][-]{section*.40}{References}{}% 22
+\BOOKMARK [3][-]{subsubsection.5.3.1}{D\351scription des cas de test}{subsection.5.3}% 16
+\BOOKMARK [3][-]{subsubsection.5.3.2}{R\351sultats num\351riques}{subsection.5.3}% 17
+\BOOKMARK [1][-]{section.6}{Impressions personnelles}{}% 18
+\BOOKMARK [1][-]{section.7}{Prise en compte de l\220impact environnemental et soci\351tal}{}% 19
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 20
+\BOOKMARK [1][-]{section*.37}{References}{}% 21
