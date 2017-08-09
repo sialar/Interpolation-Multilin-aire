@@ -622,14 +622,13 @@ La courbe verte correspond aux résutats obtenus avec la méthode de Tucker et l
 
 \paragraph{Commentaires:}
 \begin{itemize}
-	\item \textbf{$f_1$ :} La méthode d'interpolation adaptative donne de meilleurs résultats que celle utilisant la décomposition de Tucker, en terme de vitesse de convergence. Ce résultat reste valable quelle que soit la dimension de l'espace de départ.
+	\item \textbf{$f_1$ :} Quand il s'agit d'approximer des fonctions polynomiales, la méthode AI donne de meilleurs résultats que veux obtenus par la méthode de Tucker, en terme de vitesse de convergence. Ce résultat reste valable quelle que soit la valeur de $d$.
 	\item \textbf{$f_2$ :} Si $d=2$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI est plus rapide. Cependant, quand $d>3$ cette dernière converge très lentement et demande un grand nombre de points de calcul ($>7000$).
 	\item \textbf{$f_3$ :} La méthode de décomposition de Tucker ne converge pas (très coûteuse en nombre de points d'évaluation et en temps de calcul). Par contre, la méthode AI converge rapidement, mais demande aussi un grand nombre d’évaluations ($>3000$ en $3D$)
-	\item \textbf{$f_3$ :} Si $d=2$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI reste toujours plus rapide. Si $d>3$, cette dernière demande un grand nombre d’évaluations, mais le temps de calcul reste relativement proche de celui obtenu avec la méthode de Tucker
+	\item \textbf{$f_4$ :} Si $d=2$ les 2 méthodes sont équivalente en terme de précision mais la méthode AI reste toujours plus rapide. Si $d>3$, cette dernière utilise un grand nombre d’évaluations, mais le temps de calcul reste relativement proche de celui obtenu avec la méthode de Tucker
 \end{itemize}
 \paragraph{Importance du choix de la séquence de points d'interpolation dans la méthode AI:\\}
 \hspace{0.5cm} Le choix de la séquence de points d'interpolation ainsi que les fonctions de base joue un rôle très important dans la stabilité et la précision de l'opérateur d'interpolation. L'opérateur d'interpolation, dans la méthode AI, associé à la fonction $f_2$ (en dimension 2D) a été construit en utilisant à chaque fois des types différents de fonctions de bases et de points d'interpolation. Les résultats sont résumés dans le tableau ci-dessous (\ref{table:analytics}) (les tests ont été faits en utilisant 200 itérations dans l'algorithme AI):
-
 \begin{center}
 \begin{table}[!h]
 \begin{tabular}{|*{5}{c|}}
@@ -659,8 +658,7 @@ La courbe verte correspond aux résutats obtenus avec la méthode de Tucker et l
 \label{table:analytics}
 \end{table}
 \end{center}
-\hspace{0.5cm}
-On a vu que l'algorithme AI construit un nouveau point d'interpolation à chaque itération. Cependant, on remarque que le nombre de points de calcul des vraies valeurs de la fonction interpolée diffère du nombre d'itérations. Ceci s'explique par le fait qu'il arrive parfois que l'algorithme ait besoin de la valeur de l'interpolé en un point $x$ sans pour autant l'inclure par la suite dans la séquence de points d'interpolation. En effet, ceci se déroule lors du calcul de l'erreur courante $f_{\nu}$ en chaque candidat, parmi lesquels on ne choisira qu'un seul. \\
+\hspace{0.5cm} On a vu que l'algorithme AI construit un nouveau point d'interpolation à chaque itération. Cependant, on remarque que le nombre de points de calcul des vraies valeurs de la fonction interpolée diffère du nombre d'itérations. Ceci s'explique par le fait qu'il arrive parfois que l'algorithme ait besoin de la valeur de l'interpolé en un point $x$ sans pour autant l'inclure par la suite dans la séquence de points d'interpolation. En effet, ceci se déroule lors du calcul de l'erreur courante $f_{\nu}$ en chaque candidat, parmi lesquels on ne choisira qu'un seul. \\
 L'utilisation des fonctions quadratique par morceaux sur la direction $0$ permet de mieux corriger l'interpolation aux points voisins des extrémités, là où la variation est la plus grande (pour la fonction 1D, $x \mapsto \sqrt{1-x^2}$). Les figures, ci-dessous (\ref{figure:interpmethods}) montrent les séquences finales de points d'interpolation construites par l'algorithme d'interpolation adaptative. Chaque figure correspond à une ligne du tableau précédant.
 \begin{center}
 \begin{figure}[!h]
@@ -853,7 +851,7 @@ On mesure l'erreur de la réactivité, en utilisant la formule suivante:
 \subsubsection{Résultats numériques}
 \paragraph{Comparaison de la précision:\\}
 \hspace{0.5cm}
-On présente ici les résultats de l'approximation des sections efficaces de type MOX avec chacune des méthodes. Les précisions obtenus avec la méthode d'interpolation adaptative sont comparées au résultats de la décomposition de Tucker ainsi que ceux obtenu par intpolation multilinéaire (Cocagne) sur une grille de référence Contenant $6000$ points.\\
+On présente ici les résultats de l'approximation des sections efficaces de type MOX avec chacune des méthodes (les résultats obtenus avec le type UOX et UOX-Gd sont présentés en annexe \ref{table:precisionannexe}). Les précisions obtenus avec la méthode d'interpolation adaptative sont comparées au résultats de la décomposition de Tucker ainsi que ceux obtenu par intpolation multilinéaire (Cocagne) sur une grille de référence Contenant $6000$ points.\\
 Les résultats sont présentés dans le tableau ci-dessous (\ref{table:precision}). Pour chaque méthode, on donne l'erreur relative absolue ainsi que l'erreur quadratique moyenne obtenue pour chaque type de section efficace ainsi que pour la réactivité.\\
 \begin{center}
 \begin{table}[!h]
@@ -889,7 +887,7 @@ Les résultats sont présentés dans le tableau ci-dessous (\ref{table:precision
 		\textbf{Reactivity}								& \textbf{785.077}&	\textbf{93.0013}&	\textbf{11.1861}&	\textbf{164.879}&	\textbf{31.879}&	\textbf{3.48791} \\
 		\hline
 \end{tabular}
-\captionof{table}{Comparaison de la précision des 3 méthodes sur une grille de référence de 6000 points}
+\captionof{table}{Comparaison de la précision des 3 méthodes sur une grille de référence de 6000 points pour le type MOX}
 \label{table:precision}
 \end{table}
 \end{center}
@@ -900,9 +898,9 @@ Afin de pouvoir visualiser les résultats numériques obtenus, ces derniers ont 
 \item Le nuage des point verts correspond aux erreurs relatives obtenus avec la méthode de Tucker.
 \item Le nuage des point rouges correspond aux erreurs relatives obtenus avec la méthode AI.
 \end{itemize}
-\hspace{0.5cm} Les figures ci-dessous (\ref{figure:results}) montrent les résultats obtenus avec 2 exemples de sections efficaces ($\nu\Sigma_f^2$ de type MOX et $\Sigma_{s0}^{2\rightarrow1}$ de type UOX).\\
+\hspace{0.5cm} Les figures ci-dessous (\ref{figure:results}) montrent les résultats obtenus avec 2 exemples de sections efficaces ($\nu\Sigma_f^2$ de type MOX et $\Sigma_{s0}^{2\rightarrow1}$ de type UOX). D'autres exemples sont presentés en annexe (\ref{figure:resultsannexe}).\\
 Dans les figures de gauche, on voit les erreurs relatives commises avec chacune des 3 méthodes par rapport aux résultats de APOLLO2. Afin de pouvoir mieux voir les résultats des 2 méthodes Tucker et AI, les nuages de points correspondant à la méthode Cocagne ont été supprimés dans les figures de droite. Finalement, les figures du bas (milieu) montrent les erreurs relatives commises par la méthode AI par rapport aux résultats de la méthode de Tucker (considérées comme "vraies valeurs" lors de l'interpolation).\\
-\hspace{0.5cm} On s'intéresse maintenant aux résultats de l'approximation de la réactivité, obtenues avec chaque méthode et pour chaque type de réacteur (MOX, UOX, UOX-Gd). Dans les figures ci-dessous (\ref{figure:reactivity}), on garde les même conventions, vus dans le paragraphe précédent, pour les couleurs des nuages de points ainsi que pour la disposition des figures.\\
+\hspace{0.5cm} On s'intéresse maintenant aux résultats de l'approximation de la réactivité, obtenues avec chaque méthode et pour chaque type de réacteur (MOX, UOX, UOX-Gd). Dans les figures (\ref{figure:reactivity}), on garde les même conventions, vus dans le paragraphe précédent, pour les couleurs des nuages de points ainsi que pour la disposition des figures.\\
 
 \hspace{0.5cm} On remarque que l'algorithme AI accomplit l'approximation avec une bonne précision, vu que dans la plupart des cas le nuage des points correspondant se confond presque avec celui obtenu par la méthode de Tucker. Cela veut dire que les erreurs obtenues avec la méthode AI sont très proches de ceux obtenus avec la méthode de Tucker. En effet, cela s'explique par le fait que les erreurs relatives obtenues par rapport aux résultats de Tucker (considérées comme "vraies valeurs") sont relativement faibles. On peut confirmer cela grâce aux figures de droites où l'erreur relative absolue est très faible dans la plupart des cas.\\
 
@@ -920,21 +918,21 @@ Dans les figures de gauche, on voit les erreurs relatives commises avec chacune 
 		\begin{subfigure}[b]{0.45\textwidth}
 				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_nu_fission1_alone.png}
 		\end{subfigure}
-		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\nu\Sigma_f^2$}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\nu\Sigma_f^2$ de type MOX}
 \end{figure}
 \begin{figure}[!h]\ContinuedFloat
 		\centering
 		\begin{subfigure}[b]{0.45\textwidth}
-				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010_with_cocagne.png}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_scattering010_with_cocagne.png}
 		\end{subfigure}
 		~
 		\begin{subfigure}[b]{0.45\textwidth}
-				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010.png}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_scattering010.png}
 		\end{subfigure}
 		\begin{subfigure}[b]{0.45\textwidth}
-				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering010_alone.png}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_scattering010_alone.png}
 		\end{subfigure}
-		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_{s0}^{2\rightarrow1}$}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_{s0}^{2\rightarrow1}$ de type UOX}
 \end{figure}
 \label{figure:results}
 \end{center}
@@ -956,23 +954,28 @@ Dans les figures de gauche, on voit les erreurs relatives commises avec chacune 
 \label{figure:reactivity}
 \end{center}
 
-
-
-\newpage
-\clearpage
-
 \paragraph{Vitesse de convergence de la méthode AI:\\}
 \hspace{0.5cm}
-Les courbes ci-dessous tracent l'erreur relative absolue en fonction du nombre d'itérations nécessaire pour approximer toutes les sections efficaces de type MOX.
+Les courbes ci-dessous (\ref{figure:convergencespeed}) tracent l'erreur relative absolue en fonction du nombre d'itérations nécessaire pour approximer toutes les sections efficaces de type MOX.
 \begin{center}
 \includegraphics[height= 9 cm,width = \linewidth]{images/MOX/Convergence_speed.png}
 \captionof{figure}{Courbes de convergence pour chaque section efficace de type MOX}
+\label{figure:convergencespeed}
 \end{center}
-\hspace{0.5cm} On remarque que dans tous les cas, au bout d'un certain nombre d'itérations ($\sim$ 500), l'erreur relative absolue se stabilise et atteint un seuil minimal assez faible dépendant de la section efficace. Ce seuil ne dépasse pas les 10 pcm ce qui correspond à une erreur assez faible et une précision assez importante. Donc, on peut considérer qu ce nombre d'itérations est un bon choix pour réaliser les tests de comparaison avec les deux autres méthodes d'approximation en grande dimension.
+\hspace{0.5cm} On remarque que dans tous les cas, au bout d'un certain nombre d'itérations ($\sim$ 500), l'erreur relative absolue se stabilise et atteint un seuil minimal assez faible dépendant de la section efficace. Ce seuil ne dépasse pas les 10 pcm ce qui correspond à une erreur assez faible et une précision assez importante. Donc, on peut considérer qu ce nombre d'itérations est un bon choix pour réaliser les tests de comparaison avec les deux autres méthodes d'approximation en grande dimension. \\
+\textbf{Remarque: } Les courbes de convergence permettent de souligner l'importance du choix de la séquence de points d'interpolation. En effet, si on supprime le caractère adaptatif de la méthode AI (càd qu'on ne cherche plus le condidât qui correspond à l'erreur la plus grande mais plutôt celui qui a attendu le plus longtemps dans la file de priorité) alors l'algorithme devient plus long et demande plus d'itérations pour atteindre une bonne précision (voir figure \ref{figure:convergencespeedplus}).
+\begin{center}
+\includegraphics[height= 9 cm,width = \linewidth]{images/MOX/Convergence_speed_without_adaptivity.png}
+\captionof{figure}{Courbes de convergence pour chaque section efficace de type MOX sans adaptivité}
+\label{figure:convergencespeedplus}
+\end{center}
+
+Pour d'autres types de conbustibles (UOX, UOX-Gd), les résultats sont différents pour certaines sections efficaces (notamment $\Sigma_{s0}^{2\rightarrow1}$, $\Sigma_f^1$ et $\nu\Sigma_f^1$ ...). En effet on remarque que la convergence est plus lente, par exemple pour $\Sigma_{s0}^{2\rightarrow1}$ (macro\_scattering010) de type UOX-Gd, on n'atteint une erreur relative de $50$ pcm qu'au bout de $1500$ itérations (voir figure \ref{figure:convergenceannexe} en annexe).
 
 \paragraph{Comparaison du nombre de points d'évaluation:\\}
 \hspace{0.5cm} Le nombre de points de calcul dans la méthode de Tucker inclut les évaluations sur tous les nœuds de la grille de Tucker (5 grilles pour 5 paramètres avec 720 nœuds au total) et les évaluations faites sur le point d'évaluation x sur le coté gauche de (\ref{longtuckerequation}). Le nombre de points de calcul pour la méthode Cocagne est égal au nombre de nœuds dans la grille multilinéaire. Par ailleurs, le nombre de points de calcul pour la méthode AI inclut le nombre de points d'interpolation construits et le nombre de candidats non sélectionnés lors de la construction de l'opérateur d'interpolation.\\
-\hspace{0.5cm} Dans le tableau ci-dessous (\ref{table:nbpointscalcul}), on voit le nombre total de points de calcul nécessaire pour approximer une section efficace avec chaque méthode. Ce nombre n'est pas fixé à l'avance dans la méthode AI, contrairement aux 2 autres méthodes. Il varie en fonction du type de fonctions de bases et de la nature des points d'interpolation utilisés. Dans la dernière colonne, on affiche le nombre total de points de calculs obtenu lors de l'interpolation des 3 fonction $\Sigma_t^1$, $\Sigma_f^1$ et $\Sigma_a^1$ de type MOX.
+
+Dans le tableau ci-dessous (\ref{table:nbpointscalcul}), on voit le nombre total de points de calcul nécessaire pour approximer une section efficace avec chaque méthode. Ce nombre n'est pas fixé à l'avance dans la méthode AI, contrairement aux 2 autres méthodes. Il varie en fonction du type de fonctions de bases et de la nature des points d'interpolation utilisés. Dans la dernière colonne, on affiche le nombre total de points de calculs obtenu lors de l'interpolation des 3 fonction $\Sigma_t^1$, $\Sigma_f^1$ et $\Sigma_a^1$ de type MOX.
 \begin{center}
 \begin{table}[!h]
 \begin{tabular}{|*{3}{c|}}
@@ -994,7 +997,7 @@ Les courbes ci-dessous tracent l'erreur relative absolue en fonction du nombre d
 
 \paragraph{Comparaison du stockage:\\}
 \hspace{0.5cm} La quantité de stockage nécessaire à la décomposition de Tucker pour une section efficace inclut les valeurs de la discrétisation axiale, les vecteurs propres sélectionnés et le coefficient $a$. La quantité de stockage pour le modèle multilinéaire les valeurs de la discrétisation axiale et les valeurs prise par la section efficace sur les nœuds de la grille de référence. Le nombre de valeurs de la discrétisation axiale ($25+4*5=45$ pour la méthode de Tucker et $33+3+3+3+2=44$ pour la grille multilinéaire) est le même pour toutes les sections efficaces.\\
-\hspace{0.5cm} Contrairement à la méthode de Tucker, pour laquelle la taille du stockage dépend de la section efficace considéré, cette taille là reste constante et est égal au nombre de points d'interpolations choisi à l'avance, si on utilise la méthode AI (ou Cocagne). Pour la méthode AI, ce nombre est exactement égal au nombre d'itérations. Finalement, nous obtenons les résultats résumés dans le tableau ci-dessous (\ref{table:stockage}).\\
+Contrairement à la méthode de Tucker, pour laquelle la taille du stockage dépend de la section efficace considéré, cette taille là reste constante et est égal au nombre de points d'interpolations choisi à l'avance, si on utilise la méthode AI (ou Cocagne). Pour la méthode AI, ce nombre est exactement égal au nombre d'itérations. Finalement, nous obtenons les résultats résumés dans le tableau ci-dessous (\ref{table:stockage}).\\
 
 \begin{center}
 \begin{table}[!h]
@@ -1033,17 +1036,28 @@ Les courbes ci-dessous tracent l'erreur relative absolue en fonction du nombre d
 \label{table:stockage}
 \end{table}
 \end{center}
- Ce résultat montre qu'en utilisant le modèle de décomposition de Tucker, la taille du stockage diminue d'un facteur allant de 4 à 9 (selon la section efficace) comparé au modèle Cocagne, et de 5 à 6 comparé au modèle AI.
+Ce résultat montre qu'en utilisant le modèle de décomposition de Tucker, la taille du stockage diminue d'un facteur allant de 4 à 9 (selon la section efficace) comparé au modèle Cocagne, et de 1.2 à 2.6 comparé au modèle AI. Par ailleurs, si on utilise la méthode parcimonieuse (AI) la taille du stockage diminue d'un facteur de 3.5 comparé au modèle Cocagne.
 
-%\subsection{Conclusion et remarques}
+\subsection{Conclusion et remarques}
+\hspace{0.5cm} On a présenté quelques méthodes d'approximation de fonctions multivariées qui ont été appliquées à la reconstruction des section efficaces en neutronique. On a montré que la méthode de décomposition de Tucker ainsi que la méthode parcimonieuse (AI) donnent de meilleurs précisions tout en utilisant moins de points de calcul et moins de stockage comparé à la méthode Cocagne (qui utilise le modèle d'interpolation multilinéaire). \\
 
+D'un autre coté, nous avons vu que la méthode AI converge toujours pour tous les types de sections efficaces au bout d'un nombre d'itérations intèressant (500 dans la plupart des cas). On a vu aussi que cette méthode utilise dans la plupart des cas moins de points de calcul que la méthode de Tucker.
+Cependant, certaines sections efficaces demandent un très grand nombre d'itération donc de points de calcul (3000 pour $\nu\Sigma_f^0$). Dans ce cas, la taille de stockage va suivre et donc l'utilisation de la méthode de Tucker devient plus intéressante.\\
+
+On a aussi vu que la méthode AI a un grand avantage que ne possèdent pas les 2 autres méthodes qui est le caractère adaptatif. En effet, cette méthode permet de construire les points d'interpolation d'une manière astucieuse permettant d'obtenir de très bonnes précisions. Par contre, avec la méthode de Tucker, l'utilisateur doit construire lui même les grilles de Tucker, donc il doit choisir lui même les points de discrétisation. Bien évidement ce choix ne sera pas toujours optimal. \\
+Etant donné que les données sur sections efficaces serviront à résoudre l'équation de transport neutronique, les résultats de la réactivité sont particulièrement intéressants. Ces derniers sont presque identiques pour les méthodes Tucker et AI.\\
+
+Tous les tests qui ont été fait dans ce travail prennent en compte les valeurs approximatives de Tucker comme les vrais valeurs des sections éfficaces. Avec les résultats obtenus, on peut dire que la méthode AI approche généralement très bien les valeurs obtenus avec le modèle de Tucker.
+Cela permet d'avoir une idée, mais pas de conclure avec certitude, sur l'éfficacité de la méthode AI à approcher les vrais valeurs des sections efficaces. Cependant, il serait intéressant de voir les vrais résultats s'il nous était possible d'utiliser les vrais valeurs obtenu par APOLLO2 pour l'approximation des sections éfficaces.
+
+\newpage
 
 \section{Impressions personnelles}\label{sec:6}
-\hspace{0.5cm}
-Au début du stage et notamment au cours des premières présentations du sujet, ce dernier m'a paru plutôt difficile. Il m'a fallu une certaine période de documentation et de recherche avant de pouvoir entamer la partie pratique. Ainsi, au bout des premières semaines de mon stage, j'ai réussi à bien assimiler la partie théorique du sujet. Ce sujet m'a paru alors encore plus intéressant car j'ai pu constater sa richesse en matière de spectre d'applications. De plus j'ai eu l'occasion de beaucoup apprendre notamment sur l'interpolation en grande dimension en général, mais aussi au niveau de la programmation informatique. En effet, j'ai pu améliorer mes connaissances en python et mettre en application tout ce que j'ai appris en algorithmique et en C++.\\
+\hspace{0.5cm} Au début du stage et notamment au cours des premières présentations du sujet, ce dernier m'a paru plutôt difficile. Il m'a fallu une certaine période de documentation et de recherche avant de pouvoir entamer la partie pratique. Ainsi, au bout des premières semaines de mon stage, j'ai réussi à bien assimiler la partie théorique du sujet. Ce sujet m'a paru alors encore plus intéressant car j'ai pu constater sa richesse en matière de spectre d'applications. De plus j'ai eu l'occasion de beaucoup apprendre notamment sur l'interpolation en grande dimension en général, mais aussi au niveau de la programmation informatique. En effet, j'ai pu améliorer mes connaissances en python et mettre en application tout ce que j'ai appris en algorithmique et en C++.\\
+
 De plus, étant donnée que mes encadrants ont participé à l'étude et la réalisation de la partie théorique, il m'était facile d'évoluer et d'avancer dans ma compréhension des différents points-clés de mon sujet de stage. En effet, le fait qu'ils soient souvent disponibles pour discuter des points potentiellement imprécis et de l'organisation du travail m'a évité une importante perte de temps.\\
-Par ailleurs, j'ai été agréablement surpris par l'environnement et l'esprit de travail au sein d'un laboratoire de recherche.\\
-J'ai, de plus, apprécié la liberté qu'on m'a laissée pour le choix de l'environnement de travail et l'organisation des différentes taches et l'ordre de leurs réalisations. Ceci m'a permit non seulement d'apprendre à être autonome mais aussi d'améliorer mes compétences en analyse et en programmation.
+
+Par ailleurs, j'ai été agréablement surpris par l'environnement et l'esprit de travail au sein d'un laboratoire de recherche. J'ai, de plus, apprécié la liberté qu'on m'a laissée pour le choix de l'environnement de travail et l'organisation des différentes taches et l'ordre de leurs réalisations. Ceci m'a permis non seulement d'apprendre à être autonome mais aussi d'améliorer mes compétences en analyse et en programmation.
 
 \section{Prise en compte de l’impact environnemental et sociétal}\label{sec:7}
 \hspace{0.5cm}
@@ -1055,7 +1069,198 @@ Je travaille quotidiennement avec 4 personnes dans un bureau éclairé au néon.
 Actuellement, le laboratoire met, à la disposition des employés, de plus en plus de moyens écologiques. Par exemple, l’éclairage s’éteint automatiquement en absence prolongée de mouvement dans la piéce, de plus les déchets papiers sont recyclés.\\
 Quant au sujet de mon stage, les méthodes mathématique qui y sont proposées permettent de réduire considérablement le coût des calculs des sections efficaces en neutronique, à précision égale, et par conséquent de limiter la consommation énergétique de gros serveurs de calcul.
 
+\newpage
 \section{Conclusion}\label{sec:8}
+\hspace{0.5cm} Ce travail se situe entre le calcul scientifique et l’informatique de haut niveau. Le déroulement de son contenu commence par une motivation d’améliorer l’approximation des sections efficaces en neutronique, puis s’étale sur une présentation de quelques méthodes à l’état de l’art, et, enfin, expose les résultats de comparaison de précision et de rapidité des différentes méthodes.\\
+
+Grâce à ce stage, j’ai eu l’occasion de développer des compétences aussi bien sur le plan professionnel que personnel. D’un point de vue technique, j’ai pu apprendre de nouvelles méthodes d’interpolation de fonctions en grande dimension, un domaine fort intéressant avec un large spectre d'applications. De plus j’ai eu l’opportunité de perfectionner mes connaissances et mes compétences en C++ et en python. Sur un plan plus personnel, j’ai pu améliorer mes qualités d’organisation, de rigueur et de prise de recul, suite aux différents points avec mes encadrants. \\
+
+En conclusion, ce stage s’est révélé très formateur et enrichissant et j’en tire donc un bilan très positif. J’ai eu la chance de découvrir un métier passionnant et de faire des rencontres professionnelles enrichissantes. Cette expérience m’a permis ainsi d’être opérationnel dès mon entrée dans la vie active.
+
+\newpage
+\section*{Annexe}\label{sec:9}
+
+\begin{center}
+\begin{table}[!h]
+\begin{tabular}{|c||c|c|c||c|c|c|}
+		\hline
+		Section 													& $e_{Cocagne}^{(inf)}$			& $e_{Tucker}^{(inf)}$			&	$e_{AI}^{(inf)}$			&	$e_{Cocagne}^{(RMSE)}$			& $e_{Tucker}^{(RMSE)}$			&	$e_{AI}^{(RMSE)}$			\\
+		efficace													&	&	&	&	&	&	\\
+		\hline
+		$\Sigma_t^1$											&	34.2339&	9.09297&	3.99701&	8.36494&	1.22068&	0.713828 \\
+		\hline
+		$\Sigma_t^2$											& 1184.94&	86.6764&	10.7352&	777.268&	69.5475&	6.8168 \\
+		\hline
+		$\Sigma_a^1$											& 649.75&	340.761&	160.821&	2.76439&	1.03818&	0.393218 \\
+		\hline
+		$\Sigma_a^2$											& 1238.85&	97.0926&	20.2667&	56.9717&	5.11914&	0.754716 \\
+		\hline
+		$\nu\Sigma_f^1$										& 443.983&	47.4158&	19.2392&	0.995686&	0.0330499&	0.0205564 \\
+		\hline
+		$\nu\Sigma_f^2$										& 1453.6&	104.352&	35.925&	75.151&	6.78119&	1.24014 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow1}$			& 28.7345&	8.56399&	3.95193&	6.66417&	1.02881&	0.623273 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow2}$			& 1147.94&	464.068&	106.431&	1.426&	0.656958&	0.103223 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow1}$			& 223.929&	23.9838&	20.2787&	1.28293&	0.125091&	0.0880236 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow2}$			& 1183.88&	84.7271&	9.84931&	724.651&	62.5&	6.25076 \\
+		\hline
+		$\Sigma_f^1$											& 426.742&	43.5041&	43.6607&	0.378702&	0.0167914&	0.0154567 \\
+		\hline
+		$\Sigma_f^2$											& 1446.88&	102.702&	36.1857&	30.4354&	2.70944&	0.48746 \\
+		\hline
+		\textbf{Reactivity}								& \textbf{947.476}&	\textbf{179.024}&	\textbf{35.9397}&	\textbf{129.124}&	\textbf{49.4077}&	\textbf{8.54358} \\
+		\hline
+\end{tabular}
+\captionof{table}{Comparaison de la précision des 3 méthodes sur une grille de référence de 6000 points pour le type UOX}
+\end{table}
+
+
+\begin{table}[!h]
+\begin{tabular}{|c||c|c|c||c|c|c|}
+		\hline
+		Section 													& $e_{Cocagne}^{(inf)}$			& $e_{Tucker}^{(inf)}$			&	$e_{AI}^{(inf)}$			&	$e_{Cocagne}^{(RMSE)}$			& $e_{Tucker}^{(RMSE)}$			&	$e_{AI}^{(RMSE)}$			\\
+		efficace													&	&	&	&	&	&	\\
+		\hline
+		$\Sigma_t^1$											&	34.3457&	54.2038&	141.061&	8.7528&	10.2771&	8.4402 \\
+		\hline
+		$\Sigma_t^2$											&	1185.2&	 93.3252&	9.57183&	779.911&	67.0717&	5.18693 \\
+		\hline
+		$\Sigma_a^1$											& 658.677&	77.5373&	212.259&	2.83566&	0.198993&	0.447535 \\
+		\hline
+		$\Sigma_a^2$											&	1137.75&	 327.358&	18.9561&	56.0745&	8.48061&	0.754725 \\
+		\hline
+		$\nu\Sigma_f^1$										& 427.871&	 76.4315&	357.647&	0.990265&	0.110952&	0.268537 \\
+		\hline
+		$\nu\Sigma_f^2$										& 1439.4&	 175.619&	23.7932&	71.7306&	7.56593&	0.728961 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow1}$			& 33.5265&	 38.7157&	145.028&	6.96269&	7.53171&	8.71824 \\
+		\hline
+		$\Sigma_{s0}^{1\rightarrow2}$			& 1170.7&	550.811&	168.75&	1.44208&	0.68054&	0.133133 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow1}$			& 233.239&	 150.04&	61.977&	1.34238&	0.618075&	0.234821 \\
+		\hline
+		$\Sigma_{s0}^{2\rightarrow2}$			& 1182.41&	 87.1138&	8.1332&	727.838&	61.2579&	4.79674 \\
+		\hline
+		$\Sigma_f^1$											& 419.6&	79.3872&	270.24&	0.379264&	0.0461276&	0.0804735 \\
+		\hline
+		$\Sigma_f^2$											& 1441.17&	175.355&	23.121&	28.9346&	2.99376&	0.280941 \\
+		\hline
+		\textbf{Reactivity}								& \textbf{1005.14}&	\textbf{535.937}&	\textbf{1046.0}&	\textbf{139.536}&	\textbf{159.764}&	\textbf{81.6997} \\
+		\hline
+\end{tabular}
+\captionof{table}{Comparaison de la précision des 3 méthodes sur une grille de référence de 6000 points pour le type UOX-Gd}
+\label{table:precisionannexe}
+\end{table}
+\end{center}
+
+
+\begin{center}
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_nu_fission0_with_cocagne.png}
+    \end{subfigure}
+		~
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_nu_fission0.png}
+    \end{subfigure}
+
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_nu_fission0_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\nu\Sigma_f^1$ de type UOX}
+\end{figure}
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/UOX-Gd_macro_fission0_with_cocagne.png}
+		\end{subfigure}
+		~
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/UOX-Gd_macro_fission0.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/UOX-Gd_macro_fission0_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_f^1$ de type UOX-Gd}
+\end{figure}
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering001_with_cocagne.png}
+		\end{subfigure}
+		~
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering001.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/MOX/MOX_macro_scattering001_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_{s0}^{1\rightarrow2}$ de type MOX}
+\end{figure}
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_totale1_with_cocagne.png}
+		\end{subfigure}
+		~
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_totale1.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+				\includegraphics[width=\linewidth,height=5cm]{images/UOX/UOX_macro_totale1_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma_t^1$ de type UOX}
+\end{figure}
+
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX/ReactivityError_with_cocagne.png}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX/ReactivityError.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX/ReactivityError_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs d'approximation (pcm) de la réactivité pour le type d'assemblage UOX}
+\end{figure}
+
+\begin{figure}[!h]\ContinuedFloat
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/ReactivityError_with_cocagne.png}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/ReactivityError.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\linewidth,height=5cm]{images/UOX-Gd/ReactivityError_alone.png}
+		\end{subfigure}
+		\captionof{figure}{Comparaison des erreurs d'approximation (pcm) de la réactivité pour le type d'assemblage UOX-GD}
+\end{figure}
+
+\label{figure:resultsannexe}
+\end{center}
+
+
+
+\begin{center}
+\includegraphics[height= 9 cm,width = \linewidth]{images/UOX/Convergence_speed.png}
+\captionof{figure}{Courbes de convergence pour chaque section efficace de type UOX}
+\end{center}
+
+\begin{center}
+\includegraphics[height= 9 cm,width = \linewidth]{images/UOX-Gd/Convergence_speed.png}
+\captionof{figure}{Courbes de convergence pour chaque section efficace de type UOX-Gd}
+\label{figure:convergenceannexe}
+\end{center}
 
 \newpage
 \bibliographystyle{plain}

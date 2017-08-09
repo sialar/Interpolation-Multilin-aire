@@ -31,9 +31,10 @@
 \contentsline {subsubsection}{\numberline {5.3.2}R\IeC {\'e}sultats num\IeC {\'e}riques}{33}{subsubsection.5.3.2}
 \contentsline {paragraph}{Comparaison de la pr\IeC {\'e}cision:\\}{33}{section*.27}
 \contentsline {paragraph}{Vitesse de convergence de la m\IeC {\'e}thode AI:\\}{36}{section*.32}
-\contentsline {paragraph}{Comparaison du nombre de points d'\IeC {\'e}valuation:\\}{36}{section*.33}
-\contentsline {paragraph}{Comparaison du stockage:\\}{37}{section*.35}
-\contentsline {section}{\numberline {6}Impressions personnelles}{38}{section.6}
-\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{38}{section.7}
-\contentsline {section}{\numberline {8}Conclusion}{39}{section.8}
-\contentsline {section}{References}{40}{section*.37}
+\contentsline {paragraph}{Comparaison du nombre de points d'\IeC {\'e}valuation:\\}{37}{section*.33}
+\contentsline {paragraph}{Comparaison du stockage:\\}{38}{section*.35}
+\contentsline {subsection}{\numberline {5.4}Conclusion et remarques}{39}{subsection.5.4}
+\contentsline {section}{\numberline {6}Impressions personnelles}{40}{section.6}
+\contentsline {section}{\numberline {7}Prise en compte de l\IeC {\textquoteright }impact environnemental et soci\IeC {\'e}tal}{40}{section.7}
+\contentsline {section}{\numberline {8}Conclusion}{41}{section.8}
+\contentsline {section}{References}{47}{section*.46}

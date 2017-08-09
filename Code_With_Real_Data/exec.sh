@@ -58,11 +58,11 @@ then
         args=$*
     fi
 
-    #for arg in $args
-    #do
-    #    python plot_results.py $core $arg
-    #    python plot_results_with_cocagne.py $core $arg
-    #done
+    for arg in $args
+    do
+        python plot_results.py $core $arg
+        python plot_results_with_cocagne.py $core $arg
+    done
 
     if [ "$1" = "ALL" ]
     then

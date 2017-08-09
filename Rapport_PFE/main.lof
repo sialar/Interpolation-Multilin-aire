@@ -14,7 +14,16 @@
 \contentsline {figure}{\numberline {16}{\ignorespaces Comparaison des temps d'ex\IeC {\'e}cutions des deux m\IeC {\'e}thodes pour les fonctions f1, f2, f3 et f4 en plusieurs dimensions.\relax }}{25}{figure.caption.16}
 \contentsline {figure}{\numberline {18}{\ignorespaces Exemple de points d'interpolation obtenu par l'algorithme AI\relax }}{31}{figure.18}
 \contentsline {figure}{\numberline {20}{\ignorespaces Projection des points d'interpolation, obtenus en interpolant $\Sigma _t^1$ de type MOX, sur chaque direction.\relax }}{31}{figure.caption.24}
-\contentsline {figure}{\numberline {22}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\nu \Sigma _f^2$\relax }}{34}{figure.caption.29}
-\contentsline {figure}{\numberline {23}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _{s0}^{2\rightarrow 1}$\relax }}{35}{figure.caption.30}
+\contentsline {figure}{\numberline {22}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\nu \Sigma _f^2$ de type MOX\relax }}{34}{figure.caption.29}
+\contentsline {figure}{\numberline {23}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _{s0}^{2\rightarrow 1}$ de type UOX\relax }}{35}{figure.caption.30}
 \contentsline {figure}{\numberline {24}{\ignorespaces Comparaison des erreurs d'approximation (pcm) de la r\IeC {\'e}activit\IeC {\'e} pour le type d'assemblage MOX\relax }}{35}{figure.caption.31}
 \contentsline {figure}{\numberline {25}{\ignorespaces Courbes de convergence pour chaque section efficace de type MOX\relax }}{36}{figure.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Courbes de convergence pour chaque section efficace de type MOX sans adaptivit\IeC {\'e}\relax }}{37}{figure.26}
+\contentsline {figure}{\numberline {28}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\nu \Sigma _f^1$ de type UOX\relax }}{43}{figure.caption.40}
+\contentsline {figure}{\numberline {29}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _f^1$ de type UOX-Gd\relax }}{43}{figure.caption.41}
+\contentsline {figure}{\numberline {30}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _{s0}^{1\rightarrow 2}$ de type MOX\relax }}{44}{figure.caption.42}
+\contentsline {figure}{\numberline {31}{\ignorespaces Comparaison des erreurs relatives (pcm) pour la section efficace $\Sigma _t^1$ de type UOX\relax }}{44}{figure.caption.43}
+\contentsline {figure}{\numberline {32}{\ignorespaces Comparaison des erreurs d'approximation (pcm) de la r\IeC {\'e}activit\IeC {\'e} pour le type d'assemblage UOX\relax }}{45}{figure.caption.44}
+\contentsline {figure}{\numberline {33}{\ignorespaces Comparaison des erreurs d'approximation (pcm) de la r\IeC {\'e}activit\IeC {\'e} pour le type d'assemblage UOX-GD\relax }}{45}{figure.caption.45}
+\contentsline {figure}{\numberline {34}{\ignorespaces Courbes de convergence pour chaque section efficace de type UOX\relax }}{46}{figure.34}
+\contentsline {figure}{\numberline {35}{\ignorespaces Courbes de convergence pour chaque section efficace de type UOX-Gd\relax }}{46}{figure.35}

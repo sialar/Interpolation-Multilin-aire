@@ -115,19 +115,16 @@ int main( int argc, char* argv[] )
     Functions::createFunctionsDataBase();
     vector<vector<double>> nIter_errors;
     int dimD = 5;
-    vector<int> iterations(7);
+    vector<int> iterations(4);
     string core = chooseCoreType(argc,argv,1);
     vector<string> reactions = chooseReactionsType(argc,argv,2);
     MultiVariatePoint<int> methods(5,0,0);
     methods(0) = 2;
 
-    iterations[0] = 50;
-    iterations[1] = 100;
-    iterations[2] = 200;
-    iterations[3] = 300;
-    iterations[4] = 450;
-    iterations[5] = 600;
-    iterations[6] = 800;
+    iterations[0] = 100;
+    iterations[1] = 200;
+    iterations[2] = 300;
+    iterations[3] = 500;
 
     for (int i=0; i<int(iterations.size()); i++)
     {
