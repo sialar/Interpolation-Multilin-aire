@@ -114,7 +114,7 @@ On note $I_k$ l'opérateur d'interpolation polynomiale associé à la séquence 
 Supposons que la fonction $f$ qu'on veut interpoler est à valeurs dans $\mathbb{R}$ (ou $\mathbb{C}$).\\
 On a alors,
 \begin{align}
-   I_k(f) & = \sum_{i=0}^k f(y_i) l_i^k \nonumber
+   \tilde{f}(x) = I_k(f)(x) & = \sum_{i=0}^k f(y_i) l_i^k(x),\ x \in \mathbb{R}\ (ou\ \mathbb{C}) \nonumber
 \end{align}
 avec $l_i^k(y) = \prod_{j=0,\ i \neq j}^k \frac{(y - y_j)}{(y_i - y_j)}$, polynômes d'interpolation de Lagrange
 de degrès $(k-1)$ associé à la séquence $\left \{ y_0, .. , y_k \right \}$ (\ref{figure:lagrange}).\\
@@ -128,16 +128,14 @@ de degrès $(k-1)$ associé à la séquence $\left \{ y_0, .. , y_k \right \}$ (
 \hspace{0.5cm}
 \textbf{ - Cas $d>1$: }
 On procède par tensorisation. \\
-C'est à dire, pour $\alpha_1,..,\alpha_d \in \left \{0,.., k-1 \right \}$ \\
+C'est à dire, pour $\alpha_1,..,\alpha_d \in \left \{0,.., k-1 \right \}$, $x \in \mathbb{R}^d$ (ou $\mathbb{C}^d$) \nonumber \\
 \begin{align}
-   \tilde{f} (y_1,..,y_d)& = \bigotimes_{i=1}^d I_k (f)(y_1,..,y_d) \in \mathbb{Q}_{k-1} = vect \left \{ y \rightarrow y_1^{\alpha_1}..y_d^{\alpha_d} \right \} \nonumber \\
-	 & = \sum_{k_1=1}^k..\sum_{k_d=1}^k (f(y_{k_1},..,y_{k_d}) l_{k_1}(y_1)..l_{k_d}(y_d)) \nonumber
+   \tilde{f} (x_1,..,x_d)& = \bigotimes_{i=1}^d I_k (f)(x_1,..,x_d) \in \mathbb{Q}_{k-1} = vect \left \{ x \rightarrow x_1^{\alpha_1}..x_d^{\alpha_d} \right \} \nonumber \\
+	 & = \sum_{k_1=1}^k..\sum_{k_d=1}^k (f(y_{k_1},..,y_{k_d}) l_{k_1}^k(x_1)..l_{k_d}^k(x_d)) \nonumber
 \end{align}
 \hspace{0.5cm}
-Pour avoir une bonne précision, il est préférable de choisir un nombre relativement grand de points d'interpolation.
-Si par exemple, on prend $k_j$ points suivant la direction $j$, on obtient un nombre total de points égal à $\prod_{i=1}^d k_j$.
-Ceci pose problème, bien évidemment, lorsque $d$ est grand. En effet, non seulement le calcul de $\tilde{f}$ sera couteux, mais aussi,
-si on souhaite ajouter $1$ points suivant la variable $i$ ça revient à ajouter $\prod_{j=1,\\ j \neq i}^d k_j$ nœuds dans la grille (\ref{figure:complexite}).
+Pour avoir une bonne précision, il est préférable de choisir un nombre relativement grand de points d'interpolation. Si on prend, par exemple, $k$ points suivant chaque direction, on obtient un nombre total de points égal à $k^d$.
+Ceci pose problème, bien évidemment, lorsque $d$ est grand. En effet, non seulement le calcul de $\tilde{f}$ sera coûteux, mais aussi, si on souhaite ajouter $1$ points suivant une variable $i$, ça revient à ajouter $k^(d-1)$ nœuds dans la grille (dans l'exemple \ref{figure:complexite}, $n_1=n_2=k$).
 \begin{center}
 \includegraphics[height=9cm,width=12cm]{images/grille.png}
 \captionof{figure}{Influence de l'ajout d'un point d'interpolation sur une seule direction}
