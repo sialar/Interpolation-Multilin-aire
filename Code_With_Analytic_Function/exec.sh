@@ -235,6 +235,13 @@ then
         cd Tucker
         python -W ignore testTuckerDecomposition_withGreedy.py $2 $6 $7
     fi
+
+elif [ "$1" = "IMG2VIDEO" ]
+then
+    cd AI/images
+    ffmpeg -r $2 -f image2 -i img%03d.jpg -vcodec libx264 -crf 25  -pix_fmt yuv420p "$3".mp4
+    ffmpeg -i "$3".mp4 "$3".gif
+
 else
     help
     exit

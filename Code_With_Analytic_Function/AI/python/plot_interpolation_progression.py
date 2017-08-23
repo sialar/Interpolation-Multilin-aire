@@ -32,8 +32,18 @@ def plot_interpolation_progressively(x,g,zero,y,alpha,interp_points,z,dt):
         plt.plot(x, zero, 'k', c='k')
         plt.plot(x, g, 'k', c='g')
         plt.plot(x, z[i*len(x):(i+1)*len(x)], c='r')
-        msg = ("alpha("+ str(interp_points[i]) + ") = " + str(alpha[i]))
+        msg = "\nIteration " + str(i) + "\n"
+        msg = msg + "alpha("+ str(interp_points[i]) + ") = " + str(alpha[i]) + "\n"
+        msg = msg + "Erreur relative absolue finale (pcm) = 3547.52\n"
         plt.title(msg)
+
+        #if i < 10:
+        #    plt.savefig('../images/img00' + str(i) + '.jpg')
+        #elif i<100:
+        #    plt.savefig('../images/img0' + str(i) + '.jpg')
+        #else:
+        #    plt.savefig('../images/img' + str(i) + '.jpg')
+
 
         plt.pause(dt)
 
@@ -79,10 +89,10 @@ nb_functions = int(lines_basis_functions[0].split(" ")[0])
 nb_points = int(lines_basis_functions[0].split(" ")[1])
 method = int(lines_basis_functions[0].split(" ")[2])
 
-dt = 0.5
+dt = 0.001
 nb_colors = 10
 cmap = get_cmap(nb_colors)
-taille = (25,10)
+taille = (16,12)
 plt.figure(figsize=taille)
 
 y_min = get_y_min()

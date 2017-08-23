@@ -77,8 +77,8 @@ vector<double> Functions::toAlternatingVector(double x, int n)
 
 vector<double> Functions::functionToPlot(MultiVariatePoint<double> x, int n)
 {
-    double temp = 1;
-    for (int i=1; i<x.getD(); i++) temp *= exp(-x(i));
+    double temp = 0;
+    for (int i=1; i<x.getD(); i++) temp += pow(x(i),i);
     return toAlternatingVector(sqrt(1-x(0)*x(0)) * temp, n);
 }
 
@@ -153,18 +153,23 @@ vector<double> Functions::autoPolynomialFunction(MultiVariatePoint<double> x, in
     for (int i=0; i<n; i++)
         for (int j=0; j<m_polynomialDegree; j++)
             for (int k=0; k<x.getD(); k++)
-                res[i] += m_coefs[i][j][k] * pow(x(k),j+1);
+            {
+                double coef = double(j)/double(m_polynomialDegree);
+                res[i] += ((j%2) ? -coef : coef) /*m_coefs[i][j][k]*/ * pow(x(k),j+1);
+            }
     return res;
 }
 
 void Functions::setCoefs(int degree, int d, int n)
 {
-    m_nbPerturbations = Utils::randomValue(1,3);
-    for (int i=0; i<m_nbPerturbations; i++)
-    {
-        m_perturbations.push_back(Utils::randomValue(0.1,0.9));
-        m_perturbationsWidth.push_back(Utils::randomValue(0.01,0.05));
-    }
+    m_nbPerturbations = 2;//Utils::randomValue(1,3);
+    //for (int i=0; i<m_nbPerturbations; i++)
+    //{
+    m_perturbations.push_back(0.25/*Utils::randomValue(0.1,0.9)*/);
+    m_perturbations.push_back(0.75/*Utils::randomValue(0.1,0.9)*/);
+    m_perturbationsWidth.push_back(0.025/*Utils::randomValue(0.01,0.05)*/);
+    m_perturbationsWidth.push_back(0.025/*Utils::randomValue(0.01,0.05)*/);
+    //}
     m_polynomialDegree = degree;
     m_coefs.resize(n);
     for (int i=0; i<n; i++)
