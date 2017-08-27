@@ -6,13 +6,14 @@ BIN = AI/bin
 CXX = g++
 CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
 
-OUTPUT_FILES = AI/data/MOX/* AI/data/UOX/* AI/data/UOX-Gd/* AI/images/MOX/* AI/images/UOX/* AI/images/UOX-Gd/*
+
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o $(BIN)/Functions.o
+OBJ_FILES += $(BIN)/RealDataFunctions.o $(BIN)/AnalyticalFunctions.o
 OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
-OBJ_FILES += $(BIN)/Tucker/LagrangePolynomial.o $(BIN)/Tucker/TuckerApproximation.o
+
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
-INCLUDE_FILES += $(INCLUDE)/Tucker/LagrangePolynomial.hpp $(INCLUDE)/Tucker/TuckerApproximation.hpp
-TEST_FILES += $(BIN)/TestAdaptativeInterpolation $(BIN)/TestConvergence
+
+TEST_FILES += $(BIN)/TestAdaptativeInterpolation
 
 all: $(TEST_FILES)
 
@@ -27,9 +28,6 @@ $(BIN)/Test%.o : $(TEST)/Test%.cpp $(INCLUDE_FILES)
 $(BIN)/%.o : $(SRC)/%.cpp $(INCLUDE_FILES)
 		$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN)/Tucker/%.o : $(SRC)/Tucker/%.cpp $(INCLUDE_FILES)
-		$(CXX) $(CXXFLAGS) -c -o $@ $<
-
 # Nettoyage du projet
 clean:
-	@rm -rf $(BIN)/*.o $(BIN)/Tucker/* $(BIN)/Test* #$(OUTPUT_FILES)
+	@rm -rf $(BIN)/*.o $(BIN)/Test*
