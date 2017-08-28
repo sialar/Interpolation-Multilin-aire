@@ -22,9 +22,6 @@ using namespace std;
 template <typename T>
 class Interpolation
 {
-    public:
-        static double m_precision;
-
     protected:
 //
 // 1: Concerne la méthode
@@ -55,13 +52,13 @@ class Interpolation
         int m_nbTestPoints;
         double m_infError;
         double m_mseError;
+        vector<vector<double>> m_exactValues;
+        vector<vector<double>> m_approxValues;
+        vector<vector<double>> m_errors;
 
 // Temps d'execution
 		// Temps d'execution sans compter le cout de calcul de l'interpoléé en un point d'interpolation
         double m_runTime = 0.0;
-		// Temps total d'execution
-		double m_totalTime = 0.0;
-        chrono::time_point<chrono::_V2::steady_clock,chrono::duration<double>> m_lastCheckPt;
 
 // Sortie
 		// Points d'interpolation sur chaque diréction
@@ -85,7 +82,6 @@ class Interpolation
 		// Accesseurs
         const int nbEvals() { return m_nbEvals; };
         const double runTime() { return m_runTime; };
-        const double totalTime() { return m_totalTime; };
         const int maxIteration() { return m_maxIteration; };
         const int nbTestPoints() { return m_nbTestPoints; };
         void disableProgressDisplay() { m_displayProgress = false; };
@@ -95,6 +91,7 @@ class Interpolation
         const vector<vector<double>>& points() { return m_interpolationPoints; };
         const vector<double>& interpolationPoints(int i) { return m_interpolationPoints[i]; };
         const vector<MultiVariatePoint<double>>& interpolationNodes() { return m_interpolationNodes; };
+        const vector<vector<double>> parametersDomain() { return m_function->parametersDomain(); };
 
 
 		virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
@@ -115,19 +112,19 @@ class Interpolation
 		// Ajouter le point d'interpolation correspondant au vecteur d'ordre (multi-indice, ou vecteur de code de huffman selon la version de AI)
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
 
-
 		// Construit la séquence de points de test aléatoirement
         void setRandomTestPoints(int nbTestPoints);
 		// Lance l'algorithme d'interpolation adaptative
         void launchAIAlgo(bool debug);
 		// Construit la séquence de points de test
-        void setTestPoints(vector<MultiVariatePoint<double>> points) { m_testPoints = points; };
+        void setTestPoints(vector<MultiVariatePoint<double>> points);
 		// Evaluer l'interpolé au point multivarié x
     vector<double> func(MultiVariatePoint<double> x);
     // Construire l'interpolé
     void setFunc(FunctionsPtr);
 		// Calcule les résultats de l'interpolation
         void computeAIApproximationResults();
+        void saveAIApproximationResults();
 		// Calcule l'erreur d'interpolation au point d'interpolation courant (dernier choisi par l'algo AI)
         void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
 		// Construit l'interpolant en fonction des alpha et des fonctions de base
@@ -148,9 +145,6 @@ class Interpolation
 
 template <typename T>
 using InterpolationPtr = shared_ptr<Interpolation<T>>;
-
-template <typename T>
-double Interpolation<T>::m_precision = numeric_limits<double>::digits10+1;
 
 template <typename T>
 Interpolation<T>::Interpolation(FunctionsPtr f, int nIter)
@@ -186,9 +180,15 @@ vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 }
 
 template <typename T>
+void Interpolation<T>::setTestPoints(vector<MultiVariatePoint<double>> points)
+{
+  m_testPoints = points;
+  m_nbTestPoints = points.size();
+}
+
+template <typename T>
 void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 {
-  m_nbTestPoints = nbTestPoints;
   vector<MultiVariatePoint<double>> testPoints;
   testPoints.resize(nbTestPoints);
   for (int j=0; j<nbTestPoints; j++)
@@ -200,7 +200,6 @@ template <typename T>
 void Interpolation<T>::launchAIAlgo(bool debug)
 {
     auto start_time = chrono::steady_clock::now();
-    m_lastCheckPt = chrono::steady_clock::now();
 
 	// Initiatisation de m_curentNeighbours, m_path (séquence des points d'interpolation), argmax (le meilleur candidat)
     m_curentNeighbours.clear();
@@ -239,20 +238,15 @@ void Interpolation<T>::launchAIAlgo(bool debug)
     }
 
     auto end_time = chrono::steady_clock::now();
-    std::chrono::duration<double> total_time = end_time - start_time;
-    m_totalTime = total_time.count();
+    std::chrono::duration<double> run_time = end_time - start_time;
+    m_runTime = run_time.count();
 }
 
 template <typename T>
 void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
     double basisFuncProd = 1.0;
-    auto stop_time = chrono::steady_clock::now();
-    std::chrono::duration<double> delta = stop_time - m_lastCheckPt;
-    m_runTime += delta.count();
-
     vector<double> res = func(getPoint(nu));
-    m_lastCheckPt = chrono::steady_clock::now();
     m_nbEvals++;
     for (MultiVariatePointPtr<T> l : m_path)
     {
@@ -296,7 +290,7 @@ void Interpolation<T>::displayInterpolationPoints()
     {
         cout << " - " << m_interpolationPoints[i].size() << " points in direction " << i << " : { ";
         for (it=m_interpolationPoints[i].begin(); it!=m_interpolationPoints[i].end(); it++)
-            cout << /*setprecision(m_precision) <<*/ *it << " ";
+            cout << /*setprecision(Utils::m_precision) <<*/ *it << " ";
         cout << "}" << endl;
     }
 }
@@ -304,9 +298,9 @@ void Interpolation<T>::displayInterpolationPoints()
 template <typename T>
 void Interpolation<T>::displayInterpolationMultiVariatePoints()
 {
-    cout << " - " << m_interpolationNodes.size() << "Interpolation nodes: { ";
+    cout << " - " << m_interpolationNodes.size() << " interpolation nodes: { ";
     for (MultiVariatePoint<double> x : m_interpolationNodes)
-        cout << setprecision(numeric_limits<double>::digits10+1) << x << " ";
+        cout << /*setprecision(Utils::m_precision) <<*/ x << " ";
     cout << "}" << endl;
 }
 
@@ -320,7 +314,7 @@ void Interpolation<T>::displayPath()
     {
         if (i>0) cout << "\t ";
         cout << " " << i << " :";
-        cout << " [" << *m_path[i] << ":" << setprecision(m_precision) << getPoint(m_path[i]);
+        cout << " [" << *m_path[i] << ":" << setprecision(Utils::m_precision) << getPoint(m_path[i]);
         cout << ":" << m_path[i] << "] --> alpha" << *m_path[i] << " = " << Utils::vector2str(m_path[i]->getAlpha()) << endl;
     }
     cout << endl;
@@ -332,7 +326,7 @@ void Interpolation<T>::displayCurentNeighbours()
     cout << " - Curent neighbours (" << m_curentNeighbours.size() << ") = ";
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
     {
-        cout << "(" << (*nu) << ":" << setprecision(m_precision) << getPoint(nu) << ":";
+        cout << "(" << (*nu) << ":" << setprecision(Utils::m_precision) << getPoint(nu) << ":";
         cout << Utils::vector2str(nu->getAlpha()) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
     }
     cout << endl << endl;
@@ -341,17 +335,16 @@ void Interpolation<T>::displayCurentNeighbours()
 template <typename T>
 void Interpolation<T>::displayResults()
 {
-    cout << " - Interpolation error (pcm)" << endl;
-    cout << " [e_inf] = " << m_infError << endl;
-    cout << " [e_mse] = " << m_mseError << endl;
-    cout << " - Number of calculation point = " << m_nbEvals << endl;
-    cout << " - Total Time = " << m_totalTime << endl;
-    cout << " - AI Run Time = " << m_runTime << endl;
+    cout << " - Interpolation error (pcm):";
+    cout << " [e_inf] = " << m_infError << " | [e_mse] = " << m_mseError << endl;
+    cout << endl << " - Number of calculation point = " << m_nbEvals << endl;
+    cout << endl << " - AI run time = " << m_runTime << endl;
 }
 
 template <typename T>
 void Interpolation<T>::displayAll()
 {
+    cout << endl;
     m_function->displayParametersDomain();
 	  cout << endl;
     displayInterpolationPoints();
@@ -364,7 +357,6 @@ void Interpolation<T>::computeAIApproximationResults()
 {
 	// Implémenter ici le type d'erreur qu'on veut calculer
 	vector<double> exactValue, approxValue, error;
-	vector<vector<double>> exactValues, approxValues, errors;
 	vector<double> exactValuesNorm, errorsNorm;
 
  	for (int i=0; i<m_nbTestPoints; i++)
@@ -373,9 +365,9 @@ void Interpolation<T>::computeAIApproximationResults()
 		approxValue = interpolation(m_testPoints[i]);
 		error = Utils::diff(exactValue,approxValue);
 
-		exactValues.push_back(exactValue);
-		approxValues.push_back(approxValue);
-		errors.push_back(error);
+		m_exactValues.push_back(exactValue);
+		m_approxValues.push_back(approxValue);
+		m_errors.push_back(error);
 
 		exactValuesNorm.push_back(Utils::norm(exactValue,2));
 		errorsNorm.push_back(Utils::norm(error,2));
@@ -384,6 +376,8 @@ void Interpolation<T>::computeAIApproximationResults()
 	m_mseError = 0;
 	vector<double> relativeErrors;
 	double maxValue =  Utils::max_elt(exactValuesNorm);
+
+
  	for (int i=0; i<m_nbTestPoints; i++)
 	{
 		relativeErrors.push_back(errorsNorm[i]*pow(10,5)/maxValue);
@@ -392,6 +386,33 @@ void Interpolation<T>::computeAIApproximationResults()
 
 	m_infError = *max_element(relativeErrors.begin(), relativeErrors.end());
 	m_mseError = sqrt(m_mseError);
+}
+
+template <typename T>
+void Interpolation<T>::saveAIApproximationResults()
+{
+    cout << " - Approximation results are stored in data/output.dat" << endl;
+    ofstream file("AI/data/output.dat", ios::out);
+    if(file)
+    {
+        for (int i=0; i<int(m_testPoints.size()); i++)
+        {
+	          file << (i+1) << " ";
+						for (int j=0; j<m_d; j++)
+								file << /*setprecision(Utils::m_precision) <<*/ m_testPoints[i](j) << " ";
+            file << "| ";
+						for (int j=0; j<m_n; j++)
+								file << /*setprecision(Utils::m_precision) <<*/ m_exactValues[i][j] << " ";
+            file << "| ";
+            for (int j=0; j<m_n; j++)
+                file << /*setprecision(Utils::m_precision) <<*/ m_approxValues[i][j] << " ";
+            file << "| ";
+            for (int j=0; j<m_n; j++)
+                file << /*setprecision(Utils::m_precision) <<*/ m_errors[i][j] << endl;
+				}
+        file.close();
+    }
+        else cerr << "Error while opening the file!" << endl;
 }
 
 #endif

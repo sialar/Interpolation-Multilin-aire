@@ -9,88 +9,42 @@
 
 using namespace std;
 
-int chooseDimensionD(int argc, char* argv[], int argNum)
-{
-    if (argc > argNum) return stoi(argv[argNum]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension d: ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int chooseDimensionN(int argc, char* argv[], int argNum)
-{
-    if (argc > argNum) return stoi(argv[argNum]);
-    int dim = -1;
-    while (dim < 0)
-    {
-        cout << " - Choose the space dimension n: ";
-        cin >> dim;
-    }
-    return dim;
-}
-
-int chooseNbTestPoints(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  int nbTestPoints = -1;
-  while (nbTestPoints < 0)
-  {
-    cout << " - Choose the number ot test points : ";
-    cin >> nbTestPoints;
-  }
-  return nbTestPoints;
-}
-
-int chooseMaxIteration(int argc, char* argv[], int argNum)
-{
-  if (argc > argNum) return stoi(argv[argNum]);
-  int maxIteration = -1;
-  while (maxIteration < 0)
-  {
-    cout << " - Choose the maximum number of iteration : ";
-    cin >> maxIteration;
-  }
-  return maxIteration;
-}
-
-MultiVariatePoint<int> chooseMethods(int dim)
-{
-    MultiVariatePoint<int> methods(dim,0,-1);
-    for (int i=0; i<dim; i++)
-    {
-        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
-        {
-            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
-            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
-            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
-            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
-            cin >> methods(i);
-        }
-    }
-    return methods;
-}
-
 int main( int argc, char* argv[] )
 {
-    int nbIter = chooseMaxIteration(argc, argv, 3);
-  	int nbTestPts = chooseNbTestPoints(argc, argv, 4);
-    MultiVariatePoint<int> methods(5,0,0);
+    // f : x = (x1, .., xd) --> (y1, .., yn)
+    // Choix de la dimension d (manière interactive ou passage en argument)
+    int d = Utils::chooseDimensionD(argc, argv, 1);
+    // Choix de la dimension n (manière interactive ou passage en argument)
+  	int n = Utils::chooseDimensionN(argc, argv, 2);
+    // Choix du nombre d'itérations (manière interactive ou passage en argument)
+    int nbIter = Utils::chooseMaxIteration(argc, argv, 3);
+    // Choix de la version de l'algo AI à utiliser sur chaque direction
+    // eg. d=2, methods = (i,j) --> utiliser la version i sur la direction 0 et j sur la direction 1
+    // 3 versions possibles de l'algorithme d'interpolation adaptative:
+    //  + 0 : Polynômes de Lagrange définis globalement + Points de Leja
+    //  + 1 : Fonctions affines par morceaux + Construction des points par dichotomie
+    //  + 2 : Fonctions quadratiques par morceaux + Construction des points par dichotomie
+    MultiVariatePoint<int> methods = Utils::chooseMethods(d);
+    // Choix du fichier contenant les données réelles
+    string fileName = "cross_section.dat";
+    // Construction de la fonction à approcher (données réelles stockées dans le fichier fileName)
+    RealDataFunctionsPtr f = make_shared<RealDataFunctions>(d,n,fileName);
 
-    int d = chooseDimensionD(argc, argv, 1);
-  	int n = chooseDimensionD(argc, argv, 2);
-    RealDataFunctionsPtr f = make_shared<RealDataFunctions>(d,n,"AI/data/cross_section.dat");
-
+    // Construction de l'opérateur d'interpolation en utilisant une combinaison des
+    // différentes version (car utilisation de MixedInterpolation)
     MixedInterpolationPtr interp(new MixedInterpolation(f,nbIter,methods));
-	  interp->setRandomTestPoints(nbTestPts);
+    // Construction de la grille des points de test en utilisant les points lus dans le fichier fileName
+	  interp->setTestPoints(f->referencePts());
 
+    // Lancer l'algorithme d'interpolation adaptative
     interp->launchAIAlgo(false);
+    // Caluler et stocker (dans output.dat) les résultats d'approximation sur la même grille
+    // de référence présene dans le fichier fileName
     interp->computeAIApproximationResults();
+    interp->saveAIApproximationResults();
 
-	   interp->displayAll();
+    // Afficher les résultats (precision, temps de calcul, nombre de points de calcul, ...) sur le terminal
+    interp->displayAll();
 
     return 0;
 }

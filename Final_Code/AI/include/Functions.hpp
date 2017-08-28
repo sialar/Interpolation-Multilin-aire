@@ -34,6 +34,8 @@ class Functions
 
       int getD() { return m_d;};
       int getN() { return m_n;};
+      vector<vector<double>> parametersDomain() { return m_parametersDomain; };
+
 
 	     // Implémente une fonction analytique
       virtual vector<double> evaluate(MultiVariatePoint<double> x) = 0;

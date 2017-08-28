@@ -1,6 +1,7 @@
 #include "../include/Utils.hpp"
 
 vector<double> Utils::m_1dGrid;
+double Utils::m_precision = numeric_limits<double>::digits10+1;
 
 void Utils::separateur()
 {
@@ -11,14 +12,14 @@ void Utils::separateur()
 // Afficher les éléments d'un vecteur
 void Utils::displayValues(vector<double> values)
 {
-    cout << "[ " << values[0];
+    cout << "[ " << m_precision << values[0];
     for (size_t i=1; i<values.size(); ++i)
-        cout << " ; " << values[i];
+        cout << " ; " <<  m_precision << values[i];
     cout << " ]" << endl;
 }
 
 // Changement de variable [a,b] --> [-1,1]
-double Utils::adaptCoordsToFunctionDomain(double a, double b, double x)
+double Utils::convertToDefaultDomain(double a, double b, double x)
 {
     return (2*x)/(b-a) + 1 - (2*b)/(b-a);
 }
@@ -318,4 +319,69 @@ double Utils::max_elt(vector<double> v)
         if (x>m)
             m = x;
     return m;
+}
+
+int Utils::chooseDimensionD(int argc, char* argv[], int argNum)
+{
+    if (argc > argNum) return stoi(argv[argNum]);
+    int dim = -1;
+    while (dim < 0)
+    {
+        cout << " - Choose the space dimension d: ";
+        cin >> dim;
+    }
+    return dim;
+}
+
+int Utils::chooseDimensionN(int argc, char* argv[], int argNum)
+{
+    if (argc > argNum) return stoi(argv[argNum]);
+    int dim = -1;
+    while (dim < 0)
+    {
+        cout << " - Choose the space dimension n: ";
+        cin >> dim;
+    }
+    return dim;
+}
+
+int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int nbTestPoints = -1;
+  while (nbTestPoints < 0)
+  {
+    cout << " - Choose the number ot test points : ";
+    cin >> nbTestPoints;
+  }
+  return nbTestPoints;
+}
+
+int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
+{
+  if (argc > argNum) return stoi(argv[argNum]);
+  int maxIteration = -1;
+  while (maxIteration < 0)
+  {
+    cout << " - Choose the maximum number of iteration : ";
+    cin >> maxIteration;
+  }
+  return maxIteration;
+}
+
+MultiVariatePoint<int> Utils::chooseMethods(int dim)
+{
+    MultiVariatePoint<int> methods(dim,0,-1);
+    for (int i=0; i<dim; i++)
+    {
+        while (methods(i)!=0 && methods(i)!=1 && methods(i)!=2)
+        {
+            cout << " - Choose the method of interpolation in direction [" << i << "]: " << endl;
+            cout << "\t - 0: Using lagrange polynomial functions and leja points: " << endl;
+            cout << "\t - 1: Using piecewise functions and middle points: " << endl;
+            cout << "\t - 2: Using quadratic functions and middle points: " << endl << " - ";
+            cin >> methods(i);
+        }
+    }
+    return methods;
 }
