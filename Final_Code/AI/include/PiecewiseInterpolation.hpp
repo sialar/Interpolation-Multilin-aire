@@ -26,12 +26,12 @@ class PiecewiseInterpolation : public Interpolation<string>
 	// m_method = 1 ou 2 (version)
 	// 1 : Fonctions affines par morceaux + construction des points d'interpolation par dichotomie
 	// 2 : Fonctions quadratiques par morceaux + construction des points d'interpolation par dichotomie
-        int m_method; 
+        int m_method;
 	// Vecteur d'arbre: 1 arbre par direction
         vector<BinaryTreePtr> m_trees;
 
     public:
-        PiecewiseInterpolation(int d, int n, int nIter, int method);
+        PiecewiseInterpolation(FunctionsPtr f, int nIter, int method);
         ~PiecewiseInterpolation() {};
         void clearAllTrees();
 

@@ -10,10 +10,12 @@ CXXFLAGS = -O3 -lm -std=c++14 -g -Wall
 OBJ_FILES = $(BIN)/LagrangeInterpolation.o $(BIN)/PiecewiseInterpolation.o $(BIN)/Functions.o
 OBJ_FILES += $(BIN)/RealDataFunctions.o $(BIN)/AnalyticalFunctions.o
 OBJ_FILES += $(BIN)/MixedInterpolation.o $(BIN)/Utils.o $(BIN)/BinaryTree.o
+OBJ_FILES += $(BIN)/Tucker/LagrangePolynomial.o $(BIN)/Tucker/TuckerApproximation.o
 
 INCLUDE_FILES = $(INCLUDE)/MultiVariatePoint.hpp $(INCLUDE)/Utils.hpp $(INCLUDE)/Functions.hpp
+INCLUDE_FILES += $(INCLUDE)/Tucker/LagrangePolynomial.hpp $(INCLUDE)/Tucker/TuckerApproximation.hpp
 
-TEST_FILES += $(BIN)/TestAdaptativeInterpolation
+TEST_FILES += $(BIN)/TestWithRealFunction $(BIN)/TestWithAnalyticalFunction
 
 all: $(TEST_FILES)
 

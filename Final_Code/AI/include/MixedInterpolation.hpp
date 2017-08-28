@@ -24,7 +24,7 @@ class MixedInterpolation : public Interpolation<string>
 {
     private:
       	vector<double> m_lejaSequence;
- 	// 0 ou 1 ou 2 sur chaque variable 
+ 	// 0 ou 1 ou 2 sur chaque variable
 	// 1 : Polynômes de Lgrange définis globalement + points de Leja
 	// 1 : Fonctions affines par morceaux + construction des points d'interpolation par dichotomie
 	// 2 : Fonctions quadratiques par morceaux + construction des points d'interpolation par dichotomie
@@ -33,7 +33,7 @@ class MixedInterpolation : public Interpolation<string>
       	vector<BinaryTreePtr> m_trees;
 
     public:
-      	MixedInterpolation(int d, int n, int nIter, MultiVariatePoint<int> methods);
+      	MixedInterpolation(FunctionsPtr f, int nIter, MultiVariatePoint<int> methods);
       	~MixedInterpolation() {};
       	void clearAllTrees();
 

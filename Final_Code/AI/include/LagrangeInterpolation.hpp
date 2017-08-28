@@ -22,11 +22,11 @@ using namespace std;
 class LagrangeInterpolation : public Interpolation<int>
 {
     private:
-      // Vecteur Contenant des points de Leja 
+      // Vecteur Contenant des points de Leja
       vector<double> m_lejaSequence;
 
     public:
-      LagrangeInterpolation(int d, int n, int nIter);
+      LagrangeInterpolation(FunctionsPtr f, int nIter);
       ~LagrangeInterpolation() {};
 
 

@@ -1,39 +1,19 @@
 #include "../include/Functions.hpp"
 
-// Exemple de fonctions analytiques à intepoler
-// Fonction polynomiale
-vector<double> p(MultiVariatePoint<double> x, int d, int n)
-{
-	double res = 0;
-	for (int i=0; i<d; i++)
-		res += 	pow(x(i), i);
-	vector<double> vecres(n,res);
-	return vecres;
-}
-
-// sin( norm_2(x) )
-vector<double> f(MultiVariatePoint<double> x, int d, int n)
-{
-	double res = 0;
-	for (int i=0; i<d; i++)
-		res += 	pow(x(i), 2);
-	vector<double> vecres(n,sqrt(res));
-	return vecres;
-}
-
-// sqrt(1-x**2) * sin( sum(xi)_{0<j<d} )
-vector<double> g(MultiVariatePoint<double> x, int d, int n)
-{
-	double res = 0;
-	for (int i=0; i<d; i++)
-		res += 	pow(x(i), 2);
-	vector<double> vecres(n,sqrt(res));
-	return vecres;
-}
-
-
 Functions::Functions(int d, int n)
 {
 	m_d = d;
 	m_n = n;
+	vector<double> defaultDomain(2,1);
+	defaultDomain[0] = -1;
+	for (int i=0; i<m_d; i++)
+		m_parametersDomain.push_back(defaultDomain);
+}
+
+void Functions::displayParametersDomain()
+{
+    cout << " - Parameters domain of function : ";
+    for (int i=0; i<m_d-1; i++)
+      cout << "[" << m_parametersDomain[i][0] << "," << m_parametersDomain[i][1] << "] x ";
+    cout << "[" << m_parametersDomain[m_d-1][0] << "," << m_parametersDomain[m_d-1][1] << "]" << endl;
 }

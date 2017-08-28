@@ -1,7 +1,7 @@
 #include "../include/PiecewiseInterpolation.hpp"
 
-PiecewiseInterpolation::PiecewiseInterpolation(int d, int n, int nIter, int method) :
-    Interpolation(d, n, nIter), m_method(method)
+PiecewiseInterpolation::PiecewiseInterpolation(FunctionsPtr f, int nIter, int method) :
+    Interpolation(f, nIter), m_method(method)
 {
     m_trees.resize(m_d);
     for (int i=0; i<m_d; i++)
@@ -69,12 +69,12 @@ void PiecewiseInterpolation::computeBoundariesForBasisFunction(double t, double*
 
 
 /************************* AI algo ********************************************/
-// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours) 
+// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours)
 bool alphaLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
     return Utils::norm(nu->getAlpha(),2) < Utils::norm(mu->getAlpha(),2);
 }
-// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours) 
+// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours)
 bool ageLess(MultiVariatePointPtr<string> nu, MultiVariatePointPtr<string> mu)
 {
     return nu->getWaitingTime() < mu->getWaitingTime();

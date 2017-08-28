@@ -48,8 +48,7 @@ class Interpolation
         vector<MultiVariatePointPtr<T>> m_path;
 		// Ensemble de voisins (candidats) dans l'itération courante de l'algorithme AI
         list<MultiVariatePointPtr<T>> m_curentNeighbours;
-		// Domaine de définition de chaque variable [-1,1] par défaut
-        vector<vector<double>> m_parametersDomain;
+
 
 // 1.1: Validation de la méthode
 		// Taille de l'éspace des points de référence qui permet de valider la méthode
@@ -81,7 +80,7 @@ class Interpolation
         Interpolation() {};
         virtual ~Interpolation() {};
 
-        Interpolation(int d, int n, int nIter);
+        Interpolation(FunctionsPtr f, int nIter);
 
 		// Accesseurs
         const int nbEvals() { return m_nbEvals; };
@@ -142,7 +141,6 @@ class Interpolation
         void displayPath();
         void clearAllAlpha();
         void displayResults();
-        void displayRealDomain();
         void displayCurentNeighbours();
         void displayInterpolationPoints();
         void displayInterpolationMultiVariatePoints();
@@ -155,17 +153,13 @@ template <typename T>
 double Interpolation<T>::m_precision = numeric_limits<double>::digits10+1;
 
 template <typename T>
-Interpolation<T>::Interpolation(int d, int n, int nIter)
+Interpolation<T>::Interpolation(FunctionsPtr f, int nIter)
 {
-    m_d = d;
-    m_n = n;
+    m_d = f->getD();
+    m_n = f->getN();
+    m_function = f;
     m_maxIteration = nIter;
-    m_interpolationPoints.resize(d);
-
-	vector<double> defaultDomain(2,1);
-	defaultDomain[0] = -1;
-	for (int i=0; i<m_d; i++)
-		m_parametersDomain.push_back(defaultDomain);
+    m_interpolationPoints.resize(m_d);
 }
 
 template <typename T>
@@ -186,18 +180,9 @@ void Interpolation<T>::clearAllAlpha()
 }
 
 template <typename T>
-void Interpolation<T>::setFunc(FunctionsPtr f)
-{
-    m_function = f;
-}
-
-template <typename T>
 vector<double> Interpolation<T>::func(MultiVariatePoint<double> x)
 {
-    for (int i=0; i<m_d; i++)
-        x(i) = Utils::convertToFunctionDomain(m_parametersDomain[i][0], m_parametersDomain[i][1], x(i));
-    vector<double> res = m_function->evaluate(x);
-    return res;
+    return m_function->evaluate(x);
 }
 
 template <typename T>
@@ -354,16 +339,6 @@ void Interpolation<T>::displayCurentNeighbours()
 }
 
 template <typename T>
-void Interpolation<T>::displayRealDomain()
-{
-    cout << " - Real domain of the cross section function : ";
-    for (int i=0; i<m_d-1; i++)
-      cout << "[" << m_parametersDomain[i][0] << "," << m_parametersDomain[i][1] << "] x ";
-    cout << "[" << m_parametersDomain[m_d-1][0] << "," << m_parametersDomain[m_d-1][1] << "]" << endl;
-}
-
-
-template <typename T>
 void Interpolation<T>::displayResults()
 {
     cout << " - Interpolation error (pcm)" << endl;
@@ -377,10 +352,10 @@ void Interpolation<T>::displayResults()
 template <typename T>
 void Interpolation<T>::displayAll()
 {
-    displayRealDomain();
-	cout << endl;
+    m_function->displayParametersDomain();
+	  cout << endl;
     displayInterpolationPoints();
-	cout << endl;
+	  cout << endl;
     displayResults();
 }
 

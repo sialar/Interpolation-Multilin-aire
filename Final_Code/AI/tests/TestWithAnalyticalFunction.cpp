@@ -5,7 +5,6 @@
 #include "../include/MixedInterpolation.hpp"
 #include "../include/LagrangeInterpolation.hpp"
 #include "../include/AnalyticalFunctions.hpp"
-#include "../include/RealDataFunctions.hpp"
 #include "../include/Utils.hpp"
 
 using namespace std;
@@ -79,15 +78,13 @@ int main( int argc, char* argv[] )
 {
   	int d = chooseDimensionD(argc, argv, 1);
   	int n = chooseDimensionD(argc, argv, 2);
+    AnalyticalFunctionsPtr f = make_shared<AnalyticalFunctions>(d,n);
+
   	int nbIter = chooseMaxIteration(argc, argv, 3);
   	int nbTestPts = chooseNbTestPoints(argc, argv, 4);
-    MultiVariatePoint<int> methods = chooseMethods(d);
+    MultiVariatePoint<int> methods(5,0,0);// = chooseMethods(d);
 
-    AnalyticalFunctionsPtr af = make_shared<AnalyticalFunctions>(d,n);
-    RealDataFunctionsPtr rdf = make_shared<RealDataFunctions>(d,n,"");
-
-    MixedInterpolationPtr interp(new MixedInterpolation(d,n,nbIter,methods));
-    interp->setFunc(rdf);
+    MixedInterpolationPtr interp(new MixedInterpolation(f,nbIter,methods));
 	  interp->setRandomTestPoints(nbTestPts);
 
     interp->launchAIAlgo(false);

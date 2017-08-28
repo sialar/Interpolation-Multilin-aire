@@ -1,7 +1,7 @@
 #include "../include/LagrangeInterpolation.hpp"
 
-LagrangeInterpolation::LagrangeInterpolation(int d, int n, int nIter) :
-    Interpolation(d, n ,nIter)
+LagrangeInterpolation::LagrangeInterpolation(FunctionsPtr f, int nIter) :
+    Interpolation(f,nIter)
 {
     m_lejaSequence = Utils::loadLejaSequenceFromFile(m_maxIteration);
 }
@@ -34,12 +34,12 @@ void LagrangeInterpolation::addInterpolationPoint(MultiVariatePoint<double>p)
 
 /************************* AI algo ********************************************/
 
-// Comparer des points multivariés selon les normes de leurs alpha (Erreur d'interpolation courante au point considéré) 
+// Comparer des points multivariés selon les normes de leurs alpha (Erreur d'interpolation courante au point considéré)
 bool alphaLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
     return Utils::norm(nu->getAlpha(),2) < Utils::norm(mu->getAlpha(),2);
 }
-// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours) 
+// Comparer des points multivariés selon le temps d'attente dans la liste des voisins courants (nombre d'itération passé dans la liste m_curentNeighbours)
 bool ageLess(MultiVariatePointPtr<int> nu, MultiVariatePointPtr<int> mu)
 {
     return nu->getWaitingTime() < mu->getWaitingTime();
@@ -67,7 +67,7 @@ void LagrangeInterpolation::updateCurentNeighbours(MultiVariatePointPtr<int> nu)
 {
  	// nu est le nouveau point d'interpolation (ce n'est plus un candidat)
 	m_curentNeighbours.remove(nu);
-	
+
 	// Incrémenter le temps d'attente de tous les voisins (candidats)
 	for (MultiVariatePointPtr<int> mu : m_curentNeighbours)
     	mu->incrWaitingTime();
