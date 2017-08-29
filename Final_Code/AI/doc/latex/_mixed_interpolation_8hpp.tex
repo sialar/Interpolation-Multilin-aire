@@ -1,0 +1,40 @@
+\hypertarget{_mixed_interpolation_8hpp}{}\section{include/\+Mixed\+Interpolation.hpp File Reference}
+\label{_mixed_interpolation_8hpp}\index{include/\+Mixed\+Interpolation.\+hpp@{include/\+Mixed\+Interpolation.\+hpp}}
+
+
+Classe dérivée de \hyperlink{class_interpolation}{Interpolation$<$string$>$}\+: interpolation utilisant une combinaison des deux versions (\hyperlink{class_lagrange_interpolation}{Lagrange\+Interpolation}, \hyperlink{class_piecewise_interpolation}{Piecewise\+Interpolation}). Chaque direction correspond à une des 3 version (voir R\+E\+A\+D\+ME ligne 4). Le type d\textquotesingle{}ordre est une chaine de caractère (code de Huffman) qui correspond (en 1d), soit au chemin du nœud dans l\textquotesingle{}arbre binaire (si version 1 ou 2), soit à l\textquotesingle{}indice du point de Leja (si version 0)  
+
+
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$list$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$memory$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$chrono$>$}\\*
+{\ttfamily \#include \char`\"{}Multi\+Variate\+Point.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Interpolation.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Binary\+Tree.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Utils.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_mixed_interpolation}{Mixed\+Interpolation}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::unique\+\_\+ptr$<$ \hyperlink{class_mixed_interpolation}{Mixed\+Interpolation} $>$ {\bfseries Mixed\+Interpolation\+Ptr}\hypertarget{_mixed_interpolation_8hpp_ae50bd9de33fbc27243853c8ee690809b}{}\label{_mixed_interpolation_8hpp_ae50bd9de33fbc27243853c8ee690809b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classe dérivée de \hyperlink{class_interpolation}{Interpolation$<$string$>$}\+: interpolation utilisant une combinaison des deux versions (\hyperlink{class_lagrange_interpolation}{Lagrange\+Interpolation}, \hyperlink{class_piecewise_interpolation}{Piecewise\+Interpolation}). Chaque direction correspond à une des 3 version (voir R\+E\+A\+D\+ME ligne 4). Le type d\textquotesingle{}ordre est une chaine de caractère (code de Huffman) qui correspond (en 1d), soit au chemin du nœud dans l\textquotesingle{}arbre binaire (si version 1 ou 2), soit à l\textquotesingle{}indice du point de Leja (si version 0) 
+
+\begin{DoxyAuthor}{Author}
+S\+I\+A\+LA Rafik 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+08/16 
+\end{DoxyDate}

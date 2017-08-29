@@ -19,6 +19,12 @@
 
 using namespace std;
 
+/**
+ *  \file Interpolation.hpp
+ *  \brief Classe générique abstraite qui implémente l'algorithme d'interpolation adaptative
+ *  \author SIALA Rafik
+ *  \date 08/16
+*/
 template <typename T>
 class Interpolation
 {
@@ -92,25 +98,64 @@ class Interpolation
         const vector<double>& interpolationPoints(int i) { return m_interpolationPoints[i]; };
         const vector<MultiVariatePoint<double>>& interpolationNodes() { return m_interpolationNodes; };
         const vector<vector<double>> parametersDomain() { return m_function->parametersDomain(); };
-
-
-		virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
-		// Retourner le vecteur d'ordres du prochain point d'interpolation sélectionné par l'algo AI
-		// 3 fois sur 4: on choisi celui ayant la plus grande erreur (algo AI)
-		// 1 fois sur 4: on choisi celui qui a attendu le plus longtemps
-		// Pour éviter de bloquer une direction dans le cas vaut l'erreur vaut par hasard 0
-        virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
-		// Retourner le vecteur d'ordres du premier point d'interpolation (contient des codes de Huffman ou des indices)
-        virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
-		// Mettre à jour, en fonction du nouveau point d'interpolation, la liste des candidats courant
-        virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
-		// Vérifier si nu est bien un voisin de la séquence de points d'interpolation courante (vérifier la monotonie de l'ensemble)
-        virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
-		// Implémente la fonction de base (polynome de Lagrange global, fonction affine (ou quadratique) par morceaux
-        virtual double basisFunction_1D(T code, double t, int axis) = 0;
-		// Méthode abstraite (le corp dépend de la vérsion concidérée (voir ligne 38))
-		// Ajouter le point d'interpolation correspondant au vecteur d'ordre (multi-indice, ou vecteur de code de huffman selon la version de AI)
+/******************************************************************************/
+/************************ Points d'interpolation ******************************/
+        /**
+          * Retourne le point multivarié correspondant au vecteur d'ordres nu
+          * \param nu : vecteur d'ordres indices ou codes de Huffman (dépend du type générique T)
+          * \return point multivarié correspondant à nu
+        */
         virtual MultiVariatePoint<double> getPoint(MultiVariatePointPtr<T> nu) = 0;
+        /**
+          * Ajoute le nouveau point d'interpolation p
+          * \param p : nouveau point d'interpolation
+        */
+		    virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
+
+/******************************************************************************/
+/*************************** Algorithme AI ************************************/
+        /**
+        * Retourner le premier vecteur d'ordres dans l'algo AI
+        * \return le premier vecteur d'ordres
+        */
+        virtual MultiVariatePointPtr<T> getFirstMultivariatePoint() = 0;
+        /**
+          * Retourner le vecteur d'ordres du prochain point d'interpolation sélectionné par l'algo AI
+          * 3 fois sur 4: on choisi celui ayant la plus grande erreur (algo AI)
+      		* 1 fois sur 4: on choisi celui qui a attendu le plus longtemps pour éviter de bloquer une direction dans le cas où l'erreur vaut 0
+          * \param iteration : numéro de l'itération courante
+          * \return teration : vecteur d'ordres du prochain point d'interpolation
+        */
+        virtual MultiVariatePointPtr<T> maxElement(int iteration) = 0;
+        /**
+          * Vérifier si le vecteur d'ordre index existe dans m_path (correspond à un point d'interpolation)
+          * \param index : vecteur d'ordre
+          * \return true si et seulement si index est dans m_path
+        */
+        virtual bool indiceInPath(MultiVariatePoint<T> index) = 0;
+        /**
+          * Mettre à jour, en fonction du nouveau point d'interpolation correspondant au vecteur d'ordre nu, la liste des candidats courant
+          * \param nu : nouveau vecteur d'ordre choisi par l'algo AI
+        */
+        virtual void updateCurentNeighbours(MultiVariatePointPtr<T> nu) = 0;
+        /**
+          * Vérifier si nu est bien un voisin de la séquence de points d'interpolation courante (vérifier la monotonie de l'ensemble de points choisis)
+          * \param nu : vecteur d'ordres
+          * \return true si et seulement si nu est voisin à l'ensemble de points de m_path
+        */
+        virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
+
+
+/******************************************************************************/
+/************************** Fonctions de base *********************************/
+        /**
+          * Implémente la fonction de base (polynome de Lagrange global, fonction affine (ou quadratique) par morceaux (dépend de la version de l'algo AI)
+          * \param code : ordre (indice ou code de Huffman) correspondant à une coordonnée d'un point d'interpolation
+          * \param t : point d'évaluation (1d)
+          * \param axis : direction concidéré (0 <= axis <= d-1)
+          * \return la valeur au point t de la fonction de base correspondant au point 1d d'ordre code sur la direction axis
+        */
+        virtual double basisFunction_1D(T code, double t, int axis) = 0;
 
 		// Construit la séquence de points de test aléatoirement
         void setRandomTestPoints(int nbTestPoints);
@@ -220,8 +265,7 @@ void Interpolation<T>::launchAIAlgo(bool debug)
 		// Pour suivre la progression de l'algo sur le terminal
         if (debug)
         {
-            cout << endl;
-            Utils::separateur();
+            cout << endl << endl;
             displayPath();
             displayCurentNeighbours();
         }
@@ -327,7 +371,7 @@ void Interpolation<T>::displayCurentNeighbours()
     for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
     {
         cout << "(" << (*nu) << ":" << setprecision(Utils::m_precision) << getPoint(nu) << ":";
-        cout << Utils::vector2str(nu->getAlpha()) << ":" << nu << ") [" << nu->getWaitingTime() << "] | ";
+        cout << Utils::vector2str(nu->getAlpha()) << ":" << nu << ") [" << nu->getNbWaitingIter() << "] | ";
     }
     cout << endl << endl;
 }
@@ -375,8 +419,7 @@ void Interpolation<T>::computeAIApproximationResults()
 
 	m_mseError = 0;
 	vector<double> relativeErrors;
-	double maxValue =  Utils::max_elt(exactValuesNorm);
-
+	double maxValue =  *max_element(exactValuesNorm.begin(),exactValuesNorm.end());
 
  	for (int i=0; i<m_nbTestPoints; i++)
 	{

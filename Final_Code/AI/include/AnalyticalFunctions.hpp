@@ -40,7 +40,7 @@ class AnalyticalFunctions : public Functions
 
         /**
          *  Retourner la valeur "exacte" de f au point multivariée x
-         *  \param x : points multivarié
+         *  \param x : point multivarié
          *  \return f(x) : valeur de f au point x
         */
       	vector<double> evaluate(MultiVariatePoint<double> x);

@@ -1,0 +1,163 @@
+\hypertarget{class_multi_variate_point}{}\section{Multi\+Variate\+Point$<$ T $>$ Class Template Reference}
+\label{class_multi_variate_point}\index{Multi\+Variate\+Point$<$ T $>$@{Multi\+Variate\+Point$<$ T $>$}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_multi_variate_point_a2ab2acda8a5c5289220f130117bd5f95}{Multi\+Variate\+Point} (int d, int n, T val)
+\item 
+\hyperlink{class_multi_variate_point_ad497f54132498b6141484057d042e157}{Multi\+Variate\+Point} (const \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ T $>$ \&nu)
+\item 
+int \hyperlink{class_multi_variate_point_a32acfceae3008c886b5101a292d16efb}{getD} () const 
+\item 
+int \hyperlink{class_multi_variate_point_ac3e4878d6202deeb489a7c117799e53b}{getN} () const 
+\item 
+int \hyperlink{class_multi_variate_point_accf19c239f3359ac9d8d6057a7b913c2}{get\+Nb\+Waiting\+Iter} ()
+\item 
+void \hyperlink{class_multi_variate_point_aedc8c232c76736f1f5e4a563bf8d4fc4}{incr\+Nb\+Waiting\+Iter} ()
+\item 
+vector$<$ double $>$ \hyperlink{class_multi_variate_point_ac67af657777f1e7c31b1b5d11df2b788}{get\+Alpha} () const 
+\item 
+void \hyperlink{class_multi_variate_point_aa7a4e466b5337a6978b5140ca2492545}{set\+Alpha} (vector$<$ double $>$ alpha)
+\item 
+bool \hyperlink{class_multi_variate_point_a5fa298c0efa8ca27708cb17b82e28316}{alpha\+Already\+Computed} ()
+\item 
+bool \hyperlink{class_multi_variate_point_a5afa1773c5bdcf30a9b51b29cc4cb6a9}{alpha\+Is\+Null} ()
+\item 
+void {\bfseries reinit} ()\hypertarget{class_multi_variate_point_aa01525fcdeee3650a5b10e9fd5375671}{}\label{class_multi_variate_point_aa01525fcdeee3650a5b10e9fd5375671}
+
+\item 
+T \& {\bfseries operator()} (int d) const \hypertarget{class_multi_variate_point_a1615d3e6f128a882dfa038051b0f3225}{}\label{class_multi_variate_point_a1615d3e6f128a882dfa038051b0f3225}
+
+\item 
+\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \& {\bfseries operator+=} (const \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \&v)\hypertarget{class_multi_variate_point_aa8c0b072bd69e6e5fda6410dfed40f9a}{}\label{class_multi_variate_point_aa8c0b072bd69e6e5fda6410dfed40f9a}
+
+\item 
+\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \& {\bfseries operator-\/=} (const \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \&v)\hypertarget{class_multi_variate_point_aeed522c7d3438f8ce6ee2982383d13c3}{}\label{class_multi_variate_point_aeed522c7d3438f8ce6ee2982383d13c3}
+
+\item 
+\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \& {\bfseries operator$\ast$=} (const double \&r)\hypertarget{class_multi_variate_point_af2ac0ba60bb5787a3e9d0d7244b358f9}{}\label{class_multi_variate_point_af2ac0ba60bb5787a3e9d0d7244b358f9}
+
+\item 
+\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} \& {\bfseries operator=} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point} const \&nu)\hypertarget{class_multi_variate_point_a6cdc125e64fc57bc78e71dbac77e5640}{}\label{class_multi_variate_point_a6cdc125e64fc57bc78e71dbac77e5640}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{Multi\+Variate\+Point(int d, int n, T val)}{MultiVariatePoint(int d, int n, T val)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Multi\+Variate\+Point}$<$ T $>$\+::{\bf Multi\+Variate\+Point} (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{int}]{n, }
+\item[{T}]{val}
+\end{DoxyParamCaption}
+)}\hypertarget{class_multi_variate_point_a2ab2acda8a5c5289220f130117bd5f95}{}\label{class_multi_variate_point_a2ab2acda8a5c5289220f130117bd5f95}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em d} & \+: dimension de l\textquotesingle{}éspace de départ de f, (taille du point multivarié) \\
+\hline
+{\em n} & \+: dimension de l\textquotesingle{}éspace d\textquotesingle{}arrivé de f, (taille de l\textquotesingle{}erreur au point multivarié) \\
+\hline
+{\em T} & \+: valeur par défaut des coordonnées du point multivariés \\
+\hline
+\end{DoxyParams}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{Multi\+Variate\+Point(const Multi\+Variate\+Point$<$ T $>$ \&nu)}{MultiVariatePoint(const MultiVariatePoint< T > &nu)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Multi\+Variate\+Point}$<$ T $>$\+::{\bf Multi\+Variate\+Point} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Multi\+Variate\+Point}$<$ T $>$ \&}]{nu}
+\end{DoxyParamCaption}
+)}\hypertarget{class_multi_variate_point_ad497f54132498b6141484057d042e157}{}\label{class_multi_variate_point_ad497f54132498b6141484057d042e157}
+Constructeur par copie 
+\begin{DoxyParams}{Parameters}
+{\em nu} & \+: point multivarié \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!alpha\+Already\+Computed@{alpha\+Already\+Computed}}
+\index{alpha\+Already\+Computed@{alpha\+Already\+Computed}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{alpha\+Already\+Computed()}{alphaAlreadyComputed()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ bool {\bf Multi\+Variate\+Point}$<$ T $>$\+::alpha\+Already\+Computed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_multi_variate_point_a5fa298c0efa8ca27708cb17b82e28316}{}\label{class_multi_variate_point_a5fa298c0efa8ca27708cb17b82e28316}
+Vérifier si m\+\_\+alpha a déjà été calculé (en le comparant à m\+\_\+initial\+Alpha) \begin{DoxyReturn}{Returns}
+True si et seulement m\+\_\+alpha != m\+\_\+initial\+Alpha 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!alpha\+Is\+Null@{alpha\+Is\+Null}}
+\index{alpha\+Is\+Null@{alpha\+Is\+Null}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{alpha\+Is\+Null()}{alphaIsNull()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ bool {\bf Multi\+Variate\+Point}$<$ T $>$\+::alpha\+Is\+Null (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_multi_variate_point_a5afa1773c5bdcf30a9b51b29cc4cb6a9}{}\label{class_multi_variate_point_a5afa1773c5bdcf30a9b51b29cc4cb6a9}
+Vérifier si m\+\_\+alpha est nulle \begin{DoxyReturn}{Returns}
+True si et seulement si m\+\_\+alpha vaut (0,..,0) 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!get\+Alpha@{get\+Alpha}}
+\index{get\+Alpha@{get\+Alpha}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{get\+Alpha() const }{getAlpha() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ vector$<$double$>$ {\bf Multi\+Variate\+Point}$<$ T $>$\+::get\+Alpha (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_multi_variate_point_ac67af657777f1e7c31b1b5d11df2b788}{}\label{class_multi_variate_point_ac67af657777f1e7c31b1b5d11df2b788}
+Accesseur à l\textquotesingle{}attribut m\+\_\+alpha \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+alpha 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!getD@{getD}}
+\index{getD@{getD}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{get\+D() const }{getD() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf Multi\+Variate\+Point}$<$ T $>$\+::getD (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_multi_variate_point_a32acfceae3008c886b5101a292d16efb}{}\label{class_multi_variate_point_a32acfceae3008c886b5101a292d16efb}
+Accesseur à l\textquotesingle{}attribut m\+\_\+d \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+d 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!getN@{getN}}
+\index{getN@{getN}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{get\+N() const }{getN() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf Multi\+Variate\+Point}$<$ T $>$\+::getN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_multi_variate_point_ac3e4878d6202deeb489a7c117799e53b}{}\label{class_multi_variate_point_ac3e4878d6202deeb489a7c117799e53b}
+Accesseur à l\textquotesingle{}attribut m\+\_\+n \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+n 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!get\+Nb\+Waiting\+Iter@{get\+Nb\+Waiting\+Iter}}
+\index{get\+Nb\+Waiting\+Iter@{get\+Nb\+Waiting\+Iter}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{get\+Nb\+Waiting\+Iter()}{getNbWaitingIter()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf Multi\+Variate\+Point}$<$ T $>$\+::get\+Nb\+Waiting\+Iter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_multi_variate_point_accf19c239f3359ac9d8d6057a7b913c2}{}\label{class_multi_variate_point_accf19c239f3359ac9d8d6057a7b913c2}
+Accesseur à l\textquotesingle{}attribut m\+\_\+nb\+Waiting\+Iter \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+nb\+Waiting\+Iter 
+\end{DoxyReturn}
+\index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!incr\+Nb\+Waiting\+Iter@{incr\+Nb\+Waiting\+Iter}}
+\index{incr\+Nb\+Waiting\+Iter@{incr\+Nb\+Waiting\+Iter}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{incr\+Nb\+Waiting\+Iter()}{incrNbWaitingIter()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Multi\+Variate\+Point}$<$ T $>$\+::incr\+Nb\+Waiting\+Iter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_multi_variate_point_aedc8c232c76736f1f5e4a563bf8d4fc4}{}\label{class_multi_variate_point_aedc8c232c76736f1f5e4a563bf8d4fc4}
+Incrément la valeur de m\+\_\+nb\+Waiting\+Iter \index{Multi\+Variate\+Point@{Multi\+Variate\+Point}!set\+Alpha@{set\+Alpha}}
+\index{set\+Alpha@{set\+Alpha}!Multi\+Variate\+Point@{Multi\+Variate\+Point}}
+\subsubsection[{\texorpdfstring{set\+Alpha(vector$<$ double $>$ alpha)}{setAlpha(vector< double > alpha)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Multi\+Variate\+Point}$<$ T $>$\+::set\+Alpha (
+\begin{DoxyParamCaption}
+\item[{vector$<$ double $>$}]{alpha}
+\end{DoxyParamCaption}
+)}\hypertarget{class_multi_variate_point_aa7a4e466b5337a6978b5140ca2492545}{}\label{class_multi_variate_point_aa7a4e466b5337a6978b5140ca2492545}
+Mutateur de l\textquotesingle{}attribut m\+\_\+alpha 
+\begin{DoxyParams}{Parameters}
+{\em alpha} & \+: nouvelle valeur de m\+\_\+alpha \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{_multi_variate_point_8hpp}{Multi\+Variate\+Point.\+hpp}\end{DoxyCompactItemize}

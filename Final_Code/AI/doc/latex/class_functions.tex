@@ -1,0 +1,117 @@
+\hypertarget{class_functions}{}\section{Functions Class Reference}
+\label{class_functions}\index{Functions@{Functions}}
+Inheritance diagram for Functions\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_functions}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_functions_a8475b67a879039ddb2a388af82c7971c}{Functions} (int d, int n)
+\item 
+int \hyperlink{class_functions_a6eeb7f57bfc87abca793f66fb8f77b50}{getD} ()
+\item 
+int \hyperlink{class_functions_a5433e199ad59640867e411a14bc5c43b}{getN} ()
+\item 
+vector$<$ vector$<$ double $>$ $>$ \hyperlink{class_functions_a8b30e9e921042f95c7a8c550f4149477}{parameters\+Domain} ()
+\item 
+virtual vector$<$ double $>$ \hyperlink{class_functions_a9d7bad8a6adacd8bd184a85a245e6168}{evaluate} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ x)=0
+\item 
+void \hyperlink{class_functions_a26606b4a1be61670b6a2bd00896f4797}{display\+Parameters\+Domain} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries m\+\_\+d}\hypertarget{class_functions_a5a63717950c9b8eb955fa1d728edeb33}{}\label{class_functions_a5a63717950c9b8eb955fa1d728edeb33}
+
+\item 
+int {\bfseries m\+\_\+n}\hypertarget{class_functions_a094dbe8643b4622fc20091a4275de215}{}\label{class_functions_a094dbe8643b4622fc20091a4275de215}
+
+\item 
+vector$<$ vector$<$ double $>$ $>$ {\bfseries m\+\_\+parameters\+Domain}\hypertarget{class_functions_a619b9753408b91bb9e4e455724824cb6}{}\label{class_functions_a619b9753408b91bb9e4e455724824cb6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Functions@{Functions}!Functions@{Functions}}
+\index{Functions@{Functions}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{Functions(int d, int n)}{Functions(int d, int n)}}]{\setlength{\rightskip}{0pt plus 5cm}Functions\+::\+Functions (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{class_functions_a8475b67a879039ddb2a388af82c7971c}{}\label{class_functions_a8475b67a879039ddb2a388af82c7971c}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em d} & \+: dimension de l\textquotesingle{}éspace de départ de f \\
+\hline
+{\em n} & \+: dimension de l\textquotesingle{}éspace d\textquotesingle{}arrivé de f \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Functions@{Functions}!display\+Parameters\+Domain@{display\+Parameters\+Domain}}
+\index{display\+Parameters\+Domain@{display\+Parameters\+Domain}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{display\+Parameters\+Domain()}{displayParametersDomain()}}]{\setlength{\rightskip}{0pt plus 5cm}void Functions\+::display\+Parameters\+Domain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_functions_a26606b4a1be61670b6a2bd00896f4797}{}\label{class_functions_a26606b4a1be61670b6a2bd00896f4797}
+Afficher le domaine de définition de f \index{Functions@{Functions}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{evaluate(\+Multi\+Variate\+Point$<$ double $>$ x)=0}{evaluate(MultiVariatePoint< double > x)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual vector$<$double$>$ Functions\+::evaluate (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{class_functions_a9d7bad8a6adacd8bd184a85a245e6168}{}\label{class_functions_a9d7bad8a6adacd8bd184a85a245e6168}
+Méthode donner la valeur \char`\"{}exacte\char`\"{} de f en x 
+\begin{DoxyParams}{Parameters}
+{\em x} & \+: point de calcul \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+valeur de f en x 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{class_real_data_functions_a359a4965873b56bea2e19287b15ae585}{Real\+Data\+Functions}, and \hyperlink{class_analytical_functions_aa8d7209dac6115f67f1bfda7a27a4653}{Analytical\+Functions}.
+
+\index{Functions@{Functions}!getD@{getD}}
+\index{getD@{getD}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{get\+D()}{getD()}}]{\setlength{\rightskip}{0pt plus 5cm}int Functions\+::getD (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_functions_a6eeb7f57bfc87abca793f66fb8f77b50}{}\label{class_functions_a6eeb7f57bfc87abca793f66fb8f77b50}
+Accesseur à l\textquotesingle{}attribut m\+\_\+d \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+d 
+\end{DoxyReturn}
+\index{Functions@{Functions}!getN@{getN}}
+\index{getN@{getN}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{get\+N()}{getN()}}]{\setlength{\rightskip}{0pt plus 5cm}int Functions\+::getN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_functions_a5433e199ad59640867e411a14bc5c43b}{}\label{class_functions_a5433e199ad59640867e411a14bc5c43b}
+Accesseur à l\textquotesingle{}attribut m\+\_\+n \begin{DoxyReturn}{Returns}
+valeur de m\+\_\+n 
+\end{DoxyReturn}
+\index{Functions@{Functions}!parameters\+Domain@{parameters\+Domain}}
+\index{parameters\+Domain@{parameters\+Domain}!Functions@{Functions}}
+\subsubsection[{\texorpdfstring{parameters\+Domain()}{parametersDomain()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$vector$<$double$>$ $>$ Functions\+::parameters\+Domain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_functions_a8b30e9e921042f95c7a8c550f4149477}{}\label{class_functions_a8b30e9e921042f95c7a8c550f4149477}
+Accesseur à l\textquotesingle{}attribut m\+\_\+parameters\+Domain \begin{DoxyReturn}{Returns}
+domaine de définition de f 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{_functions_8hpp}{Functions.\+hpp}\end{DoxyCompactItemize}

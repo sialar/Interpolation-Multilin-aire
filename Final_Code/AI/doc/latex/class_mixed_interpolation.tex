@@ -1,0 +1,247 @@
+\hypertarget{class_mixed_interpolation}{}\section{Mixed\+Interpolation Class Reference}
+\label{class_mixed_interpolation}\index{Mixed\+Interpolation@{Mixed\+Interpolation}}
+Inheritance diagram for Mixed\+Interpolation\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mixed_interpolation}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_mixed_interpolation_a5cf10a29fd266fe64811b2898b71af32}{Mixed\+Interpolation} (Functions\+Ptr f, int n\+Iter, \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ int $>$ methods)
+\item 
+void \hyperlink{class_mixed_interpolation_a269665fad93a49651d2d519d581efd49}{set\+Methods} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ int $>$ methods)
+\item 
+void \hyperlink{class_mixed_interpolation_a665be96aea549b82d877d1fc8eff1a9b}{clear\+All\+Trees} ()
+\item 
+\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \hyperlink{class_mixed_interpolation_a545bde4e4c83d9806fd08a6891b07af7}{get\+Point} (Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)
+\item 
+void \hyperlink{class_mixed_interpolation_a51027c6018481bbfa4102901575e32ee}{add\+Interpolation\+Point} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ p)
+\item 
+Multi\+Variate\+Point\+Ptr$<$ string $>$ \hyperlink{class_mixed_interpolation_a508361e1615e4fb3e77c702617637d6d}{get\+First\+Multivariate\+Point} ()
+\item 
+Multi\+Variate\+Point\+Ptr$<$ string $>$ \hyperlink{class_mixed_interpolation_a45908a6d89efe869a2b80d9f50264f7f}{max\+Element} (int iteration)
+\item 
+bool \hyperlink{class_mixed_interpolation_a5009f0fbe969538db58d5fa2f9997e4f}{indice\+In\+Path} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ string $>$ index)
+\item 
+void \hyperlink{class_mixed_interpolation_af5bbe4c2c6383989d3869f76ca6467c9}{update\+Curent\+Neighbours} (Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)
+\item 
+bool \hyperlink{class_mixed_interpolation_af507dcd64c768b97c0ba2ff378a14f91}{is\+Correct\+Neighbour\+To\+Curent\+Path} (Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)
+\item 
+double \hyperlink{class_mixed_interpolation_a97c5b558e53a5c98ed17d3fad6bb40ad}{basis\+Function\+\_\+1D} (string code, double t, int axis)
+\item 
+void \hyperlink{class_mixed_interpolation_a11a20252cbe44536f5be6024b348d755}{compute\+Boundaries\+For\+Basis\+Function} (double t, double $\ast$inf, double $\ast$sup, int axis)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{Mixed\+Interpolation(\+Functions\+Ptr f, int n\+Iter, Multi\+Variate\+Point$<$ int $>$ methods)}{MixedInterpolation(FunctionsPtr f, int nIter, MultiVariatePoint< int > methods)}}]{\setlength{\rightskip}{0pt plus 5cm}Mixed\+Interpolation\+::\+Mixed\+Interpolation (
+\begin{DoxyParamCaption}
+\item[{Functions\+Ptr}]{f, }
+\item[{int}]{n\+Iter, }
+\item[{{\bf Multi\+Variate\+Point}$<$ int $>$}]{methods}
+\end{DoxyParamCaption}
+)}\hypertarget{class_mixed_interpolation_a5cf10a29fd266fe64811b2898b71af32}{}\label{class_mixed_interpolation_a5cf10a29fd266fe64811b2898b71af32}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em f} & \+: fonction à interpoler \\
+\hline
+{\em n\+Iter} & \+: nombre d\textquotesingle{}itérations dans l\textquotesingle{}algorithme AI \\
+\hline
+{\em methods} & \+: indique la version utilisée par l\textquotesingle{}algorithme AI dans chaque direction \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!add\+Interpolation\+Point@{add\+Interpolation\+Point}}
+\index{add\+Interpolation\+Point@{add\+Interpolation\+Point}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{add\+Interpolation\+Point(\+Multi\+Variate\+Point$<$ double $>$ p)}{addInterpolationPoint(MultiVariatePoint< double > p)}}]{\setlength{\rightskip}{0pt plus 5cm}void Mixed\+Interpolation\+::add\+Interpolation\+Point (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a51027c6018481bbfa4102901575e32ee}{}\label{class_mixed_interpolation_a51027c6018481bbfa4102901575e32ee}
+Ajoute le nouveau point d\textquotesingle{}interpolation p dans m\+\_\+interpolation\+Points, m\+\_\+interpolation\+Nodes et m\+\_\+trees 
+\begin{DoxyParams}{Parameters}
+{\em p} & \+: nouveau point d\textquotesingle{}interpolation \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_interpolation_aa2cd083f061f9c36750191da4466c665}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!basis\+Function\+\_\+1D@{basis\+Function\+\_\+1D}}
+\index{basis\+Function\+\_\+1D@{basis\+Function\+\_\+1D}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{basis\+Function\+\_\+1\+D(string code, double t, int axis)}{basisFunction_1D(string code, double t, int axis)}}]{\setlength{\rightskip}{0pt plus 5cm}double Mixed\+Interpolation\+::basis\+Function\+\_\+1D (
+\begin{DoxyParamCaption}
+\item[{string}]{code, }
+\item[{double}]{t, }
+\item[{int}]{axis}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a97c5b558e53a5c98ed17d3fad6bb40ad}{}\label{class_mixed_interpolation_a97c5b558e53a5c98ed17d3fad6bb40ad}
+Implémente la fonction de base (polynome de Lagrange global, fonction affine (ou quadratique) par morceaux (dépend de la version de l\textquotesingle{}algo AI) 
+\begin{DoxyParams}{Parameters}
+{\em code} & \+: ordre (indice ou code de Huffman) correspondant à une coordonnée d\textquotesingle{}un point d\textquotesingle{}interpolation \\
+\hline
+{\em t} & \+: point d\textquotesingle{}évaluation (1d) \\
+\hline
+{\em axis} & \+: direction concidéré (0 $<$= axis $<$= d-\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+la valeur au point t de la fonction de base correspondant au point 1d d\textquotesingle{}ordre code sur la direction axis 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_a6a07152ada5102c8b9a9ed88fa46a418}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!clear\+All\+Trees@{clear\+All\+Trees}}
+\index{clear\+All\+Trees@{clear\+All\+Trees}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{clear\+All\+Trees()}{clearAllTrees()}}]{\setlength{\rightskip}{0pt plus 5cm}void Mixed\+Interpolation\+::clear\+All\+Trees (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_mixed_interpolation_a665be96aea549b82d877d1fc8eff1a9b}{}\label{class_mixed_interpolation_a665be96aea549b82d877d1fc8eff1a9b}
+Supprimer tous les arbres de m\+\_\+trees \index{Mixed\+Interpolation@{Mixed\+Interpolation}!compute\+Boundaries\+For\+Basis\+Function@{compute\+Boundaries\+For\+Basis\+Function}}
+\index{compute\+Boundaries\+For\+Basis\+Function@{compute\+Boundaries\+For\+Basis\+Function}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{compute\+Boundaries\+For\+Basis\+Function(double t, double $\ast$inf, double $\ast$sup, int axis)}{computeBoundariesForBasisFunction(double t, double *inf, double *sup, int axis)}}]{\setlength{\rightskip}{0pt plus 5cm}void Mixed\+Interpolation\+::compute\+Boundaries\+For\+Basis\+Function (
+\begin{DoxyParamCaption}
+\item[{double}]{t, }
+\item[{double $\ast$}]{inf, }
+\item[{double $\ast$}]{sup, }
+\item[{int}]{axis}
+\end{DoxyParamCaption}
+)}\hypertarget{class_mixed_interpolation_a11a20252cbe44536f5be6024b348d755}{}\label{class_mixed_interpolation_a11a20252cbe44536f5be6024b348d755}
+Rechercher les valeurs des points d\textquotesingle{}interpolation 1d (inf et sup) les plus proches de t (de part et d\textquotesingle{}autre de t) sur la direction axis pour construire la fonction de base 
+\begin{DoxyParams}{Parameters}
+{\em t} & \+: point d\textquotesingle{}interpolation 1d \\
+\hline
+{\em inf} & \+: plus grand point d\textquotesingle{}interpolation 1d inférieur à t \\
+\hline
+{\em sup} & \+: plus petit point d\textquotesingle{}interpolation 1d supérieur à t \\
+\hline
+{\em axis} & \+: direction concidérée \\
+\hline
+\end{DoxyParams}
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!get\+First\+Multivariate\+Point@{get\+First\+Multivariate\+Point}}
+\index{get\+First\+Multivariate\+Point@{get\+First\+Multivariate\+Point}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{get\+First\+Multivariate\+Point()}{getFirstMultivariatePoint()}}]{\setlength{\rightskip}{0pt plus 5cm}Multi\+Variate\+Point\+Ptr$<$string$>$ Mixed\+Interpolation\+::get\+First\+Multivariate\+Point (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a508361e1615e4fb3e77c702617637d6d}{}\label{class_mixed_interpolation_a508361e1615e4fb3e77c702617637d6d}
+Retourner le premier vecteur d\textquotesingle{}ordres dans l\textquotesingle{}algo AI \begin{DoxyReturn}{Returns}
+le premier vecteur d\textquotesingle{}ordres (codes de Huffman ou indice de point de Leja) dans l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_ac478b76075519faac66590e9e0df80f5}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!get\+Point@{get\+Point}}
+\index{get\+Point@{get\+Point}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{get\+Point(\+Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)}{getPoint(MultiVariatePointPtr< string > nu)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Multi\+Variate\+Point}$<$double$>$ Mixed\+Interpolation\+::get\+Point (
+\begin{DoxyParamCaption}
+\item[{Multi\+Variate\+Point\+Ptr$<$ string $>$}]{nu}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a545bde4e4c83d9806fd08a6891b07af7}{}\label{class_mixed_interpolation_a545bde4e4c83d9806fd08a6891b07af7}
+Retourne le point multivarié correspondant au vecteur d\textquotesingle{}ordres nu 
+\begin{DoxyParams}{Parameters}
+{\em nu} & \+: vecteur contenant des codes de Huffman (chemin du point 1d dans l\textquotesingle{}arbre binaire) ou des indices (indice du point 1d de Leja) sur chaque direction \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point multivarié correspondant à nu 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_a88593453ec6ce21d53071ddd5bb52195}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!indice\+In\+Path@{indice\+In\+Path}}
+\index{indice\+In\+Path@{indice\+In\+Path}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{indice\+In\+Path(\+Multi\+Variate\+Point$<$ string $>$ index)}{indiceInPath(MultiVariatePoint< string > index)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Mixed\+Interpolation\+::indice\+In\+Path (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ string $>$}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a5009f0fbe969538db58d5fa2f9997e4f}{}\label{class_mixed_interpolation_a5009f0fbe969538db58d5fa2f9997e4f}
+Vérifier si le vecteur d\textquotesingle{}ordre (codes de Huffman, ou indices) index existe dans m\+\_\+path (correspond à un point d\textquotesingle{}interpolation) 
+\begin{DoxyParams}{Parameters}
+{\em index} & \+: vecteur d\textquotesingle{}ordres \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si et seulement si index est dans m\+\_\+path 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_a0f2153a7dbc31a1471816a9c6c32eff1}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!is\+Correct\+Neighbour\+To\+Curent\+Path@{is\+Correct\+Neighbour\+To\+Curent\+Path}}
+\index{is\+Correct\+Neighbour\+To\+Curent\+Path@{is\+Correct\+Neighbour\+To\+Curent\+Path}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{is\+Correct\+Neighbour\+To\+Curent\+Path(\+Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)}{isCorrectNeighbourToCurentPath(MultiVariatePointPtr< string > nu)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Mixed\+Interpolation\+::is\+Correct\+Neighbour\+To\+Curent\+Path (
+\begin{DoxyParamCaption}
+\item[{Multi\+Variate\+Point\+Ptr$<$ string $>$}]{nu}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_af507dcd64c768b97c0ba2ff378a14f91}{}\label{class_mixed_interpolation_af507dcd64c768b97c0ba2ff378a14f91}
+Vérifier si nu est bien un voisin de la séquence de points d\textquotesingle{}interpolation courante (vérifier la monotonie de l\textquotesingle{}ensemble de points choisis) 
+\begin{DoxyParams}{Parameters}
+{\em nu} & \+: vecteur d\textquotesingle{}ordre \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si et seulement si nu est voisin à l\textquotesingle{}ensemble de points de m\+\_\+path 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_a3a6ee60651baf1ee8adcd4b874a71523}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!max\+Element@{max\+Element}}
+\index{max\+Element@{max\+Element}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{max\+Element(int iteration)}{maxElement(int iteration)}}]{\setlength{\rightskip}{0pt plus 5cm}Multi\+Variate\+Point\+Ptr$<$string$>$ Mixed\+Interpolation\+::max\+Element (
+\begin{DoxyParamCaption}
+\item[{int}]{iteration}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_a45908a6d89efe869a2b80d9f50264f7f}{}\label{class_mixed_interpolation_a45908a6d89efe869a2b80d9f50264f7f}
+Retourner le vecteur d\textquotesingle{}ordres du prochain point d\textquotesingle{}interpolation sélectionné par l\textquotesingle{}algo AI 3 fois sur 4\+: on choisi celui ayant la plus grande erreur (algo AI) 1 fois sur 4\+: on choisi celui qui a attendu le plus longtemps pour éviter de bloquer une direction dans le cas où l\textquotesingle{}erreur vaut 0 
+\begin{DoxyParams}{Parameters}
+{\em iteration} & \+: numéro de l\textquotesingle{}itération courante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+teration \+: vecteur d\textquotesingle{}ordres du prochain point d\textquotesingle{}interpolation 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_interpolation_a92dcf9a209d2a8046b266b59811949d4}{Interpolation$<$ string $>$}.
+
+\index{Mixed\+Interpolation@{Mixed\+Interpolation}!set\+Methods@{set\+Methods}}
+\index{set\+Methods@{set\+Methods}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{set\+Methods(\+Multi\+Variate\+Point$<$ int $>$ methods)}{setMethods(MultiVariatePoint< int > methods)}}]{\setlength{\rightskip}{0pt plus 5cm}void Mixed\+Interpolation\+::set\+Methods (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ int $>$}]{methods}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_mixed_interpolation_a269665fad93a49651d2d519d581efd49}{}\label{class_mixed_interpolation_a269665fad93a49651d2d519d581efd49}
+Mutateur de l\textquotesingle{}attribut m\+\_\+methods param methods \+: liste des versions utilisées sur chaque directions \index{Mixed\+Interpolation@{Mixed\+Interpolation}!update\+Curent\+Neighbours@{update\+Curent\+Neighbours}}
+\index{update\+Curent\+Neighbours@{update\+Curent\+Neighbours}!Mixed\+Interpolation@{Mixed\+Interpolation}}
+\subsubsection[{\texorpdfstring{update\+Curent\+Neighbours(\+Multi\+Variate\+Point\+Ptr$<$ string $>$ nu)}{updateCurentNeighbours(MultiVariatePointPtr< string > nu)}}]{\setlength{\rightskip}{0pt plus 5cm}void Mixed\+Interpolation\+::update\+Curent\+Neighbours (
+\begin{DoxyParamCaption}
+\item[{Multi\+Variate\+Point\+Ptr$<$ string $>$}]{nu}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_mixed_interpolation_af5bbe4c2c6383989d3869f76ca6467c9}{}\label{class_mixed_interpolation_af5bbe4c2c6383989d3869f76ca6467c9}
+Mettre à jour, en fonction du nouveau point d\textquotesingle{}interpolation correspondant au vecteur d\textquotesingle{}ordre nu, la liste des candidats courant 
+\begin{DoxyParams}{Parameters}
+{\em nu} & \+: nouveau vecteur d\textquotesingle{}ordre choisi par l\textquotesingle{}algo AI \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_interpolation_ac2e37b60de1c7b6704be643563fedd91}{Interpolation$<$ string $>$}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{_mixed_interpolation_8hpp}{Mixed\+Interpolation.\+hpp}\end{DoxyCompactItemize}
