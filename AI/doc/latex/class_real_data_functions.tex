@@ -1,0 +1,106 @@
+\hypertarget{class_real_data_functions}{}\section{Real\+Data\+Functions Class Reference}
+\label{class_real_data_functions}\index{Real\+Data\+Functions@{Real\+Data\+Functions}}
+Inheritance diagram for Real\+Data\+Functions\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_real_data_functions}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_real_data_functions_a8c284fd674bf306d2069e984c7ea6c13}{Real\+Data\+Functions} (int d, int n, string file)
+\item 
+vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ \hyperlink{class_real_data_functions_a9f25dd7676fe94730988fd244b71a158}{reference\+Pts} ()
+\item 
+vector$<$ vector$<$ double $>$ $>$ \hyperlink{class_real_data_functions_a0ff7f83b273d83d42053a1ce366d8637}{exact\+Values} ()
+\item 
+vector$<$ double $>$ \hyperlink{class_real_data_functions_a359a4965873b56bea2e19287b15ae585}{evaluate} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ x)
+\item 
+void \hyperlink{class_real_data_functions_a84d811e14eca8b9f4d752cb1b3c700d9}{save\+Approximation\+Results} ()
+\item 
+void \hyperlink{class_real_data_functions_a0095f9185d37621decc568db26c7926c}{read\+Data\+From\+File} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{Real\+Data\+Functions(int d, int n, string file)}{RealDataFunctions(int d, int n, string file)}}]{\setlength{\rightskip}{0pt plus 5cm}Real\+Data\+Functions\+::\+Real\+Data\+Functions (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{int}]{n, }
+\item[{string}]{file}
+\end{DoxyParamCaption}
+)}\hypertarget{class_real_data_functions_a8c284fd674bf306d2069e984c7ea6c13}{}\label{class_real_data_functions_a8c284fd674bf306d2069e984c7ea6c13}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em d} & dimension de l\textquotesingle{}éspace de départ de f \\
+\hline
+{\em n} & dimension de l\textquotesingle{}éspace de départ de f \\
+\hline
+{\em file} & nom du fichier de données \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{evaluate(\+Multi\+Variate\+Point$<$ double $>$ x)}{evaluate(MultiVariatePoint< double > x)}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$double$>$ Real\+Data\+Functions\+::evaluate (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_real_data_functions_a359a4965873b56bea2e19287b15ae585}{}\label{class_real_data_functions_a359a4965873b56bea2e19287b15ae585}
+Retourner la valeur \char`\"{}exacte\char`\"{} de f au point multivariée x 
+\begin{DoxyParams}{Parameters}
+{\em x} & \+: points multivarié \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+f(x) \+: valeur de f au point x 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_functions_a9d7bad8a6adacd8bd184a85a245e6168}{Functions}.
+
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!exact\+Values@{exact\+Values}}
+\index{exact\+Values@{exact\+Values}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{exact\+Values()}{exactValues()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$vector$<$double$>$ $>$ Real\+Data\+Functions\+::exact\+Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_real_data_functions_a0ff7f83b273d83d42053a1ce366d8637}{}\label{class_real_data_functions_a0ff7f83b273d83d42053a1ce366d8637}
+Retourner la liste des valeurs de f aux points de référence \begin{DoxyReturn}{Returns}
+Ensemble des valeurs de f (peuvent être des valeurs vectorielles) 
+\end{DoxyReturn}
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!read\+Data\+From\+File@{read\+Data\+From\+File}}
+\index{read\+Data\+From\+File@{read\+Data\+From\+File}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{read\+Data\+From\+File()}{readDataFromFile()}}]{\setlength{\rightskip}{0pt plus 5cm}void Real\+Data\+Functions\+::read\+Data\+From\+File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_real_data_functions_a0095f9185d37621decc568db26c7926c}{}\label{class_real_data_functions_a0095f9185d37621decc568db26c7926c}
+Lire les données à partir du fichier m\+\_\+file\+Name et les stocker dans les attributs m\+\_\+reference\+Pts et m\+\_\+exact\+Values. Ils serviront à construire puis à évaluer l\textquotesingle{}opérateur d\textquotesingle{}interpolation. \index{Real\+Data\+Functions@{Real\+Data\+Functions}!reference\+Pts@{reference\+Pts}}
+\index{reference\+Pts@{reference\+Pts}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{reference\+Pts()}{referencePts()}}]{\setlength{\rightskip}{0pt plus 5cm}vector$<${\bf Multi\+Variate\+Point}$<$double$>$ $>$ Real\+Data\+Functions\+::reference\+Pts (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_real_data_functions_a9f25dd7676fe94730988fd244b71a158}{}\label{class_real_data_functions_a9f25dd7676fe94730988fd244b71a158}
+Retourner la liste des points de référence lus à partir du fichier m\+\_\+file\+Name \begin{DoxyReturn}{Returns}
+Ensemble des points de références 
+\end{DoxyReturn}
+\index{Real\+Data\+Functions@{Real\+Data\+Functions}!save\+Approximation\+Results@{save\+Approximation\+Results}}
+\index{save\+Approximation\+Results@{save\+Approximation\+Results}!Real\+Data\+Functions@{Real\+Data\+Functions}}
+\subsubsection[{\texorpdfstring{save\+Approximation\+Results()}{saveApproximationResults()}}]{\setlength{\rightskip}{0pt plus 5cm}void Real\+Data\+Functions\+::save\+Approximation\+Results (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_real_data_functions_a84d811e14eca8b9f4d752cb1b3c700d9}{}\label{class_real_data_functions_a84d811e14eca8b9f4d752cb1b3c700d9}
+Sauvegarder les résultats de l\textquotesingle{}interpolation dans le fichier output.\+data Ce fichier contient les mêmes infos présentes dans m\+\_\+file\+Name en plus des résultats de l\textquotesingle{}interolation adaptative ainsi que les erreurs d\textquotesingle{}interpolation (les 2 dernières colonnes séparées par $\vert$) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{_real_data_functions_8hpp}{Real\+Data\+Functions.\+hpp}\end{DoxyCompactItemize}

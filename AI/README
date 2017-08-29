@@ -1,0 +1,9 @@
+
+  - On note f la fonction qu'on veut approcher (interpoler).
+
+  - 3 versions de l'algorithme d'interpolation adaptative:
+    + 0 : Polynômes de Lagrange définis globalement + Points de Leja (classe LagrangeInterpolation)
+    + 1 : Fonctions affines par morceaux + Construction des points par dichotomie (classe PiecewiseInterpolation)
+    + 2 : Fonctions quadratiques par morceaux + Construction des points par dichotomie (classe MixedInterpolation)
+
+  - algo AI: algorithme d'interpolation adaptative
