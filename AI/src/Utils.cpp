@@ -312,6 +312,7 @@ int Utils::chooseDimensionD(int argc, char* argv[], int argNum)
         cout << " - Choose the space dimension d: ";
         cin >> dim;
     }
+    cout << endl;
     return dim;
 }
 int Utils::chooseDimensionN(int argc, char* argv[], int argNum)
@@ -325,6 +326,7 @@ int Utils::chooseDimensionN(int argc, char* argv[], int argNum)
         cout << " - Choose the space dimension n: ";
         cin >> dim;
     }
+    cout << endl;
     return dim;
 }
 int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
@@ -338,6 +340,7 @@ int Utils::chooseNbTestPoints(int argc, char* argv[], int argNum)
     cout << " - Choose the number ot test points : ";
     cin >> nbTestPoints;
   }
+  cout << endl;
   return nbTestPoints;
 }
 int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
@@ -351,6 +354,7 @@ int Utils::chooseMaxIteration(int argc, char* argv[], int argNum)
     cout << " - Choose the maximum number of iteration : ";
     cin >> maxIteration;
   }
+  cout << endl;
   return maxIteration;
 }
 MultiVariatePoint<int> Utils::chooseMethods(int dim)
@@ -367,5 +371,6 @@ MultiVariatePoint<int> Utils::chooseMethods(int dim)
             cin >> methods(i);
         }
     }
+    cout << endl;
     return methods;
 }

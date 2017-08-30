@@ -26,7 +26,7 @@ int main( int argc, char* argv[] )
     //  + 2 : Fonctions quadratiques par morceaux + Construction des points par dichotomie
     MultiVariatePoint<int> methods = Utils::chooseMethods(d);
     // Choix du fichier contenant les données réelles
-    string fileName = "cross_section.dat";
+    string fileName = "input.dat";
     // Construction de la fonction à approcher (données réelles stockées dans le fichier fileName)
     RealDataFunctionsPtr f = make_shared<RealDataFunctions>(d,n,fileName);
 

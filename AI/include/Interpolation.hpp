@@ -29,77 +29,154 @@ template <typename T>
 class Interpolation
 {
     protected:
-//
-// 1: Concerne la méthode
-//
-// Core
-// 1.0: Données d'entrée
-		// Interpolé = fonction analytique implémenté dans la méthode evaluate de la classe Functions
-        FunctionsPtr m_function;
-		// m_d : dimension de l'éspace de départ de l'interpolé
-		// m_n : dimension de l'éspace d'arrivé de l'interpolé
-		// exemple: f: (x_1, .., x_{m_d}) --> (y_1, .., y_{m_n})
-        int m_d, m_n;
-		// Nombre d'itérations dans l'algo AI (= Nombre de points d'interpolation)
-        int m_maxIteration;
-		// Nombre total de calculs de f efféctués (Nombre d'appel à evaluate de Functions: en pratique, correspond au nombre d'appels à un code coûteux)
-		// Attention: m_nbEvals != m_maxIteration, car m_nbEvals comprend les points qui seront évalués mais qui ne seront points des points d'interpolation
-        int m_nbEvals = 0;
-		// Nombre de versions de l'algo AI (Points de Leja + Polynomes de Lagrange), (Arbre binaire + Fonctions affines par morceaux) ou (Arbre binaire + Fonctions quad par morceaux)
-        int m_nbMethods = 3;
-		// Chemin correspondant à la séquence ordonnée de points d'interpolation, construit par l'algorithme AI
-        vector<MultiVariatePointPtr<T>> m_path;
-		// Ensemble de voisins (candidats) dans l'itération courante de l'algorithme AI
-        list<MultiVariatePointPtr<T>> m_curentNeighbours;
+/******************************************************************************/
+/**************************** Données d'entrée ********************************/
+      // Fonction qu'on veut interpoler, elle est soit de type:
+      // AnalyticalFunctions: dans ce cas on veut valider la méthode en approchant une fonctions analytique implmenté dans la méthode evaluate
+      // RealDataFunctions: dans ce cas on veut tester la méthode sur des données réelles
+      FunctionsPtr m_function;
+      // m_d : dimension de l'éspace de départ de l'interpolé
+		  // m_n : dimension de l'éspace d'arrivé de l'interpolé
+		  // exemple: f: (x_1, .., x_{m_d}) --> (y_1, .., y_{m_n})
+      int m_d, m_n;
+		  // Nombre d'itérations dans l'algo AI (= Nombre de points d'interpolation)
+      int m_maxIteration;
+		  // Nombre total de calculs de f efféctués (Nombre d'appel à evaluate de Functions: en pratique, correspond au nombre d'appels à un code coûteux)
+		  // Attention: m_nbEvals != m_maxIteration, car m_nbEvals comprend les points qui seront évalués mais qui ne seront points des points d'interpolation
+      int m_nbEvals = 0;
+		  // Nombre de versions de l'algo AI (Points de Leja + Polynomes de Lagrange), (Arbre binaire + Fonctions affines par morceaux) ou (Arbre binaire + Fonctions quad par morceaux)
+      int m_nbMethods = 3;
+		  // Chemin correspondant à la séquence ordonnée de points d'interpolation, construit par l'algorithme AI
+      vector<MultiVariatePointPtr<T>> m_path;
+		  // Ensemble de voisins (candidats) dans l'itération courante de l'algorithme AI
+      list<MultiVariatePointPtr<T>> m_curentNeighbours;
 
-
-// 1.1: Validation de la méthode
-		// Taille de l'éspace des points de référence qui permet de valider la méthode
+/******************************************************************************/
+/************************ Validation de la méthode ****************************/
+		    // Taille de l'éspace des points de référence qui permet de valider la méthode
         int m_nbTestPoints;
+        // Erreur relative absolue calculée sur l'ensemble de points de référence
         double m_infError;
+        // Erreur quadratique moyenne calculée sur l'ensemble de points de référence
         double m_mseError;
+        // Ensemble des valeurs exacte de f sur la liste de points m_testPoints
         vector<vector<double>> m_exactValues;
+        // Ensemble des valeurs approchés de f sur la liste de points m_testPoints
         vector<vector<double>> m_approxValues;
+        // Ensemble des erreurs d'interpolation calculées sur la liste de points m_testPoints
         vector<vector<double>> m_errors;
 
-// Temps d'execution
-		// Temps d'execution sans compter le cout de calcul de l'interpoléé en un point d'interpolation
+/******************************************************************************/
+/**************************** Sortie de l'algo ********************************/
+        // Temps d'execution de la'lgorithme AI (calculé dans la méthode launchAIAlgo())
         double m_runTime = 0.0;
-
-// Sortie
-		// Points d'interpolation sur chaque diréction
+    		//0Ensemble des points d'interpolation sur chaque diréction
         vector<vector<double>> m_interpolationPoints;
-		// Points multivariés d'interpolation
+		    // Ensemble des points multivariés d'interpolation
         vector<MultiVariatePoint<double>> m_interpolationNodes;
-		// Points de test
+		    // Ensemble de points de test (points de référence) sur lequel on évalue la méthode
+        // Dans le cas de fonctions analytiques, il s'agit d'une liste aléatoire de points
+        // Dans le cas de données réelles, il s'agit de la liste des points lue à partir du fichier de données exemple "croos_section.dat"
         vector<MultiVariatePoint<double>> m_testPoints;
-
-// Visualisation dans le terminal
-        bool m_displayProgress = true;
-
 
     public:
 
         Interpolation() {};
         virtual ~Interpolation() {};
-
+        /**
+          * Constructeur
+          * \param f : fonction à interpoler
+          * \param nIter : nombre d'itérations dans l'algorithme AI
+        */
         Interpolation(FunctionsPtr f, int nIter);
+        /**
+          * Supprimer toutes les données
+        */
+        void clearAll();
 
-		// Accesseurs
+/******************************************************************************/
+/**************************** Données d'entrée ********************************/
+        /**
+          * Accesseur à l'attribut m_nbEvals
+          * \return m_nbEvals, nombre de points de calcul
+        */
         const int nbEvals() { return m_nbEvals; };
+        /**
+          * Accesseur à l'attribut m_runTime
+          * \return m_runTime, temps d'éxecution de l'algo AI
+        */
         const double runTime() { return m_runTime; };
+        /**
+          * Accesseur à l'attribut m_maxIteration
+          * \return m_maxIteration, nombre d'itérations dans l'algo AI
+        */
         const int maxIteration() { return m_maxIteration; };
+        /**
+          * Accesseur à l'attribut m_nbTestPoints
+          * \return m_nbTestPoints, nombre de points de référence (points de test)
+        */
         const int nbTestPoints() { return m_nbTestPoints; };
-        void disableProgressDisplay() { m_displayProgress = false; };
-        const vector<double> relativeErrors() { return m_infError; };
-        const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
-        vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
-        const vector<vector<double>>& points() { return m_interpolationPoints; };
-        const vector<double>& interpolationPoints(int i) { return m_interpolationPoints[i]; };
-        const vector<MultiVariatePoint<double>>& interpolationNodes() { return m_interpolationNodes; };
+        /**
+          * Evaluer l'interpolé au point multivarié x (appelle la méthode evaluate de Functions)
+          * \param x : point multivarié
+          * \return valeur de l'interpolé f en x
+        */
+        vector<double> func(MultiVariatePoint<double> x);
+        /**
+          * Mutateur de l'attribut m_function
+          * \param f : fonction qu'on veut interpoler
+        */
+        void setFunc(FunctionsPtr f);
+        /**
+          * Retourne le domaine de définition de l'interpolé f
+          * \return domaine de définition de f (attribut m_parametersDomain de m_function)
+        */
         const vector<vector<double>> parametersDomain() { return m_function->parametersDomain(); };
+
+/******************************************************************************/
+/************************ Validation de la méthode ****************************/
+        /**
+          * Accesseur à l'attribut m_infError
+          * \return m_infError, valeur de l'erreur relative absolue
+        */
+        const vector<double> relativeErrors() { return m_infError; };
+        /**
+          * Accesseur à l'attribut m_testPoints
+          * \return m_testPoints, ensemble de points de test pour évaluer la méthode
+        */
+        vector<MultiVariatePoint<double>> testPoints() { return m_testPoints; };
+        /**
+          * Construit la séquence de points de test, m_testPoints, aléatoirement
+          * \param nbTestPoints : nombre de points de test
+        */
+        void setRandomTestPoints(int nbTestPoints);
+        /**
+          * Mutateur de l'attribut m_testPoints
+          * \param points : ensemble de points multivariés de test
+        */
+        void setTestPoints(vector<MultiVariatePoint<double>> points);
+        /**
+          * Calculer les résultats d'approximation obtenus par l'algo AI
+        */
+        void computeAIApproximationResults();
+        /**
+          * Sauvegarder les résultats d'approximation obtenus par l'algo AI dans le fichier data/output.dat
+        */
+        void saveAIApproximationResults();
+
 /******************************************************************************/
 /************************ Points d'interpolation ******************************/
+        /**
+          * Retourne l'ensemble de points de discretisation sur la direction i
+          * \param i : direction
+          * \return vecteur de points de discretisation sur la direction i
+        */
+        const vector<double>& interpolationPoints(int i) { return m_interpolationPoints[i]; };
+        /**
+          * Accesseur à l'attribut m_interpolationNodes
+          * \return m_interpolationNodes, nsemble des points multivariés d'interpolation
+        */
+        const vector<MultiVariatePoint<double>>& interpolationNodes() { return m_interpolationNodes; };
         /**
           * Retourne le point multivarié correspondant au vecteur d'ordres nu
           * \param nu : vecteur d'ordres indices ou codes de Huffman (dépend du type générique T)
@@ -114,6 +191,11 @@ class Interpolation
 
 /******************************************************************************/
 /*************************** Algorithme AI ************************************/
+        /**
+          * Accesseur à l'attribut m_path
+          * \return m_path, chemin correspondant à la séquence ordonnée de points d'interpolation, construit par l'algo AI
+        */
+        const vector<MultiVariatePointPtr<T>>& path() { return m_path; };
         /**
         * Retourner le premier vecteur d'ordres dans l'algo AI
         * \return le premier vecteur d'ordres
@@ -144,47 +226,68 @@ class Interpolation
           * \return true si et seulement si nu est voisin à l'ensemble de points de m_path
         */
         virtual bool isCorrectNeighbourToCurentPath(MultiVariatePointPtr<T> nu) = 0;
-
-
-/******************************************************************************/
-/************************** Fonctions de base *********************************/
         /**
-          * Implémente la fonction de base (polynome de Lagrange global, fonction affine (ou quadratique) par morceaux (dépend de la version de l'algo AI)
-          * \param code : ordre (indice ou code de Huffman) correspondant à une coordonnée d'un point d'interpolation
-          * \param t : point d'évaluation (1d)
-          * \param axis : direction concidéré (0 <= axis <= d-1)
-          * \return la valeur au point t de la fonction de base correspondant au point 1d d'ordre code sur la direction axis
+          * Implémente l'algorithme d'interpolation adaptative
+          * \param debug : si true, affiche sur le terminal la progression de m_path et m_currentNeighbors
+        */
+        void launchAIAlgo(bool debug);
+        /**
+          * Réinitialiser tous les alpha
+        */
+        void clearAllAlpha();
+        /**
+          * Calculer l'erreur d'interpolation alpha au point d'interpolation courant
+          * \param nu : vecteur d'ordre qui correspond au dernier point d'interpolation choisi par l'algo AI
+        */
+        void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
+        /**
+          * Calculer la valeur appproché de f au point multivarié x en utilisant end iterations dans l'algo AI
+          * \param x : point multivarié
+          * \param end : nombre d'itération à utiliser pour la construction de l'interpolant
+          * \return valeur vectorielle approchée de f obtenue par l'algo AI
+        */
+        vector<double> interpolation(MultiVariatePoint<double>& x, int end);
+        /**
+          * Calculer la valeur appproché de f, au point multivarié x, obtenue au bout de m_maxIteration iterations
+          * \param x : point multivarié
+          * \return valeur vectorielle approchée de f obtenue par l'algo AI
+        */
+        vector<double> interpolation(MultiVariatePoint<double>& x);
+        /**
+        * Implémente la fonction de base (polynome de Lagrange global, fonction affine (ou quadratique) par morceaux (dépend de la version de l'algo AI)
+        * \param code : ordre (indice ou code de Huffman) correspondant à une coordonnée d'un point d'interpolation
+        * \param t : point d'évaluation (1d)
+        * \param axis : direction concidéré (0 <= axis <= d-1)
+        * \return la valeur au point t de la fonction de base correspondant au point 1d d'ordre code sur la direction axis
         */
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
 
-		// Construit la séquence de points de test aléatoirement
-        void setRandomTestPoints(int nbTestPoints);
-		// Lance l'algorithme d'interpolation adaptative
-        void launchAIAlgo(bool debug);
-		// Construit la séquence de points de test
-        void setTestPoints(vector<MultiVariatePoint<double>> points);
-		// Evaluer l'interpolé au point multivarié x
-    vector<double> func(MultiVariatePoint<double> x);
-    // Construire l'interpolé
-    void setFunc(FunctionsPtr);
-		// Calcule les résultats de l'interpolation
-        void computeAIApproximationResults();
-        void saveAIApproximationResults();
-		// Calcule l'erreur d'interpolation au point d'interpolation courant (dernier choisi par l'algo AI)
-        void computeLastAlphaNu(MultiVariatePointPtr<T> nu);
-		// Construit l'interpolant en fonction des alpha et des fonctions de base
-        vector<double> interpolation(MultiVariatePoint<double>& x, int end);
-        vector<double> interpolation(MultiVariatePoint<double>& x);
-
-        /************************* Other functions ****************************/
-
-        void clearAll();
+/******************************************************************************/
+/************************ Fonctions d'affichage *******************************/
+        /**
+          * Afficher tous les résultats (domaine de définition de f, l'ensemble de points construit par l'algo AI, les erreurs d'interpolation ainsi que
+          * le temps d'execution) obtenus par l'algo AI
+        */
         void displayAll();
+        /**
+          * Afficher l'ensemble courant de points d'interpolation dans l'ordre
+        */
         void displayPath();
-        void clearAllAlpha();
+        /**
+          * Afficher les erreurs d'interpolation, le nombre points de calcul ainsi que le temps d'execution
+        */
         void displayResults();
+        /**
+          * Afficher l'ensemble de voisins courant à m_path
+        */
         void displayCurentNeighbours();
+        /**
+          * Afficher l'ensemble des points de test direction par direction
+        */
         void displayInterpolationPoints();
+        /**
+          * Afficher l'ensemble des points multivariés de test
+        */
         void displayInterpolationMultiVariatePoints();
 };
 
@@ -244,25 +347,28 @@ void Interpolation<T>::setRandomTestPoints(int nbTestPoints)
 template <typename T>
 void Interpolation<T>::launchAIAlgo(bool debug)
 {
+    // Début du calcul du temps d'execution
     auto start_time = chrono::steady_clock::now();
 
-	// Initiatisation de m_curentNeighbours, m_path (séquence des points d'interpolation), argmax (le meilleur candidat)
+	  // Initiatisation de m_curentNeighbours, m_path (séquence des points d'interpolation), argmax (le meilleur candidat courant)
     m_curentNeighbours.clear();
     m_path.clear();
+    // Constuit le vecteur d'ordres correspondant au premier point d'interpolation
     MultiVariatePointPtr<T> argmax = getFirstMultivariatePoint();
-    MultiVariatePointPtr<T> old;
+    // Ajouter le premier point à la liste des voisins courant
     m_curentNeighbours.push_back(argmax);
+    // Initilisation de la valeur de l'iteration courante
     int iteration = 0;
 
-	// Si on atteint le nombre max d'itération, ou s'il n'y a plus de voisins possible
+	  // On s'arrete si on atteint le nombre max d'itération, ou s'il n'y a plus de voisins possible
     while (!m_curentNeighbours.empty() && iteration < m_maxIteration)
     {
-		// On commence par calculer (si ce n'est pas déjà fait) les alpha des candidats (points voisin à path)
+		    // On commence par calculer (si ce n'est pas déjà fait) les alpha des candidats (points voisins à path)
         for (MultiVariatePointPtr<T> nu : m_curentNeighbours)
             if (!nu->alphaAlreadyComputed())
                 computeLastAlphaNu(nu);
 
-		// Pour suivre la progression de l'algo sur le terminal
+		    // Pour suivre la progression de l'algo sur le terminal
         if (debug)
         {
             cout << endl << endl;
@@ -270,17 +376,20 @@ void Interpolation<T>::launchAIAlgo(bool debug)
             displayCurentNeighbours();
         }
 
-		// Une fois tous les alpha calculés, on choisi le meilleur
+		    // Une fois tous les alpha calculés, on choisi le meilleur
         argmax = maxElement(iteration);
-		// On l'ajoute à m_path (ensemble courant des points d'interpolation)
+		    // On ajoute le vecteur d'ordres correspondant dans m_path (ensemble courant des points d'interpolation)
         m_path.push_back(argmax);
+        // On ajoute le point d'interpolation correspondant dans m_interpolationNodes et m_interpolationPoints
         addInterpolationPoint(getPoint(argmax));
 
-		// Mise à jour de la liste des candidats et du numéro de l'itération
+		    // Mise à jour de la liste des candidats
         updateCurentNeighbours(argmax);
+        // Mise à jour de la valeur de l'iteration courante
         iteration++;
     }
 
+    // Fin du calcul du temps d'execution
     auto end_time = chrono::steady_clock::now();
     std::chrono::duration<double> run_time = end_time - start_time;
     m_runTime = run_time.count();
@@ -289,31 +398,41 @@ void Interpolation<T>::launchAIAlgo(bool debug)
 template <typename T>
 void Interpolation<T>::computeLastAlphaNu(MultiVariatePointPtr<T> nu)
 {
+    // alpha(nu) = f(y_{nu}) - I_{Lambda_{nu}}(f)(y_{nu})
+    // ou encore: alpha = f(y_{nu}) - \sum_{mu<nu} alpha(mu) * H_{mu}(y_{nu}) (rapport page 12)
     double basisFuncProd = 1.0;
-    vector<double> res = func(getPoint(nu));
+    vector<double> res = func(getPoint(nu)); // f(y_{nu})
+    // Incrémentation du nombre de calcul de f éffectué par l'algo AI
     m_nbEvals++;
-    for (MultiVariatePointPtr<T> l : m_path)
+    // représente la somme sur les points d'interpolation courants
+    for (MultiVariatePointPtr<T> mu : m_path)
     {
+        // Calcul de H, produit tensoriel (H_{mu}(f)(y_{nu})) des fonctions hiérarchiques au point d'interpolation y_{nu}
         basisFuncProd = 1.0;
-
         for (int p=0; p<m_d; p++)
-            basisFuncProd *= basisFunction_1D((*l)(p),getPoint(nu)(p),p);
+            basisFuncProd *= basisFunction_1D((*mu)(p),getPoint(nu)(p),p);
+
         for (int k=0; k<m_n; k++)
-            res[k] -= l->getAlpha()[k] * basisFuncProd;
+            // correspond à alpha(mu) * H_{mu}(f)(y_{nu})
+            res[k] -= mu->getAlpha()[k] * basisFuncProd;
     }
+    // Sauvegarder la valeur de l'erreur au point d'ordre nu
     nu->setAlpha(res);
 }
 
 template <typename T>
 vector<double> Interpolation<T>::interpolation(MultiVariatePoint<double>& x, int end)
 {
+  // I_{Lambda_{n}}(f)(x) = \sum_{k<n} alpha(nu_k) * H_{nu_k}(x) (rapport page 12)
   double l_prod = 1.0;
   vector<double> sum(m_n,0.0);
   for (int k=0; k<end; k++)
   {
+      // Calcul de H_{nu_k}, produit tensoriel des fonctions hiérarchiques au point x
       l_prod = 1.0;
       for (int i=0; i<m_d; i++)
           l_prod *= basisFunction_1D((*m_path[k])(i),x(i),i);
+      // Calucl de la somme des H_{nu_k} multipliés par les alpha des k premiers points
       for (int i=0; i<m_n; i++)
           sum[i] += (m_path[k]->getAlpha())[i] * l_prod;
   }
@@ -389,41 +508,53 @@ template <typename T>
 void Interpolation<T>::displayAll()
 {
     cout << endl;
+    // Afficher le domaine de définition de f
     m_function->displayParametersDomain();
 	  cout << endl;
+    // Afficher l'ensemble final de points d'interpolation construit par l'algo AI
     displayInterpolationPoints();
 	  cout << endl;
+    // Afficher les erreurs d'interpolation ainsi que le temps de calcul
     displayResults();
 }
 
 template <typename T>
 void Interpolation<T>::computeAIApproximationResults()
 {
-	// Implémenter ici le type d'erreur qu'on veut calculer
+	// Calculer les erreurs d'interpolation (erreur relative absolue, erreur quadratique moyenne) sur
+  // la grille des points de test, m_testPoints
 	vector<double> exactValue, approxValue, error;
 	vector<double> exactValuesNorm, errorsNorm;
 
  	for (int i=0; i<m_nbTestPoints; i++)
 	{
+    // valeur exacte de f au ième point de référence
 		exactValue = func(m_testPoints[i]);
+    // valeur approché de f au ième point de référence
 		approxValue = interpolation(m_testPoints[i]);
+    // erreur d'interpolation de f au ième point de référence
 		error = Utils::diff(exactValue,approxValue);
 
 		m_exactValues.push_back(exactValue);
 		m_approxValues.push_back(approxValue);
 		m_errors.push_back(error);
 
+    // Calcul des normes des valeurs exacte pour la recherche du sup d'entre eux
 		exactValuesNorm.push_back(Utils::norm(exactValue,2));
+    // Calcul des normes des erreurs
 		errorsNorm.push_back(Utils::norm(error,2));
 	}
 
 	m_mseError = 0;
 	vector<double> relativeErrors;
+  // max des valeurs exacte, pour le calcul de l'erreur relative
 	double maxValue =  *max_element(exactValuesNorm.begin(),exactValuesNorm.end());
 
  	for (int i=0; i<m_nbTestPoints; i++)
 	{
+    // calcul et sauvegarde des erreurs relative sur chaque point de test
 		relativeErrors.push_back(errorsNorm[i]*pow(10,5)/maxValue);
+    // calcul de l'erreur quadratique moyenne
 		m_mseError += pow(errorsNorm[i]*pow(10,5),2)/m_nbTestPoints;
 	}
 
@@ -434,15 +565,20 @@ void Interpolation<T>::computeAIApproximationResults()
 template <typename T>
 void Interpolation<T>::saveAIApproximationResults()
 {
-    cout << " - Approximation results are stored in data/output.dat" << endl;
+    cout << " - Approximation results are stored in AI/data/output.dat" << endl;
+    // Sauvegarde des résultats de l'interpolation de f
     ofstream file("AI/data/output.dat", ios::out);
     if(file)
     {
         for (int i=0; i<int(m_testPoints.size()); i++)
         {
+            MultiVariatePoint<double> x(m_testPoints[i]);
+            for (int j=0; j<m_d; j++)
+                x(j) = Utils::convertToFunctionDomain(parametersDomain()[j][0], parametersDomain()[j][1], m_testPoints[i](j));
+
 	          file << (i+1) << " ";
 						for (int j=0; j<m_d; j++)
-								file << /*setprecision(Utils::m_precision) <<*/ m_testPoints[i](j) << " ";
+								file << setprecision(Utils::m_precision) << x(j) << " ";
             file << "| ";
 						for (int j=0; j<m_n; j++)
 								file << /*setprecision(Utils::m_precision) <<*/ m_exactValues[i][j] << " ";

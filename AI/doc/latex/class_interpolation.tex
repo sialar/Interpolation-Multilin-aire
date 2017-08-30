@@ -3,48 +3,45 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Interpolation} (Functions\+Ptr f, int n\+Iter)\hypertarget{class_interpolation_a486945890aff3b8b7a0e77395e7701de}{}\label{class_interpolation_a486945890aff3b8b7a0e77395e7701de}
-
+\hyperlink{class_interpolation_a486945890aff3b8b7a0e77395e7701de}{Interpolation} (Functions\+Ptr f, int n\+Iter)
 \item 
-const int {\bfseries nb\+Evals} ()\hypertarget{class_interpolation_af62064f49d50af2e7eb2e5d6fca3ef0b}{}\label{class_interpolation_af62064f49d50af2e7eb2e5d6fca3ef0b}
-
+void \hyperlink{class_interpolation_a1456efaffc06c2e9855d40c0fa8f3ade}{clear\+All} ()
 \item 
-const double {\bfseries run\+Time} ()\hypertarget{class_interpolation_a6217fd13a4a5689bd5b264593a444d89}{}\label{class_interpolation_a6217fd13a4a5689bd5b264593a444d89}
-
+const int \hyperlink{class_interpolation_af62064f49d50af2e7eb2e5d6fca3ef0b}{nb\+Evals} ()
 \item 
-const int {\bfseries max\+Iteration} ()\hypertarget{class_interpolation_a2f8ae16c6e463b6275c6897cb23c8cfb}{}\label{class_interpolation_a2f8ae16c6e463b6275c6897cb23c8cfb}
-
+const double \hyperlink{class_interpolation_a6217fd13a4a5689bd5b264593a444d89}{run\+Time} ()
 \item 
-const int {\bfseries nb\+Test\+Points} ()\hypertarget{class_interpolation_a463273f663959f84cb189ec6c9b8805b}{}\label{class_interpolation_a463273f663959f84cb189ec6c9b8805b}
-
+const int \hyperlink{class_interpolation_a2f8ae16c6e463b6275c6897cb23c8cfb}{max\+Iteration} ()
 \item 
-void {\bfseries disable\+Progress\+Display} ()\hypertarget{class_interpolation_a6227a56bfa2c825a700e5e3cffabe440}{}\label{class_interpolation_a6227a56bfa2c825a700e5e3cffabe440}
-
+const int \hyperlink{class_interpolation_a463273f663959f84cb189ec6c9b8805b}{nb\+Test\+Points} ()
 \item 
-const vector$<$ double $>$ {\bfseries relative\+Errors} ()\hypertarget{class_interpolation_a7601bc7349ed82e28c7e7e3f9d925d18}{}\label{class_interpolation_a7601bc7349ed82e28c7e7e3f9d925d18}
-
+vector$<$ double $>$ \hyperlink{class_interpolation_ad60e72c0836ea039de395eb93271deb7}{func} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ x)
 \item 
-const vector$<$ Multi\+Variate\+Point\+Ptr$<$ T $>$ $>$ \& {\bfseries path} ()\hypertarget{class_interpolation_a6820ea94303e15adad2c1608a94aea96}{}\label{class_interpolation_a6820ea94303e15adad2c1608a94aea96}
-
+void \hyperlink{class_interpolation_ae86cb1a352b8bb78e86c33c92f9cb68a}{set\+Func} (Functions\+Ptr f)
 \item 
-vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ {\bfseries test\+Points} ()\hypertarget{class_interpolation_a67f32f77bf277420cffb8ebaaf83e573}{}\label{class_interpolation_a67f32f77bf277420cffb8ebaaf83e573}
-
+const vector$<$ vector$<$ double $>$ $>$ \hyperlink{class_interpolation_af8057630b170cc0cc0fb853e72b61174}{parameters\+Domain} ()
 \item 
-const vector$<$ vector$<$ double $>$ $>$ \& {\bfseries points} ()\hypertarget{class_interpolation_a1dd635db03d1d45adb48ce0b9fe673b7}{}\label{class_interpolation_a1dd635db03d1d45adb48ce0b9fe673b7}
-
+const vector$<$ double $>$ \hyperlink{class_interpolation_a7601bc7349ed82e28c7e7e3f9d925d18}{relative\+Errors} ()
 \item 
-const vector$<$ double $>$ \& {\bfseries interpolation\+Points} (int i)\hypertarget{class_interpolation_aaf0b60a3c3c293e30ae101470da299d6}{}\label{class_interpolation_aaf0b60a3c3c293e30ae101470da299d6}
-
+vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ \hyperlink{class_interpolation_a67f32f77bf277420cffb8ebaaf83e573}{test\+Points} ()
 \item 
-const vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ \& {\bfseries interpolation\+Nodes} ()\hypertarget{class_interpolation_a68c347c599d06d34239e86b1851aef27}{}\label{class_interpolation_a68c347c599d06d34239e86b1851aef27}
-
+void \hyperlink{class_interpolation_a5a1e610d2baa723e12fd4c220434413d}{set\+Random\+Test\+Points} (int \hyperlink{class_interpolation_a463273f663959f84cb189ec6c9b8805b}{nb\+Test\+Points})
 \item 
-const vector$<$ vector$<$ double $>$ $>$ {\bfseries parameters\+Domain} ()\hypertarget{class_interpolation_af8057630b170cc0cc0fb853e72b61174}{}\label{class_interpolation_af8057630b170cc0cc0fb853e72b61174}
-
+void \hyperlink{class_interpolation_a976978e385d7ec3ed5506f1ca96938b3}{set\+Test\+Points} (vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$$>$ points)
+\item 
+void \hyperlink{class_interpolation_a024b108311beb323da7b5dafc2dc3481}{compute\+A\+I\+Approximation\+Results} ()
+\item 
+void \hyperlink{class_interpolation_a8f7ae9ddb58ff7e8e6228154483669a7}{save\+A\+I\+Approximation\+Results} ()
+\item 
+const vector$<$ double $>$ \& \hyperlink{class_interpolation_aaf0b60a3c3c293e30ae101470da299d6}{interpolation\+Points} (int i)
+\item 
+const vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ \& \hyperlink{class_interpolation_a68c347c599d06d34239e86b1851aef27}{interpolation\+Nodes} ()
 \item 
 virtual \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \hyperlink{class_interpolation_a88593453ec6ce21d53071ddd5bb52195}{get\+Point} (Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)=0
 \item 
 virtual void \hyperlink{class_interpolation_aa2cd083f061f9c36750191da4466c665}{add\+Interpolation\+Point} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ p)=0
+\item 
+const vector$<$ Multi\+Variate\+Point\+Ptr$<$ T $>$ $>$ \& \hyperlink{class_interpolation_a6820ea94303e15adad2c1608a94aea96}{path} ()
 \item 
 virtual Multi\+Variate\+Point\+Ptr$<$ T $>$ \hyperlink{class_interpolation_ac478b76075519faac66590e9e0df80f5}{get\+First\+Multivariate\+Point} ()=0
 \item 
@@ -56,61 +53,29 @@ virtual void \hyperlink{class_interpolation_ac2e37b60de1c7b6704be643563fedd91}{u
 \item 
 virtual bool \hyperlink{class_interpolation_a3a6ee60651baf1ee8adcd4b874a71523}{is\+Correct\+Neighbour\+To\+Curent\+Path} (Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)=0
 \item 
+void \hyperlink{class_interpolation_a3ded42db23669cffb630ce1b72cb7ce6}{launch\+A\+I\+Algo} (bool debug)
+\item 
+void \hyperlink{class_interpolation_a4ddc693d736598ab701330b834576284}{clear\+All\+Alpha} ()
+\item 
+void \hyperlink{class_interpolation_a44e098709ec582a2e7c8d073ea3e6ed9}{compute\+Last\+Alpha\+Nu} (Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)
+\item 
+vector$<$ double $>$ \hyperlink{class_interpolation_a04fea07bd082c5f9e6b0aaae31dbe831}{interpolation} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \&x, int end)
+\item 
+vector$<$ double $>$ \hyperlink{class_interpolation_adde238b24c33684c867d8abbd5a983b1}{interpolation} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \&x)
+\item 
 virtual double \hyperlink{class_interpolation_a6a07152ada5102c8b9a9ed88fa46a418}{basis\+Function\+\_\+1D} (T code, double t, int axis)=0
 \item 
-void {\bfseries set\+Random\+Test\+Points} (int nb\+Test\+Points)\hypertarget{class_interpolation_a5a1e610d2baa723e12fd4c220434413d}{}\label{class_interpolation_a5a1e610d2baa723e12fd4c220434413d}
-
+void \hyperlink{class_interpolation_a4844791e5ba6c08962cbe5056e295dc2}{display\+All} ()
 \item 
-void {\bfseries launch\+A\+I\+Algo} (bool debug)\hypertarget{class_interpolation_a3ded42db23669cffb630ce1b72cb7ce6}{}\label{class_interpolation_a3ded42db23669cffb630ce1b72cb7ce6}
-
+void \hyperlink{class_interpolation_adc274d302f0947bcc72ca4dfb5ad01bc}{display\+Path} ()
 \item 
-void {\bfseries set\+Test\+Points} (vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$$>$ points)\hypertarget{class_interpolation_a976978e385d7ec3ed5506f1ca96938b3}{}\label{class_interpolation_a976978e385d7ec3ed5506f1ca96938b3}
-
+void \hyperlink{class_interpolation_a01e1a617a1d21ecf0372ba7c9852fa89}{display\+Results} ()
 \item 
-vector$<$ double $>$ {\bfseries func} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ x)\hypertarget{class_interpolation_ad60e72c0836ea039de395eb93271deb7}{}\label{class_interpolation_ad60e72c0836ea039de395eb93271deb7}
-
+void \hyperlink{class_interpolation_a562465d2e306595bbf450b3aa9108a2a}{display\+Curent\+Neighbours} ()
 \item 
-void {\bfseries set\+Func} (Functions\+Ptr)\hypertarget{class_interpolation_a54f27ebe81f42f4619d50afefc0e6823}{}\label{class_interpolation_a54f27ebe81f42f4619d50afefc0e6823}
-
+void \hyperlink{class_interpolation_a34130fd5f41a52fd9afb6443f1632955}{display\+Interpolation\+Points} ()
 \item 
-void {\bfseries compute\+A\+I\+Approximation\+Results} ()\hypertarget{class_interpolation_a024b108311beb323da7b5dafc2dc3481}{}\label{class_interpolation_a024b108311beb323da7b5dafc2dc3481}
-
-\item 
-void {\bfseries save\+A\+I\+Approximation\+Results} ()\hypertarget{class_interpolation_a8f7ae9ddb58ff7e8e6228154483669a7}{}\label{class_interpolation_a8f7ae9ddb58ff7e8e6228154483669a7}
-
-\item 
-void {\bfseries compute\+Last\+Alpha\+Nu} (Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)\hypertarget{class_interpolation_a44e098709ec582a2e7c8d073ea3e6ed9}{}\label{class_interpolation_a44e098709ec582a2e7c8d073ea3e6ed9}
-
-\item 
-vector$<$ double $>$ {\bfseries interpolation} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \&x, int end)\hypertarget{class_interpolation_a04fea07bd082c5f9e6b0aaae31dbe831}{}\label{class_interpolation_a04fea07bd082c5f9e6b0aaae31dbe831}
-
-\item 
-vector$<$ double $>$ {\bfseries interpolation} (\hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ \&x)\hypertarget{class_interpolation_adde238b24c33684c867d8abbd5a983b1}{}\label{class_interpolation_adde238b24c33684c867d8abbd5a983b1}
-
-\item 
-void {\bfseries clear\+All} ()\hypertarget{class_interpolation_a1456efaffc06c2e9855d40c0fa8f3ade}{}\label{class_interpolation_a1456efaffc06c2e9855d40c0fa8f3ade}
-
-\item 
-void {\bfseries display\+All} ()\hypertarget{class_interpolation_a4844791e5ba6c08962cbe5056e295dc2}{}\label{class_interpolation_a4844791e5ba6c08962cbe5056e295dc2}
-
-\item 
-void {\bfseries display\+Path} ()\hypertarget{class_interpolation_adc274d302f0947bcc72ca4dfb5ad01bc}{}\label{class_interpolation_adc274d302f0947bcc72ca4dfb5ad01bc}
-
-\item 
-void {\bfseries clear\+All\+Alpha} ()\hypertarget{class_interpolation_a4ddc693d736598ab701330b834576284}{}\label{class_interpolation_a4ddc693d736598ab701330b834576284}
-
-\item 
-void {\bfseries display\+Results} ()\hypertarget{class_interpolation_a01e1a617a1d21ecf0372ba7c9852fa89}{}\label{class_interpolation_a01e1a617a1d21ecf0372ba7c9852fa89}
-
-\item 
-void {\bfseries display\+Curent\+Neighbours} ()\hypertarget{class_interpolation_a562465d2e306595bbf450b3aa9108a2a}{}\label{class_interpolation_a562465d2e306595bbf450b3aa9108a2a}
-
-\item 
-void {\bfseries display\+Interpolation\+Points} ()\hypertarget{class_interpolation_a34130fd5f41a52fd9afb6443f1632955}{}\label{class_interpolation_a34130fd5f41a52fd9afb6443f1632955}
-
-\item 
-void {\bfseries display\+Interpolation\+Multi\+Variate\+Points} ()\hypertarget{class_interpolation_af40d25297c4e01edbabf7c3f4ce7bd64}{}\label{class_interpolation_af40d25297c4e01edbabf7c3f4ce7bd64}
-
+void \hyperlink{class_interpolation_af40d25297c4e01edbabf7c3f4ce7bd64}{display\+Interpolation\+Multi\+Variate\+Points} ()
 \end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
@@ -168,10 +133,25 @@ vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double
 \item 
 vector$<$ \hyperlink{class_multi_variate_point}{Multi\+Variate\+Point}$<$ double $>$ $>$ {\bfseries m\+\_\+test\+Points}\hypertarget{class_interpolation_af12eca065aea0c9ba4fb8529d925c916}{}\label{class_interpolation_af12eca065aea0c9ba4fb8529d925c916}
 
-\item 
-bool {\bfseries m\+\_\+display\+Progress} = true\hypertarget{class_interpolation_ab62cce9e5221ef256bd34824e7333744}{}\label{class_interpolation_ab62cce9e5221ef256bd34824e7333744}
-
 \end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Interpolation@{Interpolation}!Interpolation@{Interpolation}}
+\index{Interpolation@{Interpolation}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{Interpolation(\+Functions\+Ptr f, int n\+Iter)}{Interpolation(FunctionsPtr f, int nIter)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Interpolation}$<$ T $>$\+::{\bf Interpolation} (
+\begin{DoxyParamCaption}
+\item[{Functions\+Ptr}]{f, }
+\item[{int}]{n\+Iter}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a486945890aff3b8b7a0e77395e7701de}{}\label{class_interpolation_a486945890aff3b8b7a0e77395e7701de}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em f} & \+: fonction à interpoler \\
+\hline
+{\em n\+Iter} & \+: nombre d\textquotesingle{}itérations dans l\textquotesingle{}algorithme AI \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Function Documentation}
@@ -216,6 +196,96 @@ la valeur au point t de la fonction de base correspondant au point 1d d\textquot
 
 Implemented in \hyperlink{class_mixed_interpolation_a97c5b558e53a5c98ed17d3fad6bb40ad}{Mixed\+Interpolation}, \hyperlink{class_piecewise_interpolation_abd0d1ee7206ec28ce53b57a01d430458}{Piecewise\+Interpolation}, and \hyperlink{class_lagrange_interpolation_a138b1d9afd24ab2e21e8c01dac82880c}{Lagrange\+Interpolation}.
 
+\index{Interpolation@{Interpolation}!clear\+All@{clear\+All}}
+\index{clear\+All@{clear\+All}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{clear\+All()}{clearAll()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::clear\+All (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a1456efaffc06c2e9855d40c0fa8f3ade}{}\label{class_interpolation_a1456efaffc06c2e9855d40c0fa8f3ade}
+Supprimer toutes les données \index{Interpolation@{Interpolation}!clear\+All\+Alpha@{clear\+All\+Alpha}}
+\index{clear\+All\+Alpha@{clear\+All\+Alpha}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{clear\+All\+Alpha()}{clearAllAlpha()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::clear\+All\+Alpha (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a4ddc693d736598ab701330b834576284}{}\label{class_interpolation_a4ddc693d736598ab701330b834576284}
+Réinitialiser tous les alpha \index{Interpolation@{Interpolation}!compute\+A\+I\+Approximation\+Results@{compute\+A\+I\+Approximation\+Results}}
+\index{compute\+A\+I\+Approximation\+Results@{compute\+A\+I\+Approximation\+Results}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{compute\+A\+I\+Approximation\+Results()}{computeAIApproximationResults()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::compute\+A\+I\+Approximation\+Results (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a024b108311beb323da7b5dafc2dc3481}{}\label{class_interpolation_a024b108311beb323da7b5dafc2dc3481}
+Calculer les résultats d\textquotesingle{}approximation obtenus par l\textquotesingle{}algo AI \index{Interpolation@{Interpolation}!compute\+Last\+Alpha\+Nu@{compute\+Last\+Alpha\+Nu}}
+\index{compute\+Last\+Alpha\+Nu@{compute\+Last\+Alpha\+Nu}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{compute\+Last\+Alpha\+Nu(\+Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)}{computeLastAlphaNu(MultiVariatePointPtr< T > nu)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Interpolation}$<$ T $>$\+::compute\+Last\+Alpha\+Nu (
+\begin{DoxyParamCaption}
+\item[{Multi\+Variate\+Point\+Ptr$<$ T $>$}]{nu}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a44e098709ec582a2e7c8d073ea3e6ed9}{}\label{class_interpolation_a44e098709ec582a2e7c8d073ea3e6ed9}
+Calculer l\textquotesingle{}erreur d\textquotesingle{}interpolation alpha au point d\textquotesingle{}interpolation courant 
+\begin{DoxyParams}{Parameters}
+{\em nu} & \+: vecteur d\textquotesingle{}ordre qui correspond au dernier point d\textquotesingle{}interpolation choisi par l\textquotesingle{}algo AI \\
+\hline
+\end{DoxyParams}
+\index{Interpolation@{Interpolation}!display\+All@{display\+All}}
+\index{display\+All@{display\+All}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+All()}{displayAll()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+All (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a4844791e5ba6c08962cbe5056e295dc2}{}\label{class_interpolation_a4844791e5ba6c08962cbe5056e295dc2}
+Afficher tous les résultats (domaine de définition de f, l\textquotesingle{}ensemble de points construit par l\textquotesingle{}algo AI, les erreurs d\textquotesingle{}interpolation ainsi que le temps d\textquotesingle{}execution) obtenus par l\textquotesingle{}algo AI \index{Interpolation@{Interpolation}!display\+Curent\+Neighbours@{display\+Curent\+Neighbours}}
+\index{display\+Curent\+Neighbours@{display\+Curent\+Neighbours}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+Curent\+Neighbours()}{displayCurentNeighbours()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+Curent\+Neighbours (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a562465d2e306595bbf450b3aa9108a2a}{}\label{class_interpolation_a562465d2e306595bbf450b3aa9108a2a}
+Afficher l\textquotesingle{}ensemble de voisins courant à m\+\_\+path \index{Interpolation@{Interpolation}!display\+Interpolation\+Multi\+Variate\+Points@{display\+Interpolation\+Multi\+Variate\+Points}}
+\index{display\+Interpolation\+Multi\+Variate\+Points@{display\+Interpolation\+Multi\+Variate\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+Interpolation\+Multi\+Variate\+Points()}{displayInterpolationMultiVariatePoints()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+Interpolation\+Multi\+Variate\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_af40d25297c4e01edbabf7c3f4ce7bd64}{}\label{class_interpolation_af40d25297c4e01edbabf7c3f4ce7bd64}
+Afficher l\textquotesingle{}ensemble des points multivariés de test \index{Interpolation@{Interpolation}!display\+Interpolation\+Points@{display\+Interpolation\+Points}}
+\index{display\+Interpolation\+Points@{display\+Interpolation\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+Interpolation\+Points()}{displayInterpolationPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+Interpolation\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a34130fd5f41a52fd9afb6443f1632955}{}\label{class_interpolation_a34130fd5f41a52fd9afb6443f1632955}
+Afficher l\textquotesingle{}ensemble des points de test direction par direction \index{Interpolation@{Interpolation}!display\+Path@{display\+Path}}
+\index{display\+Path@{display\+Path}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+Path()}{displayPath()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+Path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_adc274d302f0947bcc72ca4dfb5ad01bc}{}\label{class_interpolation_adc274d302f0947bcc72ca4dfb5ad01bc}
+Afficher l\textquotesingle{}ensemble courant de points d\textquotesingle{}interpolation dans l\textquotesingle{}ordre \index{Interpolation@{Interpolation}!display\+Results@{display\+Results}}
+\index{display\+Results@{display\+Results}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{display\+Results()}{displayResults()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::display\+Results (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a01e1a617a1d21ecf0372ba7c9852fa89}{}\label{class_interpolation_a01e1a617a1d21ecf0372ba7c9852fa89}
+Afficher les erreurs d\textquotesingle{}interpolation, le nombre points de calcul ainsi que le temps d\textquotesingle{}execution \index{Interpolation@{Interpolation}!func@{func}}
+\index{func@{func}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{func(\+Multi\+Variate\+Point$<$ double $>$ x)}{func(MultiVariatePoint< double > x)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ vector$<$ double $>$ {\bf Interpolation}$<$ T $>$\+::func (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_ad60e72c0836ea039de395eb93271deb7}{}\label{class_interpolation_ad60e72c0836ea039de395eb93271deb7}
+Evaluer l\textquotesingle{}interpolé au point multivarié x (appelle la méthode evaluate de \hyperlink{class_functions}{Functions}) 
+\begin{DoxyParams}{Parameters}
+{\em x} & \+: point multivarié \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+valeur de l\textquotesingle{}interpolé f en x 
+\end{DoxyReturn}
 \index{Interpolation@{Interpolation}!get\+First\+Multivariate\+Point@{get\+First\+Multivariate\+Point}}
 \index{get\+First\+Multivariate\+Point@{get\+First\+Multivariate\+Point}!Interpolation@{Interpolation}}
 \subsubsection[{\texorpdfstring{get\+First\+Multivariate\+Point()=0}{getFirstMultivariatePoint()=0}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ virtual Multi\+Variate\+Point\+Ptr$<$T$>$ {\bf Interpolation}$<$ T $>$\+::get\+First\+Multivariate\+Point (
@@ -268,6 +338,64 @@ true si et seulement si index est dans m\+\_\+path
 
 Implemented in \hyperlink{class_mixed_interpolation_a5009f0fbe969538db58d5fa2f9997e4f}{Mixed\+Interpolation}, \hyperlink{class_piecewise_interpolation_ac9a4902bf9202aa7a0b84260d2380898}{Piecewise\+Interpolation}, and \hyperlink{class_lagrange_interpolation_a4e86ab1204fa39cd83b6de4bba621203}{Lagrange\+Interpolation}.
 
+\index{Interpolation@{Interpolation}!interpolation@{interpolation}}
+\index{interpolation@{interpolation}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{interpolation(\+Multi\+Variate\+Point$<$ double $>$ \&x, int end)}{interpolation(MultiVariatePoint< double > &x, int end)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ vector$<$ double $>$ {\bf Interpolation}$<$ T $>$\+::interpolation (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$ \&}]{x, }
+\item[{int}]{end}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a04fea07bd082c5f9e6b0aaae31dbe831}{}\label{class_interpolation_a04fea07bd082c5f9e6b0aaae31dbe831}
+Calculer la valeur appproché de f au point multivarié x en utilisant end iterations dans l\textquotesingle{}algo AI 
+\begin{DoxyParams}{Parameters}
+{\em x} & \+: point multivarié \\
+\hline
+{\em end} & \+: nombre d\textquotesingle{}itération à utiliser pour la construction de l\textquotesingle{}interpolant \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+valeur vectorielle approchée de f obtenue par l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!interpolation@{interpolation}}
+\index{interpolation@{interpolation}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{interpolation(\+Multi\+Variate\+Point$<$ double $>$ \&x)}{interpolation(MultiVariatePoint< double > &x)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ vector$<$ double $>$ {\bf Interpolation}$<$ T $>$\+::interpolation (
+\begin{DoxyParamCaption}
+\item[{{\bf Multi\+Variate\+Point}$<$ double $>$ \&}]{x}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_adde238b24c33684c867d8abbd5a983b1}{}\label{class_interpolation_adde238b24c33684c867d8abbd5a983b1}
+Calculer la valeur appproché de f, au point multivarié x, obtenue au bout de m\+\_\+max\+Iteration iterations 
+\begin{DoxyParams}{Parameters}
+{\em x} & \+: point multivarié \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+valeur vectorielle approchée de f obtenue par l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!interpolation\+Nodes@{interpolation\+Nodes}}
+\index{interpolation\+Nodes@{interpolation\+Nodes}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{interpolation\+Nodes()}{interpolationNodes()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const vector$<${\bf Multi\+Variate\+Point}$<$double$>$ $>$\& {\bf Interpolation}$<$ T $>$\+::interpolation\+Nodes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a68c347c599d06d34239e86b1851aef27}{}\label{class_interpolation_a68c347c599d06d34239e86b1851aef27}
+Accesseur à l\textquotesingle{}attribut m\+\_\+interpolation\+Nodes \begin{DoxyReturn}{Returns}
+m\+\_\+interpolation\+Nodes, nsemble des points multivariés d\textquotesingle{}interpolation 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!interpolation\+Points@{interpolation\+Points}}
+\index{interpolation\+Points@{interpolation\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{interpolation\+Points(int i)}{interpolationPoints(int i)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const vector$<$double$>$\& {\bf Interpolation}$<$ T $>$\+::interpolation\+Points (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_aaf0b60a3c3c293e30ae101470da299d6}{}\label{class_interpolation_aaf0b60a3c3c293e30ae101470da299d6}
+Retourne l\textquotesingle{}ensemble de points de discretisation sur la direction i 
+\begin{DoxyParams}{Parameters}
+{\em i} & \+: direction \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vecteur de points de discretisation sur la direction i 
+\end{DoxyReturn}
 \index{Interpolation@{Interpolation}!is\+Correct\+Neighbour\+To\+Curent\+Path@{is\+Correct\+Neighbour\+To\+Curent\+Path}}
 \index{is\+Correct\+Neighbour\+To\+Curent\+Path@{is\+Correct\+Neighbour\+To\+Curent\+Path}!Interpolation@{Interpolation}}
 \subsubsection[{\texorpdfstring{is\+Correct\+Neighbour\+To\+Curent\+Path(\+Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)=0}{isCorrectNeighbourToCurentPath(MultiVariatePointPtr< T > nu)=0}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ virtual bool {\bf Interpolation}$<$ T $>$\+::is\+Correct\+Neighbour\+To\+Curent\+Path (
@@ -287,6 +415,18 @@ true si et seulement si nu est voisin à l\textquotesingle{}ensemble de points d
 
 Implemented in \hyperlink{class_mixed_interpolation_af507dcd64c768b97c0ba2ff378a14f91}{Mixed\+Interpolation}, \hyperlink{class_piecewise_interpolation_ac0b6901bd4b71cc35d3b121f31b4bc53}{Piecewise\+Interpolation}, and \hyperlink{class_lagrange_interpolation_ab964d7da47797afd51edf7c82365a17b}{Lagrange\+Interpolation}.
 
+\index{Interpolation@{Interpolation}!launch\+A\+I\+Algo@{launch\+A\+I\+Algo}}
+\index{launch\+A\+I\+Algo@{launch\+A\+I\+Algo}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{launch\+A\+I\+Algo(bool debug)}{launchAIAlgo(bool debug)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::launch\+A\+I\+Algo (
+\begin{DoxyParamCaption}
+\item[{bool}]{debug}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a3ded42db23669cffb630ce1b72cb7ce6}{}\label{class_interpolation_a3ded42db23669cffb630ce1b72cb7ce6}
+Implémente l\textquotesingle{}algorithme d\textquotesingle{}interpolation adaptative 
+\begin{DoxyParams}{Parameters}
+{\em debug} & \+: si true, affiche sur le terminal la progression de m\+\_\+path et m\+\_\+current\+Neighbors \\
+\hline
+\end{DoxyParams}
 \index{Interpolation@{Interpolation}!max\+Element@{max\+Element}}
 \index{max\+Element@{max\+Element}!Interpolation@{Interpolation}}
 \subsubsection[{\texorpdfstring{max\+Element(int iteration)=0}{maxElement(int iteration)=0}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ virtual Multi\+Variate\+Point\+Ptr$<$T$>$ {\bf Interpolation}$<$ T $>$\+::max\+Element (
@@ -306,6 +446,129 @@ teration \+: vecteur d\textquotesingle{}ordres du prochain point d\textquotesing
 
 Implemented in \hyperlink{class_mixed_interpolation_a45908a6d89efe869a2b80d9f50264f7f}{Mixed\+Interpolation}, \hyperlink{class_piecewise_interpolation_a0c0c51e2eed0a0f7155bc223adf30cf8}{Piecewise\+Interpolation}, and \hyperlink{class_lagrange_interpolation_ac4c9a2d839db489c85ac8818b4abc777}{Lagrange\+Interpolation}.
 
+\index{Interpolation@{Interpolation}!max\+Iteration@{max\+Iteration}}
+\index{max\+Iteration@{max\+Iteration}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{max\+Iteration()}{maxIteration()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const int {\bf Interpolation}$<$ T $>$\+::max\+Iteration (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a2f8ae16c6e463b6275c6897cb23c8cfb}{}\label{class_interpolation_a2f8ae16c6e463b6275c6897cb23c8cfb}
+Accesseur à l\textquotesingle{}attribut m\+\_\+max\+Iteration \begin{DoxyReturn}{Returns}
+m\+\_\+max\+Iteration, nombre d\textquotesingle{}itérations dans l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!nb\+Evals@{nb\+Evals}}
+\index{nb\+Evals@{nb\+Evals}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{nb\+Evals()}{nbEvals()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const int {\bf Interpolation}$<$ T $>$\+::nb\+Evals (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_af62064f49d50af2e7eb2e5d6fca3ef0b}{}\label{class_interpolation_af62064f49d50af2e7eb2e5d6fca3ef0b}
+Accesseur à l\textquotesingle{}attribut m\+\_\+nb\+Evals \begin{DoxyReturn}{Returns}
+m\+\_\+nb\+Evals, nombre de points de calcul 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!nb\+Test\+Points@{nb\+Test\+Points}}
+\index{nb\+Test\+Points@{nb\+Test\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{nb\+Test\+Points()}{nbTestPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const int {\bf Interpolation}$<$ T $>$\+::nb\+Test\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a463273f663959f84cb189ec6c9b8805b}{}\label{class_interpolation_a463273f663959f84cb189ec6c9b8805b}
+Accesseur à l\textquotesingle{}attribut m\+\_\+nb\+Test\+Points \begin{DoxyReturn}{Returns}
+m\+\_\+nb\+Test\+Points, nombre de points de référence (points de test) 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!parameters\+Domain@{parameters\+Domain}}
+\index{parameters\+Domain@{parameters\+Domain}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{parameters\+Domain()}{parametersDomain()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const vector$<$vector$<$double$>$ $>$ {\bf Interpolation}$<$ T $>$\+::parameters\+Domain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_af8057630b170cc0cc0fb853e72b61174}{}\label{class_interpolation_af8057630b170cc0cc0fb853e72b61174}
+Retourne le domaine de définition de l\textquotesingle{}interpolé f \begin{DoxyReturn}{Returns}
+domaine de définition de f (attribut m\+\_\+parameters\+Domain de m\+\_\+function) 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!path@{path}}
+\index{path@{path}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{path()}{path()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const vector$<$Multi\+Variate\+Point\+Ptr$<$T$>$ $>$\& {\bf Interpolation}$<$ T $>$\+::path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a6820ea94303e15adad2c1608a94aea96}{}\label{class_interpolation_a6820ea94303e15adad2c1608a94aea96}
+Accesseur à l\textquotesingle{}attribut m\+\_\+path \begin{DoxyReturn}{Returns}
+m\+\_\+path, chemin correspondant à la séquence ordonnée de points d\textquotesingle{}interpolation, construit par l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!relative\+Errors@{relative\+Errors}}
+\index{relative\+Errors@{relative\+Errors}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{relative\+Errors()}{relativeErrors()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const vector$<$double$>$ {\bf Interpolation}$<$ T $>$\+::relative\+Errors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a7601bc7349ed82e28c7e7e3f9d925d18}{}\label{class_interpolation_a7601bc7349ed82e28c7e7e3f9d925d18}
+Accesseur à l\textquotesingle{}attribut m\+\_\+inf\+Error \begin{DoxyReturn}{Returns}
+m\+\_\+inf\+Error, valeur de l\textquotesingle{}erreur relative absolue 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!run\+Time@{run\+Time}}
+\index{run\+Time@{run\+Time}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{run\+Time()}{runTime()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const double {\bf Interpolation}$<$ T $>$\+::run\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a6217fd13a4a5689bd5b264593a444d89}{}\label{class_interpolation_a6217fd13a4a5689bd5b264593a444d89}
+Accesseur à l\textquotesingle{}attribut m\+\_\+run\+Time \begin{DoxyReturn}{Returns}
+m\+\_\+run\+Time, temps d\textquotesingle{}éxecution de l\textquotesingle{}algo AI 
+\end{DoxyReturn}
+\index{Interpolation@{Interpolation}!save\+A\+I\+Approximation\+Results@{save\+A\+I\+Approximation\+Results}}
+\index{save\+A\+I\+Approximation\+Results@{save\+A\+I\+Approximation\+Results}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{save\+A\+I\+Approximation\+Results()}{saveAIApproximationResults()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::save\+A\+I\+Approximation\+Results (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a8f7ae9ddb58ff7e8e6228154483669a7}{}\label{class_interpolation_a8f7ae9ddb58ff7e8e6228154483669a7}
+Sauvegarder les résultats d\textquotesingle{}approximation obtenus par l\textquotesingle{}algo AI dans le fichier data/output.\+dat \index{Interpolation@{Interpolation}!set\+Func@{set\+Func}}
+\index{set\+Func@{set\+Func}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{set\+Func(\+Functions\+Ptr f)}{setFunc(FunctionsPtr f)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Interpolation}$<$ T $>$\+::set\+Func (
+\begin{DoxyParamCaption}
+\item[{Functions\+Ptr}]{f}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_ae86cb1a352b8bb78e86c33c92f9cb68a}{}\label{class_interpolation_ae86cb1a352b8bb78e86c33c92f9cb68a}
+Mutateur de l\textquotesingle{}attribut m\+\_\+function 
+\begin{DoxyParams}{Parameters}
+{\em f} & \+: fonction qu\textquotesingle{}on veut interpoler \\
+\hline
+\end{DoxyParams}
+\index{Interpolation@{Interpolation}!set\+Random\+Test\+Points@{set\+Random\+Test\+Points}}
+\index{set\+Random\+Test\+Points@{set\+Random\+Test\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{set\+Random\+Test\+Points(int nb\+Test\+Points)}{setRandomTestPoints(int nbTestPoints)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::set\+Random\+Test\+Points (
+\begin{DoxyParamCaption}
+\item[{int}]{nb\+Test\+Points}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a5a1e610d2baa723e12fd4c220434413d}{}\label{class_interpolation_a5a1e610d2baa723e12fd4c220434413d}
+Construit la séquence de points de test, m\+\_\+test\+Points, aléatoirement 
+\begin{DoxyParams}{Parameters}
+{\em nb\+Test\+Points} & \+: nombre de points de test \\
+\hline
+\end{DoxyParams}
+\index{Interpolation@{Interpolation}!set\+Test\+Points@{set\+Test\+Points}}
+\index{set\+Test\+Points@{set\+Test\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{set\+Test\+Points(vector$<$ Multi\+Variate\+Point$<$ double $>$$>$ points)}{setTestPoints(vector< MultiVariatePoint< double >> points)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Interpolation}$<$ T $>$\+::set\+Test\+Points (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Multi\+Variate\+Point}$<$ double $>$$>$}]{points}
+\end{DoxyParamCaption}
+)}\hypertarget{class_interpolation_a976978e385d7ec3ed5506f1ca96938b3}{}\label{class_interpolation_a976978e385d7ec3ed5506f1ca96938b3}
+Mutateur de l\textquotesingle{}attribut m\+\_\+test\+Points 
+\begin{DoxyParams}{Parameters}
+{\em points} & \+: ensemble de points multivariés de test \\
+\hline
+\end{DoxyParams}
+\index{Interpolation@{Interpolation}!test\+Points@{test\+Points}}
+\index{test\+Points@{test\+Points}!Interpolation@{Interpolation}}
+\subsubsection[{\texorpdfstring{test\+Points()}{testPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ vector$<${\bf Multi\+Variate\+Point}$<$double$>$ $>$ {\bf Interpolation}$<$ T $>$\+::test\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{class_interpolation_a67f32f77bf277420cffb8ebaaf83e573}{}\label{class_interpolation_a67f32f77bf277420cffb8ebaaf83e573}
+Accesseur à l\textquotesingle{}attribut m\+\_\+test\+Points \begin{DoxyReturn}{Returns}
+m\+\_\+test\+Points, ensemble de points de test pour évaluer la méthode 
+\end{DoxyReturn}
 \index{Interpolation@{Interpolation}!update\+Curent\+Neighbours@{update\+Curent\+Neighbours}}
 \index{update\+Curent\+Neighbours@{update\+Curent\+Neighbours}!Interpolation@{Interpolation}}
 \subsubsection[{\texorpdfstring{update\+Curent\+Neighbours(\+Multi\+Variate\+Point\+Ptr$<$ T $>$ nu)=0}{updateCurentNeighbours(MultiVariatePointPtr< T > nu)=0}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ virtual void {\bf Interpolation}$<$ T $>$\+::update\+Curent\+Neighbours (
@@ -326,4 +589,4 @@ Implemented in \hyperlink{class_mixed_interpolation_af5bbe4c2c6383989d3869f76ca6
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/\hyperlink{_interpolation_8hpp}{Interpolation.\+hpp}\end{DoxyCompactItemize}
+A\+I/include/\hyperlink{_interpolation_8hpp}{Interpolation.\+hpp}\end{DoxyCompactItemize}

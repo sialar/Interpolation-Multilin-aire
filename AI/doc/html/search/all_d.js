@@ -5,7 +5,9 @@ var searchData=
   ['realdatafunctions',['RealDataFunctions',['../class_real_data_functions.html',1,'RealDataFunctions'],['../class_real_data_functions.html#a8c284fd674bf306d2069e984c7ea6c13',1,'RealDataFunctions::RealDataFunctions()']]],
   ['realdatafunctions_2ehpp',['RealDataFunctions.hpp',['../_real_data_functions_8hpp.html',1,'']]],
   ['referencepts',['referencePts',['../class_real_data_functions.html#a9f25dd7676fe94730988fd244b71a158',1,'RealDataFunctions']]],
+  ['relativeerrors',['relativeErrors',['../class_interpolation.html#a7601bc7349ed82e28c7e7e3f9d925d18',1,'Interpolation']]],
   ['replace',['replace',['../class_utils.html#a8a82a7ffe053f980c13d8dea64080ab9',1,'Utils']]],
   ['right',['right',['../class_node.html#af1536e5315807b7ae6dad94d6eded071',1,'Node']]],
-  ['root',['root',['../class_binary_tree.html#ad71614bd643e7332db81910d4ec60ae4',1,'BinaryTree']]]
+  ['root',['root',['../class_binary_tree.html#ad71614bd643e7332db81910d4ec60ae4',1,'BinaryTree']]],
+  ['runtime',['runTime',['../class_interpolation.html#a6217fd13a4a5689bd5b264593a444d89',1,'Interpolation']]]
 ];
