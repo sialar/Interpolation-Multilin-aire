@@ -9,6 +9,11 @@
 
 using namespace std;
 
+// 3 arguments sont requis:
+//   - arg 1  : Dimension de l'espace de départ de l'interpolé f (doit correspondre à la dimension spécifié dans le fichier de données \"AI/data/input.dat\")
+//   - arg 2  : Dimension de l'espace d'arrivé de l'interpolé f (doit correspondre à la dimension spécifié dans le fichier de données \"AI/data/input.dat\")
+//   - arg 3  : Nombre d'itérations dans l'algorithme AI
+
 int main( int argc, char* argv[] )
 {
     // f : x = (x1, .., xd) --> (y1, .., yn)
@@ -39,9 +44,9 @@ int main( int argc, char* argv[] )
     // Lancer l'algorithme d'interpolation adaptative
     interp->launchAIAlgo(false);
     // Caluler et stocker (dans output.dat) les résultats d'approximation sur la même grille
-    // de référence présene dans le fichier fileName
+    // de référence présente dans le fichier fileName
     interp->computeAIApproximationResults();
-    interp->saveAIApproximationResults();
+    interp->saveAll();
 
     // Afficher les résultats (precision, temps de calcul, nombre de points de calcul, ...) sur le terminal
     interp->displayAll();

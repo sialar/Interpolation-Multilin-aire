@@ -50,6 +50,7 @@ class Interpolation
       vector<MultiVariatePointPtr<T>> m_path;
 		  // Ensemble de voisins (candidats) dans l'itération courante de l'algorithme AI
       list<MultiVariatePointPtr<T>> m_curentNeighbours;
+      // 0 si LagrangeInterpolation, 1 ou 2 si PiecewiseInterpolation
 
 /******************************************************************************/
 /************************ Validation de la méthode ****************************/
@@ -93,6 +94,10 @@ class Interpolation
           * Supprimer toutes les données
         */
         void clearAll();
+        /**
+          * Sauvegarder tous les résultats de l'interpolation
+        */
+        void saveAll();
 
 /******************************************************************************/
 /**************************** Données d'entrée ********************************/
@@ -188,6 +193,15 @@ class Interpolation
           * \param p : nouveau point d'interpolation
         */
 		    virtual void addInterpolationPoint(MultiVariatePoint<double> p) = 0;
+        /**
+        * Stocker les valeurs des fonctions de bases dans basis_functions.dat
+        */
+        virtual void saveInterpolationBasisFunctions() = 0;
+        /**
+          * Stocker les points d'interpolation dans le fichier data/interpolation_points.dat
+        */
+        void saveInterpolationPoints();
+
 
 /******************************************************************************/
 /*************************** Algorithme AI ************************************/
@@ -261,6 +275,15 @@ class Interpolation
         * \return la valeur au point t de la fonction de base correspondant au point 1d d'ordre code sur la direction axis
         */
         virtual double basisFunction_1D(T code, double t, int axis) = 0;
+        /**
+          * Stocker dans data/interpolation_progression.dat la valeur de l'approximation à chaque iteration sur tous les points de test
+        */
+        void saveInterpolationProgression();
+        /**
+          * Stocker les élement de m_path (points d'interpolations) dans l'ordre dans le fichier data/path.dat
+        */
+        void savePath();
+
 
 /******************************************************************************/
 /************************ Fonctions d'affichage *******************************/
@@ -314,11 +337,22 @@ void Interpolation<T>::clearAll()
         m_interpolationPoints[i].clear();
 }
 
+
 template <typename T>
 void Interpolation<T>::clearAllAlpha()
 {
     for (MultiVariatePointPtr<T> nu : m_path)
         nu->reinit();
+}
+
+template <typename T>
+void Interpolation<T>::saveAll()
+{
+    savePath();
+    saveInterpolationPoints();
+    saveAIApproximationResults();
+    saveInterpolationProgression();
+    saveInterpolationBasisFunctions();
 }
 
 template <typename T>
@@ -594,4 +628,85 @@ void Interpolation<T>::saveAIApproximationResults()
         else cerr << "Error while opening the file!" << endl;
 }
 
+template <typename T>
+void Interpolation<T>::saveInterpolationPoints()
+{
+
+  ofstream file("AI/data/interpolation_points.dat", ios::out);
+  if(file)
+  {
+      double t;
+      file << m_interpolationNodes.size() << endl;
+      for (MultiVariatePoint<double> x : m_interpolationNodes)
+      {
+          for (int i=0; i<m_d; i++)
+          {
+              t = Utils::convertToFunctionDomain(parametersDomain()[i][0], parametersDomain()[i][1], x(i));
+              file << setprecision(numeric_limits<double>::digits10+1) << t << " ";
+          }
+          file << endl;
+      }
+      file.close();
+  }
+  else cerr << "Error while opening the file!" << endl;
+}
+
+template <typename T>
+void Interpolation<T>::saveInterpolationProgression()
+{
+  ofstream file("AI/data/interpolation_progression.dat", ios::out | ios::trunc);
+  if(file)
+  {
+      if (m_d==1)
+      {
+          vector<double> x;
+          for (int i=0; i<m_nbTestPoints; i++)
+              x.push_back(m_testPoints[i](0));
+          sort(x.begin(), x.end());
+          MultiVariatePoint<double> p;
+          vector<double> tempPath;
+          for (int j=0; j<m_nbTestPoints; j++)
+          {
+              for (int i=0; i<int(m_path.size()); i++)
+              {
+                  p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
+                  file << interpolation(p, i+1)[0] << " ";
+              }
+              file << endl;
+          }
+      }
+      file.close();
+  }
+  else
+      cerr << "Error while opening the file!" << endl;
+}
+
+template <typename T>
+void Interpolation<T>::savePath()
+{
+  ofstream file("AI/data/path.dat", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==2 || m_d==3)
+    {
+        for (int i=0; i<m_d; i++)
+            file << m_interpolationPoints[i].size() << " ";
+        file << endl << m_path.size() << endl;
+        MultiVariatePoint<double> x(m_d,0,0.0);
+        for (MultiVariatePointPtr<T> nu : m_path)
+        {
+            x = getPoint(nu);
+            for (int i=0; i<m_d; i++)
+                file << x(i) << " ";
+            file << endl;
+        }
+        for (int i=0; i<int(m_path.size())-1; i++)
+            file << Utils::vector2str(m_path[i]->getAlpha()) << " ; ";
+        file << Utils::vector2str(m_path[m_path.size()-1]->getAlpha()) << endl;
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 #endif

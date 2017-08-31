@@ -108,6 +108,13 @@ class MultiVariatePoint
         bool alphaIsNull();
         void reinit();
 
+        /**
+          * Transformer un scalaire en point monovarié
+          * \param a : scalaire
+          *  \return point multivarié (a)
+        */
+        static MultiVariatePoint<T> toMonoVariatePoint(T a);
+
 
 /******************************************************************************/
 /************************ Surcharge d'opérateurs ******************************/
@@ -203,6 +210,11 @@ void MultiVariatePoint<T>::reinit()
         m_alpha[i] = m_initialAlpha;
 }
 
+template <typename T>
+MultiVariatePoint<T> MultiVariatePoint<T>::toMonoVariatePoint(T t)
+{
+    return MultiVariatePoint<T>(1,0,t);
+}
 
 template <typename T>
 MultiVariatePoint<T>& MultiVariatePoint<T>::operator=(const MultiVariatePoint<T> & nu)

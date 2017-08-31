@@ -89,12 +89,6 @@ class RealDataFunctions : public Functions
         vector<double> evaluate(MultiVariatePoint<double> x);
 
         /**
-         *  Sauvegarder les résultats de l'interpolation dans le fichier output.data
-         *  Ce fichier contient les mêmes infos présentes dans m_fileName en plus des résultats
-         *  de l'interolation adaptative ainsi que les erreurs d'interpolation (les 2 dernières colonnes séparées par |)
-        */
-        void saveApproximationResults();
-        /**
          *  Lire les données à partir du fichier m_fileName et les stocker dans les attributs
          *  m_referencePts et m_exactValues. Ils serviront à construire puis à évaluer l'opérateur d'interpolation.
         */

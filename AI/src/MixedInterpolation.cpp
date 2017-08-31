@@ -217,6 +217,39 @@ double MixedInterpolation::basisFunction_1D(string code, double t, int axis)
         }
     }
 }
+void MixedInterpolation::saveInterpolationBasisFunctions()
+{
+  ofstream file("AI/data/basis_functions.dat", ios::out | ios::trunc);
+  if(file)
+  {
+    if (m_d==1)
+    {
+      vector<double> x;
+      for (int i=0; i<m_nbTestPoints; i++)
+          x.push_back(m_testPoints[i](0));
+      sort(x.begin(), x.end());
+      file << m_path.size() << " " << m_nbTestPoints << " " << m_methods(0) << endl;
+      MultiVariatePoint<double> p;
+      for (int j=0; j<m_nbTestPoints; j++)
+      {
+        file << x[j];
+        for (MultiVariatePointPtr<string> nu : m_path)
+          file << " " <<  basisFunction_1D((*nu)(0),x[j],0);
+        p = MultiVariatePoint<double>::toMonoVariatePoint(x[j]);
+        file << " " <<  func(p)[0];
+        file << endl;
+      }
+      for (MultiVariatePointPtr<string> nu : m_path)
+      file << nu->getAlpha()[0] << " ";
+      file << endl;
+      for (MultiVariatePoint<double> nu : m_interpolationNodes)
+      file << nu(0) << " ";
+    }
+    file.close();
+  }
+  else
+  cerr << "Error while opening the file!" << endl;
+}
 void MixedInterpolation::computeBoundariesForBasisFunction(double t, double* inf, double* sup, int axis)
 {
     /*

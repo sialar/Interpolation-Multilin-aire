@@ -95,6 +95,11 @@ class LagrangeInterpolation : public Interpolation<int>
         * \return la valeur au point t de la fonction de base correspondant au point 1d d'indice code sur la direction axis
       */
       double basisFunction_1D(int code, double t, int axis);
+      /**
+        * Stocker les valeurs des fonctions de bases dans basis_functions.dat
+      */
+      void saveInterpolationBasisFunctions();
+
 };
 
 typedef std::unique_ptr<LagrangeInterpolation> LagrangeInterpolationPtr;

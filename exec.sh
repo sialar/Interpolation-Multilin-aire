@@ -1,7 +1,5 @@
 #!/bin/sh
 
-make -j8
-
 help()
 {
   echo ""
@@ -46,11 +44,29 @@ then
     shift
     AI/bin/TestWithRealFunction $*
 
-elif [ "$1" = "doc" ]
+elif [ "$1" = "PATH" ]
+then
+    shift
+    cd AI/python
+    python3.5 -W ignore plot_path.py $1
+
+elif [ "$1" = "PROGRESS" ]
+then
+    shift
+    cd AI/python
+    python3.5 -W ignore plot_interpolation_progression.py
+
+elif [ "$1" = "POINTS" ]
+then
+    shift
+    cd AI/python
+    python3.5 -W ignore plot_interpolation_points_1D.py $1
+
+elif [ "$1" = "DOC" ]
 then
     cd AI/doc
     firefox html/index.html
-    
+
 else
     help
     exit

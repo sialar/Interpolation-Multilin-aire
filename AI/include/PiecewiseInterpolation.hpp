@@ -105,6 +105,10 @@ class PiecewiseInterpolation : public Interpolation<string>
         */
         double basisFunction_1D(string code, double t, int axis);
         /**
+          * Stocker les valeurs des fonctions de bases dans basis_functions.dat
+        */
+        void saveInterpolationBasisFunctions();
+        /**
           * Rechercher les valeurs des points d'interpolation 1d (inf et sup) les plus proches de t (de part et d'autre de t) sur la direction axis pour construire la fonction de base
           * \param t : point d'interpolation 1d
           * \param inf : plus grand point d'interpolation 1d inférieur à t
