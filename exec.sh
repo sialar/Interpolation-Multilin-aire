@@ -6,7 +6,10 @@ help()
   echo " 1 argument est requis:"
   echo "   - FA : pour interpoler une fonction analytique"
   echo "   - DR : pour interpoler des données réelles"
-  echo "   - doc : pour générer la documentation du code"
+  echo "   - PATH : pour visualiser l'évolution de la séquence des points d'interpolation (2D ou 3D)"
+  echo "   - PROGRESS : pour visualiser la progression de l'intérpolé et des fonctions de base (1D)"
+  echo "   - POINTS : pour voir la discrétisation sur la direction entrée en paramètre"
+  echo "   - DOC : pour générer la documentation du code"
   echo ""
 }
 
@@ -31,6 +34,21 @@ helpDR()
   echo ""
 }
 
+helpPATH()
+{
+  echo ""
+  echo " 1 argument est requis:"
+  echo "   - arg 1  : Dimension de l'espace de départ de l'interpolé f (doit être 2 ou 3)"
+  echo ""
+}
+
+helpPOINTS()
+{
+  echo ""
+  echo " 1 arguments est requis:"
+  echo "   - arg 1  : Direction i de projection des points d'interpolation (0 < i < d)"
+  echo ""
+}
 
 if [ "$1" = "FA" ]
 then

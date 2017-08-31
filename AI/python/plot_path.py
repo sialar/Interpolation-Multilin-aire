@@ -33,8 +33,7 @@ if len(sys.argv)!=2:
 else:
     dim = int(sys.argv[1])
 
-taille = (16,8)
-fig = plt.figure(figsize=taille)
+fig = plt.figure()
 
 ai_output_file = open( "../data/path.dat", "r")
 lines = ai_output_file.readlines()

@@ -2,6 +2,12 @@
 
 Functions::Functions(int d, int n)
 {
+	if (d<1 || n<1)
+	{
+			cout << "Dimensions must be greater than 0" << endl;
+			exit(0);
+	}
+	
 	m_d = d;
 	m_n = n;
 
